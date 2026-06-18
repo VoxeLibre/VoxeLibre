@@ -451,6 +451,7 @@ minetest.register_node("mcl_blast_furnace:blast_furnace", {
 		"blast_furnace_side.png", "blast_furnace_front.png"
 	},
 	paramtype2 = "facedir",
+	_vl_attach_surfaces = mcl_furnaces.attach_surfaces_except_front,
 	groups = { pickaxey = 1, container = 2, deco_block = 1, material_stone = 1 },
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -533,6 +534,7 @@ minetest.register_node("mcl_blast_furnace:blast_furnace_active", {
 	paramtype2 = "facedir",
 	paramtype = "light",
 	light_source = LIGHT_ACTIVE_FURNACE,
+	_vl_attach_surfaces = mcl_furnaces.attach_surfaces_except_front,
 	drop = "mcl_blast_furnace:blast_furnace",
 	groups = { pickaxey = 1, container = 2, deco_block = 1, not_in_creative_inventory = 1, material_stone = 1 },
 	is_ground_content = false,

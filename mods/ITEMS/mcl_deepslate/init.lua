@@ -170,7 +170,8 @@ core.register_node("mcl_deepslate:deepslate_with_redstone_lit", {
 	light_source = 9,
 	is_ground_content = true,
 	groups = { pickaxey = 4, not_in_creative_inventory = 1, material_stone = 1, xp = 7 },
-	_vl_allow_attach = {all = true},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = true,
 	drop = {
 		items = {
 			max_items = 1,

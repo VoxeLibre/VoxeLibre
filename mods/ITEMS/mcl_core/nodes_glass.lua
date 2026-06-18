@@ -13,6 +13,7 @@ minetest.register_node("mcl_core:glass", {
 	sunlight_propagates = true,
 	stack_max = 64,
 	groups = {handy=1, glass=1, building_block=1, material_glass=1},
+	_vl_attach_surfaces = {source = "regular"},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "",
 	_mcl_blast_resistance = 0.3,
@@ -50,6 +51,7 @@ function mcl_core.add_stained_glass(desc, recipeitem, colorgroup, color)
 		stack_max = 64,
 		-- TODO: Add color to groups
 		groups = {handy=1, glass=1, building_block=1, material_glass=1},
+		_vl_attach_surfaces = {source = "regular"},
 		sounds = mcl_sounds.node_sound_glass_defaults(),
 		drop = "",
 		_mcl_blast_resistance = 0.3,

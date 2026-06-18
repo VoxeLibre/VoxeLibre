@@ -19,6 +19,12 @@ local boxes_on = {
 	wall_bottom = { -4/16, -8/16, -2/16, 4/16, -7/16, 2/16 },
 	wall_top = { -4/16, 7/16, -2/16, 4/16, 8/16, 2/16 },
 }
+local button_contract = {
+	faces = {
+		top = {{-4/16, -2/16, 4/16, 2/16}},
+		side = {{-4/16, -2/16, 4/16, 2/16}},
+	},
+}
 
 -- Push the button
 function mesecon.push_button(pos, node)
@@ -36,31 +42,6 @@ function mesecon.push_button(pos, node)
 	local timer = minetest.get_node_timer(pos)
 	timer:start(def._mcl_button_timer)
 end
-
-vl_attach.set_default("button",function(node, def, wdir)
-	-- No ceiling buttons
-	if wdir == 0 then return false end
-
-	-- Allow solid, opaque, full cube collision box nodes are allowed.
-	return (def.groups.solid or 0) ~= 0 and (def.groups.opaque or 0) ~= 0
-end)
-vl_attach.register_autogroup({
-	skip_existing = {"button"},
-	callback = function(allow_attach, _, def)
-		local groups = def.groups
-
-		-- Only allow full-solid blocks to have buttons attached
-		if (groups.solid or 0) ~= 0 and (groups.opaque or 0) ~= 0
-		and (def.node_box and def.node_box.type ~= "regular") then
-			allow_attach.button = true
-		end
-
-		-- Exception: allow placing on top of top-slabs
-		if (groups.slab_top or 0) ~= 0 then
-			allow_attach.button = true
-		end
-	end
-})
 
 local buttonuse = S("Use the button to push it.")
 
@@ -119,7 +100,7 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 		_tt_help = tt,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = buttonuse,
-		_vl_attach_type = "button",
+		_vl_attach_contract = button_contract,
 		on_place = vl_attach.place_attached,
 		node_placement_prediction = "",
 		on_rightclick = function(pos, node)
@@ -161,6 +142,7 @@ function mesecon.register_button(basename, description, texture, recipeitem, sou
 		groups = groups_on,
 		drop = "mesecons_button:button_"..basename.."_off",
 		_doc_items_create_entry = false,
+		_vl_attach_contract = button_contract,
 		node_placement_prediction = "",
 		sounds = sounds,
 		mesecons = {receptor = {

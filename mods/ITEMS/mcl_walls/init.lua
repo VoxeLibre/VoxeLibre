@@ -53,10 +53,11 @@ local function update_wall(pos)
 		end
 	end
 
-	-- Torches or walkable nodes above the wall
+	-- Attachments or walkable nodes above the wall
 	local upnode = minetest.get_node({x = pos.x, y = pos.y+1, z = pos.z})
 	if sum == 5 or sum == 10 then
-		if (connectable(upnode.name)) or (minetest.get_item_group(upnode.name, "torch") == 1) then
+		if (connectable(upnode.name)) or (core.get_item_group(upnode.name, "torch") == 1)
+				or (core.get_item_group(upnode.name, "lantern") == 1) then
 			sum = sum + 11
 		end
 	end
@@ -184,6 +185,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 				type = "fixed",
 				fixed = take
 			},
+			_vl_attach_surfaces = {source = "node_box"},
 			sounds = sounds,
 			_mcl_blast_resistance = blast_resistance,
 			_mcl_hardness = hardness,
@@ -212,6 +214,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 			type = "fixed",
 			fixed = {pillar, full_blocks[1]}
 		},
+		_vl_attach_surfaces = {source = "node_box"},
 		sounds = sounds,
 		_mcl_blast_resistance = blast_resistance,
 		_mcl_hardness = hardness,
@@ -238,6 +241,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 			type = "fixed",
 			fixed = {pillar, full_blocks[2]}
 		},
+		_vl_attach_surfaces = {source = "node_box"},
 		sounds = sounds,
 		_mcl_blast_resistance = blast_resistance,
 		_mcl_hardness = hardness,
@@ -263,6 +267,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 			type = "fixed",
 			fixed = pillar
 		},
+		_vl_attach_surfaces = {source = "node_box"},
 		collision_box = {
 				type = "fixed",
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}

@@ -17,6 +17,13 @@ local fbox = {
 	type = "fixed",
 	fixed = { -6 / 16, -1 / 2, -6 / 16, 6 / 16, -7 / 16, 6 / 16 }
 }
+local itemframe_contract = {
+	faces = {
+		top = {{-6 / 16, -6 / 16, 6 / 16, 6 / 16}},
+		bottom = {{-6 / 16, -6 / 16, 6 / 16, 6 / 16}},
+		side = {{-6 / 16, -6 / 16, 6 / 16, 6 / 16}},
+	},
+}
 
 local base_props = {
 	visual = "wielditem",
@@ -226,12 +233,8 @@ function tpl_node.on_rightclick(pos, _node, clicker, ostack, _pointed_thing)
 end
 
 -- Attachment
-tpl_node._vl_attach_type = "itemframe"
+tpl_node._vl_attach_contract = itemframe_contract
 tpl_node.on_place = vl_attach.place_attached
-vl_attach.set_default("itemframe", function(_, def, wdir)
-	-- Allow solid, opaque, full cube collision box nodes are allowed.
-	return (def.groups.solid or 0) ~= 0 and (def.groups.opaque or 0) ~= 0 and true
-end)
 
 function tpl_node.on_construct(pos)
 	local meta = core.get_meta(pos)

@@ -40,8 +40,9 @@ local FLAT_ALLOWED_ATTACH = {
 	[4] = {[1] = true,             [2] = true, [3] = true,},
 	[5] = {[0] = true, [1] = true,             [3] = true,},
 }
-local function piston_allow_attach_flat(node, _, wdir)
-	return FLAT_ALLOWED_ATTACH[wdir][node.param2]
+local function piston_allow_attach_flat(node, def, wdir, attached_node, attached_def)
+	if not FLAT_ALLOWED_ATTACH[wdir][node.param2] then return false end
+	return vl_attach.check_geometry(node, def, wdir, attached_node, attached_def)
 end
 
 local function piston_get_rules(node)
@@ -209,7 +210,8 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 	_tt_help = S("Pushes block when powered by redstone power"),
 	_doc_items_longdesc = S("A piston is a redstone component with a pusher which pushes the block or blocks in front of it when it is supplied with redstone power. Not all blocks can be pushed, however."),
 	_doc_items_usagehelp = usagehelp_piston,
-	_vl_allow_attach = {all = piston_allow_attach_flat},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_flat,
 	tiles = {
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png",
@@ -244,7 +246,8 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_normal_on", {
 	drawtype = "nodebox",
-	_vl_allow_attach = {all = piston_allow_attach_flat},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_flat,
 	tiles = {
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png",
@@ -319,7 +322,8 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 	_doc_items_longdesc = S("A sticky piston is a redstone component with a sticky pusher which can be extended and retracted. It extends when it is supplied with redstone power. When the pusher extends, it pushes the block or blocks in front of it. When it retracts, it pulls back the single block in front of it. Note that not all blocks can be pushed or pulled."),
 	_doc_items_usagehelp = usagehelp_piston,
 
-	_vl_allow_attach = {all = piston_allow_attach_flat},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_flat,
 	tiles = {
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png",
@@ -354,7 +358,8 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_sticky_on", {
 	drawtype = "nodebox",
-	_vl_allow_attach = {all = piston_allow_attach_flat},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_flat,
 	tiles = {
 		"mesecons_piston_bottom.png^[transformR180",
 		"mesecons_piston_bottom.png",
@@ -439,8 +444,9 @@ local UP_ALLOWED_ATTACH = {
 	[4] = {[0] = true},
 	[5] = {[0] = true},
 }
-local function piston_allow_attach_up(node, wdir)
-	return UP_ALLOWED_ATTACH[wdir][node.param2] and true or false
+local function piston_allow_attach_up(node, def, wdir, attached_node, attached_def)
+	if not UP_ALLOWED_ATTACH[wdir][node.param2] then return false end
+	return vl_attach.check_geometry(node, def, wdir, attached_node, attached_def)
 end
 
 -- Normal
@@ -454,7 +460,8 @@ local pistonspec_normal_up = {
 
 -- offstate
 minetest.register_node("mesecons_pistons:piston_up_normal_off", {
-	_vl_allow_attach = {all = piston_allow_attach_up},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_up,
 	tiles = {
 		"mesecons_piston_pusher_front.png",
 		"mesecons_piston_back.png",
@@ -492,7 +499,8 @@ minetest.register_node("mesecons_pistons:piston_up_normal_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_up_normal_on", {
 	drawtype = "nodebox",
-	_vl_allow_attach = {all = piston_allow_attach_up},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_up,
 	tiles = {
 		"mesecons_piston_on_front.png",
 		"mesecons_piston_back.png",
@@ -563,7 +571,8 @@ local pistonspec_sticky_up = {
 
 -- offstate
 minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
-	_vl_allow_attach = {all = piston_allow_attach_up},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_up,
 	tiles = {
 		"mesecons_piston_pusher_front_sticky.png",
 		"mesecons_piston_back.png",
@@ -601,7 +610,8 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_up_sticky_on", {
 	drawtype = "nodebox",
-	_vl_allow_attach = {all = piston_allow_attach_up},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_up,
 	tiles = {
 		"mesecons_piston_on_front.png",
 		"mesecons_piston_back.png",
@@ -685,12 +695,9 @@ local DOWN_ALLOWED_ATTACH = {
 	[4] = {[0] = true},
 	[5] = {[0] = true},
 }
-local function piston_allow_attach_down(node, wdir)
-	core.log(dump{
-		wdir = wdir,
-		param2 = node.param2
-	})
-	return DOWN_ALLOWED_ATTACH[wdir][node.param2] and true or false
+local function piston_allow_attach_down(node, def, wdir, attached_node, attached_def)
+	if not DOWN_ALLOWED_ATTACH[wdir][node.param2] then return false end
+	return vl_attach.check_geometry(node, def, wdir, attached_node, attached_def)
 end
 
 
@@ -706,7 +713,8 @@ local pistonspec_normal_down = {
 
 -- offstate
 minetest.register_node("mesecons_pistons:piston_down_normal_off", {
-	_vl_allow_attach = {all = piston_allow_attach_down},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_down,
 	tiles = {
 		"mesecons_piston_back.png",
 		"mesecons_piston_pusher_front.png",
@@ -742,7 +750,8 @@ minetest.register_node("mesecons_pistons:piston_down_normal_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_down_normal_on", {
 	drawtype = "nodebox",
-	_vl_allow_attach = {all = piston_allow_attach_down},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_down,
 	tiles = {
 		"mesecons_piston_back.png",
 		"mesecons_piston_on_front.png",
@@ -810,7 +819,8 @@ local pistonspec_sticky_down = {
 
 -- offstate
 minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
-	_vl_allow_attach = {all = piston_allow_attach_down},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_down,
 	tiles = {
 		"mesecons_piston_back.png",
 		"mesecons_piston_pusher_front_sticky.png",
@@ -846,7 +856,8 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_down_sticky_on", {
 	drawtype = "nodebox",
-	_vl_allow_attach = {all = piston_allow_attach_down},
+	_vl_attach_surfaces = {source = "regular"},
+	_vl_allow_attach = piston_allow_attach_down,
 	tiles = {
 		"mesecons_piston_back.png",
 		"mesecons_piston_on_front.png",

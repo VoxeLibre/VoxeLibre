@@ -74,6 +74,11 @@ local end_rod_def = {
 	light_source = minetest.LIGHT_MAX,
 	sunlight_propagates = true,
 	groups = { dig_immediate=3, deco_block=1, destroy_by_lava_flow=1, end_rod=1 },
+	_vl_attach_surfaces = {
+		faces = {
+			top = {{-2/16, -2/16, 2/16, 2/16}},
+		},
+	},
 	use_texture_alpha = "clip",
 	selection_box = {
 		type = "fixed",
@@ -205,7 +210,7 @@ minetest.register_node("mcl_end:dragon_egg", {
 		type = "regular",
 	},
 	groups = {handy = 1, falling_node = 1, deco_block = 1, not_in_creative_inventory = 1, dig_by_piston = 1},
-	_vl_allow_attach = {torch = function(_,_,wdir) return wdir == 1 end},
+	_vl_attach_surfaces = {source = "node_box"},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 9,
 	_mcl_hardness = 3,

@@ -956,6 +956,12 @@ end
 -----------------
 -- Vine growth --
 -----------------
+local function vine_supported_by_node(support_node, vine_node)
+	if support_node.name == "ignore" then return true end
+	local def = core.registered_nodes[vine_node.name]
+	return def and vl_attach.check_allowed(support_node, vine_node.param2 % 8, vine_node, def)
+end
+
 -- Add vines below pos (if empty)
 local function vine_spread_down(origin, node)
 	if random(1, 2) == 1 then return end
@@ -973,10 +979,10 @@ local function vine_spread_up(origin, node)
 	if #vines_in_area >= 5 then return end
 	local target = vector_offset(origin, 0, 1, 0)
 	if minetest.get_node(target).name ~= "air" then return end
-	local backupnodename = minetest.get_node(vector_subtract(target, minetest.wallmounted_to_dir(node.param2))).name
+	local backupnodename = core.get_node(vector_subtract(target, core.wallmounted_to_dir(node.param2 % 8))).name
 
 	-- Check if the block above is supported
-	if mcl_core.supports_vines(backupnodename) then
+	if vine_supported_by_node({name = backupnodename}, node) then
 		minetest.add_node(target, {name = "mcl_core:vine", param2 = node.param2})
 	end
 end
@@ -987,12 +993,12 @@ local function vine_spread_horizontal(origin, dir, node)
 	-- Less than 4 other vines blocks around the ticked vines block (remember the ticked block is counted by above function as well)
 	local target = vector_add(origin, dir)
 	-- Spread horizontally, but not into support direction
-	local backup_dir = minetest.wallmounted_to_dir(node.param2)
-	if backup_dir.x == dir.x and backup_dir.y == dir.y then return end
+	local backup_dir = core.wallmounted_to_dir(node.param2 % 8)
+	if backup_dir.x == dir.x and backup_dir.y == dir.y and backup_dir.z == dir.z then return end
 	local target_node = minetest.get_node(target)
 	if target_node.name ~= "air" then return end
-	local backupnodename = minetest.get_node(vector_add(target, backup_dir)).name
-	if mcl_core.supports_vines(backupnodename) then
+	local backupnode = core.get_node(vector_add(target, backup_dir))
+	if vine_supported_by_node(backupnode, node) then
 		minetest.add_node(target, {name = "mcl_core:vine", param2 = node.param2})
 	end
 end
@@ -1148,11 +1154,13 @@ Given the pos and node of a vines node, this returns true if the vines are suppo
 and false if the vines are currently floating.
 Vines are considered “supported” if they face a walkable+solid block or “hang” from a vines node above. ]]
 function mcl_core.check_vines_supported(pos, node)
-	local dir = minetest.wallmounted_to_dir(node.param2)
+	local dir = core.wallmounted_to_dir(node.param2 % 8)
 	if not dir then return end -- Don't crash if the map data got corrupted somehow
 	local node_neighbor = minetest.get_node(vector_add(pos, dir))
 	-- Check if vines are attached to a solid block, assume "ignore" is good.
-	if node_neighbor.name == "ignore" or mcl_core.supports_vines(node_neighbor.name) then return true end
+	if vine_supported_by_node(node_neighbor, node) then
+		return true
+	end
 	if dir.y == 0 then
 		-- Vines are not attached, now we check if the vines are “hanging” below another vines block
 		-- of equal orientation.

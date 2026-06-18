@@ -11,6 +11,32 @@ local function rotate_climbable(pos, node, user, mode)
 	return false
 end
 
+local climbable_contract = {
+	faces = {
+		side = {{-0.5, -0.5, 0.5, 0.5}},
+	},
+}
+
+local function allow_vine_continuation(node, _, wdir, attached_node)
+	return wdir == 0
+		and attached_node
+		and attached_node.name == node.name
+		and attached_node.param2 == node.param2
+end
+
+local function get_vine_supports(pos)
+	return {
+		{ pos = vector.offset(pos, 0, 1, 0), wdir = 0 },
+	}
+end
+
+local function make_placed_vine(placed_node, _, dir, _, _, under_node)
+	if dir.y == 1 and under_node.name == placed_node.name then
+		placed_node.param2 = under_node.param2
+	end
+	return placed_node
+end
+
 ---Updates the trapdoor above (if any).
 ---
 ---@param pos mt.Vector The position of the ladder.
@@ -66,44 +92,13 @@ minetest.register_node("mcl_core:ladder", {
 		attached_node = 1,
 		deco_block = 1,
 		dig_by_piston = 1,
-		ladder = 1
+		ladder = 1,
+		vl_attach = 1,
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	node_placement_prediction = "",
-	-- Restrict placement of ladders
-	on_place = function(itemstack, placer, pointed_thing)
-		local called
-		itemstack, called = mcl_util.handle_node_rightclick(itemstack, placer, pointed_thing)
-		if( called ) then return itemstack end
-
-		if pointed_thing.type ~= "node" then
-			-- no interaction possible with entities
-			return itemstack
-		end
-
-		-- Ladders may not be placed on ceiling or floor
-		local under, above = pointed_thing.under, pointed_thing.above
-		if under.y ~= above.y then return itemstack end
-
-		local node = minetest.get_node(under)
-		local def = minetest.registered_nodes[node.name]
-		if not def then return itemstack end
-		local groups = def.groups
-
-		-- Don't allow to place the ladder at non-solid nodes
-		if (groups and (not groups.solid)) then
-			return itemstack
-		end
-
-		local idef = itemstack:get_definition()
-		local itemstack, pos = minetest.item_place_node(itemstack, placer, pointed_thing)
-
-		-- A non-nil pos indicates the node was placed in a valid position.
-		if pos and idef.sounds and idef.sounds.place then
-			minetest.sound_play(idef.sounds.place, { pos = above, gain = 1 }, true)
-		end
-		return itemstack
-	end,
+	_vl_attach_contract = climbable_contract,
+	on_place = vl_attach.place_attached,
 	after_destruct = function(pos, old)
 		mcl_core.update_trapdoor(pos, "destruct")
 	end,
@@ -149,53 +144,18 @@ minetest.register_node("mcl_core:vine", {
 		fire_encouragement = 15,
 		fire_flammability = 100,
 		foliage_palette_wallmounted = 1,
-		ladder = 1
+		ladder = 1,
+		vl_attach = 1,
 	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = "",
 	_mcl_shears_drop = true,
 	node_placement_prediction = "",
-	-- Restrict placement of vines
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type ~= "node" then
-			-- no interaction possible with entities
-			return itemstack
-		end
-
-		local under = pointed_thing.under
-		local node = minetest.get_node(under)
-		local def = minetest.registered_nodes[node.name]
-		if not def then return itemstack end
-
-		-- Check special rightclick action of pointed node
-		if def and def.on_rightclick then
-			if not placer:get_player_control().sneak then
-				return def.on_rightclick(under, node, placer, itemstack,
-					pointed_thing) or itemstack, false
-			end
-		end
-
-		-- Only place on full cubes
-		if not mcl_core.supports_vines(node.name) then
-			return itemstack
-		end
-
-		local above = pointed_thing.above
-
-		-- Vines may not be placed on top or below another block
-		if under.y ~= above.y then
-			return itemstack
-		end
-		local idef = itemstack:get_definition()
-		local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
-
-		if success then
-			if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, { pos = above, gain = 1 }, true)
-			end
-		end
-		return itemstack
-	end,
+	_vl_attach_contract = climbable_contract,
+	_vl_allow_attach = allow_vine_continuation,
+	_vl_attach_make_placed_node = make_placed_vine,
+	_vl_attach_get_supports = get_vine_supports,
+	on_place = vl_attach.place_attached,
 
 	on_construct = function(pos)
 		local node = minetest.get_node(pos)

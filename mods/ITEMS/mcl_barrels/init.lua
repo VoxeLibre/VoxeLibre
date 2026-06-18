@@ -7,6 +7,30 @@ local C = minetest.colorize
 local open_barrels = {}
 
 local drop_content = mcl_util.drop_items_from_meta_container("main")
+local full_face = {{-0.5, -0.5, 0.5, 0.5}}
+
+local barrel_top_dirs = {
+	vector.new(0, 1, 0),
+	vector.new(0, 0, 1),
+	vector.new(0, 0, -1),
+	vector.new(1, 0, 0),
+	vector.new(-1, 0, 0),
+	vector.new(0, -1, 0),
+}
+
+local function barrel_attach_surfaces(node, _, wdir)
+	local attach_dir = core.wallmounted_to_dir(wdir)
+	local top_dir = barrel_top_dirs[math.floor((node.param2 % 24) / 4) + 1]
+	if not attach_dir or not top_dir then
+		return false
+	end
+	if -attach_dir.x == top_dir.x
+			and -attach_dir.y == top_dir.y
+			and -attach_dir.z == top_dir.z then
+		return false
+	end
+	return full_face
+end
 
 ---@param pos Vector
 local function on_blast(pos)
@@ -119,6 +143,7 @@ minetest.register_node("mcl_barrels:barrel_closed", {
 	tiles = { "mcl_barrels_barrel_top.png^[transformR270", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png" },
 	paramtype = "light",
 	paramtype2 = "facedir",
+	_vl_attach_surfaces = barrel_attach_surfaces,
 	on_place = function(itemstack, placer, pointed_thing)
 		minetest.rotate_and_place(itemstack, placer, pointed_thing,
 			minetest.is_creative_enabled(placer:get_player_name()), {}
@@ -168,6 +193,7 @@ minetest.register_node("mcl_barrels:barrel_open", {
 	tiles = { "mcl_barrels_barrel_top_open.png", "mcl_barrels_barrel_bottom.png", "mcl_barrels_barrel_side.png" },
 	paramtype = "light",
 	paramtype2 = "facedir",
+	_vl_attach_surfaces = barrel_attach_surfaces,
 	drop = "mcl_barrels:barrel_closed",
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_wood_defaults(),

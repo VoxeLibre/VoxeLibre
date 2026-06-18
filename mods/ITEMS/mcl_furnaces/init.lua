@@ -6,6 +6,22 @@ local LIGHT_ACTIVE_FURNACE = 13
 
 mcl_furnaces = {}
 
+local full_face = {{-0.5, -0.5, 0.5, 0.5}}
+
+function mcl_furnaces.attach_surfaces_except_front(node, _, wdir)
+	local attach_dir = core.wallmounted_to_dir(wdir)
+	local front_dir = core.facedir_to_dir(node.param2)
+	if not attach_dir or not front_dir then
+		return false
+	end
+	if attach_dir.x == front_dir.x
+			and attach_dir.y == front_dir.y
+			and attach_dir.z == front_dir.z then
+		return false
+	end
+	return full_face
+end
+
 --
 -- Formspecs
 --
@@ -500,6 +516,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 		"default_furnace_side.png", "default_furnace_front.png"
 	},
 	paramtype2 = "facedir",
+	_vl_attach_surfaces = mcl_furnaces.attach_surfaces_except_front,
 	groups = { pickaxey = 1, container = 2, deco_block = 1, material_stone = 1 },
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -581,6 +598,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	paramtype2 = "facedir",
 	paramtype = "light",
 	light_source = LIGHT_ACTIVE_FURNACE,
+	_vl_attach_surfaces = mcl_furnaces.attach_surfaces_except_front,
 	drop = "mcl_furnaces:furnace",
 	groups = { pickaxey = 1, container = 2, deco_block = 1, not_in_creative_inventory = 1, material_stone = 1 },
 	is_ground_content = false,

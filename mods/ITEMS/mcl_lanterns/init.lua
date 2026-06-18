@@ -6,101 +6,30 @@ mcl_lanterns = {}
 --[[
 TODO:
 - add lantern specific sounds
-- remove the hack arround walmounted nodes
 ]]
 
-local allowed_non_solid_nodes_floor = {
-	"mcl_core:ice",
-	"mcl_nether:soul_sand",
-	"mcl_mobspawners:spawner",
-	"mcl_core:barrier",
-	"mcl_end:chorus_flower",
-	"mcl_end:chorus_flower_dead",
-	"mcl_end:end_rod",
-	"mcl_end:dragon_egg",
-	"mcl_portals:end_portal_frame_eye",
-	"mcl_lanterns:chain",
-	"mcl_lanterns:gold_chain",
+local lantern_contract = {
+	faces = {
+		top = {{-2/16, -2/16, 2/16, 2/16}},
+		bottom = {{-1/16, -1/16, 1/16, 1/16}},
+	},
 }
--- The function below allows nodes that call it to be included in the 'allowed floor placement' list above.
--- This lets lanterns be placed on top of said nodes. Most useful for modded in nodes.
-function mcl_lanterns.add_allowed_non_solid_nodes_floor (node_name)
-	table.insert (allowed_non_solid_nodes_floor, node_name)
-end
-
-local allowed_non_solid_groups_floor = {"anvil", "wall", "glass", "fence", "fence_gate", "pane"}
-
-local allowed_non_solid_nodes_ceiling = {
-	"mcl_core:ice",
-	"mcl_nether:soul_sand",
-	"mcl_mobspawners:spawner",
-	"mcl_core:barrier",
-	"mcl_end:chorus_flower",
-	"mcl_end:chorus_flower_dead",
-	"mcl_end:end_rod",
-	"mcl_core:grass_path",
-	"mcl_lanterns:chain",
-	"mcl_lanterns:gold_chain",
-}
--- The function below allows nodes that call it to be included in the 'allowed ceiling placement' list above.
--- This lets lanterns be placed below said nodes. Most useful for modded in nodes.
-function mcl_lanterns.add_allowed_non_solid_nodes_ceiling (node_name)
-	table.insert (allowed_non_solid_nodes_ceiling, node_name)
-end
-
-local allowed_non_solid_groups_ceiling = {"anvil", "wall", "glass", "fence", "fence_gate", "soil", "pane", "end_portal_frame"}
-
-local function check_placement(node, wdir)
-	local nn = node.name
-	local def = minetest.registered_nodes[nn]
-
-	if not def then
-		return false
-	else
-		--wdir:
-		--0: ceiling
-		--1: floor
-		if wdir == 0 then
-			if def.groups.solid or def.groups.opaque then
-				return true
-			else
-				for _,i in ipairs(allowed_non_solid_nodes_ceiling) do
-					if nn == i then
-						return true
-					end
-				end
-				for _,j in ipairs(allowed_non_solid_groups_ceiling) do
-					if def.groups[j] then
-						return true
-					end
-				end
-				return false
-			end
-		else --assuming wdir == 1
-			if def.groups.solid or def.groups.opaque then
-				return true
-			else
-				for _,i in ipairs(allowed_non_solid_nodes_floor) do
-					if nn == i then
-						return true
-					end
-				end
-				for _,j in ipairs(allowed_non_solid_groups_floor) do
-					if def.groups[j] then
-						return true
-					end
-				end
-				return false
-			end
-		end
-	end
-end
 
 function mcl_lanterns.register_lantern(name, def)
 	local itemstring_floor = "mcl_lanterns:"..name.."_floor"
 	local itemstring_ceiling = "mcl_lanterns:"..name.."_ceiling"
 
 	local sounds = mcl_sounds.node_sound_metal_defaults()
+	local function make_placed_node_lantern(placed_node, _, _, _)
+		if placed_node.param2 == 0 then
+			placed_node.name = itemstring_ceiling
+		elseif placed_node.param2 == 1 then
+			placed_node.name = itemstring_floor
+		else
+			return
+		end
+		return placed_node
+	end
 
 	minetest.register_node(":"..itemstring_floor, {
 		description = def.description,
@@ -122,7 +51,9 @@ function mcl_lanterns.register_lantern(name, def)
 		node_placement_prediction = "",
 		sunlight_propagates = true,
 		light_source = def.light_level,
-		groups = {pickaxey = 1, attached_node = 1, deco_block = 1, lantern = 1, dig_by_piston=1},
+		groups = {pickaxey = 1, attached_node = 1, deco_block = 1, lantern = 1, dig_by_piston=1, vl_attach=1},
+		_vl_attach_contract = lantern_contract,
+		_vl_attach_make_placed_node = make_placed_node_lantern,
 		selection_box = {
 			type = "fixed",
 			fixed = {
@@ -140,39 +71,7 @@ function mcl_lanterns.register_lantern(name, def)
 			},
 		},
 		sounds = sounds,
-		on_place = function(itemstack, placer, pointed_thing)
-			local new_stack = mcl_util.call_on_rightclick(itemstack, placer, pointed_thing)
-			if new_stack then
-				return new_stack
-			end
-
-			local under = pointed_thing.under
-			local above = pointed_thing.above
-			local node = minetest.get_node(under)
-
-			local wdir = minetest.dir_to_wallmounted(vector.subtract(under, above))
-			local fakestack = itemstack
-
-			if check_placement(node, wdir) == false then
-				return itemstack
-			end
-
-			if wdir == 0 then
-				fakestack:set_name(itemstring_ceiling)
-			elseif wdir == 1 then
-				fakestack:set_name(itemstring_floor)
-			end
-
-			local success
-			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing, wdir)
-			itemstack:set_name(itemstring_floor)
-
-			if success then
-				minetest.sound_play(sounds.place, {pos = under, gain = 1}, true)
-			end
-
-			return itemstack
-		end,
+		on_place = vl_attach.place_attached,
 		on_rotate = false,
 		_mcl_hardness = 3.5,
 		_mcl_blast_resistance = 3.5,
@@ -196,7 +95,9 @@ function mcl_lanterns.register_lantern(name, def)
 		node_placement_prediction = "",
 		sunlight_propagates = true,
 		light_source = def.light_level,
-		groups = {pickaxey = 1, attached_node = 1, deco_block = 1, lantern = 1, not_in_creative_inventory = 1},
+		groups = {pickaxey = 1, attached_node = 1, deco_block = 1, lantern = 1, not_in_creative_inventory = 1, vl_attach=1},
+		_vl_attach_contract = lantern_contract,
+		_vl_attach_make_placed_node = make_placed_node_lantern,
 		drop = itemstring_floor,
 		selection_box = {
 			type = "fixed",
@@ -255,6 +156,13 @@ local function place_chain(itemstack, placer, pointed_thing)
 	return core.item_place(itemstack, placer, pointed_thing, param2)
 end
 
+local chain_attach_surfaces = {
+	faces = {
+		top = {{-2/16, -2/16, 2/16, 2/16}},
+		bottom = {{-2/16, -2/16, 2/16, 2/16}},
+	},
+}
+
 minetest.register_node("mcl_lanterns:chain", {
 	description = S("Chain"),
 	_doc_items_longdesc = S("Chains are metallic decoration blocks."),
@@ -280,6 +188,7 @@ minetest.register_node("mcl_lanterns:chain", {
 		}
 	},
 	groups = {pickaxey = 1, deco_block = 1},
+	_vl_attach_surfaces = chain_attach_surfaces,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	on_place = place_chain,
 	_mcl_blast_resistance = 6,
@@ -311,6 +220,7 @@ minetest.register_node("mcl_lanterns:gold_chain", {
 		}
 	},
 	groups = {pickaxey = 1, deco_block = 1},
+	_vl_attach_surfaces = chain_attach_surfaces,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	on_place = place_chain,
 	_mcl_blast_resistance = 6,
