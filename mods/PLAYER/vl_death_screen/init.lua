@@ -6,6 +6,14 @@ local FE = core.formspec_escape
 
 local mod_xp = core.get_modpath("mcl_experience")
 
+local gamerule_allowClearSpawnOnDeath = true
+vl_tuning.setting("gamerule:allowClearSpawnOnDeath", "bool", {
+	description = S("Allow players without \"setspawn\" privilege to reset their spawn point on death."),
+	default = true,
+	set = function(val) gamerule_allowClearSpawnOnDeath = val end,
+	get = function() return gamerule_allowClearSpawnOnDeath end,
+})
+
 local death_background = {}
 
 local function add_death_background(player)
@@ -76,7 +84,7 @@ function vl_death_screen.show_death_screen(player)
 	table.insert(formspec, "button_exit[" .. form_pos_to_string(pos) .. ";9,0.8;exit_to_menu;" .. S("Exit to Menu") .. "]")
 	pos.y, size.h = pos.y + 0.8, size.h + 0.8
 
-	if core.check_player_privs(player, {setspawn = true}) then
+	if gamerule_allowClearSpawnOnDeath or core.check_player_privs(player, {setspawn = true}) then
 		local spawn_pos = mcl_spawn.get_player_spawnpoint(player)
 		if spawn_pos then
 			pos.y, size.h = pos.y + 0.5, size.h + 0.5
