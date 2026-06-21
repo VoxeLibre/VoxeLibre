@@ -70,6 +70,8 @@ end
 ---@field damage_groups {[string]: integer}
 ---@field craftable boolean?
 ---@field burn_time integer?
+---@field recycling_output string?
+---@field recycling_yield integer?
 ---@field max_enchant_level integer?
 ---@field gives_fireproof integer?
 
@@ -106,6 +108,10 @@ function mcl_farming:register_hoe(material, def)
 	assert(def.dig_group, "Hoe definition requires dig_group to be set")
 
 	local groups = { tool = 1, hoe = 1, enchantability = def.enchantability }
+	if def.recycling_output then
+		groups.blast_furnace_smeltable = 1
+		groups.recycling_yield = def.recycling_yield
+	end
 	if def.gives_fireproof then
 		groups.fire_immune = 1
 	end
@@ -142,6 +148,15 @@ function mcl_farming:register_hoe(material, def)
 		})
 	end
 
+	if def.recycling_output then
+		core.register_craft({
+			type = "cooking",
+			output = def.recycling_output,
+			recipe = tool_name,
+			cooktime = 10,
+		})
+	end
+
 	if craftable then
 		core.register_craft({
 			output = tool_name,
@@ -165,14 +180,14 @@ end
 local crafts = {
 	wood = {
 		image = "farming_tool_woodhoe.png",
-		description = S("Wood Hoe"),
+		description = S("Wooden Hoe"),
 		place_uses = 60,
 		punch_uses = 60,
 		enchantability = 15,
 		crafting_material = "group:wood",
 		repair_material = "group:wood",
 		dig_group = { speed = 2, level = 1, uses = 60 },
-		burntime = 10
+		burn_time = 10
 	},
 	stone = {
 		image = "farming_tool_stonehoe.png",
@@ -193,18 +208,22 @@ local crafts = {
 		enchantability = 14,
 		crafting_material = "mcl_core:iron_ingot",
 		repair_material = "mcl_core:iron_ingot",
+		recycling_output = "mcl_core:iron_nugget 9",
+		recycling_yield = 9,
 		dig_group = { speed = 6, level = 4, uses = 251 },
 		damage_groups = { fleshy = 2 },
 		full_punch_interval = 0.33333333
 	},
 	gold = {
 		image = "farming_tool_goldhoe.png",
-		description = S("Gold Hoe"),
+		description = S("Golden Hoe"),
 		place_uses = 33,
 		punch_uses = 33,
 		enchantability = 22,
 		crafting_material = "mcl_core:gold_ingot",
 		repair_material = "mcl_core:gold_ingot",
+		recycling_output = "mcl_core:gold_nugget 9",
+		recycling_yield = 9,
 		dig_group = { speed = 12, level = 2, uses = 33 },
 		full_punch_interval = 0.25
 	},

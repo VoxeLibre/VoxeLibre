@@ -257,61 +257,52 @@ minetest.register_craft({
 	burntime = 10,
 })
 
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_core:gold_nugget",
-	recipe = "mcl_tools:sword_gold",
-	cooktime = 10,
-})
+local recyclable_tools = {
+	gold = {
+		output = "mcl_core:gold_nugget 9",
+		durability_yield = 9,
+		tools = { "sword_gold", "axe_gold", "shovel_gold", "pick_gold" },
+	},
+	iron = {
+		output = "mcl_core:iron_nugget 9",
+		durability_yield = 9,
+		tools = { "sword_iron", "axe_iron", "shovel_iron", "pick_iron", "shears" },
+	},
+}
 
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_core:gold_nugget",
-	recipe = "mcl_tools:axe_gold",
-	cooktime = 10,
-})
+for _, recycling in pairs(recyclable_tools) do
+	for _, tool in ipairs(recycling.tools) do
+		local tool_name = "mcl_tools:" .. tool
+		local groups = table.copy(core.registered_items[tool_name].groups)
+		groups.blast_furnace_smeltable = 1
+		groups.recycling_yield = recycling.durability_yield
+		core.override_item(tool_name, { groups = groups })
 
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_core:gold_nugget",
-	recipe = "mcl_tools:shovel_gold",
-	cooktime = 10,
-})
+		core.register_craft({
+			type = "cooking",
+			output = recycling.output,
+			recipe = tool_name,
+			cooktime = 10,
+		})
+	end
+end
 
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_core:gold_nugget",
-	recipe = "mcl_tools:pick_gold",
-	cooktime = 10,
-})
+local old_get_craft_result = core.get_craft_result
+function core.get_craft_result(input)
+	local output, decremented_input = old_get_craft_result(input)
+	if input.method ~= "cooking" or input.width ~= 1 or output.item:is_empty() then
+		return output, decremented_input
+	end
 
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_core:iron_nugget",
-	recipe = "mcl_tools:sword_iron",
-	cooktime = 10,
-})
+	local input_stack = ItemStack(input.items[1])
+	local maximum_yield = core.get_item_group(input_stack:get_name(), "recycling_yield")
+	if maximum_yield > 0 then
+		local durability = (65536 - input_stack:get_wear()) / 65536
+		output.item:set_count(math.max(1, math.ceil(maximum_yield * durability)))
+	end
 
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_core:iron_nugget",
-	recipe = "mcl_tools:axe_iron",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_core:iron_nugget",
-	recipe = "mcl_tools:shovel_iron",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_core:iron_nugget",
-	recipe = "mcl_tools:pick_iron",
-	cooktime = 10,
-})
+	return output, decremented_input
+end
 
 minetest.register_craft({
 	type = "fuel",

@@ -17,10 +17,10 @@ Hoes are essential tools for growing crops. They are used to create farmland in 
 
 Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Uporabite motiko na bloku, ki ga je mogoče obdelati (z desnim klikom), da ga spremenite v obdelano zemljo. Prst, travnati bloki in travnate poti so bloki, primerni za obdelavo. Uporaba motike na grobi zemlji jo spremeni v navadno prst.
 
-Wood Hoe=Lesena motika
+Wooden Hoe=Lesena motika
 Stone Hoe=Kamnita motika
 Iron Hoe=Železna motika
-Gold Hoe=Zlata motika
+Golden Hoe=Zlata motika
 Diamond Hoe=Diamantna motika
 Netherite Hoe=Neteritna motika
 ##[ wheat.lua ]##
