@@ -10,6 +10,15 @@ local MAXIMUM_VINE_HEIGHT = 25
 local wood_slab_groups = {handy = 1, axey = 1, material_wood = 1, wood_slab = 1}
 local wood_stair_groups = {handy = 1, axey = 1, material_wood = 1, wood_stairs = 1}
 
+local on_place_roots_and_sprouts = mcl_util.generate_on_place_plant_function(function(pos)
+	local below = core.get_node_or_nil(vector.offset(pos, 0, -1, 0))
+	if not below then return false end
+
+	return below.name == "mcl_crimson:crimson_nylium"
+		or below.name == "mcl_crimson:warped_nylium"
+		or below.name == "mcl_blackstone:soul_soil"
+end)
+
 local function generate_warped_tree(pos)
 	minetest.place_schematic(pos,modpath.."/schematics/warped_fungus_"..math.random(1,3)..".mts","random",nil,false,"place_center_x,place_center_z")
 end
@@ -357,13 +366,14 @@ minetest.register_node("mcl_crimson:nether_sprouts", {
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
-	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1,shearsy=1,compostability=50},
+	groups = {dig_immediate=3,vines=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1,shearsy=1,compostability=50},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -5/16, -0.5, -5/16, 5/16, 1/16, 5/16 },
 	},
 	node_placement_prediction = "",
+	on_place = on_place_roots_and_sprouts,
 	drop = "",
 	_mcl_shears_drop = true,
 	_mcl_silk_touch_drop = false,
@@ -379,13 +389,14 @@ minetest.register_node("mcl_crimson:warped_roots", {
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
-	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1,shearsy = 1,compostability=65},
+	groups = {dig_immediate=3,vines=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1,shearsy = 1,compostability=65},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -6/16, -0.5, -6/16, 6/16, 7/16, 6/16 },
 	},
 	node_placement_prediction = "",
+	on_place = on_place_roots_and_sprouts,
 	_mcl_silk_touch_drop = false,
 	_mcl_blast_resistance = 0,
 })
@@ -633,13 +644,14 @@ minetest.register_node("mcl_crimson:crimson_roots", {
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
-	groups = {dig_immediate=3,vines=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1,shearsy = 1,compostability=65},
+	groups = {dig_immediate=3,vines=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1,shearsy = 1,compostability=65},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -6/16, -0.5, -6/16, 6/16, 7/16, 6/16 },
 	},
 	node_placement_prediction = "",
+	on_place = on_place_roots_and_sprouts,
 	_mcl_silk_touch_drop = false,
 	_mcl_blast_resistance = 0,
 })
