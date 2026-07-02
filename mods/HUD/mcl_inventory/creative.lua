@@ -679,6 +679,17 @@ local trash = minetest.create_detached_inventory("trash", {
 })
 
 trash:set_size("main", 1)
+
+-- Remove all items from player inventory
+---@param player mt.PlayerObjectRef
+local function clear_player_inventory(player)
+      local inv = player:get_inventory()
+      local list = inv:get_list("main")
+      for _, item in pairs(list) do
+         inv:remove_item("main", item)
+      end
+end
+
 ------------------------------
 -- Formspec Precalculations --
 ------------------------------
@@ -934,6 +945,10 @@ function mcl_inventory.set_creative_formspec(player)
 			"image_button[11.575,2.075;1.1,1.1;doc_button_icon_lores.png;__mcl_doc;]",
 			"tooltip[__mcl_doc;" .. F(S("Help")) .. "]",
 
+			-- Clear button
+			"image_button[10.325,2.075;1.1,1.1;crafting_creative_trash_clear.png;creative_clear_inv;]",
+			"tooltip[creative_clear_inv;" .. F(S("Clear Inventory")) .. "]",
+
 			-- Advancements button
 			"image_button[11.575,3.325;1.1,1.1;mcl_achievements_button.png;__mcl_achievements;]",
 			--"style_type[image_button;border=;bgimg=;bgimg_pressed=]",
@@ -978,10 +993,14 @@ function mcl_inventory.set_creative_formspec(player)
 
 			"list[detached:creative_" .. playername .. ";main;0.375,0.875;9,5;" .. tostring(start_i) .. "]",
 
+			-- Clear button
+			"image_button[11.575,5.825;1.1,1.1;crafting_creative_trash_clear.png;creative_clear_inv;]",
+			"tooltip[creative_clear_inv;" .. F(S("Clear Inventory")) .. "]",
+
 			-- Page buttons
-			"label[11.65,4.33;" .. F(S("@1 / @2", pagenum, pagemax)) .. "]",
-			"image_button[11.575,4.58;1.1,1.1;crafting_creative_prev.png^[transformR270;creative_prev;]",
-			"image_button[11.575,5.83;1.1,1.1;crafting_creative_next.png^[transformR270;creative_next;]",
+			"label[11.80,0.53;" .. F(S("@1 / @2", pagenum, pagemax)) .. "]",
+			"image_button[11.575,0.825;1.1,1.1;crafting_creative_prev.png^[transformR270;creative_prev;]",
+			"image_button[11.575,2.075;1.1,1.1;crafting_creative_next.png^[transformR270;creative_next;]",
 		})
 	end
 
@@ -1148,6 +1167,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	elseif fields.inv or fields.inv_outer then
 		if players[name].page == "inv" then return end
 		page = "inv"
+        elseif fields.creative_clear_inv then
+               clear_player_inventory(player)
 	elseif fields.search == "" and not fields.creative_next and not fields.creative_prev then
 		set_inv_page("all", player)
 		page = "nix"
