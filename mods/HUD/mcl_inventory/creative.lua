@@ -1157,7 +1157,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	elseif fields.inv or fields.inv_outer then
 		if players[name].page == "inv" then return end
 		page = "inv"
-        elseif fields.creative_clear_inv then
+	elseif fields.creative_clear_inv then
 		player:get_inventory():set_list("main", {})
 	elseif fields.search == "" and not fields.creative_next and not fields.creative_prev then
 		set_inv_page("all", player)
