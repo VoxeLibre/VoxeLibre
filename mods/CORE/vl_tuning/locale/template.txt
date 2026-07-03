@@ -9,5 +9,11 @@ Display or set customizable options=
 <rule> [<value>]=
 Usage: /gamerule <rule> [<value>]=
 Game rule @1 doesn't exist=
+Player @1 is not online.=
+No player settings registered.=
+Player Settings <@1>=
+You need the server privilege to edit other players' settings.=
+Open personal settings, or another player's settings if you have the server privilege=
+[player]=
 ##[ settings.lua ]##
 Prevents beds/respawn anchors from exploding in other dimensions.=

@@ -120,6 +120,8 @@ mcl_health_regen_delay (Health regen delay) float 0.5 0
 # Default: 1.61 s
 mcl_eating_delay (Eating delay) float 1.61 0
 
+# Controls where items go when shift-clicking in the survival inventory.
+
 [Mobs]
 # If enabled, mobs will spawn naturally. This does not affect
 # affect mob spawners.

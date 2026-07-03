@@ -23,3 +23,4 @@ Server Settings=
 ##[ survival.lua ]##
 Crafting=
 Achievements=
+When enabled, shift-click moves items between hotbar and inventory rows instead of routing them into the crafting grid.=
