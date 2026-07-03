@@ -680,16 +680,6 @@ local trash = minetest.create_detached_inventory("trash", {
 
 trash:set_size("main", 1)
 
--- Remove all items from player inventory
----@param player mt.PlayerObjectRef
-local function clear_player_inventory(player)
-      local inv = player:get_inventory()
-      local list = inv:get_list("main")
-      for _, item in pairs(list) do
-         inv:remove_item("main", item)
-      end
-end
-
 ------------------------------
 -- Formspec Precalculations --
 ------------------------------
@@ -1168,7 +1158,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if players[name].page == "inv" then return end
 		page = "inv"
         elseif fields.creative_clear_inv then
-               clear_player_inventory(player)
+		player:get_inventory():set_list("main", {})
 	elseif fields.search == "" and not fields.creative_next and not fields.creative_prev then
 		set_inv_page("all", player)
 		page = "nix"
