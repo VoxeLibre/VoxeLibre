@@ -24,6 +24,101 @@ local TWOPI = math.pi * 2
 
 -- Internal player state
 local mcl_playerplus_internal = {}
+local managed_crosshair = {}
+local crosshair_textures = {
+	ready = "crosshair.png",
+	recovering = "crosshair.png^[colorize:#ff4040:180",
+}
+
+local function get_recovery_punch_interval(itemstack)
+	local caps = itemstack:get_tool_capabilities()
+	local interval = caps and caps.full_punch_interval
+	if not interval or interval <= 0 then return end
+	return interval
+end
+
+local function is_crosshair_hidden(state)
+	for _, hidden in pairs(state.hidden_by) do
+		if hidden then return true end
+	end
+	return false
+end
+
+local function get_managed_crosshair_texture(state)
+	if is_crosshair_hidden(state) then return "blank.png" end
+	return state.is_recovering and crosshair_textures.recovering or crosshair_textures.ready
+end
+
+local function update_managed_crosshair(player, state)
+	local texture = get_managed_crosshair_texture(state)
+	if state.texture ~= texture then
+		state.texture = texture
+		player:hud_change(state.hud_id, "text", texture)
+	end
+end
+
+local function set_managed_crosshair_recovering(player, state, is_recovering)
+	if state.is_recovering == is_recovering then return end
+	state.is_recovering = is_recovering
+	update_managed_crosshair(player, state)
+end
+
+local function create_managed_crosshair(player)
+	local name = player:get_player_name()
+	if managed_crosshair[name] then return end
+
+	local state = {
+		is_recovering = false,
+		hidden_by = {},
+	}
+	state.texture = get_managed_crosshair_texture(state)
+	state.hud_id = player:hud_add({
+		[mcl_vars.hud_type_field] = "image",
+		position = {x = 0.5, y = 0.5},
+		scale = {x = 1, y = 1},
+		text = state.texture,
+		z_index = -100,
+	})
+	managed_crosshair[name] = state
+	player:hud_set_flags({crosshair = false})
+end
+
+mcl_playerplus.crosshair = {}
+
+function mcl_playerplus.crosshair.set_textures(ready_texture, recovering_texture)
+	if ready_texture then
+		crosshair_textures.ready = ready_texture
+	end
+	if recovering_texture then
+		crosshair_textures.recovering = recovering_texture
+	end
+end
+
+function mcl_playerplus.crosshair.get_textures()
+	return table.copy(crosshair_textures)
+end
+
+function mcl_playerplus.crosshair.set_hidden(player, source, hidden)
+	local state = managed_crosshair[player:get_player_name()]
+	if not state then return end
+	state.hidden_by[source] = hidden or nil
+	update_managed_crosshair(player, state)
+end
+
+local function start_recovery_crosshair(player)
+	local wielded = player:get_wielded_item()
+	if not get_recovery_punch_interval(wielded) then return end
+
+	local state = managed_crosshair[player:get_player_name()]
+	if not state then return end
+	state.last_swing = core.get_us_time()
+	set_managed_crosshair_recovering(player, state, true)
+end
+
+controls.register_on_press(function(player, key)
+	if key ~= "LMB" then return end
+	start_recovery_crosshair(player)
+end)
 
 -- Could occassionally hit about 4.6 but servers and high power machines struggle to keep up with this.
 -- Until mapgen can keep up, it's best to limit for server performance etc.
@@ -196,6 +291,19 @@ minetest.register_globalstep(function(dtime)
 		local wielded = player:get_wielded_item()
 		local player_velocity = player:get_velocity() or player:get_player_velocity()
 		local wielded_def = wielded:get_definition()
+
+		local crosshair_state = managed_crosshair[name]
+		if crosshair_state and crosshair_state.last_swing then
+			local interval = get_recovery_punch_interval(wielded)
+			if not interval then
+				crosshair_state.last_swing = nil
+				set_managed_crosshair_recovering(player, crosshair_state, false)
+			else
+				local elapsed = (core.get_us_time() - crosshair_state.last_swing) / 1000000
+				local progress = elapsed / interval
+				set_managed_crosshair_recovering(player, crosshair_state, progress < 1)
+			end
+		end
 
 		local c_x, c_y = unpack(player_collision(player))
 
@@ -696,6 +804,7 @@ minetest.register_on_joinplayer(function(player)
 		invul_timestamp = 0,
 	}
 	mcl_playerplus.elytra[player] = {active = false, rocketing = 0, speed = 0}
+	create_managed_crosshair(player)
 
 	-- Luanti limitation: get_bone_position() returns all zeros vectors, because models are client-side not server-side
 	-- Workaround: call set_bone_position() one time first.
@@ -718,6 +827,7 @@ minetest.register_on_leaveplayer(function(player)
 
 	mcl_playerplus_internal[name] = nil
 	mcl_playerplus.elytra[player] = nil
+	managed_crosshair[name] = nil
 end)
 
 -- Don't change HP if the player falls in the water or through End Portal:

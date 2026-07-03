@@ -39,6 +39,9 @@ local function add_scope(player)
 			text = "mcl_spyglass_scope.png",
 		})
 		player:hud_set_flags({wielditem = false})
+		if mcl_playerplus and mcl_playerplus.crosshair then
+			mcl_playerplus.crosshair.set_hidden(player, "mcl_spyglass", true)
+		end
 		if mcl_util.is_it_christmas() then
 			local time = minetest.get_timeofday()
 			if (time < 0.01 or time > 0.99) and player:get_look_vertical() < -1.335 then
@@ -53,6 +56,9 @@ local function remove_scope(player)
 		player:hud_remove(spyglass_scope[player])
 		spyglass_scope[player] = nil
 		player:hud_set_flags({wielditem = true})
+		if mcl_playerplus and mcl_playerplus.crosshair then
+			mcl_playerplus.crosshair.set_hidden(player, "mcl_spyglass", false)
+		end
 		mcl_fovapi.remove_modifier(player, "spyglass") -- use the api to remove the FOV effect.
 		-- old code: player:set_fov(86.1)
 	end

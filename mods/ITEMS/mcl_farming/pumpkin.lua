@@ -146,22 +146,26 @@ if core.get_modpath("mcl_armor") then
 				scale = {x = -101, y = -101},
 				text = "mcl_farming_pumpkin_hud.png",
 				z_index = -200
-			}),
+			})
+		}
+		if not (mcl_playerplus and mcl_playerplus.crosshair) then
 			--this is a fake crosshair, because hotbar and crosshair doesn't support z_index
 			--TODO: remove this and add correct z_index values
-			fake_crosshair = player:hud_add({
+			pumpkin_hud[player].fake_crosshair = player:hud_add({
 				[mcl_vars.hud_type_field] = "image",
 				position = {x = 0.5, y = 0.5},
 				scale = {x = 1, y = 1},
 				text = "crosshair.png",
 				z_index = -100
 			})
-		}
+		end
 	end
 	local function remove_pumpkin_hud(player)
 		if pumpkin_hud[player] then
 			player:hud_remove(pumpkin_hud[player].pumpkin_blur)
-			player:hud_remove(pumpkin_hud[player].fake_crosshair)
+			if pumpkin_hud[player].fake_crosshair then
+				player:hud_remove(pumpkin_hud[player].fake_crosshair)
+			end
 			pumpkin_hud[player] = nil
 		end
 	end
