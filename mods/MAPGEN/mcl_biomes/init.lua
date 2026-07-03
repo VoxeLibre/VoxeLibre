@@ -78,7 +78,7 @@ local function register_biomes()
 	In MCL2, the MC Overworld biomes are split in multiple more parts (stacked by height):
 	* The main part, this represents the land. It begins at around sea level and usually goes all the way up
 	* _ocean: For the area covered by ocean water. The y_max may vary for various beach effects.
-	          Has sand or dirt as floor.
+                 Has sand or dirt as floor.
 	* _deep_ocean: Like _ocean, but deeper and has gravel as floor
 	* _underground:
 	* Other modifiers: Some complex biomes require more layers to improve the landscape.
@@ -4232,7 +4232,7 @@ local function register_decorations()
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.025,
-		biomes = {"Jungle","BambooJungle"},
+		biomes = {"Jungle"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
@@ -4244,7 +4244,22 @@ local function register_decorations()
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.0045,
-		biomes = {"JungleEdge", "JungleEdgeM", "BambooJungleEdge", "BambooJungleEdgeM"},
+		biomes = {"JungleEdge", "JungleEdgeM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	-- Cliffordius 2026 JUN 08 Issue #3776
+	-- decorate BambooJungle* biomes with all four jungle trees (including some with cocoa)
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.005,
+		biomes = {"BambooJungle"},
+		place_offset_y = 1,
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
@@ -4256,14 +4271,156 @@ local function register_decorations()
 		deco_type = "schematic",
 		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
-		fill_ratio = 0.09,
-		biomes = {"JungleM", "BambooJungleM"},
+		fill_ratio = 0.005,
+		biomes = {"BambooJungle"},
+		place_offset_y = 1,
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_2.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
+
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.005,
+		biomes = {"BambooJungle"},
+		place_offset_y = 1,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_3.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.005,
+		biomes = {"BambooJungle"},
+		place_offset_y = 1,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_4.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.001,
+		biomes = {"BambooJungleEdge", "BambooJungleEdgeM"},
+		place_offset_y = 1,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.001,
+		biomes = {"BambooJungleEdge", "BambooJungleEdgeM"},
+		place_offset_y = 1,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_2.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.001,
+		biomes = {"BambooJungleEdge", "BambooJungleEdgeM"},
+		place_offset_y = 1,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_3.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.001,
+		biomes = {"BambooJungleEdge", "BambooJungleEdgeM"},
+		place_offset_y = 1,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_4.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.02,
+		biomes = {"BambooJungleM"},
+		place_offset_y = 1,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.02,
+		biomes = {"BambooJungleM"},
+		place_offset_y = 1,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_2.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.02,
+		biomes = {"BambooJungleM"},
+		place_offset_y = 1,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_3.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	mcl_mapgen_core.register_decoration({
+		deco_type = "schematic",
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.02,
+		biomes = {"BambooJungleM"},
+		place_offset_y = 1,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = mod_mcl_core .. "/schematics/mcl_core_jungle_tree_4.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
 	-- Spruce
 	local function quick_spruce(seed, offset, sprucename, biomes, y)
 		if not y then
