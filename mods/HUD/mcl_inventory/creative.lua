@@ -1025,8 +1025,7 @@ function mcl_inventory.set_creative_formspec(player)
 	if clearing_inv then
 		main_list = table.concat({
 			"label[3.05,2.75;" .. F(S("Are you sure you want to remove all items from your inventory?")) .. "]",
-			"checkbox[5.15,5.25;clear_inv_check;;]",
-			"label[5.45,5.25;" .. F(S("Do not ask again")) .. "]",
+			"checkbox[5.15,5.25;clear_inv_check;" .. F(core.colorize(mcl_colors.BLACK, S("Do not ask again"))) .. ";]",
 			"button[3.75,3.5;2,1;clear_inv_cancel;" .. F(S("Cancel")) .. "]",
 			"button[6.25,3.5;3,1;clear_inv_remove;" .. F(S("Remove All Items")) .. "]",
 			"label[3.65,5.75;" .. F(S("You may change this back in the player settings.")) .. "]",
