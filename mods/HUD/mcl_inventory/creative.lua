@@ -1119,14 +1119,16 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if not minetest.is_creative_enabled(player:get_player_name()) then
 		return
 	end
-	if formname ~= "" or fields.quit == "true" then
-		-- No-op if formspec closed or not player inventory (formname == "")
+	if formname ~= "" then
+		-- No-op if not player inventory (formname == "")
 		return
 	end
 
 	local name = player:get_player_name()
 
-	if fields.blocks or fields.blocks_outer then
+	if fields.quit then
+		players[name].clearing_inv = false
+	elseif fields.blocks or fields.blocks_outer then
 		if players[name].page == "blocks" then return end
 		set_inv_page("blocks", player)
 		page = "blocks"
