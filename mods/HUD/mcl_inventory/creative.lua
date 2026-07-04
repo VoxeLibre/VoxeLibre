@@ -20,6 +20,14 @@ local builtin_filter_ids = {
 	"combat", "mobs", "brew", "matr", "misc", "all"
 }
 
+-- Setup player setting for clearing the inventory
+local clear_inv_setting = vl_tuning.player_setting("mcl_inventory:clear_inventory_confirmation", "bool", {
+	default = true,
+	description = S("When enabled, ask for confirmation to clear the inventory when clicking the trash icon in creative mode."),
+	formspec_desc_lines = 2
+})
+
+
 for _, f in ipairs(builtin_filter_ids) do
 	inventory_lists[f] = {}
 end
@@ -852,6 +860,7 @@ function mcl_inventory.set_creative_formspec(player)
 	local page = players[playername].page
 	local inv_size = players[playername].inv_size
 	local filter = players[playername].filter
+	local clearing_inv = players[playername].clearing_inv
 
 	if not inv_size then
 		if page == "nix" then
@@ -1013,6 +1022,15 @@ function mcl_inventory.set_creative_formspec(player)
 		})
 	end
 
+	if clearing_inv then
+		main_list = table.concat({
+			"label[3.05,2.75;" .. F(S("Are you sure you want to remove all items from your inventory?")) .. "]",
+			"checkbox[4.85,5.25;clear_inv_check;" .. F(S("Please do not ask me again.")) .. "]",
+			"button[3.75,3.5;2,1;clear_inv_cancel;" .. F(S("Cancel")) .. "]",
+			"button[6.25,3.5;3,1;clear_inv_remove;" .. F(S("Remove All Items")) .. "]"
+		})
+	end
+
 	local caption = ""
 	if name ~= "inv" and filtername[name] then
 		caption = "label[0.375,0.375;" .. F(C(mcl_formspec.label_color, filtername[name])) .. "]"
@@ -1150,15 +1168,26 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if players[name].page == "brew" then return end
 		set_inv_page("brew", player)
 		page = "brew"
-	elseif fields.matr or fields.matr_outer  then
+	elseif fields.matr or fields.matr_outer	 then
 		if players[name].page == "matr" then return end
 		set_inv_page("matr", player)
 		page = "matr"
 	elseif fields.inv or fields.inv_outer then
 		if players[name].page == "inv" then return end
 		page = "inv"
-	elseif fields.creative_clear_inv then
+	elseif fields.clear_inv_cancel then
+		players[name].clearing_inv = false
+	elseif fields.clear_inv_check then
+		clear_inv_setting:set(player, not clear_inv_setting:get(player))
+	elseif fields.clear_inv_remove then
 		player:get_inventory():set_list("main", {})
+		players[name].clearing_inv = false
+	elseif fields.creative_clear_inv then
+		if clear_inv_setting:get(player) then
+			players[name].clearing_inv = true
+		else
+			player:get_inventory():set_list("main", {})
+		end
 	elseif fields.search == "" and not fields.creative_next and not fields.creative_prev then
 		set_inv_page("all", player)
 		page = "nix"
