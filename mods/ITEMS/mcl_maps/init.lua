@@ -436,11 +436,11 @@ core.register_on_joinplayer(function(player)
 	local marker_def = table.copy(map_def)
 	marker_def.alignment = {x = 0, y = 0}
 	local offhand_map_def = table.copy(map_def)
-	offhand_map_def.position = {x = 0, y = 0.8}
-	offhand_map_def.alignment = {x = 0, y = -1}
-	offhand_map_def.offset = {x = 90, y = 0}
+	offhand_map_def.position = {x = 0, y = 0.9}
+	offhand_map_def.alignment = {x = 1, y = -1}
+	offhand_map_def.offset = {x = 0, y = 0}
 	local offhand_marker_def = table.copy(offhand_map_def)
-	offhand_marker_def.alignment = {x = 0, y = 0}
+	offhand_marker_def.alignment = {x = 1, y = 0}
 	huds[player] = {
 		map = player:hud_add(map_def),
 		marker = player:hud_add(marker_def),
@@ -581,7 +581,7 @@ core.register_globalstep(function(dtime)
 			end
 
 			local f = 2 * 128 / (maxp.x - minp.x + 1)
-			player:hud_change(hud.offhand_marker, "offset", {x = (pos.x - minp.x) * f - 38, y = (maxp.z - pos.z) * f - 256})
+			player:hud_change(hud.offhand_marker, "offset", {x = (pos.x - minp.x) * f + 4, y = (maxp.z - pos.z) * f - 256})
 			player:hud_change(hud.offhand_marker, "text", marker)
 
 		elseif maps_offhand[player] then
