@@ -20,6 +20,14 @@ local builtin_filter_ids = {
 	"combat", "mobs", "brew", "matr", "misc", "all"
 }
 
+-- Setup player setting for clearing the inventory
+local clear_inv_setting = vl_tuning.player_setting("mcl_inventory:clear_inventory_confirmation", "bool", {
+	default = true,
+	description = S("When enabled, ask for confirmation to clear the inventory when clicking the trash icon in creative mode."),
+	formspec_desc_lines = 2
+})
+
+
 for _, f in ipairs(builtin_filter_ids) do
 	inventory_lists[f] = {}
 end
@@ -679,6 +687,7 @@ local trash = minetest.create_detached_inventory("trash", {
 })
 
 trash:set_size("main", 1)
+
 ------------------------------
 -- Formspec Precalculations --
 ------------------------------
@@ -851,6 +860,7 @@ function mcl_inventory.set_creative_formspec(player)
 	local page = players[playername].page
 	local inv_size = players[playername].inv_size
 	local filter = players[playername].filter
+	local clearing_inv = players[playername].clearing_inv
 
 	if not inv_size then
 		if page == "nix" then
@@ -934,6 +944,10 @@ function mcl_inventory.set_creative_formspec(player)
 			"image_button[11.575,2.075;1.1,1.1;doc_button_icon_lores.png;__mcl_doc;]",
 			"tooltip[__mcl_doc;" .. F(S("Help")) .. "]",
 
+			-- Clear button
+			"image_button[10.325,2.075;1.1,1.1;crafting_creative_trash_clear.png;creative_clear_inv;]",
+			"tooltip[creative_clear_inv;" .. F(S("Clear Inventory")) .. "]",
+
 			-- Advancements button
 			"image_button[11.575,3.325;1.1,1.1;mcl_achievements_button.png;__mcl_achievements;]",
 			--"style_type[image_button;border=;bgimg=;bgimg_pressed=]",
@@ -978,10 +992,14 @@ function mcl_inventory.set_creative_formspec(player)
 
 			"list[detached:creative_" .. playername .. ";main;0.375,0.875;9,5;" .. tostring(start_i) .. "]",
 
+			-- Clear button
+			"image_button[11.575,5.825;1.1,1.1;crafting_creative_trash_clear.png;creative_clear_inv;]",
+			"tooltip[creative_clear_inv;" .. F(S("Clear Inventory")) .. "]",
+
 			-- Page buttons
-			"label[11.65,4.33;" .. F(S("@1 / @2", pagenum, pagemax)) .. "]",
-			"image_button[11.575,4.58;1.1,1.1;crafting_creative_prev.png^[transformR270;creative_prev;]",
-			"image_button[11.575,5.83;1.1,1.1;crafting_creative_next.png^[transformR270;creative_next;]",
+			"label[11.80,0.53;" .. F(S("@1 / @2", pagenum, pagemax)) .. "]",
+			"image_button[11.575,0.825;1.1,1.1;crafting_creative_prev.png^[transformR270;creative_prev;]",
+			"image_button[11.575,2.075;1.1,1.1;crafting_creative_next.png^[transformR270;creative_next;]",
 		})
 	end
 
@@ -1001,6 +1019,16 @@ function mcl_inventory.set_creative_formspec(player)
 				";bgimg_pressed=" .. bg_img .. "]",
 			"button[" .. offset[this_tab] .. ";1.5,1.44;" .. this_tab .. "_outer;]",
 			"item_image_button[" .. boffset[this_tab] .. ";1,1;" .. tab_icon[this_tab] .. ";" .. this_tab .. ";]",
+		})
+	end
+
+	if clearing_inv then
+		main_list = table.concat({
+			"label[3.05,2.75;" .. F(S("Are you sure you want to remove all items from your inventory?")) .. "]",
+			"checkbox[5.15,5.25;clear_inv_check;" .. F(core.colorize(mcl_colors.BLACK, S("Do not ask again"))) .. ";]",
+			"button[3.75,3.5;2,1;clear_inv_cancel;" .. F(S("Cancel")) .. "]",
+			"button[6.25,3.5;3,1;clear_inv_remove;" .. F(S("Remove All Items")) .. "]",
+			"label[3.65,5.75;" .. F(S("You may change this back in the player settings.")) .. "]",
 		})
 	end
 
@@ -1091,14 +1119,16 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if not minetest.is_creative_enabled(player:get_player_name()) then
 		return
 	end
-	if formname ~= "" or fields.quit == "true" then
-		-- No-op if formspec closed or not player inventory (formname == "")
+	if formname ~= "" then
+		-- No-op if not player inventory (formname == "")
 		return
 	end
 
 	local name = player:get_player_name()
 
-	if fields.blocks or fields.blocks_outer then
+	if fields.quit then
+		players[name].clearing_inv = false
+	elseif fields.blocks or fields.blocks_outer then
 		if players[name].page == "blocks" then return end
 		set_inv_page("blocks", player)
 		page = "blocks"
@@ -1141,13 +1171,26 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if players[name].page == "brew" then return end
 		set_inv_page("brew", player)
 		page = "brew"
-	elseif fields.matr or fields.matr_outer  then
+	elseif fields.matr or fields.matr_outer	 then
 		if players[name].page == "matr" then return end
 		set_inv_page("matr", player)
 		page = "matr"
 	elseif fields.inv or fields.inv_outer then
 		if players[name].page == "inv" then return end
 		page = "inv"
+	elseif fields.clear_inv_cancel then
+		players[name].clearing_inv = false
+	elseif fields.clear_inv_check then
+		clear_inv_setting:set(player, not clear_inv_setting:get(player))
+	elseif fields.clear_inv_remove then
+		player:get_inventory():set_list("main", {})
+		players[name].clearing_inv = false
+	elseif fields.creative_clear_inv then
+		if clear_inv_setting:get(player) then
+			players[name].clearing_inv = true
+		else
+			player:get_inventory():set_list("main", {})
+		end
 	elseif fields.search == "" and not fields.creative_next and not fields.creative_prev then
 		set_inv_page("all", player)
 		page = "nix"
