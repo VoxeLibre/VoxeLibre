@@ -43,7 +43,7 @@ local function wieldedlight(name)
 		end
 		lvm:set_light_data(ldt)
 		lvm:write_to_map(false)
-		lvm:close()
+		if lvm.close then lvm:close() end
 		players[name] = {p1, p2}
 	end
 end
