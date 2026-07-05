@@ -1,6 +1,8 @@
 if core.settings:get_bool("enable_vl_wieldlight", true) then
 
-local players = {}
+local players = {} -- areas impacted by player lights
+
+local ldt = {} -- reusable buffer
 
 local function wieldedlight(name)
 	if not name then return end
@@ -24,7 +26,7 @@ local function wieldedlight(name)
 		local p1 = vector.offset(pos, -ls, -ls, -ls)
 		local p2 = vector.offset(pos, ls, ls, ls)
 		local lvm = VoxelManip(p1, p2)
-		local ldt = lvm:get_light_data() -- flat array of param1 values
+		lvm:get_light_data(ldt) -- flat array of param1 values
 		-- Get iterator for the sub-area of the LVM
 		local emin, emax = lvm:get_emerged_area()
 		local area = VoxelArea(emin, emax)
@@ -70,8 +72,8 @@ core.register_on_leaveplayer(function(player)
 	-- Moving last element into the hole is fine in this usecase
 	p_queue[table.find(name)] = p_queue[#p_queue]
 	p_queue[#p_queue] = nil
-	local p = players[name]
 	-- Cleanup wieldlight after player
+	local p = players[name]
 	if p then
 		core.fix_light(p[1], p[2])
 		players[name] = nil
