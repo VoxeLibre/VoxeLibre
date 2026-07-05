@@ -253,7 +253,7 @@ for _, item in pairs(compass_types) do
 			_tt_help = item.tt,
 			inventory_image = string.format(img_fmt, i),
 			wield_image = string.format(img_fmt, i),
-			groups = {compass = i + 1, tool = 1, disable_repair = 1, offhand_item = 1},
+			groups = {compass = i + 1, tool = 1, disable_repair = 1},
 		}
 		if item.name == "compass" then
 			def.groups._mcl_compass = 1

@@ -329,7 +329,7 @@ local filled_def = {
 	_doc_items_longdesc = S("When created, the map saves the nearby area as an image that can be viewed any time by holding the map."),
 	_doc_items_usagehelp = S("Hold the map in your hand. This will display a map on your screen."),
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
-	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1, vl_map = 1, offhand_item = 1},
+	groups = {not_in_creative_inventory = 1, filled_map = 1, tool = 1, vl_map = 1},
 }
 
 core.register_craftitem("mcl_maps:filled_map", filled_def)

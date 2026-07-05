@@ -12,7 +12,7 @@ mcl_torches.register_torch({
 	}},
 	-- this is 15 in minecraft
 	light = 14,
-	groups = {dig_immediate = 3, deco_block = 1, offhand_item = 1},
+	groups = {dig_immediate = 3, deco_block = 1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	particles = true,
 	flame_type = 1,
