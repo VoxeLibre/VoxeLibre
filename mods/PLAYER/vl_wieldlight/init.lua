@@ -1,3 +1,4 @@
+if core.settings:get_bool("enable_vl_wieldlight", true) then
 
 local players = {}
 
@@ -70,3 +71,5 @@ core.register_on_shutdown(function()
 		core.fix_light(p[1], p[2])
 	end
 end)
+
+end
