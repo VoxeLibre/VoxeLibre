@@ -85,27 +85,20 @@ function mcl_mobs.detach(player, offset)
 	player:add_velocity(vector.new(math.random()*12-6,math.random()*3+5,math.random()*12-6)) --throw the rider off
 end
 
---- @class mcl_mobs.DriveOpts
---- @field can_fly?           boolean (default: false)
---- @field sink_in_water?     boolean (default: false)
 
---- @param opts? mcl_mobs.DriveOpts
-function mcl_mobs.drive(entity, moving_anim, stand_anim, dtime, opts)
-	local can_fly       = opts and opts.can_fly       or false
-	local sink_in_water = opts and opts.sink_in_water or false
-
+function mcl_mobs.drive(entity, moving_anim, stand_anim, dtime, can_fly, sink_in_water)
 	local velo = entity.object:get_velocity()
-	local mag = math.sqrt(velo.x * velo.x + velo.z * velo.z)
+	local hmag = math.sqrt(velo.x * velo.x + velo.z * velo.z)
 	local acce_y = GRAVITY
 
 	-- process controls
 	if entity.driver then
 		local ctrl = entity.driver:get_player_control()
 		if ctrl.up then -- forward
-			mag = mag + entity.accel * 0.1 * entity.run_velocity * 0.385
+			hmag = hmag + entity.accel * 0.1 * entity.run_velocity * 0.385
 		elseif ctrl.down then -- backwards
-			if entity.max_speed_reverse == 0 and mag == 0 then return end
-			mag = mag - entity.accel * 0.1 * entity.run_velocity * 0.385
+			if entity.max_speed_reverse == 0 and hmag == 0 then return end
+			hmag = hmag - entity.accel * 0.1 * entity.run_velocity * 0.385
 		end
 
 		entity:set_yaw(entity.driver:get_look_horizontal() - entity.rotate, 2)
@@ -137,15 +130,15 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, dtime, opts)
 		end
 	end
 
-	if math.abs(mag) < 0.02 then -- stop
+	if math.abs(hmag) < 0.02 then -- stop
 		entity.object:set_velocity(vector.zero())
-		mag = 0
+		hmag = 0
 	else
-		mag = mag - 0.02 * sign(mag) -- slow down
+		hmag = hmag - 0.02 * sign(hmag) -- slow down
 	end
 
 	-- if not moving then set animation and return
-	if mag == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
+	if hmag == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
 		entity:set_animation(stand_anim)
 		return
 	else
@@ -153,15 +146,15 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, dtime, opts)
 	end
 
 	-- enforce speed limit forward and reverse
-	mag = math.max(-entity.max_speed_reverse, math.min(mag, entity.max_speed_forward))
+	hmag = math.max(-entity.max_speed_reverse, math.min(hmag, entity.max_speed_forward))
 
 	-- Set position, velocity and acceleration
 	local p = entity.object:get_pos()
-	p.y = p.y - 0.5
-
 	local ni = node_is(p)
 	if ni == "air" then
-		if can_fly then acce_y = acce_y - GRAVITY end
+		if can_fly then
+			acce_y = acce_y - GRAVITY
+		end
 	elseif ni == "liquid" or ni == "lava" then
 		if ni == "lava" and entity.lava_damage ~= 0 then
 			entity.lava_counter = (entity.lava_counter or 0) + dtime
@@ -179,26 +172,26 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, dtime, opts)
 				entity.lava_counter = 0
 			end
 		end
-		if not sink_in_water and (entity.terrain_type == 2
-				or entity.terrain_type == 3) then
+		if not sink_in_water and (entity.terrain_type == 2 or entity.terrain_type == 3) then
 			acce_y = -entity.fall_speed / math.max(1, velo.y ^ 2)
 		else
-			mag = mag * 0.25
+			-- Slow down mount, since it is submerged in liquid
+			hmag = hmag * 0.5
 		end
 	end
 
 	local rot_view = entity.player_rotation.y == 90 and math.pi / 2 or 0
 	local new_yaw = entity.object:get_yaw() - rot_view
-	local new_velo = vector.new(-math.sin(new_yaw) * mag, velo.y, math.cos(new_yaw) * mag)
+	local new_velo = vector.new(-math.sin(new_yaw) * hmag, velo.y, math.cos(new_yaw) * hmag)
 
 	entity.object:set_velocity(new_velo)
 	entity.object:set_acceleration(vector.new(0, acce_y, 0))
 
 	if enable_crash then
-		if mag >= crash_threshold then
+		if hmag >= crash_threshold then
 			entity.object:punch(entity.object, 1.0, {
 				full_punch_interval = 1.0,
-				damage_groups = {fleshy = mag}
+				damage_groups = {fleshy = hmag}
 			}, nil)
 		end
 	end

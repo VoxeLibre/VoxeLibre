@@ -223,7 +223,7 @@ local horse = {
 		-- if driver present and horse has a saddle allow control of horse
 		if self.driver and self._saddle then
 
-			mcl_mobs.drive(self, "walk", "stand", dtime, { sink_in_water = true })
+			mcl_mobs.drive(self, "walk", "stand", dtime, false, true)
 
 			return false -- skip rest of mob functions
 		end
