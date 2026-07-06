@@ -289,19 +289,31 @@ local horse = {
 
 		if not self.tamed then
 			local temper_increase = 0
-
 			-- Feeding, intentionally not using mobs:feed_tame because horse taming is
 			-- different and more complicated
+			local function feed_horse()
+				-- make feeding sound and depleat item
+				core.sound_play("mobs_mc_animal_eat_generic", {object=self.object, max_hear_distance=16}, true)
+				if not core.is_creative_enabled(clicker:get_player_name()) then
+					item:take_item()
+					clicker:set_wielded_item(item)
+				end
+			end
 			if (iname == "mcl_core:sugar") then
 				temper_increase = 3
+				feed_horse()
 			elseif (iname == "mcl_farming:wheat_item") then
 				temper_increase = 3
+				feed_horse()
 			elseif (iname == "mcl_core:apple") then
 				temper_increase = 3
+				feed_horse()
 			elseif (iname == "mcl_farming:carrot_item_gold") then
 				temper_increase = 5
+				feed_horse()
 			elseif (iname == "mcl_core:apple_gold") then
 				temper_increase = 10
+				feed_horse()
 			-- Trying to ride
 			elseif not self.driver then
 				self.object:set_properties({stepheight = 1.1})
@@ -322,7 +334,10 @@ local horse = {
 
 			-- If nothing happened temper_increase = 0 and addition does nothing
 			self.temper = self.temper + temper_increase
-
+			-- TODO proper sound for tempered horse
+			if self.temper > 100 then
+				core.sound_play("mobs_mc_horse_death", {object=self.object, max_hear_distance=16}, true)
+			end
 			return
 		end
 
