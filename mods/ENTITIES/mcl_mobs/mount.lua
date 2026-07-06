@@ -134,7 +134,7 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, dtime, can_fly, sink_in
 		entity.object:set_velocity(vector.zero())
 		hmag = 0
 	else
-		hmag = hmag - 0.02 * sign(hmag) -- slow down
+		hmag = hmag - 0.02 -- slow down
 	end
 
 	-- if not moving then set animation and return
