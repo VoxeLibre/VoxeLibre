@@ -18,6 +18,28 @@ local function add_lingering_effect(pos, color, def, is_water, potency, plus)
 	lingering_effect_at[pos] = {color = color, timer = 30, def = def, is_water = is_water, potency = potency, plus = plus}
 end
 
+-- Returns a list of lingering cloud data at the given position
+-- Each entry contains: {pos, color, timer, def, is_water, potency, plus, radius}
+function mcl_potions.get_lingering_clouds_at(check_pos)
+	local clouds = {}
+	for pos, vals in pairs(lingering_effect_at) do
+		local d = 4 * (vals.timer / 30.0)
+		if vector.distance(check_pos, pos) <= d then
+			table.insert(clouds, {
+				pos = pos,
+				color = vals.color,
+				timer = vals.timer,
+				def = vals.def,
+				is_water = vals.is_water,
+				potency = vals.potency,
+				plus = vals.plus,
+				radius = d,
+			})
+		end
+	end
+	return clouds
+end
+
 local function linger_particles(pos, d, texture, color)
 	minetest.add_particlespawner({
 		amount = 10 * d^2,
