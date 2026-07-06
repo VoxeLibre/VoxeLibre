@@ -95,7 +95,8 @@ minetest.register_globalstep(function(dtime)
 	mcl_clock.random_frame = random_frame
 
 	for p, player in pairs(minetest.get_connected_players()) do
-		for s, stack in pairs(player:get_inventory():get_list("main")) do
+		local inv = player:get_inventory()
+		for s, stack in pairs(inv:get_list("main")) do
 			local frame
 			-- Clocks do not work in certain zones
 			if not mcl_worlds.clock_works(player:get_pos()) then
@@ -106,10 +107,16 @@ minetest.register_globalstep(function(dtime)
 
 			local count = stack:get_count()
 			if stack:get_name() == mcl_clock.stereotype then
-				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..frame.." "..count)
+				inv:set_stack("main", s, "mcl_clock:clock_"..frame.." "..count)
 			elseif minetest.get_item_group(stack:get_name(), "clock") ~= 0 then
-				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..frame.." "..count)
+				inv:set_stack("main", s, "mcl_clock:clock_"..frame.." "..count)
 			end
+		end
+
+		local offhand = inv:get_stack("offhand", 1)
+		if offhand:get_name() == mcl_clock.stereotype or minetest.get_item_group(offhand:get_name(), "clock") ~= 0 then
+			local frame = mcl_worlds.clock_works(player:get_pos()) and now or random_frame
+			inv:set_stack("offhand", 1, "mcl_clock:clock_"..frame.." "..offhand:get_count())
 		end
 	end
 end)

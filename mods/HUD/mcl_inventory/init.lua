@@ -69,8 +69,17 @@ minetest.register_on_joinplayer(function(player)
 	--set hotbar size
 	player:hud_set_hotbar_itemcount(9)
 	--add hotbar images
-	player:hud_set_hotbar_image("mcl_inventory_hotbar.png")
+	player:hud_set_hotbar_image("blank.png")
 	player:hud_set_hotbar_selected_image("mcl_inventory_hotbar_selected.png")
+	player:hud_add({
+		[mcl_vars.hud_type_field] = "image",
+		text = "mcl_inventory_hotbar.png",
+		position = {x = 0.5, y = 1},
+		alignment = {x = 0, y = -1},
+		offset = {x = 0, y = -2},
+		scale = {x = 2.8, y = 2.8},
+		z_index = -1
+	})
 
 	-- In Creative Mode, the initial inventory setup is handled in creative.lua
 	if not minetest.is_creative_enabled(player:get_player_name()) then

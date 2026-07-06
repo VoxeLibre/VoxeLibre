@@ -187,7 +187,8 @@ minetest.register_globalstep(function(dtime)
 		pos = player:get_pos()
 		dir = player:get_look_horizontal()
 		inv = player:get_inventory()
-		for j, stack in pairs(inv:get_list("main")) do
+
+		local function update_compass_stack(stack, list, idx)
 			compass_nr = get_item_group(stack:get_name(), "compass")
 			if compass_nr ~= 0 and not string_find(stack:get_name(), "_recovery") then
 				-- check if current compass image still matches true orientation
@@ -200,11 +201,11 @@ minetest.register_globalstep(function(dtime)
 					else
 						stack:set_name("mcl_compass:" .. compass_frame)
 					end
-					inv:set_stack("main", j, stack)
+					inv:set_stack(list, idx, stack)
 				end
 			elseif compass_nr ~= 0 then
 				local meta = player:get_meta()
-				local posstring =  meta:get_string("mcl_compass:recovery_pos")
+				local posstring = meta:get_string("mcl_compass:recovery_pos")
 				if not posstring or posstring == "" then
 					stack:set_name("mcl_compass:"..random_frame .. "_recovery")
 				else
@@ -217,9 +218,14 @@ minetest.register_globalstep(function(dtime)
 						stack:set_name("mcl_compass:"..get_compass_angle(pos,targetpos,dir).."_recovery")
 					end
 				end
-				inv:set_stack("main",j,stack)
+				inv:set_stack(list, idx, stack)
 			end
 		end
+
+		for j, stack in pairs(inv:get_list("main")) do
+			update_compass_stack(stack, "main", j)
+		end
+		update_compass_stack(inv:get_stack("offhand", 1), "offhand", 1)
 	end
 end)
 
