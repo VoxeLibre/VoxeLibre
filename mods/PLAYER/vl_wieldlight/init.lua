@@ -21,6 +21,8 @@ local function wieldedlight(name)
 
 	-- Light source power
 	local ls = player:get_wielded_item():get_definition().light_source
+	local o_ls = player:get_inventory():get_stack("offhand", 1):get_definition().light_source
+	if o_ls and (not ls or o_ls > ls) then ls = o_ls end
 	if ls and ls > 0 then
 		-- Acquire minimum LVM for the light source power
 		local p1 = vector.offset(pos, -ls, -ls, -ls)
