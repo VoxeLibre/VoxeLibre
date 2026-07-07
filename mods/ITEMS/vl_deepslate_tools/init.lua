@@ -22,21 +22,9 @@ dig_speed_class group:
 ]]
 
 
--- Help texts
-
-local pickaxe_longdesc = S("Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.")
-local axe_longdesc = S("An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.")
-
 local sword_longdesc = S("Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.")
 -- local sword_use = S("To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.")
 -- TODO slash attack not implemented yet
-
-local shovel_longdesc = S("Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.")
-local shovel_use = S("To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.")
-
-local hammer_tt = S("Can crush blocks") .. "\n" .. S("Increased knockback")
-local hammer_longdesc = S("Hammers are great in melee combat, as they deal high damage with increased knockback and can endure countless battles. Hammers can also be used to crush things.")
-local hammer_use = S("To crush a block, dig the block with the hammer. This only works with some blocks.")
 
 local spear_tt = S("Reaches farther") .. "\n" .. S("Can be thrown")
 local spear_longdesc = S("Spears are great in melee combat, as they have an increased reach. They can also be thrown.")
@@ -72,197 +60,96 @@ local function spear_on_place(itemstack, user, pointed_thing)
 	return itemstack
 end
 
-
-local make_grass_path = function(itemstack, placer, pointed_thing)
-	-- Use pointed node's on_rightclick function first, if present
-	local node = core.get_node(pointed_thing.under)
-	if placer and not placer:get_player_control().sneak then
-		if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
-			return core.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
-		end
-	end
-
-	-- Only make or remove grass path if tool used on side or top of target node
-	if pointed_thing.above.y < pointed_thing.under.y then
-		return itemstack
-	end
-
-	-- Remove grass paths
-	if (core.get_item_group(node.name, "path_remove_possible") == 1) and placer:get_player_control().sneak then
-		local above = table.copy(pointed_thing.under)
-		above.y = above.y + 1
-		if core.get_node(above).name == "air" then
-			if core.is_protected(pointed_thing.under, placer:get_player_name()) then
-				core.record_protection_violation(pointed_thing.under, placer:get_player_name())
-				return itemstack
-			end
-
-			if not core.is_creative_enabled(placer:get_player_name()) then
-				-- Add wear (as if digging a shovely node)
-				local toolname = itemstack:get_name()
-				local wear = mcl_autogroup.get_wear(toolname, "shovely")
-				if wear then
-					itemstack:add_wear(wear)
-					tt.reload_itemstack_description(itemstack) -- update tooltip
-				end
-			end
-			core.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
-			core.swap_node(pointed_thing.under, {name="mcl_core:dirt"})
-		end
-	end
-
-	-- Make grass paths
-	if (core.get_item_group(node.name, "path_creation_possible") == 1) and not placer:get_player_control().sneak then
-		local above = table.copy(pointed_thing.under)
-		above.y = above.y + 1
-		if core.get_node(above).name == "air" then
-			if core.is_protected(pointed_thing.under, placer:get_player_name()) then
-				core.record_protection_violation(pointed_thing.under, placer:get_player_name())
-				return itemstack
-			end
-
-			if not core.is_creative_enabled(placer:get_player_name()) then
-				-- Add wear (as if digging a shovely node)
-				local toolname = itemstack:get_name()
-				local wear = mcl_autogroup.get_wear(toolname, "shovely")
-				if wear then
-					itemstack:add_wear(wear)
-					tt.reload_itemstack_description(itemstack) -- update tooltip
-				end
-			end
-			core.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
-			core.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
-		end
-	end
-	return itemstack
-end
-
-local function make_stripped_trunk(itemstack, placer, pointed_thing)
-	if pointed_thing.type ~= "node" then return end
-
-	local node = core.get_node(pointed_thing.under)
-	local node_name = core.get_node(pointed_thing.under).name
-
-	local noddef = core.registered_nodes[node_name]
-
-	if not noddef then
-		core.log("warning", "Trying to right click with an axe the unregistered node: " .. tostring(node_name))
-		return
-	end
-
-	if not placer:get_player_control().sneak and noddef.on_rightclick then
-		return core.item_place(itemstack, placer, pointed_thing)
-	end
-	if core.is_protected(pointed_thing.under, placer:get_player_name()) then
-		core.record_protection_violation(pointed_thing.under, placer:get_player_name())
-		return itemstack
-	end
-
-	if noddef._mcl_stripped_variant == nil then
-		return itemstack
-	else
-		core.swap_node(pointed_thing.under, {name=noddef._mcl_stripped_variant, param2=node.param2})
-		if core.get_item_group(node_name, "waxed") ~= 0 then
-			awards.unlock(placer:get_player_name(), "mcl:wax_off")
-		end
-		if not core.is_creative_enabled(placer:get_player_name()) then
-			-- Add wear (as if digging a axey node)
-			local toolname = itemstack:get_name()
-			local wear = mcl_autogroup.get_wear(toolname, "axey")
-			if wear then
-				itemstack:add_wear(wear)
-				tt.reload_itemstack_description(itemstack) -- update tooltip
-			end
-		end
-	end
-	return itemstack
-end
-
 -- include crafting recipes
 dofile(modpath .. "/crafting.lua")
 
 -- Register tools.
 
-core.register_tool("vl_deepslate_tools:pick_deepslate", {
+vl_tools.pickaxe.register("vl_deepslate_tools:pick_deepslate", {
 	description = S("Deepslate Pickaxe"),
-	_doc_items_longdesc = pickaxe_longdesc,
-	inventory_image = "vl_deepslate_tools_deepslatepick.png",
-	wield_scale = wield_scale,
-	groups = { tool = 1, pickaxe = 1, dig_speed_class = 3, enchantability = 5 },
+	icon = "vl_deepslate_tools_deepslatepick.png",
+	repair_material = "mcl_deepslate:deepslate_cobbled",
+
+	groups = { dig_speed_class = 3, enchantability = 5 },
+
 	tool_capabilities = {
-		-- 1/1.2
 		full_punch_interval = 0.83333333,
 		max_drop_level = 3,
 		damage_groups = { fleshy = 3 },
 		punch_attack_uses = 66,
 	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate_cobbled",
-	_mcl_toollike_wield = true,
+
 	_mcl_diggroups = {
-		pickaxey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
+		pickaxey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses },
 	},
-	vl_max_ench_lvl = 2,
+
+	overrides = { vl_max_ench_lvl = 2 },
+	no_craft = true,
 })
 
-core.register_tool("vl_deepslate_tools:shovel_deepslate", {
+vl_tools.shovel.register("vl_deepslate_tools:shovel_deepslate", {
 	description = S("Deepslate Shovel"),
-	_doc_items_longdesc = shovel_longdesc,
-	_doc_items_usagehelp = shovel_use,
-	inventory_image = "vl_deepslate_tools_deepslateshovel.png",
-	wield_scale = wield_scale,
-	groups = { tool = 1, shovel = 1, dig_speed_class = 3, enchantability = 5 },
+	icon = "vl_deepslate_tools_deepslateshovel.png",
+	repair_material = "mcl_deepslate:deepslate_cobbled",
+
+	groups = { dig_speed_class = 3, enchantability = 5 },
+
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level = 3,
 		damage_groups = { fleshy = 3 },
 		punch_attack_uses = 66,
 	},
-	on_place = make_grass_path,
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate_cobbled",
-	_mcl_toollike_wield = true,
+
 	_mcl_diggroups = {
-		shovely = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
+		shovely = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses },
 	},
-	vl_max_ench_lvl = 2,
+
+	overrides = { vl_max_ench_lvl = 2 },
+	no_craft = true,
 })
 
-mcl_farming:register_hoe("deepslate", {
-		description = S("Deepslate Hoe"),
-		place_uses = deepslate.stone,
+vl_tools.hoe.register("vl_deepslate_tools:hoe_deepslate", {
+	description = S("Deepslate Hoe"),
+	icon = "vl_deepslate_tools_deepslatehoe.png",
+	repair_material = "mcl_deepslate:deepslate_cobbled",
+
+	groups = { enchantability = 5 },
+
+	tool_capabilities = {
 		full_punch_interval = 0.5,
-		punch_uses = deepslate.stone,
-		image = "vl_deepslate_tools_deepslatehoe.png",
-		enchantability = 5,
-		crafting_material = "mcl_deepslate:deepslate_cobbled",
-		repair_material = "mcl_deepslate:deepslate_cobbled",
-		dig_group = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses },
-		damage_groups = { fleshy = 1, },
-		max_enchant_level = 2
-	})
+		damage_groups = { fleshy = 1 },
+		punch_attack_uses = deepslate.stone,
+	},
+
+	_mcl_diggroups = {
+		hoey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses },
+	},
+
+	overrides = { vl_max_ench_lvl = 2 },
+})
 
 
-core.register_tool("vl_deepslate_tools:axe_deepslate", {
+vl_tools.axe.register("vl_deepslate_tools:axe_deepslate", {
 	description = S("Deepslate Axe"),
-	_doc_items_longdesc = axe_longdesc,
-	inventory_image = "vl_deepslate_tools_deepslateaxe.png",
-	wield_scale = wield_scale,
-	groups = { tool = 1, axe = 1, dig_speed_class = 3, enchantability = 5 },
+	icon = "vl_deepslate_tools_deepslateaxe.png",
+	repair_material = "mcl_deepslate:deepslate_cobbled",
+
+	groups = { dig_speed_class = 3, enchantability = 5 },
+
 	tool_capabilities = {
 		full_punch_interval = 1.25,
 		max_drop_level = 3,
 		damage_groups = { fleshy = 9 },
 		punch_attack_uses = 66,
 	},
-	on_place = make_stripped_trunk,
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate_cobbled",
-	_mcl_toollike_wield = true,
+
 	_mcl_diggroups = {
-		axey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses }
+		axey = { speed = deepslate.speed, level = deepslate.level, uses = deepslate.uses },
 	},
-	vl_max_ench_lvl = 2,
+
+	overrides = { vl_max_ench_lvl = 2 },
+	no_craft = true,
 })
 
 ------------------ weapons
@@ -289,28 +176,27 @@ core.register_tool("vl_deepslate_tools:sword_deepslate", {
 	vl_max_ench_lvl = 2,
 })
 
-core.register_tool("vl_deepslate_tools:hammer_deepslate", {
+vl_tools.hammer.register("vl_deepslate_tools:hammer_deepslate", {
 	description = S("Deepslate Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_deepslate_tools_deepslatehammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon = 1, hammer = 1, dig_speed_class = 2, enchantability = 5 },
+	icon = "vl_deepslate_tools_deepslatehammer.png",
+	repair_material = "mcl_deepslate:deepslate_cobbled",
+
+	groups = { dig_speed_class = 2, enchantability = 5 },
+
 	tool_capabilities = {
 		full_punch_interval = 1.3,
 		max_drop_level = 3,
 		damage_groups = { fleshy = 5.25 },
 		punch_attack_uses = deepslate.uses,
 	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_deepslate:deepslate_cobbled",
-	_mcl_toollike_wield = true,
+
 	_mcl_diggroups = {
 		pickaxey = { speed = deepslate.hammerspeed, level = deepslate.level, uses = deepslate.uses },
-		shovely = { speed = deepslate.hammerspeed, level = deepslate.level, uses = deepslate.uses }
+		shovely = { speed = deepslate.hammerspeed, level = deepslate.level, uses = deepslate.uses },
 	},
-	vl_max_ench_lvl = 2,
+
+	overrides = { vl_max_ench_lvl = 2 },
+	no_craft = true,
 })
 
 core.register_tool("vl_deepslate_tools:spear_deepslate", {

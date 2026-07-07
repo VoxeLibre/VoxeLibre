@@ -4,17 +4,13 @@ local modname = core.get_current_modname()
 local modpath = core.get_modpath(modname)
 local S = core.get_translator(modname)
 
-local hammer_tt = S("Can crush blocks") .. "\n" .. S("Increased knockback")
-local hammer_longdesc = S("Hammers are great in melee combat, as they deal high damage with increased knockback and can endure countless battles. Hammers can also be used to crush things.")
-local hammer_use = S("To crush a block, dig the block with the hammer. This only works with some blocks.")
-
 local spear_tt = S("Reaches farther") .. "\n" .. S("Can be thrown")
 local spear_longdesc = S("Spears are great in melee combat, as they have an increased reach. They can also be thrown.")
 local spear_use = S("To throw a spear, hold it in your hand, then hold use (rightclick) in the air.")
 
 local wield_scale = mcl_vars.tool_wield_scale
 
-vl_weaponry.hammer_tt = hammer_tt
+vl_weaponry.hammer_tt = S("Can crush blocks") .. "\n" .. S("Increased knockback")
 vl_weaponry.spear_tt = spear_tt
 
 local spear_entity = table.copy(mcl_bows.arrow_entity)
@@ -242,142 +238,131 @@ local materials = {
 
 local SPEAR_RANGE = 4.5
 
---Hammers
-core.register_tool("vl_weaponry:hammer_wood", {
+vl_tools.hammer.register("vl_weaponry:hammer_wood", {
 	description = S("Wooden Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	_doc_items_hidden = false,
-	inventory_image = "vl_tool_woodhammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=15 },
+	icon = "vl_tool_woodhammer.png",
+	repair_material = "group:wood",
+
+	groups = { dig_speed_class = 2, enchantability = 15 },
+
 	tool_capabilities = {
 		full_punch_interval = 1.2,
-		max_drop_level=1,
-		damage_groups = {fleshy=4},
+		max_drop_level = 1,
+		damage_groups = { fleshy = 4 },
 		punch_attack_uses = uses.wood,
 	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "group:wood",
-	_mcl_toollike_wield = true,
+
 	_mcl_diggroups = {
 		pickaxey = { speed = 1, level = 1, uses = uses.wood },
-		shovely = { speed = 1, level = 2, uses = uses.wood }
+		shovely = { speed = 1, level = 2, uses = uses.wood },
 	},
+
+	_doc_items_hidden = false,
 })
-core.register_tool("vl_weaponry:hammer_stone", {
+
+vl_tools.hammer.register("vl_weaponry:hammer_stone", {
 	description = S("Stone Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_stonehammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=5 },
+	icon = "vl_tool_stonehammer.png",
+	repair_material = "group:cobble",
+
+	groups = { dig_speed_class = 2, enchantability = 5 },
+
 	tool_capabilities = {
 		full_punch_interval = 1.3,
-		max_drop_level=3,
-		damage_groups = {fleshy=5},
+		max_drop_level = 3,
+		damage_groups = { fleshy = 5 },
 		punch_attack_uses = uses.stone,
 	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "group:cobble",
-	_mcl_toollike_wield = true,
+
 	_mcl_diggroups = {
 		pickaxey = { speed = 2, level = 3, uses = uses.stone },
-		shovely = { speed = 2, level = 3, uses = uses.stone }
+		shovely = { speed = 2, level = 3, uses = uses.stone },
 	},
 })
 
-core.register_tool("vl_weaponry:hammer_iron", {
+vl_tools.hammer.register("vl_weaponry:hammer_iron", {
 	description = S("Iron Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_steelhammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=14 },
+	icon = "vl_tool_steelhammer.png",
+	repair_material = "mcl_core:iron_ingot",
+
+	groups = { dig_speed_class = 2, enchantability = 14 },
+
 	tool_capabilities = {
 		full_punch_interval = 1.2,
-		max_drop_level=4,
-		damage_groups = {fleshy=6},
+		max_drop_level = 4,
+		damage_groups = { fleshy = 6 },
 		punch_attack_uses = uses.iron,
 	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:iron_ingot",
-	_mcl_toollike_wield = true,
+
 	_mcl_diggroups = {
 		pickaxey = { speed = 3, level = 4, uses = uses.iron },
-		shovely = { speed = 3, level = 4, uses = uses.iron }
+		shovely = { speed = 3, level = 4, uses = uses.iron },
 	},
 })
-core.register_tool("vl_weaponry:hammer_gold", {
+
+vl_tools.hammer.register("vl_weaponry:hammer_gold", {
 	description = S("Golden Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_goldhammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=22 },
+	icon = "vl_tool_goldhammer.png",
+	repair_material = "mcl_core:gold_ingot",
+
+	groups = { dig_speed_class = 2, enchantability = 22 },
+
 	tool_capabilities = {
 		full_punch_interval = 1.0,
-		max_drop_level=2,
-		damage_groups = {fleshy=5},
+		max_drop_level = 2,
+		damage_groups = { fleshy = 5 },
 		punch_attack_uses = uses.gold,
 	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:gold_ingot",
-	_mcl_toollike_wield = true,
+
 	_mcl_diggroups = {
 		pickaxey = { speed = 8, level = 4, uses = uses.gold },
-		shovely = { speed = 8, level = 4, uses = uses.gold }
+		shovely = { speed = 8, level = 4, uses = uses.gold },
 	},
 })
-core.register_tool("vl_weaponry:hammer_diamond", {
+
+vl_tools.hammer.register("vl_weaponry:hammer_diamond", {
 	description = S("Diamond Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_diamondhammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=10 },
+	icon = "vl_tool_diamondhammer.png",
+	repair_material = "mcl_core:diamond",
+
+	groups = { dig_speed_class = 2, enchantability = 10 },
+
 	tool_capabilities = {
 		full_punch_interval = 1.0,
-		max_drop_level=5,
-		damage_groups = {fleshy=7},
+		max_drop_level = 5,
+		damage_groups = { fleshy = 7 },
 		punch_attack_uses = uses.diamond,
 	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:diamond",
-	_mcl_toollike_wield = true,
+
 	_mcl_diggroups = {
 		pickaxey = { speed = 4, level = 5, uses = uses.diamond },
-		shovely = { speed = 4, level = 5, uses = uses.diamond }
+		shovely = { speed = 4, level = 5, uses = uses.diamond },
 	},
+
 	_mcl_upgradable = true,
-	_mcl_upgrade_item = "vl_weaponry:hammer_netherite"
+	_mcl_upgrade_item = "vl_weaponry:hammer_netherite",
 })
-core.register_tool("vl_weaponry:hammer_netherite", {
+
+vl_tools.hammer.register("vl_weaponry:hammer_netherite", {
 	description = S("Netherite Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_netheritehammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=10, fire_immune=1 },
+	icon = "vl_tool_netheritehammer.png",
+	repair_material = "mcl_nether:netherite_ingot",
+
+	groups = { dig_speed_class = 2, enchantability = 10, fire_immune = 1 },
+
 	tool_capabilities = {
 		full_punch_interval = 1.0,
-		max_drop_level=5,
-		damage_groups = {fleshy=9},
+		max_drop_level = 5,
+		damage_groups = { fleshy = 9 },
 		punch_attack_uses = uses.netherite,
 	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_nether:netherite_ingot",
-	_mcl_toollike_wield = true,
+
 	_mcl_diggroups = {
 		pickaxey = { speed = 6, level = 6, uses = uses.netherite },
-		shovely = { speed = 6, level = 6, uses = uses.netherite }
+		shovely = { speed = 6, level = 6, uses = uses.netherite },
 	},
+
+	no_craft = true,
 })
 
 --Spears
@@ -552,14 +537,6 @@ core.register_tool("vl_weaponry:spear_netherite", {
 local s = "mcl_core:stick"
 local b = ""
 for t,m in pairs(materials) do
-	core.register_craft({
-		output = "vl_weaponry:hammer_"..t,
-		recipe = {
-			{ m, b, m },
-			{ m, s, m },
-			{ b, s, b },
-		}
-	})
 	core.register_craft({
 		output = "vl_weaponry:spear_"..t,
 		recipe = {
