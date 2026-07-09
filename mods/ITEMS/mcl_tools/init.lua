@@ -176,16 +176,17 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 	end
 
 -- Remove grass paths
-	if (minetest.get_item_group(node.name, "path_remove_possible") == 1) and placer:get_player_control().sneak then
+	if (core.get_item_group(node.name, "path_remove_possible") == 1) and placer:get_player_control().sneak then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
-		if minetest.get_node(above).name == "air" then
-			if minetest.is_protected(pointed_thing.under, placer:get_player_name()) then
-				minetest.record_protection_violation(pointed_thing.under, placer:get_player_name())
+		local above_name = core.get_node(above).name
+		if above_name ~= "ignore" and not mcl_util.is_solid_block(above_name) then
+			if core.is_protected(pointed_thing.under, placer:get_player_name()) then
+				core.record_protection_violation(pointed_thing.under, placer:get_player_name())
 				return itemstack
 			end
 
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
+			if not core.is_creative_enabled(placer:get_player_name()) then
 				-- Add wear (as if digging a shovely node)
 				local toolname = itemstack:get_name()
 				local wear = mcl_autogroup.get_wear(toolname, "shovely")
@@ -194,22 +195,23 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 					tt.reload_itemstack_description(itemstack) -- update tooltip
 				end
 			end
-			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:dirt"})
+			core.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
+			core.swap_node(pointed_thing.under, {name="mcl_core:dirt"})
 		end
 	end
 
 -- Make grass paths
-	if (minetest.get_item_group(node.name, "path_creation_possible") == 1) and not placer:get_player_control().sneak then
+	if (core.get_item_group(node.name, "path_creation_possible") == 1) and not placer:get_player_control().sneak then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
-		if minetest.get_node(above).name == "air" then
-			if minetest.is_protected(pointed_thing.under, placer:get_player_name()) then
-				minetest.record_protection_violation(pointed_thing.under, placer:get_player_name())
+		local above_name = core.get_node(above).name
+		if above_name ~= "ignore" and not mcl_util.is_solid_block(above_name) then
+			if core.is_protected(pointed_thing.under, placer:get_player_name()) then
+				core.record_protection_violation(pointed_thing.under, placer:get_player_name())
 				return itemstack
 			end
 
-			if not minetest.is_creative_enabled(placer:get_player_name()) then
+			if not core.is_creative_enabled(placer:get_player_name()) then
 				-- Add wear (as if digging a shovely node)
 				local toolname = itemstack:get_name()
 				local wear = mcl_autogroup.get_wear(toolname, "shovely")
@@ -218,8 +220,8 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 					tt.reload_itemstack_description(itemstack) -- update tooltip
 				end
 			end
-			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
+			core.sound_play({name="default_grass_footstep", gain=1}, {pos = above, max_hear_distance = 16}, true)
+			core.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
 		end
 	end
 	return itemstack

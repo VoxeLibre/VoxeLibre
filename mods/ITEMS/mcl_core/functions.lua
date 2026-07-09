@@ -634,11 +634,10 @@ minetest.register_abm({
 	interval = 8,
 	chance = 50,
 	action = function(pos, node)
-		local above = minetest.get_node(vector_offset(pos, 0, 1, 0)).name
+		local above = core.get_node(vector_offset(pos, 0, 1, 0)).name
 		if above == "ignore" then return end
-		local nodedef = minetest.registered_nodes[above]
-		if nodedef and (nodedef.groups and nodedef.groups.solid) then
-			minetest.set_node(pos, {name = "mcl_core:dirt"})
+		if mcl_util.is_solid_block(above) then
+			core.set_node(pos, {name = "mcl_core:dirt"})
 		end
 	end,
 })
@@ -1312,11 +1311,9 @@ minetest.register_abm({
 	interval = 5,
 	chance = 10,
 	action = function(pos, node)
-		local below = minetest.get_node(vector.offset(pos, 0, -1, 0))
-		local ndef = minetest.registered_nodes[below.name]
-		if not ndef then return end -- ignore, most likely not loaded
-		if ndef.walkable and (ndef.node_box == nil or ndef.node_box.type == "regular")
-			         and (ndef.collision_box == nil or ndef.collision_box.type == "regular") then
+		local below = core.get_node(vector.offset(pos, 0, -1, 0))
+		if below.name == "ignore" then return end
+		if mcl_util.is_solid_block(below.name) then
 			return -- completely solid block
 		end
 		minetest.after(0.1 + random() * 1.4, function()
