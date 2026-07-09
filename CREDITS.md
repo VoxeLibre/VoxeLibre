@@ -257,6 +257,7 @@
 * rudzik8
 * kno10
 * Chiragon
+* Lifora
 
 ## Translations
 * Wuzzy

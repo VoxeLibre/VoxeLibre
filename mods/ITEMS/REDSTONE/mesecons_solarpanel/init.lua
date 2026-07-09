@@ -10,9 +10,10 @@ local boxes = { -8/16, -8/16, -8/16,  8/16, -2/16, 8/16 }
 -- Daylight Sensor
 minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 	drawtype = "nodebox",
-	tiles = { "jeija_solar_panel.png","jeija_solar_panel.png","jeija_solar_panel_side.png",
-	"jeija_solar_panel_side.png","jeija_solar_panel_side.png","jeija_solar_panel_side.png", },
-	wield_image = "jeija_solar_panel.png",
+	tiles = { "vl_sensors_sunlight_top.png","vl_sensors_skylight_bottom.png","vl_sensors_skylight_side.png",
+	"vl_sensors_skylight_side.png","vl_sensors_skylight_side.png","vl_sensors_skylight_side.png", },
+	wield_image = "vl_sensors_sunlight_top.png",
+	light_source = 1,
 	wield_scale = { x=1, y=1, z=3 },
 	paramtype = "light",
 	is_ground_content = false,
@@ -47,9 +48,10 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 
 minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 	drawtype = "nodebox",
-	tiles = { "jeija_solar_panel.png","jeija_solar_panel.png","jeija_solar_panel_side.png",
-	"jeija_solar_panel_side.png","jeija_solar_panel_side.png","jeija_solar_panel_side.png", },
-	wield_image = "jeija_solar_panel.png",
+	tiles = { "vl_sensors_sunlight_top.png","vl_sensors_skylight_bottom.png","vl_sensors_skylight_side.png",
+	"vl_sensors_skylight_side.png","vl_sensors_skylight_side.png","vl_sensors_skylight_side.png", },
+	wield_image = "vl_sensors_sunlight_top.png",
+	light_source = 1,
 	wield_scale = { x=1, y=1, z=3 },
 	paramtype = "light",
 	is_ground_content = false,
@@ -62,7 +64,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 		fixed = boxes
 	},
 	groups = {handy=1,axey=1, material_wood=1},
-	description=S("Daylight Sensor"),
+	description=S("Sunlight Sensor"),
 	_tt_help = S("Provides redstone power when in sunlight") .. "\n" ..S("Can be inverted"),
 	_doc_items_longdesc = S("Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.").."\n"..
 		S("In inverted state, they provide redstone power when they are not in sunlight and no power otherwise."),
@@ -124,9 +126,10 @@ minetest.register_abm({
 
 minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 	drawtype = "nodebox",
-	tiles = { "jeija_solar_panel_inverted.png","jeija_solar_panel_inverted.png","jeija_solar_panel_side.png",
-	"jeija_solar_panel_side.png","jeija_solar_panel_side.png","jeija_solar_panel_side.png", },
-	wield_image = "jeija_solar_panel_inverted.png",
+	tiles = { "vl_sensors_moonlight_top.png","vl_sensors_skylight_bottom.png","vl_sensors_skylight_side.png",
+	"vl_sensors_skylight_side.png","vl_sensors_skylight_side.png","vl_sensors_skylight_side.png", },
+	wield_image = "vl_sensors_moonlight_top.png",
+	light_source = 1,
 	wield_scale = { x=1, y=1, z=3 },
 	paramtype = "light",
 	is_ground_content = false,
@@ -161,9 +164,10 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 
 minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 	drawtype = "nodebox",
-	tiles = { "jeija_solar_panel_inverted.png","jeija_solar_panel_inverted.png","jeija_solar_panel_side.png",
-	"jeija_solar_panel_side.png","jeija_solar_panel_side.png","jeija_solar_panel_side.png", },
-	wield_image = "jeija_solar_panel_inverted.png",
+	tiles = { "vl_sensors_moonlight_top.png","vl_sensors_skylight_bottom.png","vl_sensors_skylight_side.png",
+	"vl_sensors_skylight_side.png","vl_sensors_skylight_side.png","vl_sensors_skylight_side.png", },
+	wield_image = "vl_sensors_moonlight_top.png",
+	light_source = 1,
 	wield_scale = { x=1, y=1, z=3 },
 	paramtype = "light",
 	is_ground_content = false,
@@ -177,7 +181,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 	},
 	drop = "mesecons_solarpanel:solar_panel_off",
 	groups = {handy=1,axey=1, not_in_creative_inventory=1, material_wood=1},
-	description=S("Inverted Daylight Sensor"),
+	description=S("Moonlight Sensor"),
 	_doc_items_create_entry = false,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
