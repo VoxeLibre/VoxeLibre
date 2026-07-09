@@ -477,11 +477,6 @@ function mcl_explosions.explode(pos, strength, info, direct, source)
 		info.max_blast_resistance = INDESTRUCT_BLASTRES
 	end
 
-	-- Dont do drops in creative mode
-	if minetest.is_creative_enabled("") then
-		info.drop_chance = 0
-	end
-
 	trace_explode(pos, strength, shape, radius, info, direct, source)
 
 	if info.particles then

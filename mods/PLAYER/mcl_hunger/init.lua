@@ -214,15 +214,44 @@ vl_hudbars.register_hudbar({
 	layers = 1,
 })
 
+--- A list of filters [(player)->boolean?] to determine if a player
+--- is subject to hunger mechanics or not.
+mcl_hunger.hunger_enabled_checks = {
+	function(player)
+		if not active then return false end
+	end
+}
+
+--- Returns true iff player is subject to hunger.
+---@param player core.Player
+---@return boolean
+function mcl_hunger.get_hunger_enabled(player)
+	for _, filter in ipairs(mcl_hunger.hunger_enabled_checks) do
+		local result = filter(player)
+		if result ~= nil then
+			return result
+		end
+	end
+	return true
+end
+
+--- Returns true iff player should see the hunger bar.
+---@param player core.Player
+---@return boolean
+function mcl_hunger.get_hudbar_enabled(player)
+	return mcl_hunger.get_hunger_enabled(player)
+end
+
 --- Hide and unhide bars depending on current mod state.
 ---@param player core.Player
 function mcl_hunger.refresh_player_bars(player)
-	if mcl_hunger.get_active() then
+	local hudbar_enabled = mcl_hunger.get_hudbar_enabled(player)
+	if hudbar_enabled then
 		vl_hudbars.show(player, "hunger")
 	else
 		vl_hudbars.hide(player, "hunger")
 	end
-	if mcl_hunger.get_active() and mcl_hunger.get_debug() then
+	if hudbar_enabled and mcl_hunger.get_debug() then
 		vl_hudbars.show(player, "saturation")
 		vl_hudbars.show(player, "exhaustion")
 	else
@@ -528,3 +557,15 @@ core.register_globalstep(function(dtime)
 		tick_eat_delay(player, dtime)
 	end
 end)
+
+-- mcl_gamemode integration
+if core.get_modpath("mcl_gamemode") then
+	table.insert(mcl_hunger.hunger_enabled_checks, function(player)
+		local gamemode = mcl_gamemode.get_gamemode(player)
+		if gamemode == "creative" then return false end
+	end)
+
+	mcl_gamemode.register_on_gamemode_change(function(player, _, _)
+		mcl_hunger.refresh_player_bars(player)
+	end)
+end
