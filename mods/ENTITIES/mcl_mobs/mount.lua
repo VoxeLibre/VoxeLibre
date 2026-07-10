@@ -1,4 +1,3 @@
-local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
 local mob_class = mcl_mobs.mob_class
 -- based on lib_mount by Blert2112 (edited by TenPlus1)
 
@@ -20,16 +19,16 @@ local function force_detach(player)
 	player:set_properties({visual_size = {x = 1, y = 1} })
 end
 
-minetest.register_on_leaveplayer(force_detach)
+core.register_on_leaveplayer(force_detach)
 
-minetest.register_on_shutdown(function()
-	local players = minetest.get_connected_players()
+core.register_on_shutdown(function()
+	local players = core.get_connected_players()
 	for i = 1, #players do
 		force_detach(players[i])
 	end
 end)
 
-minetest.register_on_dieplayer(function(player)
+core.register_on_dieplayer(function(player)
 	force_detach(player)
 	return true
 end)
@@ -52,8 +51,8 @@ function mcl_mobs.attach(entity, player)
 	player:set_properties({ visual_size = entity.driver_scale })
 
 	-- play sitting/mount animation after short delay
-	minetest.after(0.2, function(name)
-		local player = minetest.get_player_by_name(name)
+	core.after(0.2, function(name)
+		local player = core.get_player_by_name(name)
 		if player then
 			mcl_player.player_set_animation(player, "sit_mount", 30)
 		end
@@ -174,7 +173,7 @@ function mcl_mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_an
 	-- firing arrows
 	if ctrl.LMB and ctrl.sneak and shoots then
 		local pos = entity.object:get_pos()
-		local obj = minetest.add_entity(vector.offset(pos, dir.x * 2.5, 1.5 + dir.y, dir.z * 2.5), arrow)
+		local obj = core.add_entity(vector.offset(pos, dir.x * 2.5, 1.5 + dir.y, dir.z * 2.5), arrow)
 		local ent = obj:get_luaentity()
 		if ent then
 			ent.switch = 1 -- for mob specific arrows
