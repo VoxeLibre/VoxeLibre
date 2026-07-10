@@ -85,8 +85,8 @@ function mcl_mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 		elseif ctrl.down then -- backward
 			speed_change = -entity.accel * velocity_change
 		else -- nothing pressed, reset speed
-		horizontal_speed = 0
-	end
+			horizontal_speed = 0
+		end
 
 		horizontal_speed = horizontal_speed + speed_change
 
