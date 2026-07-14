@@ -509,6 +509,7 @@ mcl_mobs.register_mob("mobs_mc:rover", {
         end
 	end,
 	after_activate = function(self, staticdata, def, dtime)
+		self.object:set_bone_override("held_node", {rotation={vec=vector.new(-math.pi/2, 0, 0)}})
 		if not self._taken_node or self._taken_node == "" then
 			self.animation = select_rover_animation("normal")
 			self:set_animation(self.animation.current)
