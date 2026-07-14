@@ -1,9 +1,9 @@
-local modname = minetest.get_current_modname()
-local modpath = minetest.get_modpath(modname)
-local S = minetest.get_translator(modname)
+local modname = core.get_current_modname()
+local modpath = core.get_modpath(modname)
+local S = core.get_translator(modname)
 
 
-minetest.register_tool("mcl_shepherd:shepherd_staff", {
+core.register_tool("mcl_shepherd:shepherd_staff", {
 	description = S("Shepherd Staff"),
 	_doc_items_longdesc = "", -- TODO
 	_doc_items_usagehelp = "", -- TODO
@@ -27,15 +27,15 @@ minetest.register_tool("mcl_shepherd:shepherd_staff", {
 })
 
 if mcl_util.is_it_christmas() then
-	minetest.register_globalstep(function(dtime)
-		local time = minetest.get_timeofday()
+	core.register_globalstep(function(dtime)
+		local time = core.get_timeofday()
 		if time < 0.005 or time > 0.995 then
-			for _, player in pairs(minetest.get_connected_players()) do
+			for _, player in pairs(core.get_connected_players()) do
 				local meta = player:get_meta()
 				local sp = meta:get_int("mcl_shepherd:special")
 				if sp == 0 and player:get_wielded_item():get_definition().groups.staff then
 					local has_sheep = false
-					for _, obj in pairs(minetest.get_objects_inside_radius(player:get_pos(), 3)) do
+					for _, obj in pairs(core.get_objects_inside_radius(player:get_pos(), 3)) do
 						local ent = obj:get_luaentity()
 						if ent and ent.name == "mobs_mc:sheep" then
 							has_sheep = true
@@ -43,15 +43,15 @@ if mcl_util.is_it_christmas() then
 						end
 					end
 					if has_sheep then
-						minetest.sound_play(
+						core.sound_play(
 							{name="shepherd-midnight", gain=3, pitch=1.0},
 							{to_player=player:get_player_name(), gain=1.0, fade=0.0, pitch=1.0},
 							false
 						)
 						meta:set_int("mcl_shepherd:special", 1)
 						mcl_weather.skycolor.update_sky_color({player})
-						minetest.after(45, function(name)
-							local player = minetest.get_player_by_name(name)
+						core.after(45, function(name)
+							local player = core.get_player_by_name(name)
 							if not player then return end
 							local meta = player:get_meta()
 							meta:set_int("mcl_shepherd:special", 0)
@@ -62,13 +62,13 @@ if mcl_util.is_it_christmas() then
 			end
 		end
 	end)
-	minetest.register_on_joinplayer(function(player)
+	core.register_on_joinplayer(function(player)
 		local meta = player:get_meta()
 		meta:set_int("mcl_shepherd:special", 0)
 	end)
 end
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_shepherd:shepherd_staff",
 	recipe = {
 		{"","","mcl_core:stick"},
@@ -76,7 +76,7 @@ minetest.register_craft({
 		{"mcl_core:stick","",""},
 	}
 })
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_shepherd:shepherd_staff",
 	recipe = {
 		{"mcl_core:stick", "", ""},
@@ -84,7 +84,7 @@ minetest.register_craft({
 		{"","","mcl_core:stick"},
 	}
 })
-minetest.register_craft({
+core.register_craft({
 	type = "fuel",
 	recipe = "mcl_shepherd:shepherd_staff",
 	burntime = 15,
