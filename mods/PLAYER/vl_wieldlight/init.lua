@@ -2,7 +2,28 @@ if core.settings:get_bool("enable_vl_wieldlight", true) then
 
 local players = {} -- areas impacted by player lights
 
-local ldt = {} -- reusable buffer
+local cdt = {} -- reusable cid buffer
+local ldt = {} -- reusable light buffer
+
+local shade_ci_cache -- cache of content IDs for nodes that cast shade
+-- fill the above once everything (including overrides) is loaded
+core.register_on_mods_loaded(function() core.after(0, function()
+	shade_ci_cache = {}
+	for n, def in pairs(core.registered_nodes) do
+		if def.paramtype == "none" or def.groups.solid == 1 or def.sunlight_propagates == false then
+			shade_ci_cache[core.get_content_id(n)] = true
+		end
+	end
+end) end)
+
+local DIRS = {
+	vector.new(-1, 0, 0),
+	vector.new(0, -1, 0),
+	vector.new(0, 0, -1),
+	vector.new(1, 0, 0),
+	vector.new(0, 1, 0),
+	vector.new(0, 0, 1)
+}
 
 local function wieldedlight(name)
 	if not name then return end
@@ -28,20 +49,39 @@ local function wieldedlight(name)
 		local p1 = vector.offset(pos, -ls, -ls, -ls)
 		local p2 = vector.offset(pos, ls, ls, ls)
 		local lvm = VoxelManip(p1, p2)
+		lvm:get_data(cdt) -- flat array of cid values
 		lvm:get_light_data(ldt) -- flat array of param1 values
-		-- Get iterator for the sub-area of the LVM
+		-- Get indexer for the sub-area of the LVM
 		local emin, emax = lvm:get_emerged_area()
 		local area = VoxelArea(emin, emax)
-		local it = area:iterp(p1, p2)
-		local i = it()
-		while i do
-			local vd = vector.abs(area:position(i)-pos) -- Manhattan distance
-			local l = math.max(ls-vd.x-vd.y-vd.z, 0) -- scalarization to light value
-			local n = math.floor(ldt[i]/16) -- current night lightbank
-			local d = math.max(ldt[i] - n*16, l) -- amended day lightbank
-			n = math.max(n, l) -- amended night lightbank
-			ldt[i] = d + n*16 -- pack into param1 again
-			i = it()
+		-- Run a DFS light spread
+		local stack = {{pos, 1, ls}} -- DFS stack
+		while #stack > 0 do
+			local frame = stack[#stack]
+			local p = frame[1] -- position
+			local dir = frame[2] -- next direction to check
+			local l = frame[3] -- light value to spread
+			for j=dir, 7 do
+				if j == 7 then
+					table.remove(stack)
+					break
+				end
+				local pn = p + DIRS[j]
+				local i = area:indexp(pn)
+				if not shade_ci_cache[cdt[i]] then
+					local n = math.floor(ldt[i]/16) -- current night lightbank
+					local d = math.max(ldt[i] - n*16, l) -- amended day lightbank
+					if l > n then
+						n = math.max(n, l) -- amended night lightbank
+						ldt[i] = d + n*16 -- pack into param1 again
+						if l > 1 then
+							frame[2] = j + 1
+							table.insert(stack, {pn, 1, l-1})
+							break
+						end
+					end
+				end
+			end
 		end
 		lvm:set_light_data(ldt)
 		lvm:write_to_map(false)
@@ -51,14 +91,18 @@ local function wieldedlight(name)
 end
 
 local p_queue = {} -- array-based cyclic queue
+local p_index = {} -- hashmap index of the above (reverse)
 local i_queue = 1 -- queue current element index
 
 core.register_on_joinplayer(function(player)
 	-- Add player into queue
-	table.insert(p_queue, player:get_player_name())
+	local name = player:get_player_name()
+	table.insert(p_queue, name)
+	p_index[name] = #p_queue
 end)
 
 core.register_globalstep(function(dtime)
+	if not shade_ci_cache then return end
 	-- Iterate part of the queue
 	local iter_num = math.ceil(dtime * #p_queue)
 	for i=0, iter_num do
@@ -72,8 +116,9 @@ core.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 	-- Remove player from the queue
 	-- Moving last element into the hole is fine in this usecase
-	p_queue[table.find(name)] = p_queue[#p_queue]
+	p_queue[p_index[name]] = p_queue[#p_queue]
 	p_queue[#p_queue] = nil
+	p_index[name] = nil
 	-- Cleanup wieldlight after player
 	local p = players[name]
 	if p then
