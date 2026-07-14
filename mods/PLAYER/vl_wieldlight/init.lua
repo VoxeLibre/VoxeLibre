@@ -10,7 +10,7 @@ local shade_ci_cache -- cache of content IDs for nodes that cast shade
 core.register_on_mods_loaded(function() core.after(0, function()
 	shade_ci_cache = {}
 	for n, def in pairs(core.registered_nodes) do
-		if def.paramtype == "none" or def.groups.solid == 1 or def.sunlight_propagates == false then
+		if def.paramtype == "none" or def.groups.solid == 1 then
 			shade_ci_cache[core.get_content_id(n)] = true
 		end
 	end
@@ -37,6 +37,7 @@ local function wieldedlight(name)
 	if not pos then return end
 	pos = vector.round(pos) -- rounding needed for LVM
 
+	local start = core.get_us_time()
 	-- Fix light at old position
 	local old_p = players[name]
 	if old_p then
@@ -58,19 +59,15 @@ local function wieldedlight(name)
 		-- Get indexer for the sub-area of the LVM
 		local emin, emax = lvm:get_emerged_area()
 		local area = VoxelArea(emin, emax)
-		-- Run a DFS light spread
-		local start = core.get_us_time()
-		local stack = {{pos, 1, ls}} -- DFS stack
-		while #stack > 0 do
-			local frame = stack[#stack]
+		-- Run a BFS light spread
+		local queue = {{pos, ls}} -- BFS queue
+		local head = 1 -- queue head index
+		while head <= #queue do
+			local frame = queue[head]
 			local p = frame[1] -- position
-			local dir = frame[2] -- next direction to check
-			local l = frame[3] -- light value to spread
-			for j=dir, 7 do
-				if j == 7 then
-					table.remove(stack)
-					break
-				end
+			local l = frame[2] -- light value to spread
+			head = head + 1
+			for j=1, 6 do
 				local pn = p + DIRS[j]
 				local i = area:indexp(pn)
 				if not shade_ci_cache[cdt[i]] then
@@ -80,22 +77,20 @@ local function wieldedlight(name)
 						n = math.max(n, l) -- amended night lightbank
 						ldt[i] = d + n*16 -- pack into param1 again
 						if l > 1 then
-							frame[2] = j + 1
-							table.insert(stack, {pn, 1, l-1})
-							break
+							table.insert(queue, {pn, l-1})
 						end
 					end
 				end
 			end
 		end
-		p_times[name] = core.get_us_time() - start + p_times[name]
-		p_count[name] = p_count[name] + 1
-		player:hud_change(p_thuds[name], "text", string.format("%f", p_times[name] / p_count[name] / 1e6))
 		lvm:set_light_data(ldt)
 		lvm:write_to_map(false)
 		if lvm.close then lvm:close() end
 		players[name] = {p1, p2}
 	end
+	p_times[name] = core.get_us_time() - start + p_times[name]
+	p_count[name] = p_count[name] + 1
+	player:hud_change(p_thuds[name], "text", string.format("%f", p_times[name] / p_count[name] / 1e6))
 end
 
 local p_queue = {} -- array-based cyclic queue
