@@ -60,18 +60,26 @@ local function get_text(itemstack)
 	return text
 end
 
-local function make_description(title, author, generation)
-	local desc
+local function make_name(title, generation)
 	if generation == 0 then
-		desc = S("“@1”", title)
+		return S("“@1”", title)
 	elseif generation == 1 then
-		desc = S("Copy of “@1”", title)
+		return S("Copy of “@1”", title)
 	elseif generation == 2 then
-		desc = S("Copy of Copy of “@1”", title)
+		return S("Copy of Copy of “@1”", title)
 	else
-		desc = S("Tattered Book")
+		return S("Tattered Book")
 	end
-	desc = desc .. "\n" .. minetest.colorize(mcl_colors.GRAY, S("by @1", author))
+end
+
+local function get_desc_tail(author)
+	return core.colorize(mcl_colors.GRAY, S("by @1", author))
+end
+
+-- TODO is this function obsolete?
+local function make_description(title, author, generation)
+	local desc = make_name(title, generation)
+	desc = desc .. "\n" .. get_desc_tail(author)
 	return desc
 end
 
@@ -181,6 +189,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			meta:set_string("title", title)
 			meta:set_string("author", name)
 			meta:set_string("text", text)
+			meta:set_string("name", make_name(title, 0))
 			meta:set_string("description", make_description(title, name, 0))
 
 			-- The book copy counter. 0 = original, 1 = copy of original, 2 = copy of copy of original, …
@@ -195,6 +204,26 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if book:get_name() == "mcl_books:writable_book" then
 			write(book, player, { type = "nothing" })
 		end
+	end
+end)
+
+tt.register_snippet(function(itemstring, _, itemstack)
+	if not itemstack or itemstring ~= "mcl_books:written_book" then return end
+
+	local meta = itemstack:get_meta()
+	if not meta or not meta:get("title") then return end
+
+	if not meta:get("name") then
+		meta:set_string("name", make_name(meta:get_string("title"), meta:get_int("generation")))
+	end
+
+	return get_desc_tail(meta:get_string("author"))
+end)
+
+vl_legacy.register_item_conversion("mcl_books:written_book", nil, function(itemstack)
+	local meta = itemstack:get_meta()
+	if meta and not meta:get("name") then
+		meta:set_string("name", make_name(meta:get_string("title"), meta:get_int("generation")))
 	end
 end)
 
@@ -281,8 +310,8 @@ minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craf
 			generation = 1
 		end
 
-		local desc = make_description(title, author, generation)
-		imeta:set_string("description", desc)
+		imeta:set_string("name", make_name(title, generation))
+		imeta:set_string("description", make_description(title, author, generation))
 		return itemstack
 	end
 end)
@@ -306,37 +335,40 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 
 	-- copy of the book
 	local text = get_text(original)
+	local ometa = original:get_meta()
 	if not text or text == "" then
-		local copymeta = original:get_metadata()
-		itemstack:set_metadata(copymeta)
-	else
-		local ometa = original:get_meta()
-		local generation = ometa:get_int("generation")
-
-		-- No copy of copy of copy of book allowed
-		if generation >= 2 then
-			return ItemStack("")
+		local copymeta = core.deserialize(ometa:get_string(""))
+		if type(copymeta) == "table" then
+			for k, v in pairs(copymeta) do
+				ometa:set_string(tostring(k), core.serialize(v))
+			end
 		end
-
-		-- Copy metadata
-		local imeta = itemstack:get_meta()
-		local title = cap_text_length(ometa:get_string("title"), max_title_length)
-		local author = ometa:get_string("author")
-		imeta:set_string("title", title)
-		imeta:set_string("author", author)
-		imeta:set_string("text", cap_text_length(text, max_text_length))
-
-		-- Increase book generation and update description
-		generation = generation + 1
-		if generation < 1 then
-			generation = 1
-		end
-
-		local desc = make_description(title, author, generation)
-
-		imeta:set_string("description", desc)
-		imeta:set_int("generation", generation)
 	end
+	local generation = ometa:get_int("generation")
+
+	-- No copy of copy of copy of book allowed
+	if generation >= 2 then
+		return ItemStack("")
+	end
+
+	-- Copy metadata
+	local imeta = itemstack:get_meta()
+	local title = cap_text_length(ometa:get_string("title"), max_title_length)
+	local author = ometa:get_string("author")
+	imeta:set_string("title", title)
+	imeta:set_string("author", author)
+	imeta:set_string("text", cap_text_length(text, max_text_length))
+
+	-- Increase book generation and update description
+	generation = generation + 1
+	if generation < 1 then
+		generation = 1
+	end
+
+	imeta:set_string("name", make_name(title, generation))
+	imeta:set_string("description", make_description(title, author, generation))
+	imeta:set_int("generation", generation)
+
 	-- put the book with metadata back in the craft grid
 	craft_inv:set_stack("craft", index, original)
 end)

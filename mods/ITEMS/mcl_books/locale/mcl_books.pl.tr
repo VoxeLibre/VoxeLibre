@@ -2,8 +2,8 @@
 Book=Książka
 Books are used to make bookshelves and book and quills.=Książki są używane do tworzenia półek z książkami oraz książek z piórem.
 “@1”=„@1”
-Copy of “@1”=Kopia „@”
-Copy of Copy of “@1”=Kopia kopii „@”
+Copy of “@1”=Kopia „@1”
+Copy of Copy of “@1”=Kopia kopii „@1”
 Tattered Book=Podarta książka
 by @1=autorstwa @1
 # as in “to sign a book”
