@@ -25,6 +25,10 @@ local DIRS = {
 	vector.new(0, 0, 1)
 }
 
+local p_times = {}
+local p_count = {}
+local p_thuds = {}
+
 local function wieldedlight(name)
 	if not name then return end
 	local player = core.get_player_by_name(name)
@@ -55,6 +59,7 @@ local function wieldedlight(name)
 		local emin, emax = lvm:get_emerged_area()
 		local area = VoxelArea(emin, emax)
 		-- Run a DFS light spread
+		local start = core.get_us_time()
 		local stack = {{pos, 1, ls}} -- DFS stack
 		while #stack > 0 do
 			local frame = stack[#stack]
@@ -83,6 +88,9 @@ local function wieldedlight(name)
 				end
 			end
 		end
+		p_times[name] = core.get_us_time() - start + p_times[name]
+		p_count[name] = p_count[name] + 1
+		player:hud_change(p_thuds[name], "text", string.format("%f", p_times[name] / p_count[name] / 1e6))
 		lvm:set_light_data(ldt)
 		lvm:write_to_map(false)
 		if lvm.close then lvm:close() end
@@ -99,6 +107,16 @@ core.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	table.insert(p_queue, name)
 	p_index[name] = #p_queue
+	p_times[name] = 0
+	p_count[name] = 0
+	p_thuds[name] = player:hud_add{
+		type = "text",
+		number = 0xFFFFFF,
+		size = 25,
+		position = {x = 0.5, y = 0},
+		offset = {x = 0, y = 30},
+		alignment = {x = 0, y = 1}
+	}
 end)
 
 core.register_globalstep(function(dtime)
