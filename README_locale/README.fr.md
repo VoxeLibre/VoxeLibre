@@ -99,7 +99,7 @@ pour obtenir le contenu le plus récent et nous aider à trouver des bugs avant 
   et les [Projects](/VoxeLibre/VoxeLibre/projects) thématiques pour rendre le jeu meilleur
 * Assurer une bonne prise en charge de la localisation, en permettant des traductions
   dans autant de langues que possible
-* [Maintenir une communauté conviviale et inclusive de joueurs et de développeurs](CODE_OF_CONDUCT.md)
+* [Maintenir une communauté conviviale et inclusive de joueurs et de développeurs](../CODE_OF_CONDUCT.md)
 
 
 ## Voir aussi
