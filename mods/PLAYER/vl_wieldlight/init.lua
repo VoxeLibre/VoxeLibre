@@ -18,7 +18,7 @@ core.register_on_mods_loaded(function() core.after(0, function()
 		if def.paramtype == "none" then
 			shade_ci_cache[core.get_content_id(n)] = true
 		end
-		if def.paramtype ~= "none" and def.light_source and def.light_source > 0 then
+		if def.light_source and def.light_source > 0 then
 			light_ci_cache[core.get_content_id(n)] = def.light_source
 		end
 	end
@@ -52,7 +52,9 @@ local function wieldedlight(name)
 	local ls = player:get_wielded_item():get_definition().light_source
 	local o_ls = player:get_inventory():get_stack("offhand", 1):get_definition().light_source
 	if o_ls and (not ls or o_ls > ls) then ls = o_ls end
-	local cl = core.get_node_light(pos)
+	local nn = core.get_node(pos).name
+	local def = nn and core.registered_nodes[nn]
+	local cl = def and def.light_source
 	if not cl or ls and cl > ls then ls = nil end -- further calculations would be no-op
 	local np1, np2 -- new LVM bounds
 	if ls and ls > 0 then
@@ -127,6 +129,8 @@ local function wieldedlight(name)
 										table.insert(s_queue, {i, light_ci_cache[cdt[i]]-1})
 									end
 								end
+							elseif ldt[i] and light_ci_cache[cdt[i]] and light_ci_cache[cdt[i]] > 1 then
+								table.insert(s_queue, {i, light_ci_cache[cdt[i]]-1})
 							end
 						end
 					end
