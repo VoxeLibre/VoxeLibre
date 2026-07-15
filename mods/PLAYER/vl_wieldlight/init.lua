@@ -1,5 +1,8 @@
 if core.settings:get_bool("enable_vl_wieldlight", true) then
 
+local max_players_per_step = tonumber(core.settings:get("vl_wieldlight_player_step_lim"))
+if max_players_per_step and max_players_per_step < 0 then max_players_per_step = nil end
+
 local players = {} -- positions and powers of player lights
 
 local cdt = {} -- reusable cid buffer
@@ -191,6 +194,9 @@ core.register_globalstep(function(dtime)
 	if not shade_ci_cache then return end
 	-- Iterate part of the queue
 	local iter_num = math.ceil(dtime * #p_queue)
+	if max_players_per_step and iter_num > max_players_per_step then
+		iter_num = max_players_per_step
+	end
 	for i=0, iter_num do
 		wieldedlight(p_queue[i_queue])
 		i_queue = i_queue + 1
