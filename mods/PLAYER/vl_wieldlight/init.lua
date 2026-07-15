@@ -1,6 +1,6 @@
 if core.settings:get_bool("enable_vl_wieldlight", true) then
 
-local players = {} -- areas impacted by player lights
+local players = {} -- positions and powers of player lights
 
 local cdt = {} -- reusable cid buffer
 local ldt = {} -- reusable light buffer
@@ -29,6 +29,10 @@ local p_times = {}
 local p_count = {}
 local p_thuds = {}
 
+local function chebyshev(v1, v2)
+	return math.max(math.abs(v1.x-v2.x), math.abs(v1.y-v2.y), math.abs(v1.z-v2.z))
+end
+
 local function wieldedlight(name)
 	if not name then return end
 	local player = core.get_player_by_name(name)
@@ -38,55 +42,129 @@ local function wieldedlight(name)
 	pos = vector.round(pos) -- rounding needed for LVM
 
 	local start = core.get_us_time()
+	local p1, p2 -- LVM bounds
+	local double_run = false
 	-- Fix light at old position
 	local old_p = players[name]
 	if old_p then
-		core.fix_light(old_p[1], old_p[2])
-		players[name] = nil
+		local old_po = old_p[1] -- old position
+		local old_ls = old_p[2] -- old_strength
+		p1 = vector.offset(old_po, -old_ls, -old_ls, -old_ls)
+		p2 = vector.offset(old_po, old_ls, old_ls, old_ls)
+		double_run = chebyshev(old_p[1], pos) > 16
 	end
 
 	-- Light source power
 	local ls = player:get_wielded_item():get_definition().light_source
 	local o_ls = player:get_inventory():get_stack("offhand", 1):get_definition().light_source
 	if o_ls and (not ls or o_ls > ls) then ls = o_ls end
+	local np1, np2 -- new LVM bounds
 	if ls and ls > 0 then
-		-- Acquire minimum LVM for the light source power
-		local p1 = vector.offset(pos, -ls, -ls, -ls)
-		local p2 = vector.offset(pos, ls, ls, ls)
-		local lvm = VoxelManip(p1, p2)
-		lvm:get_data(cdt) -- flat array of cid values
-		lvm:get_light_data(ldt) -- flat array of param1 values
-		-- Get indexer for the sub-area of the LVM
-		local emin, emax = lvm:get_emerged_area()
-		local area = VoxelArea(emin, emax)
-		-- Run a BFS light spread
-		local queue = {{pos, ls}} -- BFS queue
-		local head = 1 -- queue head index
-		while head <= #queue do
-			local frame = queue[head]
-			local p = frame[1] -- position
-			local l = frame[2] -- light value to spread
-			head = head + 1
-			for j=1, 6 do
-				local pn = p + DIRS[j]
-				local i = area:indexp(pn)
-				if not shade_ci_cache[cdt[i]] then
-					local n = math.floor(ldt[i]/16) -- current night lightbank
-					local d = math.max(ldt[i] - n*16, l) -- amended day lightbank
-					if l > n then
-						n = math.max(n, l) -- amended night lightbank
-						ldt[i] = d + n*16 -- pack into param1 again
-						if l > 1 then
-							table.insert(queue, {pn, l-1})
+		np1 = vector.offset(pos, -ls, -ls, -ls)
+		np2 = vector.offset(pos, ls, ls, ls)
+		if not double_run and old_p then -- areas are very close together, can go on a single LVM
+			for _, i in ipairs{"x", "y", "z"} do
+				-- Acquire minimum LVM for the light source power
+				if np1[i] < p1[i] then p1[i] = np1[i] end
+				if np2[i] > p2[i] then p2[i] = np2[i] end
+			end
+		end
+	else
+		double_run = false
+	end
+	if p1 or np1 then
+		local lvm, emin, emax, area, head
+		local s_queue = {}
+		if not double_run and np1 then
+			table.insert(s_queue, {pos, ls})
+		end
+		-- Acquire the LVM
+		if p1 then
+			lvm = VoxelManip(p1, p2)
+		elseif np1 then
+			lvm = VoxelManip(np1, np2)
+		end
+		if lvm then
+			lvm:get_data(cdt) -- flat array of cid values
+			lvm:get_light_data(ldt) -- flat array of param1 values
+			-- Get indexer for the sub-area of the LVM
+			emin, emax = lvm:get_emerged_area()
+			area = VoxelArea(emin, emax)
+		end
+		if p1 then
+			local oi = area:indexp(old_p[1])
+			if cdt[oi] ~= core.CONTENT_IGNORE and math.floor(ldt[oi]/16) == old_p[2] then
+				ldt[oi] = ldt[oi] - ldt[oi]%16
+				-- Run a BFS light removal
+				local r_queue = {old_p[1]} -- removal BFS queue
+				head = 1 -- queue head index
+				while head <= #r_queue do
+					local p = r_queue[head] -- position
+					local l = math.floor(ldt[area:indexp(p)] / 16)
+					head = head + 1
+					for j=1, 6 do
+						local pn = p + DIRS[j]
+						local i = area:indexp(pn)
+						if not shade_ci_cache[cdt[i]] then
+							local n = math.floor(ldt[i]/16) -- current night lightbank
+							if n >= l then
+								table.insert(s_queue, {pn, n-1})
+							elseif n > 0 then
+								ldt[i] = ldt[i] - n*16
+								table.insert(r_queue, pn)
+							end
 						end
 					end
 				end
 			end
 		end
+		function bfs_light_spread()
+			local ni = area:indexp(pos)
+			ldt[ni] = ldt[ni] + ls*16
+			head = 1 -- queue head index
+			while head <= #s_queue do
+				local frame = s_queue[head]
+				local p = frame[1] -- position
+				local l = frame[2] -- light value to spread
+				head = head + 1
+				for j=1, 6 do
+					local pn = p + DIRS[j]
+					local i = area:indexp(pn)
+					if not shade_ci_cache[cdt[i]] then
+						local n = math.floor(ldt[i]/16) -- current night lightbank
+						local d = ldt[i] - n*16 -- current day lightbank
+						if l > n then
+							n = math.max(n, l) -- amended night lightbank
+							ldt[i] = d + n*16 -- pack into param1 again
+							if l > 1 then
+								table.insert(s_queue, {pn, l-1})
+							end
+						end
+					end
+				end
+			end
+		end
+		bfs_light_spread()
+		if double_run then -- reinitialize LVM for the second area
+			lvm:set_light_data(ldt)
+			lvm:write_to_map(false)
+			if lvm.close then lvm:close() end
+			lvm:initialize(np1, np2)
+			lvm:read_from_map(np1, np2)
+			lvm:get_data(cdt) -- flat array of cid values
+			lvm:get_light_data(ldt) -- flat array of param1 values
+			emin, emax = lvm:get_emerged_area()
+			area = VoxelArea(emin, emax)
+			table.insert(s_queue, {pos, ls})
+			bfs_light_spread()
+		end
 		lvm:set_light_data(ldt)
 		lvm:write_to_map(false)
 		if lvm.close then lvm:close() end
-		players[name] = {p1, p2}
+		players[name] = {pos, ls, np1, np2}
+	end
+	if not np1 then
+		players[name] = nil
 	end
 	p_times[name] = core.get_us_time() - start + p_times[name]
 	p_count[name] = p_count[name] + 1
@@ -135,7 +213,7 @@ core.register_on_leaveplayer(function(player)
 	-- Cleanup wieldlight after player
 	local p = players[name]
 	if p then
-		core.fix_light(p[1], p[2])
+		core.fix_light(p[3], p[4])
 		players[name] = nil
 	end
 end)
@@ -143,7 +221,7 @@ end)
 -- Cleanup wieldlights on shutdown
 core.register_on_shutdown(function()
 	for _, p in pairs(players) do
-		core.fix_light(p[1], p[2])
+		core.fix_light(p[3], p[4])
 	end
 end)
 
