@@ -124,7 +124,7 @@ local function wieldedlight(name)
 									table.insert(r_queue, {i, n})
 								end
 								if n < l and light_ci_cache[cdt[i]] then
-									ldt[i] = ldt[i] + light_ci_cache[cdt[i]]
+									ldt[i] = ldt[i] + light_ci_cache[cdt[i]] *16
 									if light_ci_cache[cdt[i]] > 1 then
 										table.insert(s_queue, {i, light_ci_cache[cdt[i]]-1})
 									end
@@ -145,7 +145,7 @@ local function wieldedlight(name)
 			local ni = area:indexp(pos)
 			ldt[ni] = ldt[ni]%16 + ls*16
 		end
-		function bfs_light_spread()
+		local function bfs_light_spread()
 			head = 1 -- queue head index
 			while head <= #s_queue do
 				local frame = s_queue[head]
@@ -201,14 +201,11 @@ local function wieldedlight(name)
 end
 
 local p_queue = {} -- array-based cyclic queue
-local p_index = {} -- hashmap index of the above (reverse)
 local i_queue = 1 -- queue current element index
 
 core.register_on_joinplayer(function(player)
 	-- Add player into queue
-	local name = player:get_player_name()
-	table.insert(p_queue, name)
-	p_index[name] = #p_queue
+	table.insert(p_queue, player:get_player_name())
 end)
 
 core.register_globalstep(function(dtime)
@@ -218,7 +215,7 @@ core.register_globalstep(function(dtime)
 	if max_players_per_step and iter_num > max_players_per_step then
 		iter_num = max_players_per_step
 	end
-	for i=0, iter_num do
+	for i=1, iter_num do
 		wieldedlight(p_queue[i_queue])
 		i_queue = i_queue + 1
 		if i_queue > #p_queue then i_queue = 1 end
@@ -227,11 +224,12 @@ end)
 
 core.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
-	-- Remove player from the queue
-	-- Moving last element into the hole is fine in this usecase
-	p_queue[p_index[name]] = p_queue[#p_queue]
-	p_queue[#p_queue] = nil
-	p_index[name] = nil
+	local i = table.indexof(p_queue, name)
+	if i > 0 then
+		table.remove(p_queue, i)
+		if i < i_queue then i_queue = i_queue - 1 end
+	end
+	if i_queue > #p_queue then i_queue = 1 end
 	-- Cleanup wieldlight after player
 	local p = players[name]
 	if p then
