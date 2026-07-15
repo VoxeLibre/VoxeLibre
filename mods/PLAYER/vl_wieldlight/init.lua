@@ -9,12 +9,17 @@ local cdt = {} -- reusable cid buffer
 local ldt = {} -- reusable light buffer
 
 local shade_ci_cache -- cache of content IDs for nodes that cast shade
+local light_ci_cache -- cache of content IDs for light sources
 -- fill the above once everything (including overrides) is loaded
 core.register_on_mods_loaded(function() core.after(0, function()
 	shade_ci_cache = {}
+	light_ci_cache = {}
 	for n, def in pairs(core.registered_nodes) do
-		if def.paramtype == "none" or def.groups.solid == 1 then
+		if def.paramtype == "none" then
 			shade_ci_cache[core.get_content_id(n)] = true
+		end
+		if def.paramtype ~= "none" and def.light_source and def.light_source > 0 then
+			light_ci_cache[core.get_content_id(n)] = def.light_source
 		end
 	end
 end) end)
@@ -47,6 +52,8 @@ local function wieldedlight(name)
 	local ls = player:get_wielded_item():get_definition().light_source
 	local o_ls = player:get_inventory():get_stack("offhand", 1):get_definition().light_source
 	if o_ls and (not ls or o_ls > ls) then ls = o_ls end
+	local cl = core.get_node_light(pos)
+	if not cl or ls and cl > ls then ls = nil end -- further calculations would be no-op
 	local np1, np2 -- new LVM bounds
 	if ls and ls > 0 then
 		np1 = vector.offset(pos, -ls, -ls, -ls)
@@ -93,9 +100,10 @@ local function wieldedlight(name)
 			local oi = area:indexp(old_p[1])
 			if cdt[oi] ~= core.CONTENT_IGNORE then
 				local startlight = math.floor(ldt[oi]/16)
-				if startlight > 0 then
+				local pls = light_ci_cache[cdt[oi]]
+				if startlight > 0 and (not pls or pls < startlight) then
 					local r_queue = {{area:indexp(old_p[1]), startlight}} -- removal BFS queue
-					ldt[oi] = ldt[oi] - startlight*16
+					ldt[oi] = ldt[oi]%16
 					-- Run a BFS light removal
 					head = 1 -- queue head index
 					while head <= #r_queue do
@@ -105,16 +113,26 @@ local function wieldedlight(name)
 						head = head + 1
 						for _, dir in ipairs(DIRS) do
 							local i = p_i + dir
-							if not shade_ci_cache[cdt[i]] then
+							if ldt[i] and not shade_ci_cache[cdt[i]] then
 								local n = math.floor(ldt[i]/16) -- current night lightbank
 								if n >= l then -- light from other source, spread back
 									table.insert(s_queue, {i, n-1})
 								elseif n > 0 then -- light from this source, clear
-									ldt[i] = ldt[i] - n*16
+									ldt[i] = ldt[i]%16
 									table.insert(r_queue, {i, n})
+								end
+								if n < l and light_ci_cache[cdt[i]] then
+									ldt[i] = ldt[i] + light_ci_cache[cdt[i]]
+									if light_ci_cache[cdt[i]] > 1 then
+										table.insert(s_queue, {i, light_ci_cache[cdt[i]]-1})
+									end
 								end
 							end
 						end
+					end
+					if pls and pls > 0 then
+						table.insert(s_queue, {oi, pls-1})
+						ldt[oi] = ldt[oi]%16 + pls*16
 					end
 				end
 			end
@@ -135,8 +153,7 @@ local function wieldedlight(name)
 					if ldt[i] and not shade_ci_cache[cdt[i]] then
 						local n = math.floor(ldt[i]/16) -- current night lightbank
 						if l > n then
-							local d = ldt[i] - n*16 -- current day lightbank
-							ldt[i] = d + l*16 -- pack into param1 again
+							ldt[i] = ldt[i]%16 + l*16 -- pack into param1 again
 							if l > 1 then
 								table.insert(s_queue, {i, l-1})
 							end
