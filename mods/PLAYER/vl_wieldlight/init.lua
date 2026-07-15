@@ -16,10 +16,6 @@ core.register_on_mods_loaded(function() core.after(0, function()
 	end
 end) end)
 
-local p_times = {}
-local p_count = {}
-local p_thuds = {}
-
 local function chebyshev(v1, v2)
 	return math.max(math.abs(v1.x-v2.x), math.abs(v1.y-v2.y), math.abs(v1.z-v2.z))
 end
@@ -32,7 +28,6 @@ local function wieldedlight(name)
 	if not pos then return end
 	pos = vector.round(pos) -- rounding needed for LVM
 
-	local start = core.get_us_time()
 	local p1, p2 -- LVM bounds
 	local double_run = false
 	-- Fix light at old position
@@ -179,9 +174,6 @@ local function wieldedlight(name)
 	if not np1 then
 		players[name] = nil
 	end
-	p_times[name] = core.get_us_time() - start + p_times[name]
-	p_count[name] = p_count[name] + 1
-	player:hud_change(p_thuds[name], "text", string.format("%f", p_times[name] / p_count[name] / 1e6))
 end
 
 local p_queue = {} -- array-based cyclic queue
@@ -193,16 +185,6 @@ core.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	table.insert(p_queue, name)
 	p_index[name] = #p_queue
-	p_times[name] = 0
-	p_count[name] = 0
-	p_thuds[name] = player:hud_add{
-		type = "text",
-		number = 0xFFFFFF,
-		size = 25,
-		position = {x = 0.5, y = 0},
-		offset = {x = 0, y = 30},
-		alignment = {x = 0, y = 1}
-	}
 end)
 
 core.register_globalstep(function(dtime)
