@@ -16,15 +16,6 @@ core.register_on_mods_loaded(function() core.after(0, function()
 	end
 end) end)
 
-local DIRS = {
-	{-1, 0, 0},
-	{0, -1, 0},
-	{0, 0, -1},
-	{1, 0, 0},
-	{0, 1, 0},
-	{0, 0, 1}
-}
-
 local p_times = {}
 local p_count = {}
 local p_thuds = {}
@@ -73,11 +64,9 @@ local function wieldedlight(name)
 		double_run = false
 	end
 	if p1 or np1 then
+		local DIRS
 		local lvm, emin, emax, area, head
 		local s_queue = {}
-		if not double_run and np1 then
-			table.insert(s_queue, {pos.x, pos.y, pos.z, ls-1})
-		end
 		-- Acquire the LVM
 		if p1 then
 			lvm = VoxelManip(p1, p2)
@@ -90,35 +79,41 @@ local function wieldedlight(name)
 			-- Get indexer for the sub-area of the LVM
 			emin, emax = lvm:get_emerged_area()
 			area = VoxelArea(emin, emax)
+			DIRS = {
+				-1,            -- -X
+				-area.ystride, -- -Y
+				-area.zstride, -- -Z
+				1,             -- +X
+				area.ystride,  -- +Y
+				area.zstride   -- +Z
+			}
+		end
+		if np1 and not double_run then
+			table.insert(s_queue, {area:indexp(pos), ls-1})
 		end
 		if p1 then
 			local oi = area:indexp(old_p[1])
 			if cdt[oi] ~= core.CONTENT_IGNORE then
 				local startlight = math.floor(ldt[oi]/16)
 				if startlight > 0 then
-					local r_queue = {{old_p[1].x, old_p[1].y, old_p[1].z, startlight}} -- removal BFS queue
+					local r_queue = {{area:indexp(old_p[1]), startlight}} -- removal BFS queue
 					ldt[oi] = ldt[oi] - startlight*16
 					-- Run a BFS light removal
 					head = 1 -- queue head index
 					while head <= #r_queue do
 						local frame = r_queue[head]
-						local px = frame[1] -- position
-						local py = frame[2] -- position
-						local pz = frame[3] -- position
-						local l = frame[4] -- remembered light
+						local p_i = frame[1] -- position index
+						local l = frame[2] -- remembered light
 						head = head + 1
 						for _, dir in ipairs(DIRS) do
-							local pnx = px + dir[1]
-							local pny = py + dir[2]
-							local pnz = pz + dir[3]
-							local i = area:index(pnx, pny, pnz)
+							local i = p_i + dir
 							if not shade_ci_cache[cdt[i]] then
 								local n = math.floor(ldt[i]/16) -- current night lightbank
-								if n >= l then
-									table.insert(s_queue, {pnx, pny, pnz, n-1})
-								elseif n > 0 then
+								if n >= l then -- light from other source, spread back
+									table.insert(s_queue, {i, n-1})
+								elseif n > 0 then -- light from this source, clear
 									ldt[i] = ldt[i] - n*16
-									table.insert(r_queue, {pnx, pny, pnz, n})
+									table.insert(r_queue, {i, n})
 								end
 							end
 						end
@@ -128,29 +123,24 @@ local function wieldedlight(name)
 		end
 		if np1 and not double_run then
 			local ni = area:indexp(pos)
-			ldt[ni] = ldt[ni] + ls*16
+			ldt[ni] = ldt[ni]%16 + ls*16
 		end
 		function bfs_light_spread()
 			head = 1 -- queue head index
 			while head <= #s_queue do
 				local frame = s_queue[head]
-				local px = frame[1] -- position
-				local py = frame[2] -- position
-				local pz = frame[3] -- position
-				local l = frame[4] -- light value to spread
+				local p_i = frame[1] -- position index
+				local l = frame[2] -- light value to spread
 				head = head + 1
 				for _, dir in ipairs(DIRS) do
-					local pnx = px + dir[1]
-					local pny = py + dir[2]
-					local pnz = pz + dir[3]
-					local i = area:index(pnx, pny, pnz)
-					if not shade_ci_cache[cdt[i]] then
+					local i = p_i + dir
+					if ldt[i] and not shade_ci_cache[cdt[i]] then
 						local n = math.floor(ldt[i]/16) -- current night lightbank
 						if l > n then
 							local d = ldt[i] - n*16 -- current day lightbank
 							ldt[i] = d + l*16 -- pack into param1 again
 							if l > 1 then
-								table.insert(s_queue, {pnx, pny, pnz, l-1})
+								table.insert(s_queue, {i, l-1})
 							end
 						end
 					end
@@ -168,9 +158,17 @@ local function wieldedlight(name)
 			lvm:get_light_data(ldt) -- flat array of param1 values
 			emin, emax = lvm:get_emerged_area()
 			area = VoxelArea(emin, emax)
-			table.insert(s_queue, {pos, ls})
+			DIRS = {
+				-1,            -- -X
+				-area.ystride, -- -Y
+				-area.zstride, -- -Z
+				1,             -- +X
+				area.ystride,  -- +Y
+				area.zstride   -- +Z
+			}
 			local ni = area:indexp(pos)
-			ldt[ni] = ldt[ni] + ls*16
+			table.insert(s_queue, {ni, ls-1})
+			ldt[ni] = ldt[ni]%16 + ls*16
 			bfs_light_spread()
 		end
 		lvm:set_light_data(ldt)
