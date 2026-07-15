@@ -68,7 +68,7 @@ O repositório do VoxeLibre está no Mesehub. Para contribuir ou relatar problem
 * OpenCollective: <https://opencollective.com/voxelibre>
 * Mastodon: <https://fosstodon.org/@VoxeLibre>
 * Lemmy: <https://lemm.ee/c/voxelibre>
-* Matrix space: <https://app.element.io/#/room/#voxelibre:matrix.org>
+* Matrix space: <https://matrix.to/#/#voxelibre:matrix.org>
 * Fóruns do Luanti: <https://forum.luanti.org/viewtopic.php?f=50&t=16407>
 * Reddit: <https://www.reddit.com/r/VoxeLibre/>
 * IRC (quase sem uso): <https://web.libera.chat/#mineclone2>

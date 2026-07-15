@@ -14,7 +14,7 @@ gradite, raziskujte in počnite še mnogo več. Navdihnjena po Minecraftu, a gre
 
 Izvorno razvejana iz MineClone (avtorja davedevils) kot MineClone 2, nato preimenovana
 in močno izboljšana. Razvija jo veliko ljudi; za celoten seznam glejte
-[`CREDITS.md`](CREDITS.md).
+[`CREDITS.md`](../CREDITS.md).
 
 
 ## O igri
@@ -26,7 +26,7 @@ pošastim in tešiti lakoto, medtem ko počasi napredujete skozi različne vidik
 igre – kot so rudarjenje, kmetovanje in gradnja strojev. Alternativno lahko
 izberete **ustvarjalni način** (creative), kjer lahko s tleskom prstov počnete vse, kar si zamislite.
 
-Glejte [`GETTING_STARTED.md`](GETTING_STARTED.md) za hiter vodnik o tem, kako začeti
+Glejte [`GETTING_STARTED.md`](../GETTING_STARTED.md) za hiter vodnik o tem, kako začeti
 igrati VoxeLibre.
 
 ### Povzetek igranja
@@ -72,7 +72,7 @@ težave, se odpravite tja.
 * ContentDB: <https://content.luanti.org/packages/wuzzy/mineclone2/>
 * Luanti Forum: <https://forum.luanti.org/viewtopic.php?f=50&t=16407>
 * Discord: <https://discord.gg/xE4z8EEpDC>
-* Matrix prostor: <https://app.element.io/#/room/#voxelibre:matrix.org>
+* Matrix prostor: <https://matrix.to/#/#voxelibre:matrix.org>
 * Mastodon: <https://fosstodon.org/@VoxeLibre>
 * Lemmy: <https://programming.dev/c/VoxeLibre>
 * Reddit: <https://www.reddit.com/r/VoxeLibre/>
@@ -97,15 +97,15 @@ za dostop do najnovejše vsebine in nam pomagate odkriti napake pred izdajo.
 * Delati na nalogah, opisanih v [Milestones](/VoxeLibre/VoxeLibre/milestones) (Mejniki)
   in tematskih [Projects](/VoxeLibre/VoxeLibre/projects) (Projekti), da bi igro izboljšali
 * Zagotoviti ustrezno podporo za lokalizacijo in omogočiti prevode v čim več jezikov
-* [Vzdrževati prijazno in vključujočo skupnost igralcev in razvijalcev](CODE_OF_CONDUCT.md)
+* [Vzdrževati prijazno in vključujočo skupnost igralcev in razvijalcev](../CODE_OF_CONDUCT.md)
 
 
 ## Glej tudi
 
-* [`GETTING_STARTED.md`](GETTING_STARTED.md): Hiter vodnik, kako začeti
+* [`GETTING_STARTED.md`](../GETTING_STARTED.md): Hiter vodnik, kako začeti
   igrati
-* [`CONTRIBUTING.md`](CONTRIBUTING.md): Informacije za tiste, ki želijo prispevati
-* [`API.md`](API.md): Za ljudi, ki želijo modificirati VoxeLibre
-* [`LICENSE.txt`](LICENSE.txt): Celotno besedilo licence GNU GPLv3
-* [`LEGAL.md`](LEGAL.md): Pravne informacije
-* [`CREDITS.md`](CREDITS.md): Seznam vseh razvijalcev in sodelavcev
+* [`CONTRIBUTING.md`](../CONTRIBUTING.md): Informacije za tiste, ki želijo prispevati
+* [`API.md`](../API.md): Za ljudi, ki želijo modificirati VoxeLibre
+* [`LICENSE.txt`](../LICENSE.txt): Celotno besedilo licence GNU GPLv3
+* [`LEGAL.md`](../LEGAL.md): Pravne informacije
+* [`CREDITS.md`](../CREDITS.md): Seznam vseh razvijalcev in sodelavcev
