@@ -14,10 +14,22 @@ Drop registered inventories on player death.
 Table containing dropped list inventory, name and drop state.
 
 ## mcl_death_drop.on_death_drop_per_stack
-Table containing functions to handle a death event, called for each itemstack in dead player's inventory. Can be used just to skip dropping of an item or for something more complex, like altering metadata.
+Table containing registered callbacks. Callbacks are ordered by ascending priority and called for each itemstack in the dead player's inventory.
+Can be used just to skip dropping of an item or for something more complex, like altering metadata.
 
-## mcl_death_drop.register_on_death_drop_per_stack(on_death_drop)
+Each entry contains `func`, `priority`, and an internal `sequence` used to preserve registration order between callbacks with the same priority.
+
+## mcl_death_drop.ORDER
+Named priority bands that allow unrelated mods to select when their callback runs:
+* `VOID`: deletion rules, such as Curse of Vanishing
+* `SELECTIVE`: selective or partial handlers; this is the default
+* `CATCH_ALL`: terminal catch-all storage, such as gravestones
+
+Mods may add or subtract from these values when finer ordering within a band is needed.
+
+## mcl_death_drop.register_on_death_drop_per_stack(on_death_drop, priority)
 * on_death_drop: function(player, inv, listname, idx, stack)
+* priority: optional number; lower priorities run first, defaults to `mcl_death_drop.ORDER.SELECTIVE`
 
 ### on_death_drop(player, inv, listname, idx, stack)
 * returns: bool

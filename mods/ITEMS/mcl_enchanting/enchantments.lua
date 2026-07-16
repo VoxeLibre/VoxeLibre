@@ -71,7 +71,7 @@ mcl_death_drop.register_on_death_drop_per_stack(function (player, inv, listname,
 		return true
 	end
 	return false
-end)
+end, mcl_death_drop.ORDER.VOID)
 
 
 -- implemented in mcl_playerplus
