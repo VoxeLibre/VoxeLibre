@@ -37,6 +37,39 @@ local function get_gravity()
 	return tonumber(minetest.settings:get("movement_gravity")) or 9.81
 end
 
+mcl_item_entity.registered_on_pickup = {}
+
+---Register a callback called before an item is added to a player's inventory on pickup.
+---Receives (itemstack, player, inv, object, checkpos) where object is the item entity.
+---Return a modified ItemStack to change what gets picked up, an empty ItemStack to cancel pickup, or nil to keep original itemStack unchange.
+---@param func fun(itemstack: ItemStack, player: ObjectRef, inv: InvRef, object: ObjectRef, checkpos: vector): ItemStack|nil
+function mcl_item_entity.register_on_pickup(func)
+	table.insert(mcl_item_entity.registered_on_pickup, func)
+end
+
+-- Example pickup interception callback showcasing how item pickup can be intercepted.
+-- Uncomment to print pickup names to chat, double iron ingots, and void cobble.
+--[[ mcl_item_entity.register_on_pickup(function(itemstack, player, _inv, _object, _checkpos)
+	local itemname = itemstack:get_name()
+
+	if itemname == "mcl_core:cobble" then
+		core.chat_send_player(player:get_player_name(), "Voided: " .. itemname)
+		return ItemStack()
+	end
+
+	minetest.chat_send_player(player:get_player_name(), "Picked up: " .. itemname)
+
+	if itemname == "mcl_core:iron_ingot" then
+		itemstack:set_count(math.min(itemstack:get_count() * 2, itemstack:get_stack_max()))
+		return itemstack
+	end
+
+	if itemname == "mcl_core:diamond" then
+		itemstack:set_count(1)
+		return itemstack
+	end
+end) --]]
+
 mcl_item_entity.registered_pickup_achievement = {}
 
 ---Register an achievement that will be unlocked on pickup.
@@ -114,6 +147,27 @@ local function disable_physics(object, luaentity, ignore_check, reset_movement)
 	end
 end
 
+local function remove_item_entity(player, le, object, checkpos)
+	le.target = checkpos
+	le.itemstring = ""
+	le._removed = true
+	object:set_velocity(vector.zero())
+	object:set_acceleration(vector.zero())
+	if checkpos then
+		object:move_to(checkpos)
+	end
+
+	-- Update sound pool
+	local name = player:get_player_name()
+	pool[name] = ( pool[name] or 0 ) + 1
+
+	core.after(0.25, function()
+		if object and object:get_luaentity() then
+			object:remove()
+		end
+	end)
+end
+
 local function try_object_pickup(player, inv, object, checkpos)
 	if not inv then return end
 
@@ -129,36 +183,27 @@ local function try_object_pickup(player, inv, object, checkpos)
 	-- Ignore if itemstring is not set yet
 	if le.itemstring == "" then return end
 
-	-- Add what we can to the inventory
+	-- Run registered pickup callbacks (may modify or cancel the item)
 	local itemstack = ItemStack(le.itemstring)
 	tt.reload_itemstack_description(itemstack)
-	local leftovers = inv:add_item("main", itemstack )
+	for _, func in ipairs(mcl_item_entity.registered_on_pickup) do
+		local result = func(itemstack, player, inv, object, checkpos)
+		if result then
+			itemstack = result
+		end
+		if itemstack:is_empty() then
+			remove_item_entity(player, le, object, checkpos)
+			return
+		end
+	end
+
+	-- Add what we can to the inventory
+	local leftovers = inv:add_item("main", itemstack)
 
 	check_pickup_achievements(object, player)
 
 	if leftovers:is_empty() then
-		-- Destroy entity
-		-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
-		le.target = checkpos
-		le.itemstring = ""
-		le._removed = true
-
-		-- Stop the object
-		object:set_velocity(vector.zero())
-		object:set_acceleration(vector.zero())
-		object:move_to(checkpos)
-
-		-- Update sound pool
-		local name = player:get_player_name()
-		pool[name] = ( pool[name] or 0 ) + 1
-
-		-- Make sure the object gets removed
-		minetest.after(0.25, function()
-			--safety check
-			if object and object:get_luaentity() then
-				object:remove()
-			end
-		end)
+		remove_item_entity(player, le, object, checkpos)
 	else
 		-- Update entity itemstring
 		le.itemstring = leftovers:to_string()
