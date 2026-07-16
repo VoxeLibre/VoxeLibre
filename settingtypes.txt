@@ -49,6 +49,13 @@ mcl_disabled_events (Disabled events) string
 vl_plant_growth (Plant growth factor) float 1.0 0 100
 
 [Players]
+# If enabled, nodes that would light the surroundings when placed
+# do so also when held by players
+enable_vl_wieldlight (Wielded lights) bool true
+
+# Negative values disable the limit
+vl_wieldlight_player_step_lim (Maximum players processed for wieldlight per step) int -1
+
 # If enabled, players respawn at the bed they last lay on instead of normal
 # spawn.
 # This setting is only read at startup.
