@@ -274,3 +274,19 @@ core.register_chatcommand("music", {
 		core.chat_send_player(sender_name, S("Set music for @1 to: @2", playername, display_new_state))
 	end,
 })
+
+core.register_chatcommand("forcemusic", {
+	params = "[<track name>]",
+	description = S("Force playing a specific or random (no param) track to yourself"),
+	privs = { debug = true },
+	func = function(player_name, param)
+		stop_music_for_listener(player_name)
+		local track
+		if param and param ~= "" then
+			track = param
+		else
+			track = pick_track("overworld")
+		end
+		play_song(player_name, track)
+	end
+})
