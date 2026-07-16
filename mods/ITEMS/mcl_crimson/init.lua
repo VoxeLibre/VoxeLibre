@@ -231,6 +231,12 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 	_mcl_blast_resistance = 0,
 })
 
+mcl_flowerpots.register_potted_flower("mcl_crimson:twisting_vines", {
+	name = "twisting_vines",
+	desc = S("Twisting Vines"),
+	image = "mcl_crimson_twisting_vines.png",
+})
+
 core.register_abm({
 	label = "Twisting vines growth",
 	nodenames = "mcl_crimson:twisting_vines",
@@ -368,6 +374,12 @@ minetest.register_node("mcl_crimson:nether_sprouts", {
 	_mcl_shears_drop = true,
 	_mcl_silk_touch_drop = false,
 	_mcl_blast_resistance = 0,
+})
+
+mcl_flowerpots.register_potted_flower("mcl_crimson:nether_sprouts", {
+	name = "nether_sprouts",
+	desc = S("Nether Sprouts"),
+	image = "mcl_crimson_nether_sprouts.png",
 })
 
 minetest.register_node("mcl_crimson:warped_roots", {

@@ -219,6 +219,24 @@ def_4l_clover.drop = "mcl_flowers:fourleaf_clover"
 minetest.register_node("mcl_flowers:fourleaf_clover", def_4l_clover)
 
 if has_mcl_flowerpots then
+	mcl_flowerpots.register_potted_flower("mcl_flowers:tallgrass", {
+		name = "tallgrass",
+		desc = S("Tall Grass"),
+		image = "mcl_flowers_tallgrass_inv.png",
+		grass_palette_group = 1
+	})
+	mcl_flowerpots.register_potted_flower("mcl_flowers:clover", {
+		name = "clover",
+		desc = S("Clover"),
+		image = "mcl_flowers_clover_inv.png",
+		grass_palette_group = 1
+	})
+	mcl_flowerpots.register_potted_flower("mcl_flowers:fourleaf_clover", {
+		name = "fourleaf_clover",
+		desc = S("Four-leaf Clover"),
+		image = "mcl_flowers_fourleaf_clover_inv.png",
+		grass_palette_group = 1
+	})
 	mcl_flowerpots.register_potted_flower("mcl_flowers:fern", {
 		name = "fern",
 		desc = S("Fern"),
