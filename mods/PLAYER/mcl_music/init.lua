@@ -72,15 +72,14 @@ local function pick_track(scenario)
 	return nil
 end
 
-local function stop_music_for_listener(player_name)
+local function stop_music_for_listener(player_name, immediate)
 
 	if not listeners or not listeners[player_name] then return end
 	local handle = listeners[player_name].handle
 
 	if handle then
-		core.log(dump(handle))
 		core.log("action", "[mcl_music] Stopping music")
-		core.sound_fade(handle, .25, 0)
+		core.sound_fade(handle, immediate and 1.0 or 0.25, 0)
 		listeners[player_name].handle = nil
 	end
 end
@@ -108,7 +107,7 @@ end
 local function play_song(player_name, track)
 	local spec = {
 		name  = track,
-		gain  = 30,
+		gain  = 1.0,
 		pitch = 1.0,
 	}
 	local parameters = {
@@ -120,12 +119,6 @@ local function play_song(player_name, track)
 
 	if not listeners or not listeners[player_name] then return end
 	listeners[player_name].handle = core.sound_play(spec, parameters, false)
-	core.log(dump(listeners[player_name].handle))
-end
-
-function vl_play_song(player_name, track)
-	stop_music_for_listener(player_name)
-	play_song(player_name, track)
 end
 
 local function play()
@@ -133,7 +126,6 @@ local function play()
 	local day_count = core.get_day_count()
 
 	for _, player in pairs(core.get_connected_players()) do
-		core.log(player:get_player_name())
 		repeat
 		if not player:get_meta():get("mcl_music:disable") then
 
@@ -280,7 +272,7 @@ core.register_chatcommand("forcemusic", {
 	description = S("Force playing a specific or random (no param) track to yourself"),
 	privs = { debug = true },
 	func = function(player_name, param)
-		stop_music_for_listener(player_name)
+		stop_music_for_listener(player_name, true)
 		local track
 		if param and param ~= "" then
 			track = param
