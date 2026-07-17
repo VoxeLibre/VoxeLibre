@@ -88,8 +88,9 @@ local function show_loom_formspec(player)
 		end
 	end
 
-	local output = inv:get_stack("loom_output", 1)
-	local preview = mcl_banners.make_banner_texture(mcl_banners.color_reverse(output:get_name()), minetest.deserialize(output:get_meta():get_string("layers")) or {})
+    local output = inv:get_stack("loom_output", 1)
+	local output_or_input = output:is_empty() and banner or output
+	local preview = mcl_banners.make_banner_texture(mcl_banners.color_reverse(output_or_input:get_name()), minetest.deserialize(output_or_input:get_meta():get_string("layers")) or {})
 
 	local banner_model = "model[9.55,0.7;1.4,2.3;keeper;amc_banner_hanging.b3d;" ..
 	preview .. ";0,-180;false;false;x=0,y=0;0]"
