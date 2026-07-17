@@ -31,6 +31,11 @@ vl_tuning.tunable_types = {
 		from_string = function(v) return v end,
 		default = "",
 	},
+	slider = {
+		to_string = tostring,
+		from_string = tonumber,
+		default = 0
+	}
 }
 
 ---@alias vl_tuning.Value string|number|boolean

@@ -53,7 +53,7 @@ local function formspec_for_player_setting(y, name, player)
 	if default == nil then
 		if setting_type == "bool" then
 			default = "false"
-		elseif setting_type == "number" then
+		elseif setting_type == "number" or setting_type == "slider" then
 			default = "0"
 		elseif setting_type == "string" then
 			default = "\"\""
@@ -75,6 +75,8 @@ local function formspec_for_player_setting(y, name, player)
 	elseif setting_type == "string" then
 		table.insert(fs, "field[15,"..y..";2.5,0.75;"..FE(name)..";;"..FE(setting:get(player)).."]")
 		table.insert(fs, "field_close_on_enter["..FE(name)..";false]")
+	elseif setting_type == "slider" then
+		table.insert(fs, "scrollbar[13,"..y..";4.5,0.75;;"..FE(name)..";"..FE(setting:get(player)).."]")
 	end
 
 	return table.concat(fs), desc_height + 0.35
@@ -189,6 +191,14 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 			local setting = mod.registered_player_settings[k]
 			if setting then
 				local old_value = setting:get(target)
+				if setting.setting_type == "slider" then
+					value = core.explode_scrollbar_event(value)
+					if value.type == "CHG" then
+						value = value.value
+					else
+						value = old_value
+					end
+				end
 				setting:set(target, value)
 				if setting:get(target) ~= old_value then
 					settings_changed = true

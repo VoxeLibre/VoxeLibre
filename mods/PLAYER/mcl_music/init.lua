@@ -52,6 +52,20 @@ local min_scenario_change_music_time = 5 * 60 -- Seconds
 
 local listeners = {}
 
+local music_volume_setting = vl_tuning.player_setting("mcl_music:volume", "slider", {
+	default = 800,
+	description = S("Background music volume (0-1000)"),
+	on_change = function(setting, player, value)
+		if not player or not value then return end
+		local t = listeners[player:get_player_name()]
+		if not t then return end
+		local handle = t.handle
+		if handle then
+			core.sound_fade(handle, 1.0, value / 1000.0)
+		end
+	end
+})
+
 local function pick_track(scenario)
 	local scenario_tracks = scenario_to_base_track[scenario]
 
@@ -84,13 +98,6 @@ local function stop_music_for_listener(player_name, immediate)
 	end
 end
 
-local function stop_music_for_all()
-	for _, player in pairs(core.get_connected_players()) do
-		local player_name = player:get_player_name()
-		stop_music_for_listener_name(player_name)
-	end
-end
-
 local function initialize_listener(player_name)
 	listeners[player_name] = {
 		handle    = nil,
@@ -105,9 +112,12 @@ local function remove_listener(player_name)
 end
 
 local function play_song(player_name, track)
+	local player = core.get_player_by_name(player_name)
+	if not player then return end
+	local gain = music_volume_setting:get(player) / 1000.0
 	local spec = {
 		name  = track,
-		gain  = 1.0,
+		gain  = gain,
 		pitch = 1.0,
 	}
 	local parameters = {
