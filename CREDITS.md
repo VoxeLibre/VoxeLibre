@@ -180,10 +180,11 @@
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
-* Dark Reaven Music (https://soundcloud.com/dark-reaven-music) for the main menu theme (Calmed Cube) and Traitor (horizonchris96), which is licensed under https://creativecommons.org/licenses/by-sa/3.0/
+* Dark Reaven Music (https://soundcloud.com/dark-reaven-music) for the main menu theme (Calmed Cube) and a bunch of other tracks (Beat at Nightfall, Calmed Cube in Space, Cube Beat, Cube Waltz, Cube Waltz 2, Deep Mining, Genna, Kuru, Magic of the Forest, Memories from Below, Nostalgic Block, Slow in Cubic Mode, Slow Piano Cubico, Starry Sky at Winter, Sweet Piano 8bit, Traitor, Watchful, What we will build next), which are licensed under https://creativecommons.org/licenses/by-sa/3.0/
 * Jester for helping to finely tune VoxeLibre (https://www.youtube.com/@Jester-8-bit). Songs: Hailing Forest, Gift, 0dd BL0ck, Flock of One (License CC BY-SA 4.0)
 * Exhale & Tim Unwin for some wonderful VoxeLibre tracks (https://www.youtube.com/channel/UClFo_JDWoG4NGrPQY0JPD_g). Songs: Valley of Ghosts, Lonely Blossom, Farmer (License CC BY-SA 4.0)
 * Diminixed for 3 fantastic tracks and remastering and leveling volumes. Songs: Afternoon Lullaby (pianowtune02), Spooled (ambientwip02), Never Grow Up (License CC BY-SA 4.0)
+* Herowl for a track (Home in the Wilderness) licensed under CC BY-SA 4.0
 
 ## Original Mod Authors
 * Wuzzy
