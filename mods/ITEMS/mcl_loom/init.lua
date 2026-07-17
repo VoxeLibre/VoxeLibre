@@ -197,8 +197,8 @@ end)
 local function allow_loom_input(index, stack, count)
 	local name = stack:get_name()
 	if (index == 1 and not name:find("banner_item"))
-			or (index == 2 and not name:find("mcl_dye"))
-			or (index == 3 and not name:find("pattern")) then
+			or (index == 2 and minetest.get_item_group(name, "dye") == 0)
+			or (index == 3 and minetest.get_item_group(name, "banner_pattern") == 0) then
 		return 0
 	end
 	return count
