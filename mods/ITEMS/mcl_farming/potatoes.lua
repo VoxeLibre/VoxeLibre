@@ -109,6 +109,7 @@ core.register_craftitem("mcl_farming:potato_item", {
 	stack_max = 64,
 	on_secondary_use = core.item_eat(1),
 	on_place = mcl_farming:get_seed_or_eat_callback("mcl_farming:potato_1", 1),
+	touch_interaction = "short_dig_long_place"
 })
 
 core.register_craftitem("mcl_farming:potato_item_baked", {
@@ -120,6 +121,7 @@ core.register_craftitem("mcl_farming:potato_item_baked", {
 	on_secondary_use = core.item_eat(5),
 	groups = {food = 2, eatable = 5, compostability = 85},
 	_mcl_saturation = 6.0,
+	touch_interaction = "short_dig_long_place"
 })
 
 core.register_craftitem("mcl_farming:potato_item_poison", {
@@ -132,6 +134,7 @@ core.register_craftitem("mcl_farming:potato_item_poison", {
 	on_secondary_use = core.item_eat(2),
 	groups = { food = 2, eatable = 2 },
 	_mcl_saturation = 1.2,
+	touch_interaction = "short_dig_long_place"
 })
 
 core.register_craft({

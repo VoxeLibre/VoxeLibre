@@ -151,6 +151,7 @@ minetest.register_craftitem("mcl_core:apple", {
 	on_secondary_use = minetest.item_eat(4),
 	groups = { food = 2, eatable = 4, compostability = 65 },
 	_mcl_saturation = 2.4,
+	touch_interaction = "short_dig_long_place"
 })
 
 local gapple_hunger_restore = minetest.item_eat(4)
@@ -243,18 +244,20 @@ local function eat_gapple_delayed(itemstack, placer, pointed_thing)
 end
 
 minetest.register_craftitem("mcl_core:apple_gold", {
-	-- TODO: Add special highlight color
 	description = S("Golden Apple"),
 	_doc_items_longdesc = S("Golden apples are precious food items which can be eaten."),
 	wield_image = "mcl_core_apple_golden.png",
 	inventory_image = "mcl_core_apple_golden.png",
 	stack_max = 64,
-	--on_place = eat_gapple, -- Will do effect immediately but not reduce item count until eating delay ends which makes it exploitable by deliberately not finishing delay
-	--on_secondary_use = eat_gapple,
 	on_place = eat_gapple_delayed,
 	on_secondary_use = eat_gapple_delayed,
 	groups = { food = 2, eatable = 4, can_eat_when_full = 1 },
 	_mcl_saturation = 9.6,
+	touch_interaction = {
+		pointed_nothing = "short_dig_long_place",
+		pointed_node    = "short_dig_long_place",
+		pointed_object  = "user",
+	}
 })
 
 minetest.register_craftitem("mcl_core:apple_gold_enchanted", {
@@ -263,10 +266,9 @@ minetest.register_craftitem("mcl_core:apple_gold_enchanted", {
 	wield_image = "mcl_core_apple_golden.png" .. mcl_enchanting.overlay,
 	inventory_image = "mcl_core_apple_golden.png" .. mcl_enchanting.overlay,
 	stack_max = 64,
-	--on_place = eat_gapple,
-	--on_secondary_use = eat_gapple,
 	on_place = eat_gapple_delayed,
 	on_secondary_use = eat_gapple_delayed,
 	groups = { food = 2, eatable = 4, can_eat_when_full = 1 },
 	_mcl_saturation = 9.6,
+	touch_interaction = "short_dig_long_place"
 })

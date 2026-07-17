@@ -74,6 +74,7 @@ core.register_craftitem("vl_sus_stew:stew",{
 	on_secondary_use = eat_stew_delayed,
 	groups = { food = 2, eatable = 4, can_eat_when_full = 1, not_in_creative_inventory=1,},
 	_mcl_saturation = 7.2,
+	touch_interaction = "short_dig_long_place"
 })
 
 mcl_hunger.register_food("vl_sus_stew:stew", 6, "mcl_core:bowl")

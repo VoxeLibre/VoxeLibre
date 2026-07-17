@@ -11,6 +11,7 @@ minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 	groups = { food = 2, eatable = 4 },
 	_mcl_saturation = 0.8,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:mutton", {
@@ -23,6 +24,7 @@ minetest.register_craftitem("mcl_mobitems:mutton", {
 	groups = { food = 2, eatable = 2, smoker_cookable = 1, campfire_cookable = 1 },
 	_mcl_saturation = 1.2,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:cooked_mutton", {
@@ -35,6 +37,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_mutton", {
 	groups = { food = 2, eatable = 6 },
 	_mcl_saturation = 9.6,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:beef", {
@@ -47,6 +50,7 @@ minetest.register_craftitem("mcl_mobitems:beef", {
 	groups = { food = 2, eatable = 3, smoker_cookable = 1, campfire_cookable = 1 },
 	_mcl_saturation = 1.8,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:cooked_beef", {
@@ -59,6 +63,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_beef", {
 	groups = { food = 2, eatable = 8 },
 	_mcl_saturation = 12.8,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:chicken", {
@@ -72,6 +77,7 @@ minetest.register_craftitem("mcl_mobitems:chicken", {
 	groups = { food = 2, eatable = 2, smoker_cookable = 1, campfire_cookable = 1 },
 	_mcl_saturation = 1.2,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
@@ -84,6 +90,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
 	groups = { food = 2, eatable = 6 },
 	_mcl_saturation = 7.2,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:porkchop", {
@@ -96,6 +103,7 @@ minetest.register_craftitem("mcl_mobitems:porkchop", {
 	groups = { food = 2, eatable = 3, smoker_cookable = 1, campfire_cookable = 1 },
 	_mcl_saturation = 1.8,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:cooked_porkchop", {
@@ -108,6 +116,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_porkchop", {
 	groups = { food = 2, eatable = 8 },
 	_mcl_saturation = 12.8,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:rabbit", {
@@ -120,6 +129,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit", {
 	groups = { food = 2, eatable = 3, smoker_cookable = 1, campfire_cookable = 1 },
 	_mcl_saturation = 1.8,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
@@ -132,6 +142,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	groups = { food = 2, eatable = 5 },
 	_mcl_saturation = 6.0,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 local function drink_milk_delayed(itemstack, player, pointed_thing)
@@ -191,6 +202,7 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	on_secondary_use = drink_milk_delayed,
 	stack_max = 1,
 	groups = { food = 3, can_eat_when_full = 1 },
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:spider_eye", {
@@ -204,6 +216,7 @@ minetest.register_craftitem("mcl_mobitems:spider_eye", {
 	groups = { food = 2, eatable = 2, brewitem = 1 },
 	_mcl_saturation = 3.2,
 	stack_max = 64,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:bone", {
@@ -377,6 +390,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
 	on_secondary_use = minetest.item_eat(10, "mcl_core:bowl"),
 	groups = { food = 2, eatable = 10 },
 	_mcl_saturation = 12.0,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_mobitems:shulker_shell", {

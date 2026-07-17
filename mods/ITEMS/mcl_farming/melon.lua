@@ -145,6 +145,7 @@ core.register_craftitem("mcl_farming:melon_item", {
 	on_secondary_use = core.item_eat(2),
 	groups = {food = 2, eatable = 2, compostability = 50},
 	_mcl_saturation = 1.2,
+	touch_interaction = "short_dig_long_place"
 })
 
 core.register_craft({

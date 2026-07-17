@@ -110,6 +110,7 @@ core.register_craftitem("mcl_farming:sweet_berry", {
 		end
 		return core.do_item_eat(2, nil, itemstack, placer, pointed_thing)
 	end,
+	touch_interaction = "short_dig_long_place"
 })
 core.register_alias("mcl_sweet_berry:sweet_berry", "mcl_farming:sweet_berry")
 

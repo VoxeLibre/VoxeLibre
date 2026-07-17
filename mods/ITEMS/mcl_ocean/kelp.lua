@@ -644,6 +644,7 @@ minetest.register_craftitem("mcl_ocean:dried_kelp", {
 	on_place = minetest.item_eat(1),
 	on_secondary_use = minetest.item_eat(1),
 	_mcl_saturation = 0.6,
+	touch_interaction = "short_dig_long_place"
 })
 
 

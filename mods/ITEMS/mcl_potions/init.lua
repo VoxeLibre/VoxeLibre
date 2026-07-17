@@ -283,6 +283,7 @@ core.register_craftitem("mcl_potions:water", {
 	_on_dispense = dispense_water_bottle,
 	_dispense_into_walkable = true,
 	on_secondary_use = core.item_eat(0, "mcl_potions:glass_bottle"),
+	touch_interaction = "short_dig_long_place"
 })
 
 
@@ -299,6 +300,7 @@ core.register_craftitem("mcl_potions:river_water", {
 	_on_dispense = dispense_water_bottle,
 	_dispense_into_walkable = true,
 	on_secondary_use = core.item_eat(0, "mcl_potions:glass_bottle"),
+	touch_interaction = "short_dig_long_place"
 
 })
 

@@ -245,6 +245,7 @@ core.register_craftitem("mcl_farming:pumpkin_pie", {
 	on_secondary_use = core.item_eat(8),
 	groups = {food = 2, eatable = 8, compostability = 100},
 	_mcl_saturation = 4.8,
+	touch_interaction = "short_dig_long_place"
 })
 
 core.register_craft({
