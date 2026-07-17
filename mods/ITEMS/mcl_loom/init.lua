@@ -1,6 +1,6 @@
-local S = minetest.get_translator(minetest.get_current_modname())
-local C = minetest.colorize
-local F = minetest.formspec_escape
+local S = core.get_translator(core.get_current_modname())
+local C = core.colorize
+local F = core.formspec_escape
 
 local formspec_name = "mcl_loom:loom"
 
@@ -62,9 +62,9 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 end
 
 local function add_layer(banner, pattern, color)
-	local layers = minetest.deserialize(banner:get_meta():get_string("layers")) or {}
+	local layers = core.deserialize(banner:get_meta():get_string("layers")) or {}
 	table.insert(layers, { pattern = pattern, color = dye_to_colorid_mapping[color:get_name()] })
-	banner:get_meta():set_string("layers", minetest.serialize(layers))
+	banner:get_meta():set_string("layers", core.serialize(layers))
 	tt.reload_itemstack_description(banner)
 	return banner
 end
@@ -90,7 +90,7 @@ local function show_loom_formspec(player)
 
     local output = inv:get_stack("loom_output", 1)
 	local output_or_input = output:is_empty() and banner or output
-	local preview = mcl_banners.make_banner_texture(mcl_banners.color_reverse(output_or_input:get_name()), minetest.deserialize(output_or_input:get_meta():get_string("layers")) or {})
+	local preview = mcl_banners.make_banner_texture(mcl_banners.color_reverse(output_or_input:get_name()), core.deserialize(output_or_input:get_meta():get_string("layers")) or {})
 
 	local banner_model = "model[9.55,0.7;1.4,2.3;keeper;amc_banner_hanging.b3d;" ..
 	preview .. ";0,-180;false;false;x=0,y=0;0]"
@@ -154,10 +154,10 @@ local function show_loom_formspec(player)
 	})
 
 	tt.reload_itemstack_description(inv:get_stack("loom_output", 1))
-	minetest.show_formspec(player:get_player_name(), formspec_name, formspec)
+	core.show_formspec(player:get_player_name(), formspec_name, formspec)
 end
 
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	local inv = player:get_inventory()
 
 	inv:set_size("loom_input", 3)
@@ -169,12 +169,12 @@ minetest.register_on_joinplayer(function(player)
 	inv:set_list("loom_output", {})
 end)
 
-minetest.register_on_leaveplayer(function(player)
+core.register_on_leaveplayer(function(player)
 	mcl_util.move_player_list(player, "loom_input")
 	player:get_inventory():set_list("loom_output", {})
 end)
 
-minetest.register_on_player_receive_fields(function(player, formname, fields)
+core.register_on_player_receive_fields(function(player, formname, fields)
 	if formname ~= formspec_name then return end
 
 	local inv = player:get_inventory()
@@ -196,15 +196,15 @@ end)
 
 local function allow_loom_input(index, stack, count)
 	local name = stack:get_name()
-	if (index == 1 and not name:find("banner_item"))
-			or (index == 2 and minetest.get_item_group(name, "dye") == 0)
-			or (index == 3 and minetest.get_item_group(name, "banner_pattern") == 0) then
+	if (index == 1 and core.get_item_group(name, "banner") == 0)
+			or (index == 2 and core.get_item_group(name, "dye") == 0)
+			or (index == 3 and core.get_item_group(name, "banner_pattern") == 0) then
 		return 0
 	end
 	return count
 end
 
-minetest.register_allow_player_inventory_action(function(_, action, inventory, inventory_info)
+core.register_allow_player_inventory_action(function(_, action, inventory, inventory_info)
 	if action == "move" then
 		if inventory_info.to_list == "loom_output" then
 			return 0
@@ -246,7 +246,7 @@ local function remove_from_loom_inputs(inventory, count)
 	inventory:set_stack("loom_input", 2, dye)
 end
 
-minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
+core.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
 	if action == "move" then
 		if inventory_info.from_list == "loom_output" then
 			remove_from_loom_inputs(inventory, inventory_info.count)
@@ -268,7 +268,7 @@ minetest.register_on_player_inventory_action(function(player, action, inventory,
 	end
 end)
 
-minetest.register_node("mcl_loom:loom", {
+core.register_node("mcl_loom:loom", {
 	description = S("Loom"),
 	_tt_help = S("Used to create banner designs"),
 	_doc_items_longdesc = S("This is the shepherd villager's work station. It is used to create banner designs."),
@@ -286,7 +286,7 @@ minetest.register_node("mcl_loom:loom", {
 	end,
 })
 
-minetest.register_craft({
+core.register_craft({
 	output = "mcl_loom:loom",
 	recipe = {
 		{ "",                    "",                    "" },
@@ -295,7 +295,7 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
+core.register_craft({
 	type = "fuel",
 	recipe = "mcl_loom:loom",
 	burntime = 15,
