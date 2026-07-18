@@ -104,6 +104,7 @@ Refer to the mods "/_mcl_autogroup" and "/mcl_autogroup" to learn more about the
 
 ### Groups (mostly) used for crafting recipes
 
+* `banner_pattern=1`: Reusable item which unlocks a registered banner pattern in a loom
 * `sand=1`: Sand (any color)
 * `sandstone=1`: Sandstone (any color) and related nodes (chiseled and the like) (only full blocks)
 * `normal_sandstone=1`: “Normal” (yellow) sandstone and related nodes (chiseled and the like) (only full blocks)

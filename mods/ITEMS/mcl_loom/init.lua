@@ -4,70 +4,38 @@ local F = core.formspec_escape
 
 local formspec_name = "mcl_loom:loom"
 
-local pattern_names = {
-	"border",
-	"bricks",
-	"circle",
-	"cross",
-	"curly_border",
-	"diagonal_up_left",
-	"diagonal_up_right",
-	"diagonal_right",
-	"diagonal_left",
-	"gradient",
-	"gradient_up",
-	"half_horizontal_bottom",
-	"half_horizontal",
-	"half_vertical",
-	"half_vertical_right",
-	"thing",
-	"rhombus",
-	"small_stripes",
-	"square_bottom_left",
-	"square_bottom_right",
-	"square_top_left",
-	"square_top_right",
-	"straight_cross",
-	"stripe_bottom",
-	"stripe_center",
-	"stripe_downleft",
-	"stripe_downright",
-	"stripe_left",
-	"stripe_middle",
-	"stripe_right",
-	"stripe_top",
-	"triangle_bottom",
-	"triangle_top",
-	"triangles_bottom",
-	"triangles_top",
-}
+local pattern_button_fields = {}
+local pattern_buttons_content = {}
+local simple_pattern_count = 0
 
-local function form_patterns_table()
-	-- Buttons are 3.5 / 4 = 0.875 wide
-	local formspec = "style_type[item_image_button;noclip=false;content_offset=0]"
-	for i, item in ipairs(pattern_names) do
-		local x = ((i - 1) % 4) * 0.875
-		local y = (math.floor((i - 1) / 4)) * 0.875
-
-		formspec = formspec ..
-			string.format("item_image_button[%f,%f;0.875,0.875;%s;%s;]", x, y,
-				"mcl_banners:banner_preview_" .. item .. "_red", item)
+local function build_pattern_buttons()
+	local simple_patterns = {}
+	for order, pattern in ipairs(mcl_banners.registered_patterns) do
+		if pattern.loom and not pattern.pattern_item then
+			local field_name = "pattern_" .. order
+			pattern_button_fields[field_name] = pattern.name
+			table.insert(simple_patterns, { pattern = pattern, field_name = field_name })
+		end
 	end
-	return formspec
+	simple_pattern_count = #simple_patterns
+
+	-- Buttons are 3.5 / 4 = 0.875 wide. Cache one formspec fragment per
+	-- dye color so opening or updating the loom only requires a table lookup.
+	for _, colortab in pairs(mcl_banners.colors) do
+		local color = colortab[1]
+		local formspec = { "style_type[item_image_button;noclip=false;content_offset=0]" }
+		for index, entry in ipairs(simple_patterns) do
+			local x = ((index - 1) % 4) * 0.875
+			local y = math.floor((index - 1) / 4) * 0.875
+			table.insert(formspec,
+				string.format("item_image_button[%f,%f;0.875,0.875;%s;%s;]", x, y,
+					entry.pattern.preview_items[color], entry.field_name))
+		end
+		pattern_buttons_content[color] = table.concat(formspec)
+	end
 end
 
-local dye_to_colorid_mapping = {}
-for colorid, colortab in pairs(mcl_banners.colors) do
-	dye_to_colorid_mapping[colortab[5]] = colorid
-end
-
-local function add_layer(banner, pattern, color)
-	local layers = core.deserialize(banner:get_meta():get_string("layers")) or {}
-	table.insert(layers, { pattern = pattern, color = dye_to_colorid_mapping[color:get_name()] })
-	banner:get_meta():set_string("layers", core.serialize(layers))
-	tt.reload_itemstack_description(banner)
-	return banner
-end
+core.register_on_mods_loaded(build_pattern_buttons)
 
 local function show_loom_formspec(player)
 	local inv = player:get_inventory()
@@ -75,20 +43,29 @@ local function show_loom_formspec(player)
 	local banner = inv:get_stack("loom_input", 1)
 	local dye = inv:get_stack("loom_input", 2)
 	local pattern = inv:get_stack("loom_input", 3)
+	local dye_colorid = mcl_banners.get_dye_colorid(dye:get_name())
+	local dye_colortab = dye_colorid and mcl_banners.colors[dye_colorid]
+	local preview_color = dye_colortab and dye_colortab[1]
 
 	local container_content = ""
 
-	if not banner:is_empty() and not dye:is_empty() then
+	if not banner:is_empty() and preview_color then
 		if not pattern:is_empty() then
-			inv:set_stack("loom_output", 1, add_layer(banner, pattern:get_name():split(":")[2]:split("_")[1], dye))
-			local item = pattern:get_name():split(":")[2]:split("_")[1]
-			container_content = string.format("item_image[0,0;0.875,0.875;%s]", "mcl_banners:banner_preview_" .. item .. "_red")
+			local pattern_def = mcl_banners.pattern_item_to_pattern[pattern:get_name()]
+			if pattern_def and pattern_def.loom then
+				inv:set_stack("loom_output", 1,
+					mcl_banners.add_pattern_layer(banner, pattern_def.name, dye))
+				container_content = string.format("item_image[0,0;0.875,0.875;%s]",
+					pattern_def.preview_items[preview_color])
+			else
+				inv:set_stack("loom_output", 1, nil)
+			end
 		else
-			container_content = form_patterns_table()
+			container_content = pattern_buttons_content[preview_color]
 		end
 	end
 
-    local output = inv:get_stack("loom_output", 1)
+	local output = inv:get_stack("loom_output", 1)
 	local output_or_input = output:is_empty() and banner or output
 	local preview = mcl_banners.make_banner_texture(mcl_banners.color_reverse(output_or_input:get_name()), core.deserialize(output_or_input:get_meta():get_string("layers")) or {})
 
@@ -130,7 +107,7 @@ local function show_loom_formspec(player)
 		-- Scrollbar
 		-- TODO: style the scrollbar correctly when possible
 		"scrollbaroptions[min=0;max=" ..
-		math.max(math.floor(#pattern_names / 4) + 1 - 4, 0) .. ";smallstep=1;largesteps=1]",
+		math.max(math.ceil(simple_pattern_count / 4) - 4, 0) .. ";smallstep=1;largesteps=1]",
 		"scrollbar[8,0.7;0.75,3.6;vertical;scroll;0]",
 
 		banner_model,
@@ -153,7 +130,6 @@ local function show_loom_formspec(player)
 		"listring[current_player;main]",
 	})
 
-	tt.reload_itemstack_description(inv:get_stack("loom_output", 1))
 	core.show_formspec(player:get_player_name(), formspec_name, formspec)
 end
 
@@ -184,10 +160,13 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 
-	for _, pattern in ipairs(pattern_names) do
-		if fields[pattern] then
+	for field_name, pattern_name in pairs(pattern_button_fields) do
+		if fields[field_name] then
+			local pattern = mcl_banners.registered_patterns[pattern_name]
+			if not pattern or not pattern.loom or pattern.pattern_item then return end
 			inv:set_stack("loom_output", 1,
-				add_layer(inv:get_stack("loom_input", 1), pattern, inv:get_stack("loom_input", 2)))
+				mcl_banners.add_pattern_layer(inv:get_stack("loom_input", 1), pattern_name,
+					inv:get_stack("loom_input", 2)))
 			show_loom_formspec(player)
 			return
 		end

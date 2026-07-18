@@ -31,17 +31,17 @@ Lime Banner=
 Lime=
 Light Blue Banner=
 Light Blue=
-Banner=
-
-Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=
-
-Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=
-
-You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=
-
 Preview Banner=
 Paintable decoration=
-##[ patterncraft.lua ]##
+Unknown Color=
+@1 Unknown Pattern (@2)=
+And one additional layer=
+And @1 additional layers=
+Banner=
+Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a loom.=
+Use a loom with a banner and dye to add a pattern. Some patterns also require a banner pattern item. Emblazoned banners can be emblazoned again to combine various patterns.=
+You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=
+##[ patterns.lua ]##
 @1 Bordure=
 @1 Bricks=
 @1 Roundel=
@@ -80,5 +80,3 @@ Paintable decoration=
 @1 Chevron Inverted=
 @1 Base Indented=
 @1 Chief Indented=
-And one additional layer=
-And @1 additional layers=

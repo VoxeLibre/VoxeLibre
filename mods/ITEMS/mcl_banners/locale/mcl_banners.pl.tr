@@ -31,17 +31,17 @@ Lime Banner=Jasnozielony sztandar
 Lime=Jasnozielony
 Light Blue Banner=Jasnoniebieski sztandar
 Light Blue=Jasnoniebieski
-Banner=
-
-Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Sztandary są kolorowymi dekoracyjnymi blokami. Mogą być postawione na ziemi i na ścianach. Sztandary mogą być upiększone różnymi wzorami przy użyciu sporej ilości farby podczas wytwarzania.
-
-Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Użyj wytwarzania aby narysować wzór na górze sztandaru. Upiększone sztandary mogą być upiększone ponownie by połączyć kilka wzorów. Możesz narysować do 12 warstw na sztandarze w ten sposób. Jeśli baner zawiera gradient tylko 3 warstwy są możliwe.
-
-You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Możesz skopiować wzór sztandaru kładąc dwa sztandary tego samego koloru w siatce wytwarzania. Jeden z nich musi być upiększony, drugi czysty. Możesz również użyć sztandar na kociołku z wodą aby zmyć górną warstwę.
-
 Preview Banner=
 Paintable decoration=Dekoracja do malowania
-##[ patterncraft.lua ]##
+Unknown Color=
+@1 Unknown Pattern (@2)=
+And one additional layer=I jedna dodatkowa warstwa
+And @1 additional layers=I @1 dodatkowych warstw
+Banner=
+Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a loom.=
+Use a loom with a banner and dye to add a pattern. Some patterns also require a banner pattern item. Emblazoned banners can be emblazoned again to combine various patterns.=
+You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Możesz skopiować wzór sztandaru kładąc dwa sztandary tego samego koloru w siatce wytwarzania. Jeden z nich musi być upiększony, drugi czysty. Możesz również użyć sztandar na kociołku z wodą aby zmyć górną warstwę.
+##[ patterns.lua ]##
 @1 Bordure=@1 z obramowaniem
 @1 Bricks=@1 murowany
 @1 Roundel=@1 krąg
@@ -80,10 +80,10 @@ Paintable decoration=Dekoracja do malowania
 @1 Chevron Inverted=@1 górny trójkąt
 @1 Base Indented=@1 ząbkowany dolny
 @1 Chief Indented=@1 ząbkowany górny
-And one additional layer=I jedna dodatkowa warstwa
-And @1 additional layers=I @1 dodatkowych warstw
 
 
 ##### not used anymore #####
 
+Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Sztandary są kolorowymi dekoracyjnymi blokami. Mogą być postawione na ziemi i na ścianach. Sztandary mogą być upiększone różnymi wzorami przy użyciu sporej ilości farby podczas wytwarzania.
+Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Użyj wytwarzania aby narysować wzór na górze sztandaru. Upiększone sztandary mogą być upiększone ponownie by połączyć kilka wzorów. Możesz narysować do 12 warstw na sztandarze w ten sposób. Jeśli baner zawiera gradient tylko 3 warstwy są możliwe.
 Purple Banner=Fioletowy sztandar

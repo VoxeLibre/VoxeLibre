@@ -268,7 +268,7 @@ minetest.register_craftitem("mcl_core:apple_gold_enchanted", {
 	stack_max = 64,
 	on_place = eat_gapple_delayed,
 	on_secondary_use = eat_gapple_delayed,
-	groups = { food = 2, eatable = 4, can_eat_when_full = 1 },
+	groups = { food = 2, eatable = 4, can_eat_when_full = 1, banner_pattern = 1 },
 	_mcl_saturation = 9.6,
 	touch_interaction = "short_dig_long_place"
 })

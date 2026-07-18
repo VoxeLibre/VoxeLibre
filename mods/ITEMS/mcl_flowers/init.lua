@@ -66,7 +66,8 @@ function mcl_flowers.register_simple_flower(name, def)
 			dig_by_water = 1, destroy_by_lava_flow = 1, enderman_takable = 1,
 			plant = 1, flower = 1, place_flowerlike = 1, non_mycelium_plant = 1,
 			flammable = 2, fire_encouragement = 60, fire_flammability = 100,
-			compostability = 65
+			compostability = 65,
+			banner_pattern = def.banner_pattern and 1 or nil,
 		},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		node_placement_prediction = "",

@@ -34,6 +34,7 @@ Use the `mcl_sounds` mod for the sounds.
 A lot of things are possible by using one of the APIs in the mods. Many of them are documented in `API.md` files located in the directories of the specific mods. Some use `.txt` files or have some documentation in the comments along the code. Note that not all APIs are documented yet, but it is planned. The following APIs should be more or less stable but keep in mind that VoxeLibre is still unfinished. All directory names are relative to `mods/`
 
 ### Items
+* Banners and custom banner patterns: `ITEMS/mcl_banners`
 * Doors: `ITEMS/mcl_doors`
 * Fences and fence gates: `ITEMS/mcl_fences`
 * Stairs and slabs: `ITEM/mcl_stairs`
@@ -88,9 +89,7 @@ The following APIs may be subject to change in the future. You could already use
 ### Planned APIs
 
 * Saplings and trees
-* Custom banner patterns
 * Custom dimensions
 * Custom portals
 * Dispenser and dropper support
 * Proper sky and weather APIs
-
