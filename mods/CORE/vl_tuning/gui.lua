@@ -28,7 +28,7 @@ local function formspec_for_setting(y, name)
 		default = tostring(default)
 	end
 
-	local desc_height = (setting.formspec_desc_lines or 1) * 0.435
+	local desc_height = (setting.formspec_desc_lines or 1) * 0.5
 	local fs = {}
 	table.insert(fs, "label[0,"..(y+0.15)..";"..FE(name).." (Default: "..default..")]")
 	table.insert(fs, "hypertext[0.15,"..(y+0.25)..";14.85,"..desc_height..";;"..FE("<style color=black>"..setting.description.."</style>").."]")
@@ -66,7 +66,7 @@ local function formspec_for_player_setting(y, name, player)
 		default = tostring(default)
 	end
 
-	local desc_height = (setting.formspec_desc_lines or 1) * 0.435
+	local desc_height = (setting.formspec_desc_lines or 1) * 0.5
 	local fs = {}
 	table.insert(fs, "label[0,"..(y+0.15)..";"..FE(name).." (Default: "..default..")]")
 	table.insert(fs, "hypertext[0.15,"..(y+0.25)..";14.85,"..desc_height..";;"..FE("<style color=black>"..setting.description.."</style>").."]")
