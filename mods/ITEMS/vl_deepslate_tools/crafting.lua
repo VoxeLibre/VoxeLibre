@@ -82,7 +82,7 @@ for t,m in pairs(materials) do
 		}
 	})
 	core.register_craft({
-		output = "vl_weaponry:scythe_"..t,
+		output = "vl_deepslate_tools:scythe_"..t,
 		recipe ={
 			{ m, m, s },
 			{ b, s, b },
@@ -90,7 +90,7 @@ for t,m in pairs(materials) do
 		}
 	})
 	core.register_craft({
-		output = "vl_weaponry:scythe_"..t,
+		output = "vl_deepslate_tools:scythe_"..t,
 		recipe ={
 			{ s, m, m },
 			{ b, s, b },
