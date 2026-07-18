@@ -29,9 +29,13 @@ local function formspec_for_setting(y, name)
 	end
 
 	local desc_height = (setting.formspec_desc_lines or 1) * 0.5
+	local desc_width = 14.85
+	if setting_type == "slider" then
+		desc_width = 12.85
+	end
 	local fs = {}
 	table.insert(fs, "label[0,"..(y+0.15)..";"..FE(name).." (Default: "..default..")]")
-	table.insert(fs, "hypertext[0.15,"..(y+0.25)..";14.85,"..desc_height..";;"..FE("<style color=black>"..setting.description.."</style>").."]")
+	table.insert(fs, "hypertext[0.15,"..(y+0.25)..";"..desc_width..","..desc_height..";;"..FE("<style color=black>"..setting.description.."</style>").."]")
 
 	if setting_type == "bool" then
 		table.insert(fs, "checkbox[17,"..(y+0.375)..";"..FE(name)..";;"..bool_to_string(setting.getter()).."]")
