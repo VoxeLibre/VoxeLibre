@@ -698,15 +698,13 @@ core.register_on_dignode(function(pos, oldnode, digger)
 	local tool = digger:get_wielded_item()
 	if tool and core.get_item_group(tool:get_name(), "scythe") > 0 then
 		local def = core.registered_nodes[oldnode.name]
-		if def and (not def.selection_box or not def.selection_box.fixed
-				or (def.selection_box.fixed[5] or def.selection_box.fixed[1][5] or 0) >= 0.25)
+		if def and def.drawtype == "plantlike"
 				and core.get_item_group(oldnode.name, "plant") > 0 then
 			for x=-1, 1 do for z=-1, 1 do
 				local p = vector.offset(pos, x, 0, z)
 				local n = core.get_node(p)
 				local d = core.registered_nodes[n.name]
-				if d and (not d.selection_box or not d.selection_box.fixed
-						or (d.selection_box.fixed[5] or d.selection_box.fixed[1][5] or 0) >= 0.25)
+				if d and def.drawtype == "plantlike"
 						and core.get_item_group(n.name, "plant") > 0 then
 					core.remove_node(p)
 					core.handle_node_drops(p, {}, digger)
