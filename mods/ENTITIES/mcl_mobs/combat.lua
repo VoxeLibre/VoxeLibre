@@ -514,7 +514,8 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	if is_player then
 		-- is mob out of reach?
-		if (vector.distance(mob_pos, player_pos) - self._avg_radius) > (weapon:get_definition().range or 3) then
+		if not core.is_creative_enabled(hitter:get_player_name()) and
+				(vector.distance(mob_pos, player_pos) - self._avg_radius) > (weapon:get_definition().range or 3) then
 			return
 		end
 

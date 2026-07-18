@@ -377,6 +377,81 @@ function mob_class:flight_check()
 	return not not self.fly_in[nod] -- force boolean
 end
 
+
+local function is_baby_animal(mob)
+	return mob and mob.child and mob.type == "animal"
+end
+
+local function is_player_kill(mob)
+	return mob.xp_timestamp and (core.get_us_time() - mob.xp_timestamp) <= PLAYER_KILL_TIME_US
+end
+
+local function can_mob_drop_xp(mob)
+	return not is_baby_animal(mob) and is_player_kill(mob)
+end
+
+local function drop_mob_xp(mob, _, cmi)
+	if not can_mob_drop_xp(mob) then return end
+
+	local pos = mob.vl_drops_pos or mob.object:get_pos()
+	local amount = random(mob.xp_min, mob.xp_max)
+
+	if mcl_sculk.handle_death(pos, amount) then
+		return
+	end
+	if core.is_creative_enabled(cmi and cmi.puncher and cmi.puncher:get_player_name() or "") ~= true then
+		mcl_experience.throw_xp(pos, amount)
+	end
+end
+
+
+local function drop_mob_items(mob, death_cause, cmi_cause, info)
+	local player_kill = is_player_kill(mob)
+	-- dropped cooked item if mob died in fire or lava
+	if death_cause == "lava" or death_cause == "fire" then
+		mob:item_drop({ cooked = true, player_kill = player_kill })
+		return
+	end
+
+	local puncher_wielditem
+	if death_cause == "hit" and cmi_cause and cmi_cause.puncher then
+		puncher_wielditem = cmi_cause.puncher:get_wielded_item()
+	else
+		puncher_wielditem = ItemStack()
+	end
+
+	local cooked  = mcl_burning.is_burning(mob.object) or mcl_enchanting.has_enchantment(puncher_wielditem, "fire_aspect")
+	local looting = mcl_enchanting.get_enchantment(puncher_wielditem, "looting")
+
+	mob:item_drop({
+		cooked        = cooked,
+		looting       = looting,
+		attacker_name = info and info.attacker_name,
+		player_kill   = player_kill,
+	})
+end
+
+
+--- Executes the final stage of a mob's death. The mob's corpse is removed from existence.
+local function do_mob_corpse_remove(mob)
+	if not mob or not mob.object:is_valid() or not mob.object:get_luaentity() then
+		return
+	end
+	local dpos   = mob.object:get_pos()
+	local cbox   = mob.initial_properties.collisionbox
+	local yaw    = mob.object:get_rotation().y
+	local rotate = not mob.instant_death
+
+	if mob.on_corpse_remove then
+		mob.on_corpse_remove(mob, dpos)
+	end
+
+	mcl_burning.extinguish(mob.object)
+	mcl_util.remove_entity(mob)
+	mcl_mobs.death_effect(dpos, yaw, cbox, rotate)
+end
+
+
 -- Check if mob is dead or only hurt
 ---@param cause     string
 ---@param cmi_cause {
@@ -402,16 +477,13 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 
 	-- still got some health?
 	if self.health > 0 then
-
 		-- make sure health isn't higher than max
-		if self.health > self.initial_properties.hp_max then
-			self.health = self.initial_properties.hp_max
-		end
+		self.health = min(self.health, self.initial_properties.hp_max)
 
 		-- play damage sound if health was reduced and make mob flash red.
 		if damaged then
 			self:add_texture_mod("^[colorize:#d42222:175")
-			minetest.after(1, function(self)
+			core.after(1, function(self)
 				if self and self.object then
 					self:remove_texture_mod("^[colorize:#d42222:175")
 				end
@@ -424,9 +496,7 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 			self.nametag2 = self.nametag or ""
 		end
 
-		if show_health
-		and (cmi_cause and cmi_cause.type == "punch") then
-
+		if show_health and (cmi_cause and cmi_cause.type == "punch") then
 			self.htimer = 2
 			self.nametag = "♥ " .. self.health .. " / " .. self.initial_properties.hp_max
 
@@ -438,58 +508,10 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 
 	self:mob_sound("death")
 
-	local function death_handle(self)
-		if cmi_cause and cmi_cause["type"] then
-			--minetest.log("cmi_cause: " .. tostring(cmi_cause["type"]))
-		end
-		--minetest.log("cause: " .. tostring(cause))
-
-		-- TODO other env damage shouldn't drop xp
-		-- "rain", "water", "drowning", "suffocation"
-
-		if not gamerule_doMobLoot then return end
-
-		local player_kill = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp) <= PLAYER_KILL_TIME_US
-
-		-- dropped cooked item if mob died in fire or lava
-		if cause == "lava" or cause == "fire" then
-			self:item_drop({ cooked = true, player_kill = player_kill })
-			return
-		end
-
-		local wielditem
-		if cause == "hit" and cmi_cause and cmi_cause.puncher then
-			wielditem = cmi_cause.puncher:get_wielded_item()
-		else
-			wielditem = ItemStack()
-		end
-
-		self:item_drop({
-			cooked        = mcl_burning.is_burning(self.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect"),
-			looting       = mcl_enchanting.get_enchantment(wielditem, "looting"),
-			attacker_name = info and info.attacker_name,
-			player_kill   = player_kill,
-		})
-
-		-- Award XP
-		local player_hit = self.xp_timestamp and (core.get_us_time() - self.xp_timestamp <= PLAYER_KILL_TIME_US)
-		if player_hit and ((not self.child) or self.type ~= "animal") then
-			local pos = self.vl_drops_pos or self.object:get_pos()
-			local xp_amount = random(self.xp_min, self.xp_max)
-
-			if not mcl_sculk.handle_death(pos, xp_amount) and minetest.is_creative_enabled("") ~= true then
-				mcl_experience.throw_xp(pos, xp_amount)
-			end
-		end
-	end
-
 	-- execute custom death function
 	if self.on_die then
 		local pos = self.object:get_pos()
 		local on_die_exit = self.on_die(self, pos, cmi_cause)
-		if on_die_exit ~= true then
-			death_handle(self)
-		end
 
 		if on_die_exit == true then
 			self.state = "die"
@@ -497,6 +519,11 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 			mcl_util.remove_entity(self)
 			return true
 		end
+	end
+
+	if gamerule_doMobLoot then
+		drop_mob_items(self, cause, cmi_cause, info)
+		drop_mob_xp(self, cause, cmi_cause, info)
 	end
 
 	if self.jockey or self.riden_by_jock then
@@ -548,24 +575,12 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 	end
 
 
-	-- Remove body after a few seconds and drop stuff
-	local kill = function(self)
-		if not self.object:get_luaentity() then
-			return
-		end
-		death_handle(self)
-		local dpos = self.object:get_pos()
-		local cbox = self.initial_properties.collisionbox
-		local yaw = self.object:get_rotation().y
-		mcl_burning.extinguish(self.object)
-		mcl_util.remove_entity(self)
-		mcl_mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
-	end
+	-- Remove body after a few seconds
 
 	if length <= 0 then
-		kill(self)
+		do_mob_corpse_remove(self)
 	else
-		minetest.after(length, kill, self)
+		core.after(length, do_mob_corpse_remove, self)
 	end
 
 	return true
