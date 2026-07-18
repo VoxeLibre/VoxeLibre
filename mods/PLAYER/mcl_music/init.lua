@@ -282,6 +282,7 @@ core.register_chatcommand("forcemusic", {
 	description = S("Force playing a specific or random (no param) track to yourself"),
 	privs = { debug = true },
 	func = function(player_name, param)
+		-- Beware, selected track may be interrupted by a scheduler (each 15 seconds)
 		stop_music_for_listener(player_name, true)
 		local track
 		if param and param ~= "" then
