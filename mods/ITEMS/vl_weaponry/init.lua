@@ -694,7 +694,10 @@ core.register_tool("vl_weaponry:scythe_netherite", {
 	},
 })
 
+local locked_digger = false
 core.register_on_dignode(function(pos, oldnode, digger)
+	if locked_digger then return false end
+	locked_digger = true
 	local tool = digger:get_wielded_item()
 	if tool and core.get_item_group(tool:get_name(), "scythe") > 0 then
 		local def = core.registered_nodes[oldnode.name]
@@ -704,14 +707,14 @@ core.register_on_dignode(function(pos, oldnode, digger)
 				local p = vector.offset(pos, x, 0, z)
 				local n = core.get_node(p)
 				local d = core.registered_nodes[n.name]
-				if d and def.drawtype == "plantlike"
+				if d and d.drawtype == "plantlike"
 						and core.get_item_group(n.name, "plant") > 0 then
-					core.remove_node(p)
-					core.handle_node_drops(p, {}, digger)
+					core.dig_node(p, digger)
 				end
 			end end
 		end
 	end
+	locked_digger = false
 end)
 
 -- Crafting recipes
