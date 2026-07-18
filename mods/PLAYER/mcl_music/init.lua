@@ -8,7 +8,7 @@ local music_enabled = core.settings:get_bool("mcl_game_music", true)
 local pianowtune  = "diminixed-pianowtune02"
 local end_tune    = "diminixed-ambientwip02"
 local never_grow_up = "diminixed-nevergrowup04"
-local nether_tune = "horizonchris96-traitor"
+local nether_tune = "DarkReaven-traitor"
 local odd_block = "Jester-0dd-BL0ck"
 local flock_of_one = "Jester-Flock-of-One"
 local gift = "Jester-Gift"
@@ -16,17 +16,55 @@ local hailing_forest = "Jester-Hailing_Forest"
 local lonely_blossom = "exhale_and_tim_unwin-lonely_blossom"
 local valley_of_ghosts = "exhale_and_tim_unwin-valley_of_ghosts"
 local farmer = "exhale_and_tim_unwin-farmer"
+local wildhome = "Herowl-Home_in_the_Wilderness"
+local memories = "DarkReaven-memories_from_below"
+local maintheme = "DarkReaven-calmed_cube"
+local alttheme = "DarkReaven-calmed_cube_in_space"
+local cube_beat = "DarkReaven-cube_beat"
+local cube_waltz = "DarkReaven-cube_waltz"
+local cube_waltz2 = "DarkReaven-cube_waltz_2"
+local genna = "DarkReaven-genna"
+local kuru = "DarkReaven-kuru"
+local magic_of_forest = "DarkReaven-magic_of_the_forest"
+local nostalgic = "DarkReaven-nostalgic_block"
+local slow_in_cubic = "DarkReaven-slow_in_cubic_mode"
+local piano_cubico = "DarkReaven-slow_piano_cubico"
+local starry_sky = "DarkReaven-starry_sky_at_winter"
+local sweet_piano = "DarkReaven-sweet_piano_8bit"
+local what_will_we = "DarkReaven-what_we_will_build_next"
+local nightfall_beat = "DarkReaven-beat_at_nightfall"
+local deep_mining = "DarkReaven-deep_mining"
+local watchful = "DarkReaven-watchful"
 
 local scenario_to_base_track = {
-	["overworld"]	= {pianowtune, never_grow_up, flock_of_one, gift, hailing_forest, lonely_blossom, farmer},
-	["nether"]	= {nether_tune, valley_of_ghosts},
+	["overworld"]	= {
+		pianowtune, never_grow_up, flock_of_one, gift, hailing_forest,
+		lonely_blossom, farmer, wildhome, maintheme, alttheme, cube_beat,
+		cube_waltz, cube_waltz2, genna, kuru, magic_of_forest, nostalgic,
+		slow_in_cubic, piano_cubico, starry_sky, sweet_piano, what_will_we
+	},
+	["nether"]	= {nether_tune, valley_of_ghosts, memories},
 	["end"]		= {end_tune},
-	["mining"]	= {odd_block},
+	["mining"]	= {odd_block, nightfall_beat, deep_mining, watchful},
 }
 
 local min_scenario_change_music_time = 5 * 60 -- Seconds
 
 local listeners = {}
+
+local music_volume_setting = vl_tuning.player_setting("mcl_music:volume", "slider", {
+	default = 800,
+	description = S("Background music volume (0-1000)"),
+	on_change = function(setting, player, value)
+		if not player or not value then return end
+		local t = listeners[player:get_player_name()]
+		if not t then return end
+		local handle = t.handle
+		if handle then
+			core.sound_fade(handle, 1.0, value / 1000.0)
+		end
+	end
+})
 
 local function pick_track(scenario)
 	local scenario_tracks = scenario_to_base_track[scenario]
@@ -48,22 +86,15 @@ local function pick_track(scenario)
 	return nil
 end
 
-local function stop_music_for_listener(player_name)
+local function stop_music_for_listener(player_name, immediate)
 
 	if not listeners or not listeners[player_name] then return end
 	local handle = listeners[player_name].handle
 
 	if handle then
 		core.log("action", "[mcl_music] Stopping music")
-		core.sound_fade(handle, -.025, 0)
+		core.sound_fade(handle, immediate and 1.0 or 0.25, 0)
 		listeners[player_name].handle = nil
-	end
-end
-
-local function stop_music_for_all()
-	for _, player in pairs(core.get_connected_players()) do
-		local player_name = player:get_player_name()
-		stop_music_for_listener_name(player_name)
 	end
 end
 
@@ -81,9 +112,12 @@ local function remove_listener(player_name)
 end
 
 local function play_song(player_name, track)
+	local player = core.get_player_by_name(player_name)
+	if not player then return end
+	local gain = music_volume_setting:get(player) / 1000.0
 	local spec = {
 		name  = track,
-		gain  = 0.3,
+		gain  = gain,
 		pitch = 1.0,
 	}
 	local parameters = {
@@ -241,4 +275,20 @@ core.register_chatcommand("music", {
 		stop_music_for_listener(playername)
 		core.chat_send_player(sender_name, S("Set music for @1 to: @2", playername, display_new_state))
 	end,
+})
+
+core.register_chatcommand("forcemusic", {
+	params = "[<track name>]",
+	description = S("Force playing a specific or random (no param) track to yourself. Beware, selected track may be interrupted by the scheduler (each 5-15 seconds)."),
+	privs = { debug = true },
+	func = function(player_name, param)
+		stop_music_for_listener(player_name, true)
+		local track
+		if param and param ~= "" then
+			track = param
+		else
+			track = pick_track("overworld")
+		end
+		play_song(player_name, track)
+	end
 })

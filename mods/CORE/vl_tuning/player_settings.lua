@@ -72,7 +72,7 @@ function player_setting_class:get_string(player)
 end
 
 ---@param name string
----@param p_type? "bool"|"number"|"string"
+---@param p_type? "bool"|"number"|"string"|"slider"
 ---@param def? vl_tuning.PlayerSettingDef
 ---@return vl_tuning.PlayerSetting
 function vl_tuning.player_setting(name, p_type, def)

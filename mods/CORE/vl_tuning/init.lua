@@ -31,6 +31,11 @@ vl_tuning.tunable_types = {
 		from_string = function(v) return v end,
 		default = "",
 	},
+	slider = {
+		to_string = tostring,
+		from_string = tonumber,
+		default = 0
+	}
 }
 
 ---@alias vl_tuning.Value string|number|boolean
@@ -38,7 +43,7 @@ vl_tuning.tunable_types = {
 -- Tunable metatable functions
 ---@class (exact) vl_tuning.Setting
 ---@field name string
----@field setting_type "string"|"number"|"bool"
+---@field setting_type "string"|"number"|"bool"|"slider"
 ---@field description string
 ---@field default vl_tuning.Value
 ---@field set fun(self : vl_tuning.Setting, value : vl_tuning.Value, no_hook : boolean?)
@@ -88,7 +93,7 @@ end
 ---@field formspec_desc_lines? number
 
 ---@param name string
----@param p_type? "bool"|"number"|"string"
+---@param p_type? "bool"|"number"|"string"|"slider"
 ---@param def? vl_tuning.SettingDef
 ---@return vl_tuning.Setting
 function mod.setting(name, p_type, def)
