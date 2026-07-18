@@ -167,7 +167,6 @@ function mcl_potions.register_splash(name, descr, color, def)
 
 	vl_projectile.register(id.."_flying",{
 		textures = {splash_image(color)},
-		hp_max = 1,
 		visual_size = {x=w/2,y=w/2},
 		collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
 		_vl_projectile = {
