@@ -355,7 +355,7 @@ core.register_tool("vl_deepslate_tools:scythe_deepslate", {
 	_doc_items_usagehelp = scythe_use,
 	inventory_image = "vl_tool_deepslatescythe.png",
 	wield_scale = wield_scale,
-	groups = { weapon=1, scythe=1, dig_speed_class=2, enchantability=5 },
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=5 },
 	tool_capabilities = {
 		full_punch_interval = 0.9,
 		max_drop_level=3,
