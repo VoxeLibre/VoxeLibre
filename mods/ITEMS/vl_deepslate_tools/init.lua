@@ -363,7 +363,7 @@ core.register_tool("vl_deepslate_tools:scythe_deepslate", {
 		punch_attack_uses = deepslate.uses,
 	},
 	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "group:cobble",
+	_repair_material = "mcl_deepslate:deepslate_cobbled",
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		swordy = { speed = 2, level = 3, uses = deepslate.uses },
