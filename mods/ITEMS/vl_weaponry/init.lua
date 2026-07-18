@@ -560,7 +560,7 @@ core.register_tool("vl_weaponry:scythe_wood", {
 	_doc_items_usagehelp = scythe_use,
 	inventory_image = "vl_tool_woodscythe.png",
 	wield_scale = wield_scale,
-	groups = { weapon=1, scythe=1, dig_speed_class=2, enchantability=15 },
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=15 },
 	tool_capabilities = {
 		full_punch_interval = 0.8,
 		max_drop_level=1,
@@ -583,7 +583,7 @@ core.register_tool("vl_weaponry:scythe_stone", {
 	_doc_items_usagehelp = scythe_use,
 	inventory_image = "vl_tool_stonescythe.png",
 	wield_scale = wield_scale,
-	groups = { weapon=1, scythe=1, dig_speed_class=2, enchantability=5 },
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=5 },
 	tool_capabilities = {
 		full_punch_interval = 0.9,
 		max_drop_level=3,
@@ -606,7 +606,7 @@ core.register_tool("vl_weaponry:scythe_iron", {
 	_doc_items_usagehelp = scythe_use,
 	inventory_image = "vl_tool_steelscythe.png",
 	wield_scale = wield_scale,
-	groups = { weapon=1, scythe=1, dig_speed_class=2, enchantability=14 },
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=14 },
 	tool_capabilities = {
 		full_punch_interval = 0.8,
 		max_drop_level=4,
@@ -629,7 +629,7 @@ core.register_tool("vl_weaponry:scythe_gold", {
 	_doc_items_usagehelp = scythe_use,
 	inventory_image = "vl_tool_goldscythe.png",
 	wield_scale = wield_scale,
-	groups = { weapon=1, scythe=1, dig_speed_class=6, enchantability=22 },
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=6, enchantability=22 },
 	tool_capabilities = {
 		full_punch_interval = 0.7,
 		max_drop_level=2,
@@ -652,7 +652,7 @@ core.register_tool("vl_weaponry:scythe_diamond", {
 	_doc_items_usagehelp = scythe_use,
 	inventory_image = "vl_tool_diamondscythe.png",
 	wield_scale = wield_scale,
-	groups = { weapon=1, scythe=1, dig_speed_class=5, enchantability=10 },
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=5, enchantability=10 },
 	tool_capabilities = {
 		full_punch_interval = 0.8,
 		max_drop_level=5,
@@ -677,7 +677,7 @@ core.register_tool("vl_weaponry:scythe_netherite", {
 	_doc_items_usagehelp = scythe_use,
 	inventory_image = "vl_tool_netheritescythe.png",
 	wield_scale = wield_scale,
-	groups = { weapon=1, scythe=1, dig_speed_class=6, enchantability=10 },
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=6, enchantability=10 },
 	tool_capabilities = {
 		full_punch_interval = 0.8,
 		max_drop_level=5,
