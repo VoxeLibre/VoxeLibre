@@ -697,6 +697,7 @@ core.register_tool("vl_weaponry:scythe_netherite", {
 local locked_digger = false
 core.register_on_dignode(function(pos, oldnode, digger)
 	if locked_digger then return false end
+	if not digger then return false end
 	locked_digger = true
 	local tool = digger:get_wielded_item()
 	if tool and core.get_item_group(tool:get_name(), "scythe") > 0 then
