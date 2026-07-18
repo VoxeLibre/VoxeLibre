@@ -390,7 +390,7 @@ local function can_mob_drop_xp(mob)
 	return not is_baby_animal(mob) and is_player_kill(mob)
 end
 
-local function drop_mob_xp(mob, _death_cause, _cmi_cause, _info)
+local function drop_mob_xp(mob, _, cmi)
 	if not can_mob_drop_xp(mob) then return end
 
 	local pos = mob.vl_drops_pos or mob.object:get_pos()
@@ -399,7 +399,7 @@ local function drop_mob_xp(mob, _death_cause, _cmi_cause, _info)
 	if mcl_sculk.handle_death(pos, amount) then
 		return
 	end
-	if core.is_creative_enabled("") ~= true then
+	if core.is_creative_enabled(cmi.puncher and cmi.puncher:get_player_name() or "") ~= true then
 		mcl_experience.throw_xp(pos, amount)
 	end
 end
@@ -413,15 +413,15 @@ local function drop_mob_items(mob, death_cause, cmi_cause, info)
 		return
 	end
 
-	local wielditem
+	local puncher_wielditem
 	if death_cause == "hit" and cmi_cause and cmi_cause.puncher then
-		wielditem = cmi_cause.puncher:get_wielded_item()
+		puncher_wielditem = cmi_cause.puncher:get_wielded_item()
 	else
-		wielditem = ItemStack()
+		puncher_wielditem = ItemStack()
 	end
 
-	local cooked  = mcl_burning.is_burning(mob.object) or mcl_enchanting.has_enchantment(wielditem, "fire_aspect")
-	local looting = mcl_enchanting.get_enchantment(wielditem, "looting")
+	local cooked  = mcl_burning.is_burning(mob.object) or mcl_enchanting.has_enchantment(puncher_wielditem, "fire_aspect")
+	local looting = mcl_enchanting.get_enchantment(puncher_wielditem, "looting")
 
 	mob:item_drop({
 		cooked        = cooked,
@@ -432,19 +432,9 @@ local function drop_mob_items(mob, death_cause, cmi_cause, info)
 end
 
 
-local function do_mob_loot(mob, death_cause, cmi_cause, info)
-	if not gamerule_doMobLoot then
-		return
-	end
-	drop_mob_items(mob, death_cause, cmi_cause, info)
-	drop_mob_xp(mob, death_cause, cmi_cause, info)
-end
-
-
 --- Executes the final stage of a mob's death. The mob's corpse is removed from existence.
 local function do_mob_corpse_remove(mob)
-	if not mob then return end
-	if not mob.object:is_valid() or not mob.object:get_luaentity() then
+	if not mob or not mob.object:is_valid() or not mob.object:get_luaentity() then
 		return
 	end
 	local dpos   = mob.object:get_pos()
@@ -452,9 +442,8 @@ local function do_mob_corpse_remove(mob)
 	local yaw    = mob.object:get_rotation().y
 	local rotate = not mob.instant_death
 
-	local on_corpse_remove = mob.on_corpse_remove
-	if type(on_corpse_remove) == "function" then
-		on_corpse_remove(mob, dpos)
+	if mob.on_corpse_remove then
+		mob.on_corpse_remove(mob, dpos)
 	end
 
 	mcl_burning.extinguish(mob.object)
@@ -518,7 +507,6 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 	end
 
 	self:mob_sound("death")
-	do_mob_loot(self, cause, cmi_cause, info)
 
 	-- execute custom death function
 	if self.on_die then
@@ -531,6 +519,11 @@ function mob_class:check_for_death(cause, cmi_cause, info)
 			mcl_util.remove_entity(self)
 			return true
 		end
+	end
+
+	if gamerule_doMobLoot then
+		drop_mob_items(self, cause, cmi_cause, info)
+		drop_mob_xp(self, cause, cmi_cause, info)
 	end
 
 	if self.jockey or self.riden_by_jock then
