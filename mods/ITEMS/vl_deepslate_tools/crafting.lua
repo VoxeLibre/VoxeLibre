@@ -81,6 +81,22 @@ for t,m in pairs(materials) do
 			{ s, b, b },
 		}
 	})
+	core.register_craft({
+		output = "vl_weaponry:scythe_"..t,
+		recipe ={
+			{ m, m, s },
+			{ b, s, b },
+			{ s, b, b }
+		}
+	})
+	core.register_craft({
+		output = "vl_weaponry:scythe_"..t,
+		recipe ={
+			{ s, m, m },
+			{ b, s, b },
+			{ b, b, s }
+		}
+	})
 end
 
 -- repair crafting recipes for deepslate, as it was removed from the cobble group.
