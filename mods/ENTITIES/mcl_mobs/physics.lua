@@ -399,7 +399,7 @@ local function drop_mob_xp(mob, _, cmi)
 	if mcl_sculk.handle_death(pos, amount) then
 		return
 	end
-	if core.is_creative_enabled(cmi.puncher and cmi.puncher:get_player_name() or "") ~= true then
+	if core.is_creative_enabled(cmi and cmi.puncher and cmi.puncher:get_player_name() or "") ~= true then
 		mcl_experience.throw_xp(pos, amount)
 	end
 end
