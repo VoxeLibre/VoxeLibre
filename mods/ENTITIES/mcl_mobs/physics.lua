@@ -151,6 +151,7 @@ function mob_class:item_drop(params)
 
 	for n = 1, #drops do
 		local dropdef = drops[n]
+		local looting = dropdef.looting or "common"
 
 		local chance, error = calculate_drop_chance(dropdef, looting_level, attacker_name)
 		if error then
@@ -161,12 +162,12 @@ function mob_class:item_drop(params)
 		end
 
 		-- Only do special drops when killed by a player
-		if not player_kill and dropdef.looting ~= "common" then
+		if not player_kill and looting ~= "common" then
 			chance = 0
 		end
 
 		local num = 0
-		local do_common_looting = (looting_level > 0 and dropdef.looting == "common")
+		local do_common_looting = (looting_level > 0 and looting == "common")
 		if random() < chance then
 			num = random(dropdef.min or 1, dropdef.max or 1)
 		elseif not dropdef.looting_ignore_chance then
