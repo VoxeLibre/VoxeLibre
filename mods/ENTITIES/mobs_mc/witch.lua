@@ -97,6 +97,11 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 						origin_attached = self.attack,
 					},
 				})
+				core.sound_play("vl_witch_attack", {
+					gain = 0.6,
+					pos = self.object:get_pos(),
+					max_hear_distance = 64
+				}, true)
 			end)
 			core.after(0.6, function(s)
 				if not s or not s.attack then return end
@@ -185,7 +190,10 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 		{name = "mcl_core:sugar", chance = 8, min = 0, max = 2, looting = "common",},
 		{name = "mcl_core:stick", chance = 4, min = 0, max = 2, looting = "common",},
 	},
-	-- TODO: sounds
+	sound = {
+		random = "vl_witch_laugh",
+		distance = 32
+	},
 	animation = {
 		stand_start = 60,
 		stand_end = 70,
