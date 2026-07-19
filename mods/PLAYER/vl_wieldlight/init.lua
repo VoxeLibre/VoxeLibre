@@ -3,7 +3,7 @@ if core.settings:get_bool("enable_vl_wieldlight", true) then
 local max_players_per_step = tonumber(core.settings:get("vl_wieldlight_player_step_lim"))
 if max_players_per_step and max_players_per_step < 0 then max_players_per_step = nil end
 
-local players = {} -- positions and powers of player lights
+local players = {} -- positions, powers, bounds, and creation times of cached player lights
 
 local cdt = {} -- reusable cid buffer
 local ldt = {} -- reusable light buffer
@@ -36,10 +36,21 @@ local function wieldedlight(name)
 	if not pos then return end
 	pos = vector.round(pos) -- rounding needed for LVM
 
+	-- Light source power
+	local ls = player:get_wielded_item():get_definition().light_source
+	local o_ls = player:get_inventory():get_stack("offhand", 1):get_definition().light_source
+	if o_ls and (not ls or o_ls > ls) then ls = o_ls end
+
+	local now = core.get_us_time()
+	local old_p = players[name]
+	if old_p and now - old_p[5] < 200000 and old_p[2] == ls
+			and old_p[1].x == pos.x and old_p[1].y == pos.y and old_p[1].z == pos.z then
+		return
+	end
+
 	local p1, p2 -- LVM bounds
 	local double_run = false
 	-- Fix light at old position
-	local old_p = players[name]
 	if old_p then
 		local old_po = old_p[1] -- old position
 		local old_ls = old_p[2] -- old_strength
@@ -48,10 +59,6 @@ local function wieldedlight(name)
 		double_run = chebyshev(old_p[1], pos) > 16
 	end
 
-	-- Light source power
-	local ls = player:get_wielded_item():get_definition().light_source
-	local o_ls = player:get_inventory():get_stack("offhand", 1):get_definition().light_source
-	if o_ls and (not ls or o_ls > ls) then ls = o_ls end
 	local nn = core.get_node(pos).name
 	local def = nn and core.registered_nodes[nn]
 	local cl = def and def.light_source
@@ -193,7 +200,7 @@ local function wieldedlight(name)
 		lvm:set_light_data(ldt)
 		lvm:write_to_map(false)
 		if lvm.close then lvm:close() end
-		players[name] = {pos, ls, np1, np2}
+		players[name] = {pos, ls, np1, np2, core.get_us_time()}
 	end
 	if not np1 then
 		players[name] = nil
