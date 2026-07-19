@@ -48,7 +48,7 @@ local function wieldedlight(name)
 		local light = core.get_node_light(pos) -- checking actual light to make sure
 		local old_po = old_p[1] -- old position
 		local old_ls = old_p[2] -- old_strength
-		if light == ls and pos:equals(old_po) then return end -- no changes needed
+		if not light or light == ls and pos:equals(old_po) then return end -- no changes needed
 		p1 = vector.offset(old_po, -old_ls, -old_ls, -old_ls)
 		p2 = vector.offset(old_po, old_ls, old_ls, old_ls)
 		double_run = chebyshev(old_p[1], pos) > 16 -- areas detached, teleportation?
