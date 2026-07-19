@@ -349,15 +349,16 @@ core.register_tool("vl_deepslate_tools:spear_deepslate", {
 })
 
 core.register_tool("vl_deepslate_tools:scythe_deepslate", {
-	description = S("Stone Scythe"),
+	description = S("Deepslate Scythe"),
 	_tt_help = scythe_tt,
 	_doc_items_longdesc = scythe_longdesc,
 	_doc_items_usagehelp = scythe_use,
 	inventory_image = "vl_tool_deepslatescythe.png",
 	wield_scale = wield_scale,
 	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=5 },
+	range = 4.0,
 	tool_capabilities = {
-		full_punch_interval = 0.9,
+		full_punch_interval = 1.2,
 		max_drop_level=3,
 		damage_groups = {fleshy=6.5},
 		punch_attack_uses = deepslate.uses,

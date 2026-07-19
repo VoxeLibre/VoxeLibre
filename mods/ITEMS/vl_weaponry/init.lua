@@ -246,6 +246,8 @@ local materials = {
 
 local SPEAR_RANGE = 4.5
 
+local SCYTHE_RANGE = 4.0
+
 --Hammers
 core.register_tool("vl_weaponry:hammer_wood", {
 	description = S("Wooden Hammer"),
@@ -561,8 +563,9 @@ core.register_tool("vl_weaponry:scythe_wood", {
 	inventory_image = "vl_tool_woodscythe.png",
 	wield_scale = wield_scale,
 	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=15 },
+	range = SCYTHE_RANGE,
 	tool_capabilities = {
-		full_punch_interval = 0.8,
+		full_punch_interval = 1.1,
 		max_drop_level=1,
 		damage_groups = {fleshy=5},
 		punch_attack_uses = uses.wood,
@@ -584,8 +587,9 @@ core.register_tool("vl_weaponry:scythe_stone", {
 	inventory_image = "vl_tool_stonescythe.png",
 	wield_scale = wield_scale,
 	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=5 },
+	range = SCYTHE_RANGE,
 	tool_capabilities = {
-		full_punch_interval = 0.9,
+		full_punch_interval = 1.2,
 		max_drop_level=3,
 		damage_groups = {fleshy=6},
 		punch_attack_uses = uses.stone,
@@ -607,8 +611,9 @@ core.register_tool("vl_weaponry:scythe_iron", {
 	inventory_image = "vl_tool_steelscythe.png",
 	wield_scale = wield_scale,
 	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=14 },
+	range = SCYTHE_RANGE,
 	tool_capabilities = {
-		full_punch_interval = 0.8,
+		full_punch_interval = 1.1,
 		max_drop_level=4,
 		damage_groups = {fleshy=7},
 		punch_attack_uses = uses.iron,
@@ -630,8 +635,9 @@ core.register_tool("vl_weaponry:scythe_gold", {
 	inventory_image = "vl_tool_goldscythe.png",
 	wield_scale = wield_scale,
 	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=6, enchantability=22 },
+	range = SCYTHE_RANGE,
 	tool_capabilities = {
-		full_punch_interval = 0.7,
+		full_punch_interval = 0.8,
 		max_drop_level=2,
 		damage_groups = {fleshy=5},
 		punch_attack_uses = uses.gold,
@@ -653,8 +659,9 @@ core.register_tool("vl_weaponry:scythe_diamond", {
 	inventory_image = "vl_tool_diamondscythe.png",
 	wield_scale = wield_scale,
 	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=5, enchantability=10 },
+	range = SCYTHE_RANGE,
 	tool_capabilities = {
-		full_punch_interval = 0.8,
+		full_punch_interval = 1.1,
 		max_drop_level=5,
 		damage_groups = {fleshy=8},
 		punch_attack_uses = uses.diamond,
@@ -678,8 +685,9 @@ core.register_tool("vl_weaponry:scythe_netherite", {
 	inventory_image = "vl_tool_netheritescythe.png",
 	wield_scale = wield_scale,
 	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=6, enchantability=10 },
+	range = SCYTHE_RANGE,
 	tool_capabilities = {
-		full_punch_interval = 0.8,
+		full_punch_interval = 1.1,
 		max_drop_level=5,
 		damage_groups = {fleshy=9},
 		punch_attack_uses = uses.netherite,
