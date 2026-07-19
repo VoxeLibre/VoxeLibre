@@ -38,24 +38,25 @@ local function wieldedlight(name)
 
 	local p1, p2 -- LVM bounds
 	local double_run = false
-	-- Fix light at old position
-	local old_p = players[name]
-	if old_p then
-		local old_po = old_p[1] -- old position
-		local old_ls = old_p[2] -- old_strength
-		p1 = vector.offset(old_po, -old_ls, -old_ls, -old_ls)
-		p2 = vector.offset(old_po, old_ls, old_ls, old_ls)
-		double_run = chebyshev(old_p[1], pos) > 16
-	end
 
 	-- Light source power
 	local ls = player:get_wielded_item():get_definition().light_source
 	local o_ls = player:get_inventory():get_stack("offhand", 1):get_definition().light_source
 	if o_ls and (not ls or o_ls > ls) then ls = o_ls end
+	local old_p = players[name]
+	if old_p then
+		local light = core.get_node_light(pos) -- checking actual light to make sure
+		local old_po = old_p[1] -- old position
+		local old_ls = old_p[2] -- old_strength
+		if light == ls and pos:equals(old_po) then return end -- no changes needed
+		p1 = vector.offset(old_po, -old_ls, -old_ls, -old_ls)
+		p2 = vector.offset(old_po, old_ls, old_ls, old_ls)
+		double_run = chebyshev(old_p[1], pos) > 16 -- areas detached, teleportation?
+	end
 	local nn = core.get_node(pos).name
 	local def = nn and core.registered_nodes[nn]
 	local cl = def and def.light_source
-	if not cl or ls and cl > ls then ls = nil end -- further calculations would be no-op
+	if not def or cl and ls and cl > ls then ls = nil end -- further calculations would be no-op
 	local np1, np2 -- new LVM bounds
 	if ls and ls > 0 then
 		np1 = vector.offset(pos, -ls, -ls, -ls)
