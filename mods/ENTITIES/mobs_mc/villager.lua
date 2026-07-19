@@ -2306,11 +2306,7 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 				return true
 			end
 		end
-	end,
-	on_lightning_strike = function(self, pos, pos2, objects)
-		 mcl_util.replace_mob(self.object, "mobs_mc:witch")
-		 return true
-	end,
+	end
 })
 
 -- spawn eggs
