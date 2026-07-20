@@ -16,20 +16,10 @@ core.register_globalstep(function(dtime)
 		local item = core.registered_items[offhand_item]
 		if offhand_item ~= "" and item then
 			if not offhand_hud then
-				local huds = {}
-				hud_ids[p_name] = huds
-				huds[1] = player:hud_add({
-					[mcl_vars.hud_type_field] = "image",
-					text = "mcl_offhand_slot.png",
-					position = {x = 0.5, y = 1},
-					alignment = {x = 0, y = -1},
-					offset = {x = -320, y = -2},
-					scale = {x = 2.8, y = 2.8},
-					z_index = -1
-				})
-				huds[2] = player:hud_add({
+				hud_ids[p_name] = player:hud_add({
 					[mcl_vars.hud_type_field] = "inventory",
 					text = "offhand",
+					text2 = "mcl_offhand_slot.png",
 					number = 1,
 					item = 1,
 					position = {x = 0.5, y = 1},
@@ -39,8 +29,7 @@ core.register_globalstep(function(dtime)
 				})
 			end
 		elseif offhand_hud then
-			player:hud_remove(offhand_hud[1])
-			player:hud_remove(offhand_hud[2])
+			player:hud_remove(offhand_hud)
 			hud_ids[p_name] = nil
 		end
 	end
