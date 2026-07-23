@@ -402,3 +402,6 @@ mcl_logging_structures (Structure generation logging) bool false
 
 # Debug logging for mcl_events.
 mcl_logging_event_api (Debug logging for mcl_events) bool false
+
+# Announcements
+vl_announcements_auto_show (Show new release announcements when players join) bool true

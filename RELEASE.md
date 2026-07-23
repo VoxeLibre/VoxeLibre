@@ -24,8 +24,10 @@ git commit -m "Updated release credits and set version for v0.87"
 0_87-the_prismatic_release.md
 ```
 6. Make a commit for the release notes:
+Both *.md file and in-game announcements
 ```
 git add releasenotes/0_87-the_prismatic_release.md
+git add mods/HUD/vl_announcements
 git commit -m "Add release notes for v0.87"
 ```
 7. **Tag and push to the tag:**
