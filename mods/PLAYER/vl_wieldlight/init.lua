@@ -3,7 +3,8 @@ if core.settings:get_bool("enable_vl_wieldlight", true) then
 local max_players_per_step = tonumber(core.settings:get("vl_wieldlight_player_step_lim"))
 if max_players_per_step and max_players_per_step < 0 then max_players_per_step = nil end
 
-local players = {} -- positions and powers of player lights
+local players = {} -- positions, powers, bounds, and last recalculation times of player lights
+local recalculation_interval = 2 * 1000000 -- microseconds
 
 local cdt = {} -- reusable cid buffer
 local ldt = {} -- reusable light buffer
@@ -38,13 +39,20 @@ local function wieldedlight(name)
 
 	local p1, p2 -- LVM bounds
 	local double_run = false
+	local now = core.get_us_time()
+	local old_p = players[name]
 
 	-- Light source power
 	local ls = player:get_wielded_item():get_definition().light_source
 	local o_ls = player:get_inventory():get_stack("offhand", 1):get_definition().light_source
 	if o_ls and (not ls or o_ls > ls) then ls = o_ls end
-	local old_p = players[name]
+	if old_p and ls == old_p[2] and pos:equals(old_p[1])
+			and now - old_p[5] < recalculation_interval then
+		return
+	end
+
 	if old_p then
+		old_p[5] = now
 		local light = core.get_node_light(pos) -- checking actual light to make sure
 		local old_po = old_p[1] -- old position
 		local old_ls = old_p[2] -- old_strength
@@ -194,7 +202,7 @@ local function wieldedlight(name)
 		lvm:set_light_data(ldt)
 		lvm:write_to_map(false)
 		if lvm.close then lvm:close() end
-		players[name] = {pos, ls, np1, np2}
+		players[name] = {pos, ls, np1, np2, now}
 	end
 	if not np1 then
 		players[name] = nil
