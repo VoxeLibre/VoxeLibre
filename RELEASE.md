@@ -23,6 +23,7 @@ git commit -m "Updated release credits and set version for v0.87"
 ```
 0_87-the_prismatic_release.md
 ```
+and an announcement to the `mods/HUD/vl_announcements/voxelibre.lua` file
 6. Make a commit for the release notes:
 Both *.md file and in-game announcements
 ```
