@@ -11,7 +11,7 @@ vl_announcements.register_announcement("voxelibre", {
 	id = "0.91",
 	version = "0.91",
 	title = S("The Sneaky Release"),
-	poster = "0_91-the-sneaky-screenshot.png",
+	poster = "0_91-the-sneaky-screenshot.jpg",
 	intro = S("Tridents have finally arrived, together with new enchantments, richer ambient audio, and many improvements throughout the game."),
 	features = {
 		{title = S("Tridents"), icon = "vl_tridents_inv.png",
@@ -30,8 +30,8 @@ vl_announcements.register_announcement("voxelibre", {
 			S("Touchscreen shield controls and many other mobile interactions were improved."),
 		}},
 		{title = S("Fixes"), entries = {
-			S("Fixed numerous crashes involving combat, campfires, mobs, and projectiles."),
 			S("Fixed issues with crafting results, buckets, item frames, portals, and water bottles."),
+			S("Fixed crashes involving combat, campfires, mobs, and projectiles."),
 		}},
 	},
 })
@@ -40,12 +40,12 @@ vl_announcements.register_announcement("voxelibre", {
 	id = "0.90",
 	version = "0.90",
 	title = S("The Dynamic Release"),
-	poster = "0_90-the-dynamic-screenshot.png",
+	poster = "0_90-the-dynamic-screenshot.jpg",
 	intro = S("This release introduced live game-rule tuning, new equipment and decorations, and broad combat and gameplay rebalancing."),
 	features = {
 		{title = S("Dynamic settings"), icon = "screwdriver.png",
 			description = S("Administrators can tune supported settings and game rules while playing.")},
-		{title = S("New equipment"), icon = "default_tool_diamondpick.png",
+		{title = S("New equipment"), icon = "vl_deepslate_tools_deepslatepick.png",
 			description = S("Discover deepslate tools, craftable chainmail armor, and golden decorations.")},
 		{title = S("Combat balancing"), icon = "mcl_potions_potion_bottle.png",
 			description = S("Potions, stews, enchantments, mobs, and combat received extensive balancing.")},
@@ -53,7 +53,7 @@ vl_announcements.register_announcement("voxelibre", {
 	details = {{title = S("Changes and fixes"), entries = {
 		S("The creative inventory was reorganized and fire spreading became more predictable."),
 		S("Fire Elementals replaced Blazes as the first member of a broader elemental mob family."),
-		S("Numerous gameplay bugs, crashes, and compatibility problems were fixed."),
+		S("Some gameplay bugs and compatibility issues were fixed."),
 	}}},
 })
 
@@ -61,7 +61,7 @@ vl_announcements.register_announcement("voxelibre", {
 	id = "0.89",
 	version = "0.89",
 	title = S("The On Display Release"),
-	poster = "0_89-the-on-display-screenshot.png",
+	poster = "0_89-the-on-display-screenshot.jpg",
 	intro = S("Maps, signs, item frames, world generation, and mob spawning all received major upgrades."),
 	features = {
 		{title = S("Better maps"), icon = "mcl_maps_map_filled.png",
@@ -74,6 +74,6 @@ vl_announcements.register_announcement("voxelibre", {
 	details = {{title = S("Changes and fixes"), entries = {
 		S("Structure generation became more deterministic."),
 		S("Mob spawning, performance, textures, sounds, and model compatibility were improved."),
-		S("Numerous item duplication, world generation, and crash bugs were fixed."),
+		S("Item duplication, world generation, and other bugs were fixed."),
 	}}},
 })

@@ -90,8 +90,8 @@ local function article(state, provider, announcement)
 				",0.55;release_title;<global halign='center' color='", mcl_formspec.label_color,
 				"'><big><b>", F(H(provider.name .. " " .. announcement.version .. " — " ..
 					announcement.title)), "</b></big>]",
-			announcement.poster and "image[" .. (left + (width - poster_width) / 2) ..
-				",1.65;" .. poster_width .. "," .. poster_height .. ";" .. F(announcement.poster) .. "]" or "",
+			announcement.poster and "hypertext[" .. (left + (width - poster_width) / 2) ..
+				",1.65;" .. poster_width .. "," .. poster_height .. ";;<img name=" .. F(announcement.poster) .. " height=360>]" or "",
 			"textarea[", left, ",8.15;", width, ",1.0;;;", F(announcement.intro), "]",
 			feature_cards(announcement, left, width),
 			"button[", left, ",10.75;2.8,0.8;details;", F(S("Changes & fixes")), "]",
