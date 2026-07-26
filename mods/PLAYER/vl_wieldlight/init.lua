@@ -3,7 +3,10 @@ if core.settings:get_bool("enable_vl_wieldlight", true) then
 local max_players_per_step = tonumber(core.settings:get("vl_wieldlight_player_step_lim"))
 if max_players_per_step and max_players_per_step < 0 then max_players_per_step = nil end
 
-local players = {} -- positions and powers of player lights
+local queue_steps_skipped = tonumber(core.settings:get("vl_wieldlight_steps_skipped")) or 0
+
+local players = {} -- positions, powers, bounds, and last recalculation times of player lights
+local recalculation_interval = tonumber(core.settings:get("vl_wieldlight_recalc_interval") or 2) * 1000000 -- microseconds
 
 local cdt = {} -- reusable cid buffer
 local ldt = {} -- reusable light buffer
@@ -38,24 +41,30 @@ local function wieldedlight(name)
 
 	local p1, p2 -- LVM bounds
 	local double_run = false
-	-- Fix light at old position
+	local now = core.get_us_time()
 	local old_p = players[name]
-	if old_p then
-		local old_po = old_p[1] -- old position
-		local old_ls = old_p[2] -- old_strength
-		p1 = vector.offset(old_po, -old_ls, -old_ls, -old_ls)
-		p2 = vector.offset(old_po, old_ls, old_ls, old_ls)
-		double_run = chebyshev(old_p[1], pos) > 16
-	end
 
 	-- Light source power
 	local ls = player:get_wielded_item():get_definition().light_source
 	local o_ls = player:get_inventory():get_stack("offhand", 1):get_definition().light_source
 	if o_ls and (not ls or o_ls > ls) then ls = o_ls end
+
+	if old_p then
+		local old_po = old_p[1] -- old position
+		local old_ls = old_p[2] -- old_strength
+		if pos:equals(old_po) and ls == old_ls then
+			if now - old_p[5] < recalculation_interval then return end
+			local light = core.get_node_light(pos) -- checking actual light to make sure
+			if not light or light == ls then return end -- no changes needed
+		end
+		p1 = vector.offset(old_po, -old_ls, -old_ls, -old_ls)
+		p2 = vector.offset(old_po, old_ls, old_ls, old_ls)
+		double_run = chebyshev(old_p[1], pos) > 16 -- areas detached, teleportation?
+	end
 	local nn = core.get_node(pos).name
 	local def = nn and core.registered_nodes[nn]
 	local cl = def and def.light_source
-	if not cl or ls and cl > ls then ls = nil end -- further calculations would be no-op
+	if not def or cl and ls and cl > ls then ls = nil end -- further calculations would be no-op
 	local np1, np2 -- new LVM bounds
 	if ls and ls > 0 then
 		np1 = vector.offset(pos, -ls, -ls, -ls)
@@ -193,7 +202,7 @@ local function wieldedlight(name)
 		lvm:set_light_data(ldt)
 		lvm:write_to_map(false)
 		if lvm.close then lvm:close() end
-		players[name] = {pos, ls, np1, np2}
+		players[name] = {pos, ls, np1, np2, now}
 	end
 	if not np1 then
 		players[name] = nil
@@ -208,8 +217,13 @@ core.register_on_joinplayer(function(player)
 	table.insert(p_queue, player:get_player_name())
 end)
 
+local steps_to_skip = 0
 core.register_globalstep(function(dtime)
 	if not shade_ci_cache then return end
+	if steps_to_skip > 0 then
+		steps_to_skip = steps_to_skip - 1
+		return
+	end
 	-- Iterate part of the queue
 	local iter_num = math.ceil(dtime * #p_queue)
 	if max_players_per_step and iter_num > max_players_per_step then
@@ -220,6 +234,7 @@ core.register_globalstep(function(dtime)
 		i_queue = i_queue + 1
 		if i_queue > #p_queue then i_queue = 1 end
 	end
+	steps_to_skip = queue_steps_skipped
 end)
 
 core.register_on_leaveplayer(function(player)
