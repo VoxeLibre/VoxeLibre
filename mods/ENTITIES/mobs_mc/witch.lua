@@ -190,8 +190,11 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 		{name = "mcl_core:sugar", chance = 8, min = 0, max = 2, looting = "common",},
 		{name = "mcl_core:stick", chance = 4, min = 0, max = 2, looting = "common",},
 	},
-	sound = {
+	sounds = {
 		random = "vl_witch_laugh",
+		war_cry = "vl_witch_laugh",
+		damage = "vl_witch_hit",
+		death = "vl_witch_death",
 		distance = 32
 	},
 	animation = {
