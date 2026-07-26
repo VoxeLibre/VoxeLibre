@@ -3,6 +3,8 @@ if core.settings:get_bool("enable_vl_wieldlight", true) then
 local max_players_per_step = tonumber(core.settings:get("vl_wieldlight_player_step_lim"))
 if max_players_per_step and max_players_per_step < 0 then max_players_per_step = nil end
 
+local queue_steps_skipped = tonumber(core.settings:get("vl_wieldlight_steps_skipped")) or 0
+
 local players = {} -- positions, powers, bounds, and last recalculation times of player lights
 local recalculation_interval = tonumber(core.settings:get("vl_wieldlight_recalc_interval") or 2) * 1000000 -- microseconds
 
@@ -215,8 +217,13 @@ core.register_on_joinplayer(function(player)
 	table.insert(p_queue, player:get_player_name())
 end)
 
+local steps_to_skip = 0
 core.register_globalstep(function(dtime)
 	if not shade_ci_cache then return end
+	if steps_to_skip > 0 then
+		steps_to_skip = steps_to_skip - 1
+		return
+	end
 	-- Iterate part of the queue
 	local iter_num = math.ceil(dtime * #p_queue)
 	if max_players_per_step and iter_num > max_players_per_step then
@@ -227,6 +234,7 @@ core.register_globalstep(function(dtime)
 		i_queue = i_queue + 1
 		if i_queue > #p_queue then i_queue = 1 end
 	end
+	steps_to_skip = queue_steps_skipped
 end)
 
 core.register_on_leaveplayer(function(player)
