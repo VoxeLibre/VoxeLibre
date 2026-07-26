@@ -73,11 +73,11 @@ minetest.register_on_joinplayer(function(player)
 	player:hud_set_hotbar_selected_image("mcl_inventory_hotbar_selected.png")
 	player:hud_add({
 		[mcl_vars.hud_type_field] = "image",
-		text = "mcl_inventory_hotbar.png",
+		text = "mcl_inventory_hotbar.png^[resize:364x44",
 		position = {x = 0.5, y = 1},
 		alignment = {x = 0, y = -1},
 		offset = {x = 0, y = -2},
-		scale = {x = 2.8, y = 2.8},
+		scale = {x = 1.4, y = 1.4},
 		z_index = -1
 	})
 

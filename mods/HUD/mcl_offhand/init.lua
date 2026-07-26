@@ -20,11 +20,11 @@ core.register_globalstep(function(dtime)
 				hud_ids[p_name] = huds
 				huds[1] = player:hud_add({
 					[mcl_vars.hud_type_field] = "image",
-					text = "mcl_offhand_slot.png",
+					text = "mcl_offhand_slot.png^[resize:44x44",
 					position = {x = 0.5, y = 1},
 					alignment = {x = 0, y = -1},
 					offset = {x = -320, y = -2},
-					scale = {x = 2.8, y = 2.8},
+					scale = {x = 1.4, y = 1.4},
 					z_index = -1
 				})
 				huds[2] = player:hud_add({
