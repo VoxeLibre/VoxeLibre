@@ -40,15 +40,16 @@ local function provider_tabs(providers, selected)
 end
 
 local function feature_cards(announcement, left, width)
-	local fs = {}
+	local fs = {"style_type[label;halign=center;valign=center]"}
 	local card_width = (width - 0.6) / 4
 	for index, feature in ipairs(announcement.features) do
 		if index > 4 then break end
 		local x = left + (index - 1) * (card_width + 0.2)
 		local y = 9.35
-		fs[#fs + 1] = "button[" .. x .. "," .. y .. ";" .. card_width .. ",0.75;feature_" .. index .. ";" ..
-			F(feature.title) .. "]"
+		fs[#fs + 1] = "button[" .. x .. "," .. y .. ";" .. card_width .. ",0.75;feature_" .. index .. ";]"
 		fs[#fs + 1] = "image[" .. (x + 0.1) .. "," .. (y + 0.1) .. ";0.55,0.55;" .. F(feature.icon) .. "]"
+		fs[#fs + 1] = "label[" .. (x + 0.75) .. "," .. (y + 0.05) .. ";" ..
+			(card_width - 0.85) .. ",0.65;" .. F(feature.title) .. "]"
 		fs[#fs + 1] = "tooltip[feature_" .. index .. ";" .. F(feature.description) .. "]"
 	end
 	return table.concat(fs)
@@ -114,7 +115,7 @@ local function show(player, state)
 	state.announcement_index = table.indexof(provider.announcements, announcement)
 	mark_seen(player, provider)
 
-	local fs = {"formspec_version[6]", "size[16,12]", provider_tabs(providers, provider)}
+	local fs = {"formspec_version[9]", "size[16,12]", provider_tabs(providers, provider)}
 	if state.mode == "archive" then
 		local versions = {}
 		for _, item in ipairs(provider.announcements) do versions[#versions + 1] = F(item.version) end
