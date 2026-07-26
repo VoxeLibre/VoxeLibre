@@ -4,7 +4,7 @@ local max_players_per_step = tonumber(core.settings:get("vl_wieldlight_player_st
 if max_players_per_step and max_players_per_step < 0 then max_players_per_step = nil end
 
 local players = {} -- positions, powers, bounds, and last recalculation times of player lights
-local recalculation_interval = 2 * 1000000 -- microseconds
+local recalculation_interval = tonumber(core.settings:get("vl_wieldlight_recalc_interval") or 2) * 1000000 -- microseconds
 
 local cdt = {} -- reusable cid buffer
 local ldt = {} -- reusable light buffer
