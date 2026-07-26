@@ -46,17 +46,15 @@ local function wieldedlight(name)
 	local ls = player:get_wielded_item():get_definition().light_source
 	local o_ls = player:get_inventory():get_stack("offhand", 1):get_definition().light_source
 	if o_ls and (not ls or o_ls > ls) then ls = o_ls end
-	if old_p and ls == old_p[2] and pos:equals(old_p[1])
-			and now - old_p[5] < recalculation_interval then
-		return
-	end
 
 	if old_p then
-		old_p[5] = now
-		local light = core.get_node_light(pos) -- checking actual light to make sure
 		local old_po = old_p[1] -- old position
 		local old_ls = old_p[2] -- old_strength
-		if not light or light == ls and pos:equals(old_po) then return end -- no changes needed
+		if pos:equals(old_po) and ls == old_ls then
+			if now - old_p[5] < recalculation_interval then return end
+			local light = core.get_node_light(pos) -- checking actual light to make sure
+			if not light or light == ls then return end -- no changes needed
+		end
 		p1 = vector.offset(old_po, -old_ls, -old_ls, -old_ls)
 		p2 = vector.offset(old_po, old_ls, old_ls, old_ls)
 		double_run = chebyshev(old_p[1], pos) > 16 -- areas detached, teleportation?
