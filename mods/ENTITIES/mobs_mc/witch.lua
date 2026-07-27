@@ -176,7 +176,9 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 	after_activate = function(self)
 		local wand = vl_held_item.create_item_entity(self.object:get_pos(), "mcl_core:stick")
 		if wand then
-			wand:set_properties({ static_save = false, visual_size={x=0.1, y=0.1} })
+			local prop = wand:get_properties()
+			table.update(prop, { static_save = false, visual_size={x=0.1, y=0.1} })
+			wand:set_properties(prop)
 			wand:set_attach(self.object, "Wield_R", UP, wand_rotation)
 			self._wand = wand
 		end

@@ -377,7 +377,9 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 							node_obj:set_attach(self.object, "held_node")
 							self._node_obj = node_obj
 							self._taken_node = node.name
-							node_obj:set_properties({visual_size={x=0.02, y=0.02}})
+							local prop = node_obj:get_properties()
+							table.update(prop, { static_save = false, visual_size={x=0.02, y=0.02} })
+							node_obj:set_properties(prop)
 						end
 						local def = minetest.registered_nodes[self._taken_node]
 						self.animation = select_rover_animation("block")
@@ -524,7 +526,9 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		if node_obj then
 			node_obj:set_attach(self.object, "held_node")
 			self._node_obj = node_obj
-			node_obj:set_properties({visual_size={x=0.02, y=0.02}})
+			local prop = node_obj:get_properties()
+			table.update(prop, { static_save = false, visual_size={x=0.02, y=0.02} })
+			node_obj:set_properties(prop)
 		end
 	end,
 	armor = { fleshy = 100, water_vulnerable = 100 },
