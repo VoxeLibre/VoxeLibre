@@ -104,8 +104,9 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 				}, true)
 			end)
 			core.after(0.6, function(s)
-				if not s or not s.attack then return end
+				if not s then return end
 				s.anim_locked = false
+				if not s.attack then return end
 				local sp = s.object:get_pos()
 				local ap = s.attack:get_pos()
 				if not sp or not ap then return end

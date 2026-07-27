@@ -277,7 +277,7 @@ end
 
 -- set defined animation
 function mob_class:set_animation(anim, fixed_frame)
-	if self.anim_locked or not self.animation or not anim then return end
+	if self.state ~= "die" and self.anim_locked or not self.animation or not anim then return end
 
 	if self.jockey and self.object:get_attach() then
 		anim = "jockey"

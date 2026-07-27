@@ -17,7 +17,7 @@ local function splash_image(colorstring, opacity)
 end
 
 local function throw_splash(item, thrower, pos, dir, velocity)
-	minetest.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
+	core.sound_play("mcl_throwing_throw", {pos = pos, gain = 0.4, max_hear_distance = 16}, true)
 	if type(item) == "string" then item = ItemStack(item) end
 	local obj = vl_projectile.create(item:get_name().."_flying",{
 		pos = pos + 0.5*dir,
