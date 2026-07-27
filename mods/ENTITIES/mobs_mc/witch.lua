@@ -180,6 +180,9 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 			self._wand = wand
 		end
 	end,
+	on_die = function(self)
+		self._wand:remove()
+	end,
 	max_drops = 3,
 	drops = {
 		{name = "mcl_potions:glass_bottle", chance = 8, min = 0, max = 2, looting = "common",},

@@ -494,6 +494,9 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		if self._taken_node ~= nil and self._taken_node ~= "" then
 			minetest.add_item(pos, self._taken_node)
 		end
+		if self._node_obj then
+			self._node_obj:remove()
+		end
 	end,
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
 		-- damage from rain caused by itself so we don't want it to attack itself.
