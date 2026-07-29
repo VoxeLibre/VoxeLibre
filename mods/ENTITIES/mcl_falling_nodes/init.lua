@@ -59,8 +59,8 @@ minetest.register_entity(":__builtin:falling_node", {
 		is_visible = false,
 		collide_with_objects = false,
 		collisionbox = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+		node = {},
 	},
-	node = {},
 	meta = {},
 	set_node = function(self, node, meta)
 		local def = minetest.registered_nodes[node.name]

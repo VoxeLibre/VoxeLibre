@@ -23,9 +23,11 @@ vl_weaponry.spear_tt = spear_tt
 
 local spear_entity = table.copy(mcl_bows.arrow_entity)
 table.update(spear_entity,{
-	visual = "item",
-	visual_size = {x=-0.5, y=-0.5},
-	textures = {"vl_weaponry:spear_wood"},
+	initial_properties = {
+		visual = "item",
+		visual_size = {x=-0.5, y=-0.5},
+		textures = {"vl_weaponry:spear_wood"},
+	},
 	_on_remove = function(self)
 		vl_projectile.replace_with_item_drop(self, self.object:get_pos())
 	end,

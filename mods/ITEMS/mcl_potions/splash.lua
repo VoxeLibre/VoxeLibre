@@ -166,9 +166,11 @@ function mcl_potions.register_splash(name, descr, color, def)
 	end
 
 	vl_projectile.register(id.."_flying",{
-		textures = {splash_image(color)},
-		visual_size = {x=w/2,y=w/2},
-		collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
+		initial_properties = {
+			textures = {splash_image(color)},
+			visual_size = {x=w/2,y=w/2},
+			collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
+		},
 		_vl_projectile = {
 			behaviors = {
 				vl_projectile.has_owner_grace_distance,
