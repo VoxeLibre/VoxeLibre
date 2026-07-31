@@ -170,6 +170,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 			textures = {splash_image(color)},
 			visual_size = {x=w/2,y=w/2},
 			collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
+			pointable = false,
 		},
 		_vl_projectile = {
 			behaviors = {
@@ -192,7 +193,6 @@ function mcl_potions.register_splash(name, descr, color, def)
 				on_collision = {"mcl_potions_breaking_glass", {max_hear_distance = 16, gain = 1}, true},
 			},
 		},
-		pointable = false,
 	})
 end
 

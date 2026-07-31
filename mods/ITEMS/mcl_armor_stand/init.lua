@@ -148,9 +148,11 @@ minetest.register_craft({
 -- Legacy handling
 minetest.register_alias("3d_armor_stand:armor_stand", "mcl_armor_stand:armor_stand")
 minetest.register_entity(":3d_armor_stand:armor_entity", {
+	initial_properties = {
+		static_save = false,
+	},
 	on_activate = function(self)
 		minetest.log("action", "[mcl_armor_stand] Removing legacy entity: 3d_armor_stand:armor_entity")
 		self.object:remove()
 	end,
-	static_save = false,
 })

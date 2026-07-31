@@ -150,8 +150,8 @@ local TNT = {
 			"default_tnt_side.png",
 			"default_tnt_side.png",
 		},
+		collide_with_objects = false,
 	},
-	collide_with_objects = false,
 	-- Initial value for our timer
 	timer = 0,
 	blinktimer = 0,

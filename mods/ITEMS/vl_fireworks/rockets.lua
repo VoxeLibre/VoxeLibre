@@ -25,10 +25,10 @@ local firework_entity = {
 		visual_size = {x=3, y=3},
 		textures = {"vl_fireworks_entity.png"},
 		mesh = "vl_fireworks_rocket.obj",
+		pointable = false,
+		backface_culling = false,
+		collide_with_objects = false,
 	},
-	pointable = false,
-	backface_culling = false,
-	collide_with_objects = false,
 	liquid_drag = true,
 	_fire_damage_resistant = true,
 
