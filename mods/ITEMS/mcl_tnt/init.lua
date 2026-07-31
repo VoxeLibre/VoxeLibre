@@ -138,18 +138,19 @@ minetest.register_node("mcl_tnt:tnt", {
 local TNT = {
 	-- Static definition
 	description = S("TNT"),
-	physical = true, -- Collides with things
-	collide_with_objects = false,
-	--weight = -100,
-	collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-	visual = "cube",
-	textures = {
-		"default_tnt_top.png",
-		"default_tnt_bottom.png",
-		"default_tnt_side.png",
-		"default_tnt_side.png",
-		"default_tnt_side.png",
-		"default_tnt_side.png",
+	initial_properties = {
+		physical = true, -- Collides with things
+		collisionbox = { -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+		visual = "cube",
+		textures = {
+			"default_tnt_top.png",
+			"default_tnt_bottom.png",
+			"default_tnt_side.png",
+			"default_tnt_side.png",
+			"default_tnt_side.png",
+			"default_tnt_side.png",
+		},
+		collide_with_objects = false,
 	},
 	-- Initial value for our timer
 	timer = 0,

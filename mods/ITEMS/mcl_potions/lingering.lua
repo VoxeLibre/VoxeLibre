@@ -203,10 +203,12 @@ function mcl_potions.register_lingering(name, descr, color, def)
 		if def.on_splash then def.on_splash(pos, potency+1) end
 	end
 	vl_projectile.register(id.."_flying",{
-		textures = {lingering_image(color)},
-		visual_size = {x=w/2,y=w/2},
-		collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
-		pointable = false,
+		initial_properties = {
+			textures = {lingering_image(color)},
+			visual_size = {x=w/2,y=w/2},
+			collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
+			pointable = false,
+		},
 		_vl_projectile = {
 			behaviors = {
 				vl_projectile.has_owner_grace_distance,

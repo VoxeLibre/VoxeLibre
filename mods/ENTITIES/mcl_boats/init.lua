@@ -455,10 +455,10 @@ end
 minetest.register_entity("mcl_boats:boat", boat)
 
 local cboat = table.copy(boat)
-cboat.textures = { "mcl_boats_texture_oak_chest_boat.png", "mcl_chests_normal.png" }
+cboat.initial_properties.textures = { "mcl_boats_texture_oak_chest_boat.png", "mcl_chests_normal.png" }
 cboat._itemstring = "mcl_boats:chest_boat"
-cboat.collisionbox = {-0.5, -0.15, -0.5, 0.5, 0.75, 0.5}
-cboat.selectionbox = {-0.7, -0.15, -0.7, 0.7, 0.75, 0.7}
+cboat.initial_properties.collisionbox = {-0.5, -0.15, -0.5, 0.5, 0.75, 0.5}
+cboat.initial_properties.selectionbox = {-0.7, -0.15, -0.7, 0.7, 0.75, 0.7}
 
 minetest.register_entity("mcl_boats:chest_boat", cboat)
 mcl_entity_invs.register_inv("mcl_boats:chest_boat",S("Boat"),27)

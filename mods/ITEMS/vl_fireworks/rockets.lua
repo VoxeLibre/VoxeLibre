@@ -18,15 +18,17 @@ local function explode(self, pos, stars)
 end
 
 local firework_entity = {
-	physical = true,
-	pointable = false,
-	visual = "mesh",
-	visual_size = {x=3, y=3},
-	mesh = "vl_fireworks_rocket.obj",
-	textures = {"vl_fireworks_entity.png"},
-	backface_culling = false,
-	collisionbox = {-0.1, 0, -0.1, 0.1, 0.5, 0.1},
-	collide_with_objects = false,
+	initial_properties = {
+		physical = true,
+		collisionbox = {-0.1, 0, -0.1, 0.1, 0.5, 0.1},
+		visual = "mesh",
+		visual_size = {x=3, y=3},
+		textures = {"vl_fireworks_entity.png"},
+		mesh = "vl_fireworks_rocket.obj",
+		pointable = false,
+		backface_culling = false,
+		collide_with_objects = false,
+	},
 	liquid_drag = true,
 	_fire_damage_resistant = true,
 
