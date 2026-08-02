@@ -8,6 +8,37 @@ vl_announcements.register_provider({
 })
 
 vl_announcements.register_announcement("voxelibre", {
+	id = "0.92",
+	version = "0.92",
+	title = S("The Undaunted Release"),
+	poster = "0_92-the-undaunted-screenshot.jpg",
+	intro = S("Witches, scythes, offhand features, the long awaited wielded lights and other aids for undaunted adventurers."),
+	features = {
+		{title = S("Witch"), icon = "default_stick.png",
+			description = S("Witch re-made... new dangerous enemy awaits you!")},
+		{title = S("Scythes"), icon = "vl_tool_diamondscythe.png",
+			description = S("Scythes speed up crop harvesting and offer new combat options, even more so with upcoming enchantments.")},
+		{title = S("Wielded lights"), icon = "soul_torch_on_floor.png",
+			description = S("Any light you wield can now light your way! If you experience performance issues, make sure to check out settings in the main menu and tune them (you can also disable them there).")},
+		{title = S("Rod of Iron"), icon = mcl_vars.iron_rod_tex,
+			description = S("The Shepherd's Rod of Iron is now available, allowing granular control of animal leading.")},
+	},
+	details = {
+		{title = S("Changes"), entries = {
+			S("Everything can now be placed in offhand, and some items (like maps or lights) have full functionality in offhand."),
+			S("Per-player settings to tune music volume, inventory interaction and more to come."),
+			S("Lots of new in-game music added!"),
+			S("Decorative golden scarabs can be found in the desert pyramids."),
+			S("Touchscreen food controls and many other mobile interactions were improved."),
+		}},
+		{title = S("Fixes"), entries = {
+			S("Fixed numerous issues with mobs, player mechanics, boats and other things."),
+			S("Fixed crashes involving bone meal and other rare crashes."),
+		}},
+	},
+})
+
+vl_announcements.register_announcement("voxelibre", {
 	id = "0.91",
 	version = "0.91",
 	title = S("The Sneaky Release"),

@@ -34,6 +34,7 @@ local iron_rod_tex = table.concat{
 	"^[hardlight:", esc_iron_tex,
 	"^[hardlight:", esc_iron_tex
 }
+mcl_vars.iron_rod_tex = iron_rod_tex
 
 core.register_tool("mcl_shepherd:rod_of_iron", {
 	description = S("Shepherd's Rod of Iron"),
