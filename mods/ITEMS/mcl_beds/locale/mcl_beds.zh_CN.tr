@@ -1,11 +1,10 @@
 # textdomain: mcl_beds
 ##[ functions.lua ]##
-New respawn position set!=新的重生位置已设定！
 You can only sleep at night or during a thunderstorm.=你只能在夜晚或雷暴天气时睡觉。
 You can't sleep, the bed's too far away!=你没法睡觉，床离得太远了！
 This bed is already occupied!=这张床已经有人在用了！
 You have to stop moving before going to bed!=上床睡觉前你得先停止移动！
-You can't sleep now, monsters are nearby!=现在你没法睡觉，附近有怪物！
+You can't sleep now, you are under attack!=
 You can't sleep, the bed is obstructed!=你没法睡觉，床被挡住了！
 It's too dangerous to sleep here!=在这里睡觉太危险了！
 Leave bed=离开床
@@ -61,6 +60,8 @@ Respawn Anchor=重生锚
 
 ##### not used anymore #####
 
+New respawn position set!=新的重生位置已设定！
+You can't sleep now, monsters are nearby!=现在你没法睡觉，附近有怪物！
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=新的重生位置已设定！但你只能在夜晚或雷暴天气时睡觉。
 

@@ -1,6 +1,5 @@
-# Sprostite se s glasbo!
-
 # textdomain: mesecons_noteblock
+# Sprostite se s glasbo!
 Note Block=Glasbeni blok
 Plays a musical note when powered by redstone power=Zaigra glasbeno noto, ko je napajan z energijo rdečega kamna
 
@@ -26,3 +25,4 @@ Use the note block to choose the next musical note (there are 25 semitones, or 2
 • Anything else: Piano=• Vse ostalo: Klavir
 
 The note block will only play a note when it is below air, otherwise, it stays silent.=Glasbeni blok bo zaigral noto le, če je nad njim zrak, sicer ostane tiho.
+

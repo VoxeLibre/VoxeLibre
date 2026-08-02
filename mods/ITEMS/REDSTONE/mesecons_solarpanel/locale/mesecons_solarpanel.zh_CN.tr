@@ -1,5 +1,6 @@
 # textdomain: mesecons_solarpanel
-Daylight Sensor=阳光传感器
+##TODO: fuzzy matched - verify and remove the comment
+Sunlight Sensor=阳光传感器
 Provides redstone power when in sunlight=在阳光下产生红石能量
 Can be inverted=可以被反转
 
@@ -8,4 +9,9 @@ Daylight sensors are redstone components which provide redstone power when they 
 In inverted state, they provide redstone power when they are not in sunlight and no power otherwise.=处于反转状态时，它们在未被阳光照射时会提供红石能量，被阳光照射时则不提供能量。
 
 Use the daylight sensor to toggle its state.=使用阳光传感器来切换它的状态。
+Moonlight Sensor=
+
+
+##### not used anymore #####
+
 Inverted Daylight Sensor=反转阳光传感器

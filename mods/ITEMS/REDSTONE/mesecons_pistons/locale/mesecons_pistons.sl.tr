@@ -9,3 +9,4 @@ Sticky Piston=Lepljivi bat
 Pushes or pulls block when powered by redstone power=Potisne ali potegne blok, ko je napajan z energijo rdečega kamna
 
 A sticky piston is a redstone component with a sticky pusher which can be extended and retracted. It extends when it is supplied with redstone power. When the pusher extends, it pushes the block or blocks in front of it. When it retracts, it pulls back the single block in front of it. Note that not all blocks can be pushed or pulled.=Lepljivi bat je komponenta rdečega kamna z lepljivim potisnim delom, ki se lahko iztegne in uvleče. Iztegne se, ko mu je dovedena energija rdečega kamna. Ko se potisni del iztegne, potisne blok ali bloke pred seboj. Ko se uvleče, potegne nazaj posamezen blok, ki je pred njim. Upoštevajte, da vseh blokov ni mogoče potisniti ali potegniti.
+

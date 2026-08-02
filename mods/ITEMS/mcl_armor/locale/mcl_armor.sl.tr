@@ -1,6 +1,7 @@
 # textdomain: mcl_armor
 
 This is a piece of equippable armor which reduces the amount of damage you receive.=To je kos nosljivega oklepa, ki zmanjša količino prejete škode.
+
 To equip it, put it on the corresponding armor slot in your inventory menu.=Če ga želite obleči, ga postavite v ustrezno režo za oklep v meniju inventarja.
 Sentry=Stražar
 Dune=Sipina
@@ -53,9 +54,13 @@ Aqua Affinity=Naklonjenost vodi
 #Translations of enchantements
 Increases underwater mining speed.=Poveča hitrost rudarjenja pod vodo.
 Curse of Binding=Prekletstvo vezanja
+
 Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Predmeta ni mogoče odstraniti iz reže za oklep, razen ob smrti, uničenju ali v ustvarjalnem načinu.
+
 Thorns=Trnje
+
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Ob udarcu odbije del prejete škode, vendar se ob vsaki sprožitvi zmanjša trpežnost.
+
 Elytra=Elitra
 ##[ leather.lua ]##
 Leather Cap=Usnjena kapa

@@ -1,5 +1,6 @@
 # textdomain: mesecons_solarpanel
-Daylight Sensor=Capteur de luminosité
+##TODO: fuzzy matched - verify and remove the comment
+Sunlight Sensor=Capteur de luminosité
 Provides redstone power when in sunlight=Fournit une puissance de redstone en plein soleil
 Can be inverted=Peut être inversé
 
@@ -8,4 +9,9 @@ Daylight sensors are redstone components which provide redstone power when they 
 In inverted state, they provide redstone power when they are not in sunlight and no power otherwise.=En état inversé, ils fournissent une puissance de redstone lorsqu'ils ne sont pas en plein soleil et aucune puissance autrement.
 
 Use the daylight sensor to toggle its state.=Utilisez le capteur de luminosité pour basculer son état.
+Moonlight Sensor=
+
+
+##### not used anymore #####
+
 Inverted Daylight Sensor=Capteur de luminosité inversé

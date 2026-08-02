@@ -25,6 +25,11 @@ Can be thrown=Lahko se vrže
 Spears are great in melee combat, as they have an increased reach. They can also be thrown.=Kopja so odlična v boju od blizu, saj imajo povečan doseg. Lahko se jih tudi vrže.
 
 To throw a spear, hold it in your hand, then hold use (rightclick) in the air.=Če želite vreči kopje, ga držite v roki in nato pridržite tipko za uporabo (desni klik) v zraku.
+Cuts plants in range=
+Scythes are great in melee combat.=
+
+When you cut down a plant with a scythe, it cuts down other plants in a 3x3 area.=
+
 Deepslate Pickaxe=Skrilčev kramp
 Deepslate Shovel=Skrilčeva lopata
 Deepslate Hoe=Skrilčeva motika
@@ -32,3 +37,4 @@ Deepslate Axe=Skrilčeva sekira
 Deepslate Sword=Skrilčev meč
 Deepslate Hammer=Skrilčevo kladivo
 Deepslate Spear=Skrilčevo kopje
+Deepslate Scythe=

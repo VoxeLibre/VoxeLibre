@@ -1,0 +1,71 @@
+# textdomain: vl_announcements
+Back=
+Changes and fixes=
+Changes & fixes=
+Archive=
+Releases=
+Close=
+New updates have been released! Use /announcements for more info.=
+Show VoxeLibre announcements and release highlights.=
+[clear|greeting]=
+This command can only be used in-game.=
+Announcement history cleared.=
+No announcements are registered.=
+Usage: /announcements [clear|greeting]=
+##[ voxelibre.lua ]##
+The Sneaky Release=
+
+Tridents have finally arrived, together with new enchantments, richer ambient audio, and many improvements throughout the game.=
+
+Tridents=
+
+Find this powerful spear as rare structure loot and use it underwater or in the air.=
+
+New enchantments=
+Swift Sneak and Impaling open up new movement and combat options.=
+Ambient audio=
+Water, lava, caves, fire, and sculk received new or improved sounds.=
+More equipment=
+Leather horse armor and the decorative star are now available.=
+Changes=
+
+Mob behavior, spawning, vision, activation, and drops received numerous improvements.=
+
+The HUD bars and farming systems were reworked.=
+Touchscreen shield controls and many other mobile interactions were improved.=
+Fixes=
+
+Fixed issues with crafting results, buckets, item frames, portals, and water bottles.=
+
+Fixed crashes involving combat, campfires, mobs, and projectiles.=
+The Dynamic Release=
+
+This release introduced live game-rule tuning, new equipment and decorations, and broad combat and gameplay rebalancing.=
+
+Dynamic settings=
+Administrators can tune supported settings and game rules while playing.=
+New equipment=
+Discover deepslate tools, craftable chainmail armor, and golden decorations.=
+Combat balancing=
+Potions, stews, enchantments, mobs, and combat received extensive balancing.=
+
+The creative inventory was reorganized and fire spreading became more predictable.=
+
+Fire Elementals replaced Blazes as the first member of a broader elemental mob family.=
+
+Some gameplay bugs and compatibility issues were fixed.=
+The On Display Release=
+
+Maps, signs, item frames, world generation, and mob spawning all received major upgrades.=
+
+Better maps=
+Maps can be zoomed out with the cartography table and look better while held.=
+Display improvements=
+Signs and item frames gained new placement and display capabilities.=
+Sit and relax=
+Players can sit on supported blocks, or sit and lie down using commands.=
+Structure generation became more deterministic.=
+
+Mob spawning, performance, textures, sounds, and model compatibility were improved.=
+
+Item duplication, world generation, and other bugs were fixed.=

@@ -26,3 +26,7 @@ Crossbow=Samostrel
 Crossbows are ranged weapons to shoot arrows at your foes.=Samostreli so orožje na razdaljo za streljanje puščic v sovražnike.
 
 To use the crossbow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button (or zoom key) to charge, release to load an arrow into the chamber, then to shoot press left mouse.=Za uporabo samostrela morate imeti vsaj eno puščico kjer koli v inventarju (razen v ustvarjalnem načinu). Držite desni miškin gumb (ali tipko za približanje) za napenjanje, in ga spustite, da vložite puščico v ležišče, nato pritisnite levi miškin gumb za strel.
+
+##TODO: fuzzy matched - verify and remove the comment
+To use the crossbow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to load an arrow into the chamber, then to shoot press left mouse.=Za uporabo samostrela morate imeti vsaj eno puščico kjer koli v inventarju (razen v ustvarjalnem načinu). Držite desni miškin gumb (ali tipko za približanje) za napenjanje, in ga spustite, da vložite puščico v ležišče, nato pritisnite levi miškin gumb za strel.
+

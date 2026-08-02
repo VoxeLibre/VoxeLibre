@@ -1,9 +1,14 @@
 # textdomain: mcl_stairs
 ##[ api.lua ]##
+
 Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down.=Stopnice so uporabne za doseganje višjih mest s hojo čeznje; skakanje ni potrebno. Postavitev stopnic v vzorec kota bo ustvarila kotne stopnice. Stopnice, postavljene na strop ali na zgornjo polovico stranice bloka, bodo postavljene obrnjene na glavo.
+
 Double @1=Dvojna @1
+
 Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.=Plošče so pol toliko visoke kot njihovi polni bloki in zasedajo spodnji ali zgornji del bloka, odvisno od tega, kako so bile postavljene. Na plošče lahko enostavno stopite, ne da bi morali skočiti. Ko je plošča postavljena na drugo ploščo iste vrste, nastane dvojna plošča.
+
 Upper @1=Zgornja @1
+
 Double slabs are full blocks which are created by placing two slabs of the same kind on each other.=Dvojne plošče so polni bloki, ki nastanejo s postavitvijo dveh plošč iste vrste ene na drugo.
 
 ##[ register.lua ]##

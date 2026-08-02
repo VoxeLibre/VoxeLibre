@@ -6,6 +6,7 @@ Vehicle for fast travel on rails=Vozilo za hitro potovanje po tirnicah
 Minecarts can be used for a quick transportion on rails.=Rudarski vožički se lahko uporabljajo za hiter prevoz po tirnicah.
 
 Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.=Rudarski vožički vozijo samo po tirnicah in jim vedno sledijo. V T križiščih vedno zavijejo levo, ko ni ravne poti. Hitrost je odvisna od vrste tirnic.
+
 You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.=Rudarski vožiček postavite na tirnice. Kliknite ga z desno miškino tipko, da vstopite vanj.Za premik, ga udarite.
 
 To obtain the minecart, punch it while holding down the sneak key.=Za pridobitev rudarskega vožička kot predmeta, ga udarite medtem ko ste prikradeni.
@@ -39,6 +40,7 @@ The maximum speed a minecart may reach.=Največja hitrost, ki jo lahko rudniški
 ##[ rails.lua ]##
 
 Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Postavite jih na tla, da zgradite svojo železnico. Tirnice se bodo samodejno povezale medseboj in se bodo po potrebi spremenile v ovinke, T križišča, prehode in naklone.
+
 Track for minecarts=Tirnica za rudarski vožiček
 
 Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=Tirnice se uporabljajo za gradnjo tirov za rudniške vožičke. Navadne tirnice zaradi trenja, nekoliko upočasnijo rudniški vožiček.

@@ -1,11 +1,10 @@
 # textdomain: mcl_beds
 ##[ functions.lua ]##
-New respawn position set!=Задана новая точка возрождения!
 You can only sleep at night or during a thunderstorm.=Вы можете спать только ночью или во время грозы.
 You can't sleep, the bed's too far away!=Вы не можете спать, кровать слишком далеко!
 This bed is already occupied!=Эта кровать уже занята!
 You have to stop moving before going to bed!=Вам нужно перестать двигаться, чтобы лечь!
-You can't sleep now, monsters are nearby!=Вы не можете спать, монстры слишком близко!
+You can't sleep now, you are under attack!=
 You can't sleep, the bed is obstructed!=Здесь не удастся поспать, кровать загромождена!
 It's too dangerous to sleep here!=Спать здесь слишком опасно!
 Leave bed=Встать с кровати
@@ -61,6 +60,8 @@ Respawn Anchor=Якорь возрождения
 
 ##### not used anymore #####
 
+New respawn position set!=Задана новая точка возрождения!
+You can't sleep now, monsters are nearby!=Вы не можете спать, монстры слишком близко!
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Новая точка возрождения успешно задана! Но спать вы можете только ночью или во время грозы.
 

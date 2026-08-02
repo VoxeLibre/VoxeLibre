@@ -1,5 +1,6 @@
 # textdomain: mesecons_solarpanel
-Daylight Sensor=Czujnik światła dziennego
+##TODO: fuzzy matched - verify and remove the comment
+Sunlight Sensor=Czujnik światła dziennego
 Provides redstone power when in sunlight=Dostarcza energię czerwienitową gdy w oświetlony słońcem
 Can be inverted=Może być odwrócony
 
@@ -8,4 +9,9 @@ Daylight sensors are redstone components which provide redstone power when they 
 In inverted state, they provide redstone power when they are not in sunlight and no power otherwise.=W odwrotnym stanie, dostarczają energię czerwienitową gdy nie są w świetle słonecznym i nie dostarczają energii w przeciwnym przypadku.
 
 Use the daylight sensor to toggle its state.=Użyj czujnik światła dziennego by zmienić jego stan.
+Moonlight Sensor=
+
+
+##### not used anymore #####
+
 Inverted Daylight Sensor=Odwrotny czujnik światła dziennego

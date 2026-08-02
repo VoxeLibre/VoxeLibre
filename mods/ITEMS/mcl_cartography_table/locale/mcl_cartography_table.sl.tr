@@ -6,3 +6,4 @@ The zoomed map is now ready.=Povečan zemljevid je zdaj pripravljen.
 Used to copy, lock, and zoom maps=Uporablja se za kopiranje, zaklepanje in povečevanje zemljevidov
 
 A cartography tables allows to copy, lock, and zoom maps. Locking is not yet useful, and the maximum zoom level may be restricted by server settings to limit the performance impact.=Kartografska miza omogoča kopiranje, zaklepanje in povečevanje zemljevidov. Zaklepanje še ni uporabno, največja stopnja povečave pa je lahko omejena z nastavitvami strežnika za omejitev vpliva na zmogljivost.
+
