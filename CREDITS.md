@@ -24,6 +24,8 @@
 * AncientMariner
 * Archie / andro
 * ralisv / Nixprland
+* Delta
+* CodingMantis
 
 ## Past Developers
 * jordan4ibanez
@@ -177,6 +179,17 @@
 * TANGaming
 * SecretVoxelPlayer
 * olivia-may
+* rootkea
+* Kaesual
+* KutayX7
+* jrwyant
+* nerdspice
+* r888800009
+* este
+* samir419
+* Veselsem
+* Cliffordius
+* Litanys
 
 ## Music
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -233,6 +246,7 @@
 * thunder1035
 * Herowl
 * Chiragon
+* Delta
 
 ## Textures
 * XSSheep
@@ -294,6 +308,9 @@
 * HalfShadow111
 * newrizen
 * antimundo
+* Veselsem
+* r888800009
+* SecretVoxelPlayer
 
 ## Funders
 * 40W
