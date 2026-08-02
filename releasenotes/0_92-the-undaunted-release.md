@@ -124,3 +124,7 @@ Eating and drinking on touchscreen devices should now work better thanks to Hero
 * Fixed crash when using bone mean in a protected area – by ralisv
 * Fixed a rare crash related to potions – by Herowl
 * Fixed a rare crash in mob activation code – by Herowl
+
+
+## 0.92.1 hotfix
+* Fixed a falling node crash – by Herowl
