@@ -185,6 +185,13 @@ mcl_mobs.register_mob("mobs_mc:witch", {
 	end,
 	on_die = function(self)
 		self._wand:remove()
+		self._wand = nil
+	end,
+	_on_remove = function(self)
+		if self._wand then
+			self._wand:remove()
+			self._wand = nil
+		end
 	end,
 	max_drops = 3,
 	drops = {

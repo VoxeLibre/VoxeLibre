@@ -546,11 +546,11 @@ minetest.register_chatcommand("clearmobs", {
 				if mob_match and not (default and o.persistent) then
 					local in_range = (not range or range <= 0) or vector.distance(p:get_pos(), o.object:get_pos()) <= range
 					if nametagged then
-						if o.nametag then o.object:remove() end
+						if o.nametag then mcl_util.remove_entity(o) end
 					elseif tamed then
-						if o.tamed then o.object:remove() end
+						if o.tamed then mcl_util.remove_entity(o) end
 					elseif in_range and (not o.nametag or o.nametag == "") and not o.tamed then
-						o.object:remove()
+						mcl_util.remove_entity(o)
 					end
 				end
 			end

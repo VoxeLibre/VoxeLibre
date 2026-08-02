@@ -498,6 +498,13 @@ mcl_mobs.register_mob("mobs_mc:rover", {
 		end
 		if self._node_obj then
 			self._node_obj:remove()
+			self._node_obj = nil
+		end
+	end,
+	_on_remove = function(self)
+		if self._node_obj then
+			self._node_obj:remove()
+			self._node_obj = nil
 		end
 	end,
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
