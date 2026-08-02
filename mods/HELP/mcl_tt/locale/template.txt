@@ -45,6 +45,7 @@ Deals damage when falling=
 Grows on grass blocks or dirt=
 Grows on grass blocks, podzol, dirt or coarse dirt=
 Flammable=
+Collectible=
 Zombie view range: -50%=
 Skeleton view range: -50%=
 Stalker view range: -50%=

@@ -1,11 +1,10 @@
 # textdomain: mcl_beds
 ##[ functions.lua ]##
-New respawn position set!=Nova reapero pozicio fiksita!
 You can only sleep at night or during a thunderstorm.=Vi povas dormi nure dum nokto aŭ fulmotondro.
 You can't sleep, the bed's too far away!=Vi ne povas dormi, la lito estas tro malproksima!
 This bed is already occupied!=Ĉi tiu lito jam estas okupata!
 You have to stop moving before going to bed!=Vi devas halti antaŭ enlitiĝi!
-You can't sleep now, monsters are nearby!=Vi ne povas dormi nun, estas monstroj proksime!
+You can't sleep now, you are under attack!=
 You can't sleep, the bed is obstructed!=Vi ne povas dormi, la lito estas obstrukcita!
 It's too dangerous to sleep here!=Estas tro danĝera dormi ĉi tie!
 Leave bed=Forlasi la liton
@@ -61,6 +60,8 @@ Respawn Anchor=Ankro de reapero
 
 ##### not used anymore #####
 
+New respawn position set!=Nova reapero pozicio fiksita!
+You can't sleep now, monsters are nearby!=Vi ne povas dormi nun, estas monstroj proksime!
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Nova reapero pozicio fiksita! Sed vi povas dormi nure dum nokto aŭ fulmotondro.
 

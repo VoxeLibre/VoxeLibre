@@ -1,25 +1,39 @@
 # textdomain: mcl_potions
 Dragon's Breath=Zmajev dih
+
 This item is used in brewing and can be combined with splash potions to create lingering potions.=Ta predmet se uporablja pri varjenju in ga je mogoče kombinirati z metljivimi napoji, da ustvarite dolgotrajne napoje.
+
 Fermented Spider Eye=Fermentirano pajkovo oko
 Try different combinations to create potions.=Preizkusite različne kombinacije za ustvarjanje napojev.
 Glass Bottle=Steklenica
 Liquid container=Posoda za tekočino
+
 A glass bottle is used as a container for liquids and can be used to collect water directly.=Steklenica se uporablja kot posoda za tekočine in se lahko uporablja za neposredno zajemanje vode.
+
 To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Če želite zajeti vodo, jo uporabite na kotlu z vodo (kar odstrani nivo vode) ali katerem koli viru vode (kar ne odstrani vode).
+
 Water Bottle=Steklenica z vodo
 No effect=Brez učinka
 Water bottles can be used to fill cauldrons. Drinking water has no effect.=Steklenice z vodo lahko uporabite za polnjenje kotlov. Pitje vode nima učinka.
+
 Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Za pitje uporabite tipko "Postavi". Postavite ta predmet na kotel, da vlijete vodo v kotel.
+
 River Water Bottle=Steklenica z rečno vodo
 River water bottles can be used to fill cauldrons. Drinking it has no effect.=Steklenice z rečno vodo lahko uporabite za polnjenje kotlov. Pitje nima učinka.
+
 Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Za pitje uporabite tipko »Postavi«. Postavite ta predmet na kotel, da vlijete rečno vodo v kotel.
+
 Splash Water Bottle=Metljiva steklenica z vodo
 Extinguishes fire and hurts some mobs=Pogasi ogenj in poškoduje nekatere pošasti
+
 A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Steklenica z vodo, ki jo lahko vržete in se ob trku razbije, pri čemer pogasi bližnji ogenj in poškoduje pošasti, ki so ranljive za vodo.
+
 Lingering Water Bottle=Dolgotrajna steklenica z vodo
+
 A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Steklenica z vodo, ki jo lahko vržete in se ob trku razbije, pri čemer ustvari oblak vodne pare, ki se nekaj časa zadržuje na tleh. Ta oblak gasi ogenj in poškoduje pošasti, ki so ranljive za vodo.
+
 Glistering Melon=Sijoča lubenica
+
 This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Ta sijoča lubenica je polna drobnih zlatih zrnc in bi bila lepa v okvirju za predmete. Ni užitna in ni uporabna za nič drugega.
 
 ##[ functions.lua ]##
@@ -87,7 +101,6 @@ Fatigue=Utrujenost
 -@1% mining and attack speed=-@1 % hitrost kopanja in napada
 Conduit Power=Moč prevodnika
 +@1% mining and attack speed in water=+@1 % hitrost kopanja in napada v vodi
-
 ##[ commands.lua ]##
 
 <effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART|PART] [<player>]=<učinek>|heal|list|clear|remove <trajanje|količina-zdravljenja|učinek>|INF [<stopnja>] [<faktor>] [NOPART|PART] [<igralec>]
@@ -109,15 +122,17 @@ Missing or invalid factor parameter when level is F!=Manjka ali pa je neveljaven
 @1 effect given to player @2 for @3 seconds.=Učinek @1 dodeljen igralcu @2 za @3 sekund.
 Giving effect @1 to player @2 failed.=Dodeljevanje učinka @1 igralcu @2 ni uspelo.
 @1 effect on level @2 given to player @3 for @4 seconds.=Učinek @1 na stopnji @2 dodeljen igralcu @3 za @4 sekund.
-
 ##[ splash.lua ]##
 Use the “Punch” key to throw it.=Uporabite tipko "Udari", da ga vržete.
+
 A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=Napoj, ki ga lahko vržete in se ob trku razbije, pri čemer vsem bližnjim igralcem in pošastim podeli učinek stanja ali nabor učinkov.
 
 ##[ lingering.lua ]##
+
 A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect or set of effects, possibly repeatedly.=Napoj, ki ga lahko vržete in se ob trku razbije, pri čemer ustvari čarobni oblak, ki se nekaj časa zadržuje v okolici. Vsak igralec ali pošast znotraj oblaka prejme učinek ali nabor učinkov napoja, morda večkrat.
 
 ##[ tipped_arrow.lua ]##
+
 This particular arrow is tipped and will give an effect when it hits a player or mob.=Ta puščica je premazana in bo ob zadetku igralca ali pošasti povzročila učinek.
 
 ##[ potions.lua ]##
@@ -162,7 +177,9 @@ Decreases walking speed.=Zmanjša hitrost hoje.
 of Leaping=skakanja
 Increases jump strength.=Poveča moč skoka.
 of Withering=witherja
+
 Applies the withering effect which deals damage at a regular interval and can kill.=Povzroči wither učinek, ki v rednih intervalih povzroča škodo in lahko ubije.
+
 of Poison=zastrupitve
 Applies the poison effect which deals damage at a regular interval.=Povzroči učinek zastrupitve, ki v rednih intervalih povzroča škodo.
 of Regeneration=regeneracije

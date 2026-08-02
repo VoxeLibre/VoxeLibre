@@ -39,7 +39,8 @@ Green Shulker Box=Zelena Školjkarjeva škatla
 Pink Shulker Box=Roza Školjkarjeva škatla
 Red Shulker Box=Rdeča Školjkarjeva škatla
 Grey Shulker Box=Siva Školjkarjeva škatla
-Black Školjkarjeva Box=Črna shulker škatla
+##TODO: fuzzy matched - verify and remove the comment
+Black Shulker Box=Modra Školjkarjeva škatla
 Shulker Box=Školjkarjeva škatla
 
 A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.=Školjkarjeva škatla je prenosni zabojnik, ki nudi 27 mest v inventarju za kateri koli predmet razen shulker škatel. Shulker škatle ohranijo svoj inventar, ko so uničene, tako da lahko shulker škatle in njihovo vsebino vzameš kot en predmet. Školjkarjeve škatle so na voljo v številnih različnih barvah.
@@ -54,3 +55,8 @@ Large Stone Chest=Velika kamnita skrinja
 Stone Chests are containers which provide 27 inventory slots. Stone Chests can be turned intolarge stone chests with double the capacity by placing two stone chests next to each other.=Kamnite skrinje so zabojniki, ki nudijo 27 mest v inventarju. Kamnite skrinje se lahko spremenijo v velike kamnite skrinje z dvojno kapaciteto, če postavite dve kamniti skrinji eno poleg druge.
 
 Can be combined to a large stone chest=Lahko se združi v veliko kamnito skrinjo
+
+
+##### not used anymore #####
+
+Black Školjkarjeva Box=Črna shulker škatla

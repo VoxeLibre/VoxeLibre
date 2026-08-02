@@ -1,11 +1,10 @@
 # textdomain: mcl_beds
 ##[ functions.lua ]##
-New respawn position set!=Nova točka oživljanja nastavljena!
 You can only sleep at night or during a thunderstorm.=Spite lahko le ponoči ali med nevihto.
 You can't sleep, the bed's too far away!=Ne morete spati, postelja je preveč oddaljena!
 This bed is already occupied!=Ta postelja je že zasedena!
 You have to stop moving before going to bed!=Preden greste v posteljo, se morate ustaviti!
-You can't sleep now, monsters are nearby!=Zdaj ne morete spati, v bližini so pošasti!
+You can't sleep now, you are under attack!=
 You can't sleep, the bed is obstructed!=Ne morete spati, postelja je blokirana!
 It's too dangerous to sleep here!=Tukaj je prenevarno za spanje!
 Leave bed=Zapusti posteljo
@@ -57,3 +56,9 @@ White Bed=Bela postelja
 Bed=Postelja
 ##[ respawn_anchor.lua ]##
 Respawn Anchor=Sidro oživljanja
+
+
+##### not used anymore #####
+
+New respawn position set!=Nova točka oživljanja nastavljena!
+You can't sleep now, monsters are nearby!=Zdaj ne morete spati, v bližini so pošasti!

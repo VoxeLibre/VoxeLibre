@@ -3,14 +3,14 @@ You need the “maphack” privilege to change the mob spawner.=Potrebujete priv
 Only peaceful mobs allowed!=Dovoljene so samo miroljubne pošasti!
 This allows you to place a single mob.=To vam omogoča da postavite eno samo bitje.
 
-Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Samo postavite jo tja, kjer želite, da se pojavi bitje. Živali se bodo pojavile udomačene, razen če med postavljanjem držite tipko za prikradenje. Če to postavite na mesto, kjer se pojavlja pošast, spremenite pošast, ki se pojavi.=
+Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=
 
 ##[ physics.lua ]##
 
 The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=Največje število potisljivih entitet, ki jih lahko potisne pošast ali igralec, preden prejme 6 (♥♥♥) škode zaradi natrpanih entitet na pol sekunde.
 
 Whether mobs should drop items and experience orbs.=
-Ali naj bitja spustijo predmete in kroglice izkušenj.##[ api.lua ]##
+##[ api.lua ]##
 Peaceful mode active! No monsters will spawn.=Mirni način je aktiven! Nobena pošast se ne bo pojavila.
 
 Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to select only nametagged/tamed mobs, or a range to specify a maximum distance from the player.=Odstrani določene pošasti, razen poimenovanih in udomačenih. Za drugi parameter uporabite imensko oznako (nametag), da izberete samo poimenovana bitja ali razdaljo od igralca.

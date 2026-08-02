@@ -1,11 +1,10 @@
 # textdomain: mcl_beds
 ##[ functions.lua ]##
-New respawn position set!=Nowa pozycja odradzania ustawiona!
 You can only sleep at night or during a thunderstorm.=Możesz spać tylko podczas nocy, bądź burzy.
 You can't sleep, the bed's too far away!=Nie możesz spać, łóżko jest zbyt daleko!
 This bed is already occupied!=To łóżko jest zajęte!
 You have to stop moving before going to bed!=Musisz przestać się poruszać przed pójściem do spania!
-You can't sleep now, monsters are nearby!=Nie możesz spać, w pobliżu są potwory!
+You can't sleep now, you are under attack!=
 You can't sleep, the bed is obstructed!=Nie możesz spać, łóżko jest zawalone!
 It's too dangerous to sleep here!=Tu jest zbyt niebezpiecznie by spać!
 Leave bed=Opuść łóżka
@@ -61,6 +60,8 @@ Respawn Anchor=
 
 ##### not used anymore #####
 
+New respawn position set!=Nowa pozycja odradzania ustawiona!
+You can't sleep now, monsters are nearby!=Nie możesz spać, w pobliżu są potwory!
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Nowa pozycja do odrodzenia ustawiona! Ale możesz spać tylko podczas nocy, bądź burzy.
 

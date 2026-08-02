@@ -184,6 +184,8 @@ Pointing=Kazanje
 
 To point something, it must be in the pointing range (also just called “range”) of your wielded item. There's a default range when you are not wielding anything. A pointed thing will be outlined or highlighted (depending on your settings). Pointing is not possible with the 3rd person front camera.=Če želite pokazati na nekaj, mora to biti v dosegu kazanja (imenovanem tudi zgolj »doseg«) predmeta, ki ga držite. Ko ne držite ničesar, velja privzeti doseg. Pokazana stvar bo obrobljena ali poudarjena (odvisno od vaših nastavitev). Kazanje ni mogoče s sprednjo kamero v tretji osebi.
 
+A few things cannot be pointed. Most blocks are pointable. A few blocks, like air, can never be pointed. Other blocks, like liquids can only be pointed by special items.=
+
 Camera=Kamera
 
 There are 3 different views which determine the way you see the world. The modes are:=Obstajajo 3 različni pogledi, ki določajo način, kako vidite svet. Načini so:
@@ -338,7 +340,8 @@ Inventory=Inventar
 
 Inventories are used to store item stacks. There are other uses, such as crafting. An inventory consists of a rectangular grid of item slots. Each item slot can either be empty or hold one item stack. Item stacks can be moved freely between most slots.=Inventarji se uporabljajo za shranjevanje skladov predmetov. Imajo tudi druge namene, kot je denimo ustvarjanje. Inventar je sestavljen iz pravokotne mreže rež za predmete. Vsaka reža je lahko prazna ali pa vsebuje en sklad predmetov. Sklade predmetov je večinoma mogoče prosto premikati med režami.
 
-You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default:[I]). The first inventory slots are also used as slots in your hotbar.=Imate svoj lasten inventar, ki se imenuje »inventar igralca«, odprete pa ga lahko s tipko za inventar (privzeto: [I]). Prve reže v inventarju se uporabljajo tudi kot reže v vaši hitri vrstici.
+##TODO: fuzzy matched - verify and remove the comment
+You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=Imate svoj lasten inventar, ki se imenuje »inventar igralca«, odprete pa ga lahko s tipko za inventar (privzeto: [I]). Prve reže v inventarju se uporabljajo tudi kot reže v vaši hitri vrstici.
 
 Blocks can also have their own inventory, e.g. chests and furnaces.=Tudi bloki imajo lahko svoj inventar, npr. skrinje in peči.
 Inventory controls:=Kontrole inventarja:
@@ -555,7 +558,8 @@ Here are some examples to illustrate the command syntax:=Tukaj je nekaj primerov
 
 • /help [all|privs|<cmd>]: Valid inputs are “/help”, “/help all”, “/help privs”, or “/help ” followed by a command name, like “/help time”=• /help [all|privs|<ukaz>]: Veljavni vnosi so »/help«, »/help all«, »/help privs« ali pa »/help «, ki mu sledi ime ukaza, kot na primer »/help time«
 
-• /spawnentity <EntityName>[<X>,<Y>,<Z>]: Valid inputs include “/spawnentity boats:boat” and “/spawnentity boats:boat 0,0,0”=• /spawnentity <imeEntitete>[<X>,<Y>,<Z>]: Veljavni vnosi vključujejo »/spawnentity boats:boat« in »/spawnentity boats:boat 0,0,0«
+##TODO: fuzzy matched - verify and remove the comment
+• /spawnentity <EntityName> [<X>,<Y>,<Z>]: Valid inputs include “/spawnentity boats:boat” and “/spawnentity boats:boat 0,0,0”=• /spawnentity <imeEntitete>[<X>,<Y>,<Z>]: Veljavni vnosi vključujejo »/spawnentity boats:boat« in »/spawnentity boats:boat 0,0,0«
 
 Some final remarks:=Nekaj zaključnih opomb:
 

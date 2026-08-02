@@ -25,6 +25,11 @@ Can be thrown=Pode ser arremessada
 Spears are great in melee combat, as they have an increased reach. They can also be thrown.=Lanças são ótimas em combate corpo a corpo, pois têm maior alcance. Também podem ser arremessadas.
 
 To throw a spear, hold it in your hand, then hold use (rightclick) in the air.=Para arremessar uma lança, ponha na sua mão e segure o arremesso (clique no botão direito).
+Cuts plants in range=
+Scythes are great in melee combat.=
+
+When you cut down a plant with a scythe, it cuts down other plants in a 3x3 area.=
+
 Deepslate Pickaxe=Picareta de Ardósia
 Deepslate Shovel=Pá de Ardósia
 Deepslate Hoe=Enxada de Ardósia
@@ -32,6 +37,7 @@ Deepslate Axe=Machado de Ardósia
 Deepslate Sword=Espada de Ardósia
 Deepslate Hammer=Martelo de Ardósia
 Deepslate Spear=Lança de Ardósia
+Deepslate Scythe=
 
 
 ##### not used anymore #####
