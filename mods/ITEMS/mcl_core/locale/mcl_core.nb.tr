@@ -1,7 +1,7 @@
 # textdomain: mcl_core
 ##[ functions.lua ]##
 
-Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected.=
+Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected.=Om ranker kan spre seg til andre blokker. Huleranker, vridvin og slengvin blir ikke anfektet.
 
 ##[ nodes_base.lua ]##
 Stone=Stein
@@ -57,7 +57,7 @@ A grass block is dirt with a grass cover. Grass blocks are resourceful blocks wh
 Dirt with Snow=Jord med snø
 Grass Path=Gressti
 
-Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=
+Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=Gressstier er en dekorativ variant av gressblokker og jordblokker. Toppen deres har en annen farge og de er litt lavere enn gressblokker, noe som gjør dem nyttige for å bygge stier. Gresstier kan lages ved å høyreklikke med en spade. En gresssti blir til jord når den tildekkes av en solid blokk, eller når den shift+høyreklikkes med en spade.
 
 Mycelium=Mycel
 
@@ -335,7 +335,7 @@ Cyan Stained Glass=Turkisfarget glass
 ##[ nodes_climb.lua ]##
 Ladder=Stige
 
-A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=
+A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=Et stigestykke som lar deg klatre vertikalt. Stiger kan bare plasseres på siden av solide blokker.
 
 Vines=Ranke
 
@@ -417,18 +417,3 @@ Apples are food items which can be eaten.=Eple er en matgjenstand som kan spises
 Golden Apple=Gulleple
 Golden apples are precious food items which can be eaten.=Gullepler er dyrebare matvarer som kan spises.
 Enchanted Golden Apple=Fortryllet gulleple
-
-
-##### not used anymore #####
-
-@1 could not survive in lava.=@1 kunne ikke overleve i lava.
-@1 died in lava.=@1 døde i lava.
-@1 melted in lava.=@1 smeltet i lava.
-@1 took a bath in a hot lava tub.=@1 to et bad i et varmt lavabadekar.
-
-A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns.=Et stigestykke som lar deg klatre vertikalt. Stiger kan bare plasseres på siden av solide blokker og ikke på glass, løv, is, heller, glødestein eller sjølykter.
-
-Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created with a shovel. A grass path turns into dirt when it is below a solid block.=Gressstier er en dekorativ variant av gressblokker og jordblokker. Toppen deres har en annen farge og de er litt lavere enn gressblokker, noe som gjør dem nyttige for å bygge stier. Gressstier kan lages med spade. En gresssti blir til jord når den tildekkes av en solid blokk.
-
-This is a decorative block.=Dette er en dekorativ blokk.
-Needs soil and water to grow=Trenger jordsmonn og vann for å vokse

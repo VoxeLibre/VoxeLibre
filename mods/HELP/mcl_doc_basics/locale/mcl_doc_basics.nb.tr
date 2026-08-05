@@ -4,31 +4,31 @@ Everything you need to know to get started with playing=Alt du trenger å vite f
 Advanced usage=Avansert bruk
 Advanced information which may be nice to know, but is not crucial to gameplay=Avansert informasjon som kan være nyttig å vite, men som ikke er avgjørende for spillingen
 Quick start=Hurtigstart
-This is a very brief introduction to the basic gameplay:=Dette er en veldig kort introduksjon til grunnleggende spillmekanikk:
+This is a very brief introduction to the basic gameplay:=Dette er en veldig kort introduksjon til grunnleggende spillmekanikker:
 • Move mouse to look=• Beveg musen for å se deg rundt
 • [W], [A], [S] and [D] to move=• [W], [A], [S] og [D] for å bevege deg
-• [E] to sprint=• [E] for å sprinte
+• [E] to sprint=• [E] for å spurte
 • [Space] to jump or move upwards=• [Mellomrom] for å hoppe eller bevege deg oppover
-• [Shift] to sneak or move downwards=• [Shift] for å snike deg eller bevege deg nedover
+• [Shift] to sneak or move downwards=• [Shift] for å snike eller bevege deg nedover
 • Mouse wheel or [1]-[9] to select item=• Musehjul eller [1]-[9] for å velge gjenstand
-• Left-click to mine blocks or attack=• Venstreklikk for å grave blokker eller angripe
-• Recover from swings to deal full damage=• Hent deg inn mellom slag for å gi full skade
+• Left-click to mine blocks or attack=• Venstreklikk for å grave blokker eller å angripe
+• Recover from swings to deal full damage=• Hent deg inn mellom våpenslag for å gjøre full skade
 • Right-click to build blocks and use things=• Høyreklikk for å bygge blokker og bruke ting
 • [I] for the inventory=• [I] for inventar
-• First items in inventory appear in hotbar below=• Første gjenstander i inventaret vises i hurtigtilgangen nederst
-• Read entries in this help to learn the rest=• Les oppføringer i denne hjelpen for å lære resten
+• First items in inventory appear in hotbar below=• Gjenstander nederst i inventaret vises i verktøybeltet nederst på skjermen
+• Read entries in this help to learn the rest=• Les oppføringer i denne oversikten for å lære resten
 • [Esc] to close this window=• [Esc] for å lukke dette vinduet
 How to play:=Hvordan spille:
-• Punch a tree trunk until it breaks and collect wood=• Slå på et trestamme til den brekker og samle ved
+• Punch a tree trunk until it breaks and collect wood=• Slå en trestamme til den knuses og samle tømmer
 
-• Place the wood into the 2×2 grid (your “crafting grid”) in your inventory menu and craft 4 wood planks=• Plasser veden i 2×2 rutenettet (ditt “håndverksrutenett”) i inventarmenyen og lag 4 planker
+• Place the wood into the 2×2 grid (your “crafting grid”) in your inventory menu and craft 4 wood planks=• Åpne inventarmenyen (I) og plasser tømmeret i en av rutene i 2×2 rutenettet (ditt “håndverksrutenett”) og lag 4 planker
 
-• Place them in a 2×2 shape in the crafting grid to craft a crafting table=• Plasser dem i et 2×2 mønster i håndverksrutenettet for å lage et arbeidsbord
-• Place the crafting table on the ground=• Plasser arbeidsbordet på bakken
-• Rightclick it for a 3×3 crafting grid=• Høyreklikk for å få et 3×3 håndverksrutenett
-• Use the crafting guide (book icon) to learn all the possible crafting recipes=• Bruk håndverksguiden (bokikon) for å lære alle mulige håndverksoppskrifter
-• Craft a wooden pickaxe so you can dig stone=• Lag en trehakke slik at du kan grave stein
-• Different tools break different kinds of blocks. Try them out!=• Ulike verktøy bryter forskjellige typer blokker. Prøv dem ut!
+• Place them in a 2×2 shape in the crafting grid to craft a crafting table=• Plasser plankene i et 2×2 mønster i håndverksrutenettet for å lage en arbeidsbenk
+• Place the crafting table on the ground=• Plasser arbeidsbenken på bakken
+• Rightclick it for a 3×3 crafting grid=• Høyreklikk på arbeidsbenken for å få et 3×3 håndverksrutenett
+• Use the crafting guide (book icon) to learn all the possible crafting recipes=• Bruk oppskriftsboken (bokikonet) for å lære om ulike håndverksoppskrifter
+• Craft a wooden pickaxe so you can dig stone=• Lag en trehakke slik at du kan hakke stein
+• Different tools break different kinds of blocks. Try them out!=• Ulike verktøy utvinner forskjellige typer blokker. Prøv dem alle!
 • Continue playing as you wish. There's no goal. Have fun!=• Fortsett å spille som du vil. Det er ingen mål. Ha det gøy!
 Minetest=Minetest
 
@@ -38,7 +38,7 @@ The player is thrown into a huge world made out of cubes or blocks. These cubes 
 
 A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorative blocks or be very complex by, e.g., introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.=En kjernefunksjon i Minetest er den innebygde modifikasjonsevnen. Mods endrer eksisterende spillmekanikk. De kan være så enkle som å legge til noen få dekorasjonsblokker, eller svært komplekse ved for eksempel å introdusere helt nye spillkonsepter, generere en helt annen type verden og mange andre ting.
 
-Minetest can be played alone or online together with multiple players. Online play will work out of the box with any mods, with no need for additional software as they are entirely provided by the server.=Minetest kan spilles alene eller online sammen med flere spillere. Online-spilling fungerer umiddelbart med alle mods, uten behov for ekstra programvare siden de leveres fullstendig av serveren.
+Minetest can be played alone or online together with multiple players. Online play will work out of the box with any mods, with no need for additional software as they are entirely provided by the server.=Minetest kan spilles alene eller på nettet sammen med flere spillere. Nettspill fungerer umiddelbart med alle mods, uten behov for ekstra programvare siden de leveres fullstendig av serveren.
 
 Minetest is usually bundled with a simple default game, named “Minetest Game” (shown in images 1 and 2). You probably already have it. Other games for Minetest can be downloaded from the official Minetest forums <https://forum.minetest.net/viewforum.php?f@=48>.=Minetest kommer vanligvis med et enkelt standardspill, kalt “Minetest Game” (vist i bilder 1 og 2). Du har det sannsynligvis allerede. Andre spill for Minetest kan lastes ned fra det offisielle Minetest-forumet <https://forum.minetest.net/viewforum.php?f@=48>.
 
@@ -62,7 +62,7 @@ Basic movement:=Grunnleggende bevegelse:
 • A: Move to the left=• A: Gå til venstre
 • D: Move to the right=• D: Gå til høyre
 • S: Move backwards=• S: Gå bakover
-• E: Sprint=• E: Sprint
+• E: Sprint=• E: Spurt
 While standing on solid ground:=Mens du står på fast grunn:
 • Space: Jump=• Mellomrom: Hopp
 • Shift: Sneak=• Shift: Snik
@@ -70,7 +70,7 @@ While on a ladder, swimming in a liquid or fly mode is active=Mens du er på en 
 • Space: Move up=• Mellomrom: Gå opp
 • Shift: Move down=• Shift: Gå ned
 Extended movement (requires privileges):=Utvidet bevegelse (krever privilegier):
-• J: Toggle fast mode, makes you run or fly fast (requires “fast” privilege)=• J: Veksle hurtigmodus, gjør at du løper eller flyr raskt (krever “fast”-privilegium)
+• J: Toggle fast mode, makes you run or fly fast (requires “fast” privilege)=• J: Veksle hurtigmodus, gjør at du spurter eller flyr raskt (krever “fast”-privilegium)
 
 • K: Toggle fly mode, makes you move freely in all directions (requires “fly” privilege)=• K: Veksle flymodus, gjør at du beveger deg fritt i alle retninger (krever “fly”-privilegium)
 
@@ -81,8 +81,8 @@ World interaction:=Verdensinteraksjon:
 • Left mouse button: Punch / mine blocks=• Venstre museknapp: Slå / grave blokker
 • Right mouse button: Build or use pointed block=• Høyre museknapp: Bygg eller bruk utpekt blokk
 • Shift+Right mouse button: Build=• Shift+Høyre museknapp: Bygg
-• Roll mouse wheel / B / N: Select next/previous item in hotbar=• Rull musehjulet / B / N: Velg neste/forrige gjenstand i hurtigtilgangen
-• 1-9: Select item in hotbar directly=• 1-9: Velg gjenstand i hurtigtilgangen direkte
+• Roll mouse wheel / B / N: Select next/previous item in hotbar=• Rull musehjulet / B / N: Velg neste/forrige gjenstand i verktøybeltet
+• 1-9: Select item in hotbar directly=• 1-9: Velg en konkret gjenstand i verktøybeltet
 • Q: Drop item stack=• Q: Slipp gjenstandsstabel
 • Shift+Q: Drop 1 item=• Shift+Q: Slipp 1 gjenstand
 • I: Show/hide inventory menu=• I: Vis/skjul inventarmenyen
@@ -144,7 +144,7 @@ Items are things you can carry along and store in inventories. They can be used 
 An item stack is a collection of items of the same type which fits into a single item slot. Item stacks can be dropped on the ground. Items which drop into the same coordinates will form an item stack.=En gjenstandsstabel er en samling av gjenstander av samme type som passer i en enkelt gjenstandsplass. Gjenstandsstabler kan slippes på bakken. Gjenstander som slippes på samme koordinater vil danne en gjenstandsstabel.
 
 Items have several properties, including the following:=Gjenstander har flere egenskaper, inkludert følgende:
-• Maximum stack size: Number of items which fit on 1 item stack=• Maksimal stabbelstørrelse: Antall gjenstander som passer på 1 gjenstandsstabel
+• Maximum stack size: Number of items which fit on 1 item stack=• Maksimal stabelstørrelse: Antall gjenstander som passer på 1 gjenstandsstabel
 
 • Pointing range: How close things must be to be pointed while wielding this item=• Pekerekkevidde: Hvor nær ting må være for å kunne peke mens denne gjenstanden brukes
 
@@ -313,17 +313,17 @@ Each cookable item requires time to be cooked. This time is specific to the item
 
 Hotbar=Hurtigtilgang
 
-At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=Nederst på skjermen ser du noen firkanter. Dette kalles “hurtigtilgang”. Hurtigtilgangen lar deg raskt få tilgang til de første gjenstandene fra spillerens inventar.
+At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=Nederst på skjermen ser du noen firkanter. Dette kalles “verktøybeltet”. Verktøyfeltet lar deg raskt få tilgang til de første gjenstandene fra spillerens inventar.
 
 You can change the selected item with the mouse wheel or the keyboard.=Du kan bytte valgt gjenstand med musehjulet eller tastaturet.
-• Select previous item in hotbar: [Mouse wheel up] or [B]=• Velg forrige gjenstand i hurtigtilgang: [Musehjul opp] eller [B]
-• Select next item in hotbar: [Mouse wheel down] or [N]=• Velg neste gjenstand i hurtigtilgang: [Musehjul ned] eller [N]
-• Select item in hotbar directly: [1]-[9]=• Velg gjenstand i hurtigtilgang direkte: [1]-[9]
-The selected item is also your wielded item.=Den valgte gjenstanden er også gjenstanden du holder.
+• Select previous item in hotbar: [Mouse wheel up] or [B]=• Velg forrige gjenstand i verktøybeltet: [Musehjul opp] eller [B]
+• Select next item in hotbar: [Mouse wheel down] or [N]=• Velg neste gjenstand i verktøybeltet: [Musehjul ned] eller [N]
+• Select item in hotbar directly: [1]-[9]=• Velg en konkret gjenstand i verktøybeltet: [1]-[9]
+The selected item is also your wielded item.=Den valgte gjenstanden er også gjenstanden du holder i hånden.
 Minimap=Minikart
-If you have a map item in any of your hotbar slots, you can use the minimap.=Hvis du har et kartobjekt i noen av hurtigtilgangens spor, kan du bruke minimap.
+If you have a map item in any of your hotbar slots, you can use the minimap.=Hvis du har et kartobjekt i noen av feltene i verktøybeltet, kan du bruke minikartet.
 
-Press [F9] to make a minimap appear on the top right. The minimap helps you to find your way around the world. Press it again to select different minimap modes and zoom levels. The minimap also shows the positions of other players.=Trykk på [F9] for å få minikartet til å vises øverst til høyre. Minikartet hjelper deg å finne veien rundt i verden. Trykk på det igjen for å velge ulike minikartmoduser og zoomnivåer. Minikartet viser også posisjonene til andre spillere.
+Press [F9] to make a minimap appear on the top right. The minimap helps you to find your way around the world. Press it again to select different minimap modes and zoom levels. The minimap also shows the positions of other players.=Trykk på [F9] for å synliggjøre minikartet øverst til høyre. Minikartet hjelper deg å finne veien rundt i verden. Trykk på det igjen for å velge ulike minikartmoduser og zoomnivåer. Minikartet viser også posisjonene til andre spillere.
 
 There are 2 minimap modes and 3 zoom levels.=Det finnes 2 minikartmoduser og 3 zoomnivåer.
 
@@ -340,7 +340,7 @@ Inventory=Inventar
 
 Inventories are used to store item stacks. There are other uses, such as crafting. An inventory consists of a rectangular grid of item slots. Each item slot can either be empty or hold one item stack. Item stacks can be moved freely between most slots.=Inventarer brukes til å lagre gjenstandsstabler. Det finnes andre bruksområder, som håndverk. Et inventar består av et rektangulært rutenett med gjenstandsplasser. Hver plass kan enten være tom eller inneholde en gjenstandsstabel. Gjenstandsstabler kan flyttes fritt mellom de fleste plassene.
 
-You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=Du har ditt eget inventar som kalles ditt “spillerinventar”, du kan åpne det med inventartasten (standard: [I]). De første inventarplassene brukes også som spor i hurtigtilgangen.
+You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=Du har ditt eget inventar som kalles ditt “spillerinventar”, du kan åpne det med inventartasten (standard: [I]). De nederste inventarplassene brukes også som felt i verktøybeltet.
 
 Blocks can also have their own inventory, e.g. chests and furnaces.=Blokker kan også ha sitt eget inventar, for eksempel kister og ovner.
 Inventory controls:=Inventarkontroller:
@@ -685,7 +685,7 @@ Core hunger rules:=Kjerne-regler for sult:
 • Poisonous food decreases your health=• Giftig mat reduserer helsen din
 Details:=Detaljer:
 
-You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.=Du har 0-20 sultpoeng, indikert med 20 halve trommestikkeikoner over hurtigtilgangen. Du har også en usynlig egenskap: Metning.
+You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.=Du har 0-20 sultpoeng, indikert med 20 halve trommestikkeikoner over verktøybeltet. Du har også en usynlig egenskap: Metning.
 
 Hunger points reflect how full you are while saturation points reflect how long it takes until you're hungry again.=Sultpoeng viser hvor mett du er, mens metningspoeng viser hvor lenge det tar før du blir sulten igjen.
 
@@ -716,7 +716,7 @@ Other actions, like walking, do not exhaust you.=Andre handlinger, som å gå, u
 ##### not used anymore #####
 
 Basic controls:=Grunnleggende kontroller:
-• Lowest row in inventory appears in hotbar below=• Nederste rad i inventaret vises i hurtigtilgangen nederst
+• Lowest row in inventory appears in hotbar below=• Nederste rad i inventaret vises i verktøybeltet nederst på skjermen
 
 Minetest as well as Minetest Game are both unfinished at the moment, so please forgive us when not everything works out perfectly.=Minetest og Minetest Game er begge uferdige for øyeblikket, så vi håper på forståelse om ikke alt fungerer perfekt.
 
@@ -724,7 +724,7 @@ If you jump while holding the sneak key, you also jump slightly higher than usua
 
 • E: Move even faster when in fast mode=• E: Beveg deg enda raskere i hurtigmodus
 • Left mouse button: Punch / mine blocks / take items=• Venstre museknapp: Slå / grave blokker / ta gjenstander
-• Roll mouse wheel: Select next/previous item in hotbar=• Rull musehjulet: Velg neste/forrige gjenstand i hurtigtilgangen
+• Roll mouse wheel: Select next/previous item in hotbar=• Rull musehjulet: Velg neste/forrige gjenstand i verktøybeltet
 • F8: Toggle cinematic mode=• F8: Veksle kinomodus
 • P: Only useful for developers. Writes current stack traces=• P: Kun nyttig for utviklere. Skriver nåværende stack-spor
 

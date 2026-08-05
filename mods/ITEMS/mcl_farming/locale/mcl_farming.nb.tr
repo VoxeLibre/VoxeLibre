@@ -20,7 +20,7 @@ Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmla
 Wood Hoe=Tregrev
 Stone Hoe=Steingrev
 Iron Hoe=Jerngrev
-Gold Hoe=
+Gold Hoe=Gullgrev
 Diamond Hoe=Diamantgrev
 Netherite Hoe=Nethereittgrev
 ##[ wheat.lua ]##
@@ -38,7 +38,7 @@ Premature wheat plants grow on farmland under sunlight in 8 stages.=Umodne hvete
 
 On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.=På fuktig dyrkbar mark vokser de raskere. De kan høstes når som helst, men vil bar gi en fortjeneste når de er modne.
 
-Premature Wheat Plant (Stage @1)=Umoden hveteplante (stadie @1)
+Premature Wheat Plant (Stage @1)=Umoden hveteplante (@1 stadium)
 Mature Wheat Plant=Moden hveteplante
 Mature wheat plants are ready to be harvested for wheat and wheat seeds.=Modne hveteplanter er klare for å høstes for hvete og hvetefrø.
 They won't grow any further.=De vokser ikke lenger.
@@ -60,7 +60,7 @@ Premature Pumpkin Stem=Umoden gresskarstilk
 
 Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins.=Gresskarstilker vokser på dyrkbar mark i 8 stadier. På hydrert dyrkbar mark er veksten litt raskere. Modne gresskarstilker er i stand til å dyrke gresskar.
 
-Premature Pumpkin Stem (Stage @1)=Umoden gresskarstilk(stadie @1)
+Premature Pumpkin Stem (Stage @1)=Umoden gresskarstilk (@1 stadium)
 Mature Pumpkin Stem=Moden gresskarstilk
 
 A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.=En moden gresskarstilk prøver å dyrke et gresskar på en av de fire tilstøtende blokkene rundt. Et gresskar kan bare vokse på dyrkbar mark, jord eller en gressblokk. Når et gresskar er ved siden av en gresskarstilk, bøyer gresskarstilken seg umiddelbart og kobles til gresskaret. Mens tilkoblet, kan ikke gresskarstilken vokse et nytt gresskar. Så snart alle gresskar rundt stilken er fjernet, mister den forbindelsen og er klar til å dyrke enda et gresskar.
@@ -94,7 +94,7 @@ Premature Melon Stem=Umoden melonstilk
 
 Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons.=Melonstilker vokser på dyrkbar mark i 8 stadier. På hydrert dyrkbar mark er veksten litt raskere. Modne melonstilker er i stand til å dyrke meloner.
 
-Premature Melon Stem (Stage @1)=Umoden melonstilk (stadie @1)
+Premature Melon Stem (Stage @1)=Umoden melonstilk (@1 stadium)
 Mature Melon Stem=Moden melonstilk
 
 A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.=En moden melonstilk prøver å dyrke en melon på en av de fire tilstøtende blokkene rundt. En melon kan bare vokse på dyrkbar mark, jord eller en gressblokk. Når en melon er ved siden av en melonstilk, bøyer melonstilken seg umiddelbart og kobles til melonen. Mens tilkoblet, kan ikke en melonstilken vokse en ny melon. Så snart alle meloner rundt stilken er fjernet, mister den forbindelsen og er klar til å dyrke enda en melon.
@@ -105,7 +105,7 @@ Premature Carrot Plant=Umoden gulrotplante
 
 Carrot plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Gulrotplanter er planter som vokser på dyrkbar mark under sollys gjennom 8 stadier, men bare 4 av stadiene kan synlig skilles fra hverandre. På hydrert dyrkbar mark vokser de litt raskere. De kan høstes når som helst, men vil bare gi en fortjeneste når de er modne.
 
-Premature Carrot Plant (Stage @1)=Umoden gulrotplante (stadie @1)
+Premature Carrot Plant (Stage @1)=Umoden gulrotplante (@1 stadium)
 Mature Carrot Plant=Moden gulrotplante
 
 Mature carrot plants are ready to be harvested for carrots. They won't grow any further.=Modne gulrotplanter er klare til å bli høstet for gulrøtter. De vokser ikke lenger.
@@ -124,7 +124,7 @@ Premature Potato Plant=Umoden potetplante
 
 Potato plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Potetplanter er planter som vokser på dyrkbar mark under sollys gjennom 8 stadier, men bare 4 av stadiene kan synlig skilles fra hverandre. På hydrert dyrkbar mark vokser de litt raskere. De kan høstes når som helst, men vil bare gi en fortjeneste når de er modne.
 
-Premature Potato Plant (Stage @1)=Umoden potetplante (stadie @1)
+Premature Potato Plant (Stage @1)=Umoden potetplante (@1 stadium)
 Mature Potato Plant=Moden potetplante
 
 Mature potato plants are ready to be harvested for potatoes. They won't grow any further.=Modne potetplanter er klare til å bli høstet for poteter. De vokser ikke lenger.
@@ -163,14 +163,5 @@ Hold it in your hand and right-click to eat it. Rightclick an animal to feed it.
 Beetroot Soup=Rødbetesuppe
 Beetroot soup is a food item.=Rødbetesuppe er en matvare.
 ##[ sweet_berry.lua ]##
-Sweet Berry Bush (Stage @1)=Søtbærbusk (Stage @1)
+Sweet Berry Bush (Stage @1)=Søtbærbusk (@1 stadium)
 Sweet Berry=Søtbær
-
-
-##### not used anymore #####
-
-Golden Hoe=Gullgrev
-Uses: @1=Bruk: @1
-Premature Beetroot Plant (Stage 1)=Umoden rødbeteplante (stadie 1)
-Premature Beetroot Plant (Stage 2)=Umoden rødbeteplante (stadie 2)
-Premature Beetroot Plant (Stage 3)=Umoden rødbeteplante (stadie 3)
