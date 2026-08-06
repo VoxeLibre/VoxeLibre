@@ -87,7 +87,7 @@ Snow Golem=Snømann
 ##[ iron_golem.lua ]##
 Iron Golem=Jernkjempe
 ##[ rover.lua ]##
-Rover=Drifter
+Rover=Driver
 ##[ shulker.lua ]##
 Shulker=Shulker
 ##[ silverfish.lua ]##
@@ -135,7 +135,7 @@ Glow Squid=Glødeblekksprut
 Piglin=Grisling
 Sword Piglin=Sverdgrisling
 Zombie Piglin=Vandød grisling
-Baby Zombie Piglin=Babyvandød grisling
+Baby Zombie Piglin=Vandød babygrisling
 Piglin Brute=Grislingbølle
 ##[ hoglin+zoglin.lua ]##
 Hoglin=Hoglin
@@ -144,11 +144,3 @@ Baby hoglin=Babyhoglin
 ##[ strider.lua ]##
 Strider=Lavavandrer
 Baby Strider=Babylavavandrer
-
-
-##### not used anymore #####
-
-Blaze=Ildvette
-Agent=Agent
-Wither spawning=Forvitrer fremmanes
-Baby Piglin=Babygrisling

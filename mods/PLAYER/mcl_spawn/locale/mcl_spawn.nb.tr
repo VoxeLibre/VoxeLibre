@@ -1,30 +1,30 @@
 # textdomain: mcl_spawn
 ##TODO: fuzzy matched - verify and remove the comment
-New world spawn position set!=Ny startposisjon satt!
-Trying to set invalid world spawn position!=
+New world spawn position set!=Ny verdens-startposisjon satt!
+Trying to set invalid world spawn position!=Prøver å sette ugyldig verdens-startposisjon!
 Respawn position cleared!=Startposisjon klarert!
 New respawn position set!=Ny startposisjon satt!
-Trying to set invalid respawn position!=
+Trying to set invalid respawn position!=Prøver å sette ugyldig startposisjon!
 Couldn't get level of your respawn anchor!=Kunne ikke skaffe nivået til livsankeret ditt!
 Your spawn bed was missing or blocked, and you had no charged respawn anchor!=Sengen din er borte eller blokkert, og du hadde ikke noe livsanker!
-Can set or remove spawn point via command=
-Sets the spawn point for a player, works in all dimensions.=
-[<player>] [<x> <y> <z>]=
-Invalid parameters (see /help spawnpoint)=
-You need the 'server' privilege in order to set spawn point for somebody else!=
-Invalid target player=
-Invalid respawn position=
+Can set or remove spawn point via command=Kan sette eller fjerne startposisjon via kommando
+Sets the spawn point for a player, works in all dimensions.=Setter startposisjonen for en spiller, fungerer i alle dimensjoner.
+[<player>] [<x> <y> <z>]=[<spiller>] [<x> <y> <z>]
+Invalid parameters (see /help spawnpoint)=Ugyldige parametere (se /help spawnpoint)
+You need the 'server' privilege in order to set spawn point for somebody else!=Du trenger 'server'-privilegiet for å sette startposisjonen til andre spillere!
+Invalid target player=Ugyldig spillermål
+Invalid respawn position=Ugyldig startposisjon
 
-Warning: The respawn point of @1 is set in the end. Use /clearspawn command to get out if the player is stuck.=
+Warning: The respawn point of @1 is set in the end. Use /clearspawn command to get out if the player is stuck.=Advarsel: Startposisjonen til @1 er satt til enden. Bruk /clearspawn kommandoen for å få spilleren ut dersom hen sitter fast.
 
-Set respawn point for @1 to @2=
-Resets the spawn point for a player.=
-[<player>]=
-Invalid parameters (see /help clearspawn)=
-You need the 'server' privilege in order to reset spawn point for somebody else!=
-Cleared respawn point for @1=
-Sets the default spawn point for all players, works only in the Overworld.=
-[<x> <y> <z>]=
-Invalid parameters (see /help setworldspawn)=
-Invalid world spawn position=
-Set world spawn point to @1=
+Set respawn point for @1 to @2=Satte startpunktet for @1 til @2
+Resets the spawn point for a player.=Tilbakestiller startposisjonen for en spiller.
+[<player>]=[<spiller>]
+Invalid parameters (see /help clearspawn)=Ugyldige parametere (se /help clearspawn)
+You need the 'server' privilege in order to reset spawn point for somebody else!=Du trenger 'server'-privilegiet for å tilbakestille startposisjonen til andre spillere!
+Cleared respawn point for @1=Tilbakestiller startposisjonen til @1
+Sets the default spawn point for all players, works only in the Overworld.=Set standard startposisjon for alle spillere, fungerer bare i oververdenen.
+[<x> <y> <z>]=[<x> <y> <z>]
+Invalid parameters (see /help setworldspawn)=Ugyldige parametere (se /help setworldspawn)
+Invalid world spawn position=Ugyldig verdens-startposisjon
+Set world spawn point to @1=Satt verdens-startposisjonen til @1

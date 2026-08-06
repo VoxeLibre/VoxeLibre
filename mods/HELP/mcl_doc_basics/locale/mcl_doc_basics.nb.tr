@@ -15,7 +15,7 @@ This is a very brief introduction to the basic gameplay:=Dette er en veldig kort
 • Recover from swings to deal full damage=• Hent deg inn mellom våpenslag for å gjøre full skade
 • Right-click to build blocks and use things=• Høyreklikk for å bygge blokker og bruke ting
 • [I] for the inventory=• [I] for inventar
-• First items in inventory appear in hotbar below=• Gjenstander nederst i inventaret vises i verktøybeltet nederst på skjermen
+• First items in inventory appear in hotbar below=• Gjenstander nederst i inventaret vises i hurtigfeltet nederst på skjermen
 • Read entries in this help to learn the rest=• Les oppføringer i denne oversikten for å lære resten
 • [Esc] to close this window=• [Esc] for å lukke dette vinduet
 How to play:=Hvordan spille:
@@ -81,8 +81,8 @@ World interaction:=Verdensinteraksjon:
 • Left mouse button: Punch / mine blocks=• Venstre museknapp: Slå / grave blokker
 • Right mouse button: Build or use pointed block=• Høyre museknapp: Bygg eller bruk utpekt blokk
 • Shift+Right mouse button: Build=• Shift+Høyre museknapp: Bygg
-• Roll mouse wheel / B / N: Select next/previous item in hotbar=• Rull musehjulet / B / N: Velg neste/forrige gjenstand i verktøybeltet
-• 1-9: Select item in hotbar directly=• 1-9: Velg en konkret gjenstand i verktøybeltet
+• Roll mouse wheel / B / N: Select next/previous item in hotbar=• Rull musehjulet / B / N: Velg neste/forrige gjenstand i hurtigfeltet
+• 1-9: Select item in hotbar directly=• 1-9: Velg en konkret gjenstand i hurtigfeltet
 • Q: Drop item stack=• Q: Slipp gjenstandsstabel
 • Shift+Q: Drop 1 item=• Shift+Q: Slipp 1 gjenstand
 • I: Show/hide inventory menu=• I: Vis/skjul inventarmenyen
@@ -141,10 +141,10 @@ Items=Gjenstander
 
 Items are things you can carry along and store in inventories. They can be used for crafting, smelting, building, mining, and more. Types of items include blocks, tools, weapons and items only used for crafting.=Gjenstander er ting du kan bære med deg og lagre i inventarer. De kan brukes til håndverk, smelting, bygging, graving og mer. Typer av gjenstander inkluderer blokker, verktøy, våpen og gjenstander kun brukt til håndverk.
 
-An item stack is a collection of items of the same type which fits into a single item slot. Item stacks can be dropped on the ground. Items which drop into the same coordinates will form an item stack.=En gjenstandsstabel er en samling av gjenstander av samme type som passer i en enkelt gjenstandsplass. Gjenstandsstabler kan slippes på bakken. Gjenstander som slippes på samme koordinater vil danne en gjenstandsstabel.
+An item stack is a collection of items of the same type which fits into a single item slot. Item stacks can be dropped on the ground. Items which drop into the same coordinates will form an item stack.=En gjenstandsstabel er gjenstander av samme type som sammen fyller et enkelt inventarfelt. Gjenstandsstabler kan slippes på bakken. Gjenstander som slippes på samme koordinater vil danne en gjenstandsstabel.
 
 Items have several properties, including the following:=Gjenstander har flere egenskaper, inkludert følgende:
-• Maximum stack size: Number of items which fit on 1 item stack=• Maksimal stabelstørrelse: Antall gjenstander som passer på 1 gjenstandsstabel
+• Maximum stack size: Number of items which fit on 1 item stack=• Maksimal stabelstørrelse: Antall gjenstander som passer i én enkelt gjenstandsstabel
 
 • Pointing range: How close things must be to be pointed while wielding this item=• Pekerekkevidde: Hvor nær ting må være for å kunne peke mens denne gjenstanden brukes
 
@@ -280,28 +280,28 @@ The physics for swimming and diving in a liquid are:=Fysikken for svømming og d
 Liquids are often not pointable. But some special items are able to point all liquids.=Væsker kan ofte ikke pekes på. Men noen spesielle gjenstander kan peke på alle væsker.
 
 Crafting=Håndverk
-Crafting is the task of combining several items to form a new item.=Håndverk er oppgaven med å kombinere flere gjenstander for å lage en ny gjenstand.
+Crafting is the task of combining several items to form a new item.=Håndverk er å kombinere flere gjenstander for å lage en ny gjenstand.
 
-To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you place items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limit the possible recipes you can craft.=For å lage noe trenger du en eller flere gjenstander, et håndverksrutenett (C) og en håndverksoppskrift. Et håndverksrutenett er som et vanlig inventar som også kan brukes til håndverk. Gjenstandene må plasseres i et bestemt mønster i håndverksrutenettet. Ved siden av håndverksrutenettet er en utgangs-slot (O). Her vises resultatet når du har plassert gjenstandene riktig. Dette er bare en forhåndsvisning, ikke selve gjenstanden. Håndverksrutenett kan komme i forskjellige størrelser som begrenser mulige oppskrifter du kan lage.
+To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you place items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limit the possible recipes you can craft.=For å lage noe trenger du én eller flere gjenstander, et håndverksrutenett (C) og en håndverksoppskrift. Et håndverksrutenett er som et vanlig inventar som også kan brukes til håndverk. Gjenstandene må plasseres i et gitt mønster i håndverksrutenettet. Ved siden av håndverksrutenettet er produktfeltet (O). Her ser du resultatet når du har plassert gjenstandene riktig. Dette er bare en forhåndsvisning, ikke selve gjenstanden. Håndverksrutenett kan komme i ulike størrelser som avgjør hvilke oppskrifter du kan lage.
 
-To complete the craft, take the result item from the output slot, which will consume items from the crafting grid and create a new item. It is not possible to place items into the output slot.=For å fullføre håndverket, ta resultatgjenstanden fra utgangssloten, som vil forbruke gjenstander fra håndverksrutenettet og lage en ny gjenstand. Det er ikke mulig å plassere gjenstander i utgangssloten.
+To complete the craft, take the result item from the output slot, which will consume items from the crafting grid and create a new item. It is not possible to place items into the output slot.=For å fullføre håndverket, ta endeproduktet fra produktfeltet. Dette forbruker gjenstander fra håndverksrutenettet og lager en ny gjenstand. Det er ikke mulig å plassere gjenstander i produktfeltet.
 
-A description on how to craft an item is called a “crafting recipe”. You need this knowledge to craft. There are multiple ways to learn crafting recipes. One way is by using a crafting guide, which contains a list of available crafting recipes. Some games provide crafting guides. There are also some mods which you can download online for installing a crafting guide. Another way is by reading the online manual of the game (if one is available).=En beskrivelse av hvordan man lager en gjenstand kalles en “håndverksoppskrift”. Du trenger denne kunnskapen for å håndverke. Det er flere måter å lære håndverksoppskrifter på. En måte er å bruke en håndverksguide, som inneholder en liste over tilgjengelige håndverksoppskrifter. Noen spill tilbyr håndverksguider. Det finnes også noen mods som du kan laste ned på nettet for å installere en håndverksguide. En annen måte er å lese den nettbaserte manualen for spillet (om en er tilgjengelig).
+A description on how to craft an item is called a “crafting recipe”. You need this knowledge to craft. There are multiple ways to learn crafting recipes. One way is by using a crafting guide, which contains a list of available crafting recipes. Some games provide crafting guides. There are also some mods which you can download online for installing a crafting guide. Another way is by reading the online manual of the game (if one is available).=En beskrivelse av hvordan man lager en gjenstand kalles en “håndverksoppskrift”. Du trenger denne kunnskapen for å gjøre håndverk. I ditt inventar finner du et ikon med en grønn bok - dette er oppskriftsboken. Klikk på den for å se oppskriftene du kjenner til. For å oppdage nye oppskrifter, samle gjenstader i spillet. Du kan finne ny blokker og gjenstander i spillverdenen, eller lage nye gjenstander fra håndverksoppskrifter du kjenner til.
 
-Crafting recipes consist of at least one input item and exactly one stack of output items. When performing a single craft, it will consume exactly one item from each stack of the crafting grid, unless the crafting recipe defines replacements.=Håndverksoppskrifter består av minst én inngangsgjenstand og nøyaktig én stabel med utgangsgjenstander. Når du utfører et enkelt håndverk, vil det forbruke nøyaktig én gjenstand fra hver stabel i håndverksrutenettet, med mindre håndverksoppskriften definerer erstatninger.
+Crafting recipes consist of at least one input item and exactly one stack of output items. When performing a single craft, it will consume exactly one item from each stack of the crafting grid, unless the crafting recipe defines replacements.=Håndverksoppskrifter består av minst én inngangsgjenstand og nøyaktig én stabel med endeprodukt. Når du utfører et enkelt håndverk, vil det forbruke nøyaktig én gjenstand fra hver stabel i håndverksrutenettet, med mindre håndverksoppskriften definerer erstatninger.
 
 There are multiple types of crafting recipes:=Det finnes flere typer håndverksoppskrifter:
-• Shaped (image 2): Items need to be placed in a particular shape=• Formet (bilde 2): Gjenstandene må plasseres i en bestemt form
+• Shaped (image 2): Items need to be placed in a particular shape=• Formet (bilde 2): Gjenstander må plasseres i et bestemt mønster
 
-• Shapeless (images 3 and 4): Items need to be placed somewhere in input (both images show the same recipe)=• Formløs (bilder 3 og 4): Gjenstandene må plasseres et sted i inngangen (begge bildene viser samme oppskrift)
+• Shapeless (images 3 and 4): Items need to be placed somewhere in input (both images show the same recipe)=• Formløs (bilder 3 og 4): Gjenstandene plasseres uvilkårlig i rutenettet (begge bildene viser samme oppskrift)
 
 • Cooking: Explained in “Basics > Cooking”=• Matlaging: Forklart i “Grunnleggende > Matlaging”
 
 • Repairing (image 5): Place two damaged tools into the crafting grid anywhere to get a tool which is repaired by 5%=• Reparasjon (bilde 5): Plasser to ødelagte verktøy i håndverksrutenettet for å få et verktøy som er reparert med 5 %
 
-In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.=I noen håndverksoppskrifter trenger noen inngangsgjenstander ikke å være en bestemt gjenstand, men i stedet må de tilhøre en gruppe (se “Grunnleggende > Grupper”). Disse oppskriftene gir litt mer frihet i inngangsgjenstandene. Bildene 6-8 viser samme gruppebaserte oppskrift. Her kreves 8 gjenstander fra “stein”-gruppen, som gjelder for alle de viste gjenstandene.
+In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.=I noen håndverksoppskrifter trenger noen gjenstander ikke å være en bestemt gjenstand, men i stedet må de tilhøre en gruppe (se “Grunnleggende > Grupper”). Disse oppskriftene gir litt mer frihet i valg av . Bildene 6-8 viser samme gruppebaserte oppskrift. Her kreves 8 gjenstander fra “stein”-gruppen, som gjelder for alle de viste gjenstandene.
 
-Rarely, crafting recipes have replacements. This means that whenever you perform a craft, some items in the crafting grid will not be consumed, but instead will be replaced by another item.=Sjelden har håndverksoppskrifter erstatninger. Dette betyr at hver gang du utfører et håndverk, vil noen gjenstander i håndverksrutenettet ikke bli forbrukt, men i stedet erstattes av en annen gjenstand.
+Rarely, crafting recipes have replacements. This means that whenever you perform a craft, some items in the crafting grid will not be consumed, but instead will be replaced by another item.=I noen håndverksoppskrifter er det "erstattninger". I slike tilfeller erstattes gjenstanden i håndverksrutenettet med en annen gjenstand idet du fullfører håndverket.
 
 Cooking=Matlaging
 
@@ -311,17 +311,17 @@ Each fuel item has a burning time. This is the time a single item of the fuel ke
 
 Each cookable item requires time to be cooked. This time is specific to the item type and the item must be “on fire” for the entire cooking time to actually yield the result.=Hver kokbar gjenstand trenger tid for å bli kokt. Denne tiden er spesifikk for gjenstandstypen, og gjenstanden må være “på ild” hele koketiden for å faktisk gi resultatet.
 
-Hotbar=Hurtigtilgang
+Hotbar=Hurtigfelt
 
-At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=Nederst på skjermen ser du noen firkanter. Dette kalles “verktøybeltet”. Verktøyfeltet lar deg raskt få tilgang til de første gjenstandene fra spillerens inventar.
+At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=Nederst på skjermen ser du noen firkanter. Dette kalles “hurtigfeltet”. Hurtigfeltet lar deg raskt få tilgang til de første gjenstandene fra spillerens inventar.
 
 You can change the selected item with the mouse wheel or the keyboard.=Du kan bytte valgt gjenstand med musehjulet eller tastaturet.
-• Select previous item in hotbar: [Mouse wheel up] or [B]=• Velg forrige gjenstand i verktøybeltet: [Musehjul opp] eller [B]
-• Select next item in hotbar: [Mouse wheel down] or [N]=• Velg neste gjenstand i verktøybeltet: [Musehjul ned] eller [N]
-• Select item in hotbar directly: [1]-[9]=• Velg en konkret gjenstand i verktøybeltet: [1]-[9]
+• Select previous item in hotbar: [Mouse wheel up] or [B]=• Velg forrige gjenstand i hurtigfeltet: [Musehjul opp] eller [B]
+• Select next item in hotbar: [Mouse wheel down] or [N]=• Velg neste gjenstand i hurtigfeltet: [Musehjul ned] eller [N]
+• Select item in hotbar directly: [1]-[9]=• Velg en konkret gjenstand i hurtigfeltet: [1]-[9]
 The selected item is also your wielded item.=Den valgte gjenstanden er også gjenstanden du holder i hånden.
 Minimap=Minikart
-If you have a map item in any of your hotbar slots, you can use the minimap.=Hvis du har et kartobjekt i noen av feltene i verktøybeltet, kan du bruke minikartet.
+If you have a map item in any of your hotbar slots, you can use the minimap.=Hvis du har et kartobjekt i noen av feltene i hurtigfeltet, kan du bruke minikartet.
 
 Press [F9] to make a minimap appear on the top right. The minimap helps you to find your way around the world. Press it again to select different minimap modes and zoom levels. The minimap also shows the positions of other players.=Trykk på [F9] for å synliggjøre minikartet øverst til høyre. Minikartet hjelper deg å finne veien rundt i verden. Trykk på det igjen for å velge ulike minikartmoduser og zoomnivåer. Minikartet viser også posisjonene til andre spillere.
 
@@ -340,7 +340,7 @@ Inventory=Inventar
 
 Inventories are used to store item stacks. There are other uses, such as crafting. An inventory consists of a rectangular grid of item slots. Each item slot can either be empty or hold one item stack. Item stacks can be moved freely between most slots.=Inventarer brukes til å lagre gjenstandsstabler. Det finnes andre bruksområder, som håndverk. Et inventar består av et rektangulært rutenett med gjenstandsplasser. Hver plass kan enten være tom eller inneholde en gjenstandsstabel. Gjenstandsstabler kan flyttes fritt mellom de fleste plassene.
 
-You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=Du har ditt eget inventar som kalles ditt “spillerinventar”, du kan åpne det med inventartasten (standard: [I]). De nederste inventarplassene brukes også som felt i verktøybeltet.
+You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=Du har ditt eget inventar som kalles ditt “spillerinventar”, du kan åpne det med inventartasten (standard: [I]). De nederste inventarfeltene brukes også som felt i hurtigfeltet.
 
 Blocks can also have their own inventory, e.g. chests and furnaces.=Blokker kan også ha sitt eget inventar, for eksempel kister og ovner.
 Inventory controls:=Inventarkontroller:
@@ -362,7 +362,7 @@ Exchanging: You can exchange items if the cursor holds 1 or more items and the d
 
 Throwing away: If you hold an item stack and click with it somewhere outside the menu, the item stack gets thrown away into the environment.=Kaste bort: Hvis du holder en gjenstandsstabel og klikker med den et sted utenfor menyen, blir gjenstandsstabelen kastet bort i omgivelsene.
 
-Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=Rask overføring: Du kan raskt overføre en gjenstandsstabel til/fra spillerens inventar til/fra en annen gjenstands inventarplass som en ovn, kiste eller en annen gjenstand med inventarplass når inventaret til denne gjenstanden er åpnet. Målinventaret er generelt det mest relevante inventaret i denne sammenhengen.
+Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=Rask overføring: Du kan raskt overføre en gjenstandsstabel til/fra spillerens inventar til/fra en annen gjenstands inventarfelt som en ovn, kiste eller en annen gjenstand med inventarfelt når inventaret til denne gjenstanden er åpnet. Målinventaret er generelt det mest relevante inventaret i denne sammenhengen.
 
 • Sneak+Left click: Automatically transfer item stack=• Snik+Venstreklikk: Overfør gjenstandsstabel automatisk
 Online help=Nettbasert hjelp
@@ -414,8 +414,8 @@ Items:=Gjenstander:
 • Item: A single thing that players can possess=• Gjenstand: En enkelt ting som spillere kan eie
 • Item stack: A collection of items of the same kind=• Gjenstandsstabel: En samling av gjenstander av samme type
 • Maximum stack size: Maximum amount of items in an item stack=• Maks stabelstørrelse: Maksimalt antall gjenstander i en gjenstandsstabel
-• Slot / inventory slot: Can hold one item stack=• Slot / inventarplass: Kan holde én gjenstandsstabel
-• Inventory: Provides several inventory slots for storage=• Inventar: Gir flere inventarplasser for oppbevaring
+• Slot / inventory slot: Can hold one item stack=• Slot / inventarfelt: Kan holde én gjenstandsstabel
+• Inventory: Provides several inventory slots for storage=• Inventar: Gir flere inventarfelter for oppbevaring
 • Player inventory: The main inventory of a player=• Spillerinventar: Hovedinventaret til en spiller
 • Tool: An item which you can use to do special things with when wielding=• Verktøy: En gjenstand som du kan bruke til spesielle handlinger når den holdes
 • Range: How far away things can be to be pointed by an item=• Rekkevidde: Hvor langt unna ting kan være for å peke på dem med en gjenstand
@@ -434,7 +434,7 @@ Gameplay:=Spillmekanikk:
 • Group: Puts similar things together, often affects gameplay=• Gruppe: Samler lignende ting, påvirker ofte spillmekanikken
 • noclip: Allows to fly through walls=• noclip: Tillater å fly gjennom vegger
 Interface=Grensesnitt
-• Hotbar: Inventory slots at the bottom=• Hurtigtilgang: Inventarplasser nederst
+• Hotbar: Inventory slots at the bottom=• Hurtigfelt: De nederste inventarfeltene
 • Statbar: Indicator made out of half-symbols, used for health and breath=• Statistikkfelt: Indikator laget av halvsymboler, brukt for helse og pust
 • Minimap: The map or radar at the top right=• Minikart: Kartet eller radaren øverst til høyre
 • Crosshair: Seen in the middle, used to point at things=• Siktekorn: Synlig i midten, brukt til å peke på ting
@@ -685,7 +685,7 @@ Core hunger rules:=Kjerne-regler for sult:
 • Poisonous food decreases your health=• Giftig mat reduserer helsen din
 Details:=Detaljer:
 
-You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.=Du har 0-20 sultpoeng, indikert med 20 halve trommestikkeikoner over verktøybeltet. Du har også en usynlig egenskap: Metning.
+You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.=Du har 0-20 sultpoeng, indikert med 20 halve trommestikkeikoner over hurtigfeltet. Du har også en usynlig egenskap: Metning.
 
 Hunger points reflect how full you are while saturation points reflect how long it takes until you're hungry again.=Sultpoeng viser hvor mett du er, mens metningspoeng viser hvor lenge det tar før du blir sulten igjen.
 
@@ -716,7 +716,7 @@ Other actions, like walking, do not exhaust you.=Andre handlinger, som å gå, u
 ##### not used anymore #####
 
 Basic controls:=Grunnleggende kontroller:
-• Lowest row in inventory appears in hotbar below=• Nederste rad i inventaret vises i verktøybeltet nederst på skjermen
+• Lowest row in inventory appears in hotbar below=• Nederste rad i inventaret vises i hurtigfeltet nederst på skjermen
 
 Minetest as well as Minetest Game are both unfinished at the moment, so please forgive us when not everything works out perfectly.=Minetest og Minetest Game er begge uferdige for øyeblikket, så vi håper på forståelse om ikke alt fungerer perfekt.
 
@@ -724,7 +724,7 @@ If you jump while holding the sneak key, you also jump slightly higher than usua
 
 • E: Move even faster when in fast mode=• E: Beveg deg enda raskere i hurtigmodus
 • Left mouse button: Punch / mine blocks / take items=• Venstre museknapp: Slå / grave blokker / ta gjenstander
-• Roll mouse wheel: Select next/previous item in hotbar=• Rull musehjulet: Velg neste/forrige gjenstand i verktøybeltet
+• Roll mouse wheel: Select next/previous item in hotbar=• Rull musehjulet: Velg neste/forrige gjenstand i hurtigfeltet
 • F8: Toggle cinematic mode=• F8: Veksle kinomodus
 • P: Only useful for developers. Writes current stack traces=• P: Kun nyttig for utviklere. Skriver nåværende stack-spor
 
@@ -742,7 +742,7 @@ By holding down [Z], you can zoom the view at your crosshair. You need the “zo
 
 The world of MineClone 2 is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=Verden i MineClone 2 er laget fullstendig av blokker (voxels, for å være presis). Blokker kan legges til eller fjernes med de riktige verktøyene.
 
-• Right click: put 1 item of the item stack=• Høyreklikk: legg 1 gjenstand av gjenstandsstabelen
+• Right click: put 1 item of the item stack=• Høyreklikk: legg én gjenstand av gjenstandsstabelen
 You may want to check out these online resources related to MineClone 2.=Du kan sjekke ut disse nettressursene relatert til MineClone 2.
 
 MineClone 2 download and forum discussion: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>=MineClone 2 nedlasting og forumdiskusjon: <https://forum.minetest.net/viewtopic.php?f@=50&t@=16407>

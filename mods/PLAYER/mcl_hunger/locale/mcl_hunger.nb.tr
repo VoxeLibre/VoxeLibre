@@ -1,30 +1,30 @@
 # textdomain: mcl_hunger
 ##[ commands.lua ]##
-[on|off]=
-Toggle hunger and starvation mechanics=
-Hunger is currently enabled.=
-Hunger is currently disabled.=
-Hunger is already on.=
-Hunger enabled.=
-Hunger is already off.=
-Hunger disabled.=
-Invalid parameter.=
-[show|hide]=
-Toggle hunger and starvation debug information=
-Hunger debug information is currently enabled.=
-Hunger debug information is currently disabled.=
-Hunger debug information is already shown.=
-Hunger debug information shown.=
-Hunger debug information is already hidden.=
-Hunger debug information hidden.=
-Gives the ability to set player hunger level.=
-[player] [0-20]=
-Set a player's hunger level.=
-Player name and/or hunger level is required.=
-Player not found.=
-Hunger level is required.=
-Hunger parameter must be a whole number from 0 to 20.=
-Done!=
+[on|off]=[på|av]
+Toggle hunger and starvation mechanics=Veksle mat og sultmekanismer
+Hunger is currently enabled.=Sult er aktivert.
+Hunger is currently disabled.=Sult er deaktivert.
+Hunger is already on.=Sulten er allerede på.
+Hunger enabled.=Sult aktivert.
+Hunger is already off.=Sult er allerede av.
+Hunger disabled.=Sult deaktivert.
+Invalid parameter.=Ugyldige parameter.
+[show|hide]=[vis|skjul]
+Toggle hunger and starvation debug information=Veksle feilsøkingsinfo for mat og sult
+Hunger debug information is currently enabled.=Feilsøkingsinfo for sult er aktiv.
+Hunger debug information is currently disabled.=Feilsøkingsinfo for sult er deaktivert.
+Hunger debug information is already shown.=Feilsøkingsinfo for sult vises allerede.
+Hunger debug information shown.=Feilsøkingsinfo for sult vises.
+Hunger debug information is already hidden.=Feilsøkingsinfo for sult skjules allerede.
+Hunger debug information hidden.=Feilsøkingsinfo for sult skjules.
+Gives the ability to set player hunger level.=Gir muligheten til å angi spillerens sultnivå.
+[player] [0-20]=[spiller] [0-20]
+Set a player's hunger level.=Sett en spillers sultnivå.
+Player name and/or hunger level is required.=Spillernavn og/eller sultnivå er påkrevd.
+Player not found.=Spiller ikke funnet.
+Hunger level is required.=Sultnivå er påkrevd.
+Hunger parameter must be a whole number from 0 to 20.=Sultparameteret må være et helt tall fra 0 til 20.
+Done!=Fullført!
 
 
 ##### not used anymore #####
