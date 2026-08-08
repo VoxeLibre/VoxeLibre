@@ -1,0 +1,12 @@
+# textdomain: findbiome
+# mod title
+# mod strings
+Wait until all mods have loaded!=Vent til alle modifikasjoner har lastet inn!
+Find and teleport to biome=Finn og teleporter til markslag
+<biome>=<markslag>
+No player.=Ingen spiller.
+Biome found at @1.=Markslag funnet ved @1.
+No biome found!=Ingen markslag funnet!
+Biome does not exist!=Markslag finnes ikke!
+List all biomes=List opp alle markslag
+No biomes.=Ingen markslag

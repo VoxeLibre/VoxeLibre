@@ -1,0 +1,12 @@
+# textdomain: mcl_cozy
+Sit down=Sett deg
+@1 sits=@1 sitter
+You can't sit, the block's too far away!=Du kan ikke sitte, blokken er for langt unna!
+You have to stop moving before sitting down!=Du må slutte å bevege deg før du setter deg!
+Lie down=Legg deg ned
+@1 lies=@1 ligger
+You can't lay, the block's too far away!=Du kan ikke ligge, blokken er for langt unna!
+You have to stop moving before lying down!=Du må slutte å bevege deg før du legger deg ned!
+@1 stands up=@1 reiser seg
+Move to stand up=Beveg deg for å reise deg
+This block is already occupied!=Blokken er i bruk alt!
