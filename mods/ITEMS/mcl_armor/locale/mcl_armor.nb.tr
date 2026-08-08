@@ -61,7 +61,7 @@ Thorns=Torner
 
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Gjenspeiler noe av skaden som ble tatt når truffet, på bekostning av redusert holdbarhet per aktivering.
 
-Elytra=Elytra
+Elytra=Vinger
 ##[ leather.lua ]##
 Leather Cap=Lærhatt
 Leather Tunic=Lærtrøye
