@@ -1,775 +1,123 @@
-vl_weaponry = {}
+vl_weaponry = {
+	registered_tool_types = {},
+	registered_tool_materials = {},
+}
 
-local modname = core.get_current_modname()
-local modpath = core.get_modpath(modname)
-local S = core.get_translator(modname)
+local modpath = core.get_modpath(core.get_current_modname())
 
-local hammer_tt = S("Can crush blocks") .. "\n" .. S("Increased knockback")
-local hammer_longdesc = S("Hammers are great in melee combat, as they deal high damage with increased knockback and can endure countless battles. Hammers can also be used to crush things.")
-local hammer_use = S("To crush a block, dig the block with the hammer. This only works with some blocks.")
-
-local spear_tt = S("Reaches farther") .. "\n" .. S("Can be thrown")
-local spear_longdesc = S("Spears are great in melee combat, as they have an increased reach. They can also be thrown.")
-local spear_use = S("To throw a spear, hold it in your hand, then hold use (rightclick) in the air.")
-
-local scythe_tt = S("Cuts plants in range")
-local scythe_longdesc = S("Scythes are great in melee combat.")
-local scythe_use = S("When you cut down a plant with a scythe, it cuts down other plants in a 3x3 area.")
-
-local wield_scale = mcl_vars.tool_wield_scale
-
-vl_weaponry.hammer_tt = hammer_tt
-vl_weaponry.spear_tt = spear_tt
-
-local spear_entity = table.copy(mcl_bows.arrow_entity)
-table.update(spear_entity,{
-	initial_properties = {
-		visual = "item",
-		visual_size = {x=-0.5, y=-0.5},
-		textures = {"vl_weaponry:spear_wood"},
-	},
-	_on_remove = function(self)
-		vl_projectile.replace_with_item_drop(self, self.object:get_pos())
-	end,
-})
-table.update(spear_entity._vl_projectile,{
-	creative_collectable = true,
-	behaviors = {
-		vl_projectile.sticks,
-		vl_projectile.burns,
-		vl_projectile.has_tracer,
-		vl_projectile.has_owner_grace_distance,
-		vl_projectile.collides_with_solids,
-		vl_projectile.raycast_collides_with_entities,
-
-		-- Drop spears that are sliding
-		function(self, dtime)
-			if not self._last_pos then return end
-
-			local pos = self.object:get_pos()
-			local y_diff = math.abs(self._last_pos.y - pos.y)
-			if y_diff > 0.0001 then
-				self._flat_time = 0
-				return
-			end
-
-			local flat_time = (self._flat_time or 0) + dtime
-			self._flat_time = flat_time
-
-			if flat_time < 0.25 then return end
-
-			mcl_util.remove_entity(self)
-			return true
-		end,
-	},
-	pitch_offset = math.pi / 4,
-})
-
--- Make the spear entity available to other mods as a template
-vl_weaponry.spear_entity = table.copy(spear_entity)
-
-vl_projectile.register("vl_weaponry:spear_entity", spear_entity)
-
-local SPEAR_THROW_POWER = 30
-
-local function spear_on_place(itemstack, user, pointed_thing)
-	if pointed_thing.type == "node" then
-		-- Call on_rightclick if the pointed node defines it
-		local node = core.get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
-				return core.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
+---Handle a shovel being used to create or remove a grass path.
+---@param itemstack ItemStack
+---@param user ObjectRef
+---@param pointed_thing pointed_thing
+---@return ItemStack
+function vl_weaponry.make_grass_path(itemstack, user, pointed_thing)
+	local node = core.get_node(pointed_thing.under)
+	if user and not user:get_player_control().sneak then
+		local node_def = core.registered_nodes[node.name]
+		if node_def and node_def.on_rightclick then
+			return node_def.on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 		end
 	end
 
-	itemstack:get_meta():set_int("active", 1)
+	if pointed_thing.above.y < pointed_thing.under.y then return itemstack end
+
+	local remove = core.get_item_group(node.name, "path_remove_possible") == 1
+		and user:get_player_control().sneak
+	local create = core.get_item_group(node.name, "path_creation_possible") == 1
+		and not user:get_player_control().sneak
+	if not remove and not create then return itemstack end
+
+	local above = vector.offset(pointed_thing.under, 0, 1, 0)
+	local above_name = core.get_node(above).name
+	if above_name == "ignore" or mcl_util.is_solid_block(above_name) then return itemstack end
+	if core.is_protected(pointed_thing.under, user:get_player_name()) then
+		core.record_protection_violation(pointed_thing.under, user:get_player_name())
+		return itemstack
+	end
+	if not core.is_creative_enabled(user:get_player_name()) then
+		local wear = mcl_autogroup.get_wear(itemstack:get_name(), "shovely")
+		if wear then
+			itemstack:add_wear(wear)
+			tt.reload_itemstack_description(itemstack)
+		end
+	end
+	core.sound_play({ name = "default_grass_footstep", gain = 1 },
+		{ pos = above, max_hear_distance = 16 }, true)
+	core.swap_node(pointed_thing.under, { name = remove and "mcl_core:dirt" or "mcl_core:grass_path" })
 	return itemstack
 end
 
-local function throw_spear(itemstack, user, power_factor)
-	-- These values are not available when the spear is broken (itemstack is empty).
-	-- Retrieve them before adding wear to prevent issues on final throw.
-	local texture_name = itemstack:get_name()
-	local damage = itemstack:get_definition()._mcl_spear_thrown_damage * power_factor
+---Handle an axe being used to strip a node with an `_mcl_stripped_variant`.
+---@param itemstack ItemStack
+---@param user ObjectRef
+---@param pointed_thing pointed_thing
+---@return ItemStack?
+function vl_weaponry.make_stripped_trunk(itemstack, user, pointed_thing)
+	if pointed_thing.type ~= "node" then return end
+	local node = core.get_node(pointed_thing.under)
+	local node_def = core.registered_nodes[node.name]
+	if not node_def then
+		core.log("warning", "Trying to right click with an axe the unregistered node: " .. node.name)
+		return
+	end
+	if not user:get_player_control().sneak and node_def.on_rightclick then
+		return core.item_place(itemstack, user, pointed_thing)
+	end
+	if core.is_protected(pointed_thing.under, user:get_player_name()) then
+		core.record_protection_violation(pointed_thing.under, user:get_player_name())
+		return itemstack
+	end
+	if not node_def._mcl_stripped_variant then return itemstack end
 
+	core.swap_node(pointed_thing.under, { name = node_def._mcl_stripped_variant, param2 = node.param2 })
+	if core.get_item_group(node.name, "waxed") ~= 0 then
+		awards.unlock(user:get_player_name(), "mcl:wax_off")
+	end
 	if not core.is_creative_enabled(user:get_player_name()) then
-		mcl_util.use_item_durability(itemstack, 1)
-	end
-	local meta = itemstack:get_meta()
-	meta:set_string("inventory_image", "")
-	meta:set_int("active", 0)
-
-	local pos = user:get_pos()
-	pos.y = pos.y + 1.5
-	local dir = user:get_look_dir()
-	local yaw = user:get_look_horizontal()
-	local obj = vl_projectile.create("vl_weaponry:spear_entity",{
-		pos = pos,
-		dir = dir,
-		owner = user,
-		velocity = SPEAR_THROW_POWER * power_factor,
-	})
-	local obj_properties = table.copy(spear_entity)
-	table.update(obj_properties, {
-		textures = {texture_name}
-	})
-	obj:set_properties(obj_properties)
-	local le = obj:get_luaentity()
-	le._shooter = user
-	le._source_object = user
-	le._damage = damage
-	le._is_critical = false -- TODO get from luck?
-	le._startpos = pos
-	le._collectable = true
-	le._arrow_item = itemstack:to_string()
-	core.sound_play("mcl_bows_bow_shoot", {pos=pos, max_hear_distance=16}, true)
-	if user and user:is_player() then
-		if obj:get_luaentity().player == "" then
-			obj:get_luaentity().player = user
+		local wear = mcl_autogroup.get_wear(itemstack:get_name(), "axey")
+		if wear then
+			itemstack:add_wear(wear)
+			tt.reload_itemstack_description(itemstack)
 		end
 	end
-
-	user:set_wielded_item(ItemStack())
+	return itemstack
 end
 
-
-
--- Factor to multiply with player speed while player uses bow
--- This emulates the sneak speed.
-local AIMING_MOVEMENT_SPEED =
-	tonumber(core.settings:get("movement_speed_crouch"))
-	/ tonumber(core.settings:get("movement_speed_walk"))
-
-local SPEAR_FULL_CHARGE_TIME = 1000000 -- time until full charge in microseconds
-
-local spear_raise_time = {}
-local spear_index = {}
-
-local function reset_spear_state(player, skip_inv_cleanup)
-	-- clear the FOV change from the player.
-	mcl_fovapi.remove_modifier(player, "bowcomplete")
-
-	spear_raise_time[player:get_player_name()] = nil
-	spear_index[player:get_player_name()] = nil
-	if core.get_modpath("playerphysics") then
-		playerphysics.remove_physics_factor(player, "speed", "mcl_bows:use_bow")
-	end
-	if skip_inv_cleanup then return end
-	local inv = player:get_inventory()
-	local list = inv:get_list("main")
-	for place, stack in pairs(list) do
-		if core.get_item_group(stack:get_name(), "spear") > 0 then
-			local meta = stack:get_meta()
-			meta:set_int("active", 0)
-			meta:set_string("inventory_image", "")
+---Handle shears being used to carve a pumpkin.
+---@param itemstack ItemStack
+---@param user ObjectRef
+---@param pointed_thing pointed_thing
+---@return ItemStack
+function vl_weaponry.carve_pumpkin(itemstack, user, pointed_thing)
+	local node = core.get_node(pointed_thing.under)
+	if user and not user:get_player_control().sneak then
+		local node_def = core.registered_nodes[node.name]
+		if node_def and node_def.on_rightclick then
+			return node_def.on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 		end
 	end
-	inv:set_list("main", list)
+	if pointed_thing.above.y ~= pointed_thing.under.y or node.name ~= "mcl_farming:pumpkin" then
+		return itemstack
+	end
+	if not core.is_creative_enabled(user:get_player_name()) then
+		local wear = mcl_autogroup.get_wear(itemstack:get_name(), "shearsy")
+		if wear then
+			itemstack:add_wear(wear)
+			tt.reload_itemstack_description(itemstack)
+		end
+	end
+	core.sound_play({ name = "default_grass_footstep", gain = 1 }, { pos = pointed_thing.above }, true)
+	local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
+	core.set_node(pointed_thing.under, {
+		name = "mcl_farming:pumpkin_face",
+		param2 = core.dir_to_facedir(dir),
+	})
+	core.add_item(pointed_thing.above, "mcl_farming:pumpkin_seeds 4")
+	return itemstack
 end
 
-controls.register_on_release(function(player, key, time)
-	if key~="RMB" and key~="zoom" then return end
-	local wielditem = player:get_wielded_item()
-	if core.get_item_group(wielditem:get_name(), "spear") ~= 1 then return end
-	local meta = wielditem:get_meta()
-	if not core.is_yes(meta:get("active")) then
-		reset_spear_state(player)
-		return
-	end
-	local pname = player:get_player_name()
-	local raise_moment = spear_raise_time[pname] or 0
-	local power = math.max(math.min((core.get_us_time() - raise_moment)
-							/ SPEAR_FULL_CHARGE_TIME, 1), 0)
-	throw_spear(wielditem, player, power)
-	reset_spear_state(player, true)
-end)
-
-controls.register_on_hold(function(player, key, time)
-	local name = player:get_player_name()
-	local creative = core.is_creative_enabled(name)
-	local wielditem = player:get_wielded_item()
-	if (key ~= "RMB" and key ~= "zoom")
-			or core.get_item_group(wielditem:get_name(), "spear") < 1 then
-		return
-	end
-	local meta = wielditem:get_meta()
-	if spear_raise_time[name] == nil and (core.is_yes(meta:get("active")) or key == "zoom") then
-		meta:set_string("inventory_image", wielditem:get_definition().inventory_image .. "^[transformR90")
-		player:set_wielded_item(wielditem)
-		if core.get_modpath("playerphysics") then
-			-- Slow player down when using bow
-			playerphysics.add_physics_factor(player, "speed", "mcl_bows:use_bow", AIMING_MOVEMENT_SPEED)
-		end
-		spear_raise_time[name] = core.get_us_time()
-		spear_index[name] = player:get_wield_index()
-
-		-- begin aiming Zoom.
-		mcl_fovapi.apply_modifier(player, "bowcomplete")
-	else
-		if player:get_wield_index() ~= spear_index[name] then
-			reset_spear_state(player)
-		end
-	end
-end)
-
-minetest.register_globalstep(function(dtime)
-	for _, player in pairs(minetest.get_connected_players()) do
-		local name = player:get_player_name()
-		local wielditem = player:get_wielded_item()
-		local wieldindex = player:get_wield_index()
-		if type(spear_raise_time[name]) == "number"
-				and (core.get_item_group(wielditem:get_name(), "spear") < 1
-				or wieldindex ~= spear_index[name]) then
-			reset_spear_state(player)
-		end
-	end
-end)
-
-
-
-local uses = {
-	wood = 60,
-	stone = 132,
-	deepslate = 150,
-	iron = 251,
-	gold = 33,
-	diamond = 1562,
-	netherite = 2031,
-}
-local materials = {
-	wood = "group:wood",
-	stone = "group:cobble",
-	deepslate = "mcl_deepslate:deepslate",
-	iron = "mcl_core:iron_ingot",
-	gold = "mcl_core:gold_ingot",
-	diamond = "mcl_core:diamond",
-}
-
-local SPEAR_RANGE = 4.5
-
-local SCYTHE_RANGE = 4.0
-
---Hammers
-core.register_tool("vl_weaponry:hammer_wood", {
-	description = S("Wooden Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	_doc_items_hidden = false,
-	inventory_image = "vl_tool_woodhammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=15 },
-	tool_capabilities = {
-		full_punch_interval = 1.2,
-		max_drop_level=1,
-		damage_groups = {fleshy=4},
-		punch_attack_uses = uses.wood,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "group:wood",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		pickaxey = { speed = 1, level = 1, uses = uses.wood },
-		shovely = { speed = 1, level = 2, uses = uses.wood }
-	},
-})
-core.register_tool("vl_weaponry:hammer_stone", {
-	description = S("Stone Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_stonehammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=5 },
-	tool_capabilities = {
-		full_punch_interval = 1.3,
-		max_drop_level=3,
-		damage_groups = {fleshy=5},
-		punch_attack_uses = uses.stone,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "group:cobble",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		pickaxey = { speed = 2, level = 3, uses = uses.stone },
-		shovely = { speed = 2, level = 3, uses = uses.stone }
-	},
-})
-
-core.register_tool("vl_weaponry:hammer_iron", {
-	description = S("Iron Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_steelhammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=14 },
-	tool_capabilities = {
-		full_punch_interval = 1.2,
-		max_drop_level=4,
-		damage_groups = {fleshy=6},
-		punch_attack_uses = uses.iron,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:iron_ingot",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		pickaxey = { speed = 3, level = 4, uses = uses.iron },
-		shovely = { speed = 3, level = 4, uses = uses.iron }
-	},
-})
-core.register_tool("vl_weaponry:hammer_gold", {
-	description = S("Golden Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_goldhammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=22 },
-	tool_capabilities = {
-		full_punch_interval = 1.0,
-		max_drop_level=2,
-		damage_groups = {fleshy=5},
-		punch_attack_uses = uses.gold,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:gold_ingot",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		pickaxey = { speed = 8, level = 4, uses = uses.gold },
-		shovely = { speed = 8, level = 4, uses = uses.gold }
-	},
-})
-core.register_tool("vl_weaponry:hammer_diamond", {
-	description = S("Diamond Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_diamondhammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=10 },
-	tool_capabilities = {
-		full_punch_interval = 1.0,
-		max_drop_level=5,
-		damage_groups = {fleshy=7},
-		punch_attack_uses = uses.diamond,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:diamond",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		pickaxey = { speed = 4, level = 5, uses = uses.diamond },
-		shovely = { speed = 4, level = 5, uses = uses.diamond }
-	},
-	_mcl_upgradable = true,
-	_mcl_upgrade_item = "vl_weaponry:hammer_netherite"
-})
-core.register_tool("vl_weaponry:hammer_netherite", {
-	description = S("Netherite Hammer"),
-	_tt_help = hammer_tt,
-	_doc_items_longdesc = hammer_longdesc,
-	_doc_items_usagehelp = hammer_use,
-	inventory_image = "vl_tool_netheritehammer.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, hammer=1, dig_speed_class=2, enchantability=10, fire_immune=1 },
-	tool_capabilities = {
-		full_punch_interval = 1.0,
-		max_drop_level=5,
-		damage_groups = {fleshy=9},
-		punch_attack_uses = uses.netherite,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_nether:netherite_ingot",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		pickaxey = { speed = 6, level = 6, uses = uses.netherite },
-		shovely = { speed = 6, level = 6, uses = uses.netherite }
-	},
-})
-
---Spears
-core.register_tool("vl_weaponry:spear_wood", {
-	description = S("Wooden Spear"),
-	_tt_help = spear_tt,
-	_doc_items_longdesc = spear_longdesc,
-	_doc_items_usagehelp = spear_use,
-	_doc_items_hidden = false,
-	inventory_image = "vl_tool_woodspear.png",
-	wield_scale = wield_scale,
-	on_place = spear_on_place,
-	on_secondary_use = spear_on_place,
-	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=15 },
-	range = SPEAR_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 0.75,
-		max_drop_level=1,
-		damage_groups = {fleshy=3},
-		punch_attack_uses = uses.wood,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "group:wood",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = uses.wood },
-		swordy_cobweb = { speed = 2, level = 1, uses = uses.wood }
-	},
-	touch_interaction = "short_dig_long_place",
-	_mcl_spear_thrown_damage = 5,
-})
-core.register_tool("vl_weaponry:spear_stone", {
-	description = S("Stone Spear"),
-	_tt_help = spear_tt,
-	_doc_items_longdesc = spear_longdesc,
-	_doc_items_usagehelp = spear_use,
-	inventory_image = "vl_tool_stonespear.png",
-	wield_scale = wield_scale,
-	on_place = spear_on_place,
-	on_secondary_use = spear_on_place,
-	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=5 },
-	range = SPEAR_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 0.75,
-		max_drop_level=3,
-		damage_groups = {fleshy=4},
-		punch_attack_uses = uses.stone,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "group:cobble",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = uses.stone },
-		swordy_cobweb = { speed = 2, level = 1, uses = uses.stone }
-	},
-	touch_interaction = "short_dig_long_place",
-	_mcl_spear_thrown_damage = 6,
-})
-
-core.register_tool("vl_weaponry:spear_iron", {
-	description = S("Iron Spear"),
-	_tt_help = spear_tt,
-	_doc_items_longdesc = spear_longdesc,
-	_doc_items_usagehelp = spear_use,
-	inventory_image = "vl_tool_steelspear.png",
-	wield_scale = wield_scale,
-	on_place = spear_on_place,
-	on_secondary_use = spear_on_place,
-	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=14 },
-	range = SPEAR_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 0.75,
-		max_drop_level=4,
-		damage_groups = {fleshy=5},
-		punch_attack_uses = uses.iron,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:iron_ingot",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = uses.iron },
-		swordy_cobweb = { speed = 2, level = 1, uses = uses.iron }
-	},
-	touch_interaction = "short_dig_long_place",
-	_mcl_spear_thrown_damage = 7,
-})
-core.register_tool("vl_weaponry:spear_gold", {
-	description = S("Golden Spear"),
-	_tt_help = spear_tt,
-	_doc_items_longdesc = spear_longdesc,
-	_doc_items_usagehelp = spear_use,
-	inventory_image = "vl_tool_goldspear.png",
-	wield_scale = wield_scale,
-	on_place = spear_on_place,
-	on_secondary_use = spear_on_place,
-	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=22 },
-	range = SPEAR_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 0.75,
-		max_drop_level=2,
-		damage_groups = {fleshy=3},
-		punch_attack_uses = uses.gold,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:gold_ingot",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = uses.gold },
-		swordy_cobweb = { speed = 2, level = 1, uses = uses.gold }
-	},
-	touch_interaction = "short_dig_long_place",
-	_mcl_spear_thrown_damage = 5,
-})
-core.register_tool("vl_weaponry:spear_diamond", {
-	description = S("Diamond Spear"),
-	_tt_help = spear_tt,
-	_doc_items_longdesc = spear_longdesc,
-	_doc_items_usagehelp = spear_use,
-	inventory_image = "vl_tool_diamondspear.png",
-	wield_scale = wield_scale,
-	on_place = spear_on_place,
-	on_secondary_use = spear_on_place,
-	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=10 },
-	range = SPEAR_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 0.75,
-		max_drop_level=5,
-		damage_groups = {fleshy=6},
-		punch_attack_uses = uses.diamond,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:diamond",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = uses.diamond },
-		swordy_cobweb = { speed = 2, level = 1, uses = uses.diamond }
-	},
-	touch_interaction = "short_dig_long_place",
-	_mcl_spear_thrown_damage = 8,
-	_mcl_upgradable = true,
-	_mcl_upgrade_item = "vl_weaponry:spear_netherite"
-})
-core.register_tool("vl_weaponry:spear_netherite", {
-	description = S("Netherite Spear"),
-	_tt_help = spear_tt,
-	_doc_items_longdesc = spear_longdesc,
-	_doc_items_usagehelp = spear_use,
-	inventory_image = "vl_tool_netheritespear.png",
-	wield_scale = wield_scale,
-	on_place = spear_on_place,
-	on_secondary_use = spear_on_place,
-	groups = { weapon=1, weapon_ranged=1, spear=1, dig_speed_class=2, enchantability=10, fire_immune=1 },
-	range = SPEAR_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 0.75,
-		max_drop_level=5,
-		damage_groups = {fleshy=8},
-		punch_attack_uses = uses.netherite,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_nether:netherite_ingot",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = uses.netherite },
-		swordy_cobweb = { speed = 2, level = 1, uses = uses.netherite }
-	},
-	touch_interaction = "short_dig_long_place",
-	_mcl_spear_thrown_damage = 12,
-})
-
--- Scythes
-core.register_tool("vl_weaponry:scythe_wood", {
-	description = S("Wooden Scythe"),
-	_tt_help = scythe_tt,
-	_doc_items_longdesc = scythe_longdesc,
-	_doc_items_usagehelp = scythe_use,
-	inventory_image = "vl_tool_woodscythe.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=15 },
-	range = SCYTHE_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 1.1,
-		max_drop_level=1,
-		damage_groups = {fleshy=5},
-		punch_attack_uses = uses.wood,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "group:wood",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 2, level = 1, uses = uses.wood },
-		swordy_cobweb = { speed = 2, level = 1, uses = uses.wood },
-		hoey = { speed = 2, level = 1, uses = uses.wood }
-	},
-})
-core.register_tool("vl_weaponry:scythe_stone", {
-	description = S("Stone Scythe"),
-	_tt_help = scythe_tt,
-	_doc_items_longdesc = scythe_longdesc,
-	_doc_items_usagehelp = scythe_use,
-	inventory_image = "vl_tool_stonescythe.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=5 },
-	range = SCYTHE_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 1.2,
-		max_drop_level=3,
-		damage_groups = {fleshy=6},
-		punch_attack_uses = uses.stone,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "group:cobble",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 2, level = 3, uses = uses.stone },
-		swordy_cobweb = { speed = 2, level = 3, uses = uses.stone },
-		hoey = { speed = 2, level = 3, uses = uses.stone }
-	},
-})
-core.register_tool("vl_weaponry:scythe_iron", {
-	description = S("Iron Scythe"),
-	_tt_help = scythe_tt,
-	_doc_items_longdesc = scythe_longdesc,
-	_doc_items_usagehelp = scythe_use,
-	inventory_image = "vl_tool_steelscythe.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=14 },
-	range = SCYTHE_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 1.1,
-		max_drop_level=4,
-		damage_groups = {fleshy=7},
-		punch_attack_uses = uses.iron,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:iron_ingot",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 3, level = 4, uses = uses.iron },
-		swordy_cobweb = { speed = 3, level = 4, uses = uses.iron },
-		hoey = { speed = 3, level = 4, uses = uses.iron }
-	},
-})
-core.register_tool("vl_weaponry:scythe_gold", {
-	description = S("Golden Scythe"),
-	_tt_help = scythe_tt,
-	_doc_items_longdesc = scythe_longdesc,
-	_doc_items_usagehelp = scythe_use,
-	inventory_image = "vl_tool_goldscythe.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=6, enchantability=22 },
-	range = SCYTHE_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 0.8,
-		max_drop_level=2,
-		damage_groups = {fleshy=5},
-		punch_attack_uses = uses.gold,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:gold_ingot",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 12, level = 2, uses = uses.gold },
-		swordy_cobweb = { speed = 12, level = 2, uses = uses.gold },
-		hoey = { speed = 12, level = 2, uses = uses.gold }
-	},
-})
-core.register_tool("vl_weaponry:scythe_diamond", {
-	description = S("Diamond Scythe"),
-	_tt_help = scythe_tt,
-	_doc_items_longdesc = scythe_longdesc,
-	_doc_items_usagehelp = scythe_use,
-	inventory_image = "vl_tool_diamondscythe.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=5, enchantability=10 },
-	range = SCYTHE_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 1.1,
-		max_drop_level=5,
-		damage_groups = {fleshy=8},
-		punch_attack_uses = uses.diamond,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_core:diamond",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 8, level = 5, uses = uses.diamond },
-		swordy_cobweb = { speed = 8, level = 5, uses = uses.diamond },
-		hoey = { speed = 8, level = 5, uses = uses.diamond }
-	},
-	_mcl_upgradable = true,
-	_mcl_upgrade_item = "vl_weaponry:scythe_netherite"
-})
-core.register_tool("vl_weaponry:scythe_netherite", {
-	description = S("Netherite Scythe"),
-	_tt_help = scythe_tt,
-	_doc_items_longdesc = scythe_longdesc,
-	_doc_items_usagehelp = scythe_use,
-	inventory_image = "vl_tool_netheritescythe.png",
-	wield_scale = wield_scale,
-	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=6, enchantability=10 },
-	range = SCYTHE_RANGE,
-	tool_capabilities = {
-		full_punch_interval = 1.1,
-		max_drop_level=5,
-		damage_groups = {fleshy=9},
-		punch_attack_uses = uses.netherite,
-	},
-	sound = { breaks = "default_tool_breaks" },
-	_repair_material = "mcl_nether:netherite_ingot",
-	_mcl_toollike_wield = true,
-	_mcl_diggroups = {
-		swordy = { speed = 9, level = 6, uses = uses.netherite },
-		swordy_cobweb = { speed = 9, level = 6, uses = uses.netherite },
-		hoey = { speed =9, level = 6, uses = uses.netherite }
-	},
-})
-
-local locked_digger = false
-core.register_on_dignode(function(pos, oldnode, digger)
-	if locked_digger then return false end
-	if not digger then return false end
-	locked_digger = true
-	local tool = digger:get_wielded_item()
-	if tool and core.get_item_group(tool:get_name(), "scythe") > 0 then
-		local def = core.registered_nodes[oldnode.name]
-		if def and def.drawtype == "plantlike"
-				and core.get_item_group(oldnode.name, "plant") > 0 then
-			for x=-1, 1 do for z=-1, 1 do
-				local p = vector.offset(pos, x, 0, z)
-				local n = core.get_node(p)
-				local d = core.registered_nodes[n.name]
-				if d and d.drawtype == "plantlike"
-						and core.get_item_group(n.name, "plant") > 0 then
-					core.dig_node(p, digger)
-				end
-			end end
-		end
-	end
-	locked_digger = false
-end)
-
--- Crafting recipes
-local s = "mcl_core:stick"
-local b = ""
-for t,m in pairs(materials) do
-	core.register_craft({
-		output = "vl_weaponry:hammer_"..t,
-		recipe = {
-			{ m, b, m },
-			{ m, s, m },
-			{ b, s, b },
-		}
-	})
-	core.register_craft({
-		output = "vl_weaponry:spear_"..t,
-		recipe = {
-			{ m, b, b },
-			{ b, s, b },
-			{ b, b, s },
-		}
-	})
-	core.register_craft({
-		output = "vl_weaponry:spear_"..t,
-		recipe = {
-			{ b, b, m },
-			{ b, s, b },
-			{ s, b, b },
-		}
-	})
-	core.register_craft({
-		output = "vl_weaponry:scythe_"..t,
-		recipe ={
-			{ m, m, s },
-			{ b, s, b },
-			{ s, b, b }
-		}
-	})
-	core.register_craft({
-		output = "vl_weaponry:scythe_"..t,
-		recipe ={
-			{ s, m, m },
-			{ b, s, b },
-			{ b, b, s }
-		}
-	})
-end
+dofile(modpath .. "/api.lua")
+dofile(modpath .. "/materials.lua")
+dofile(modpath .. "/hammer.lua")
+dofile(modpath .. "/spear.lua")
+dofile(modpath .. "/scythe.lua")

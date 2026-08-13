@@ -1,237 +1,125 @@
-local MOD_NAME = core.get_current_modname()
-local S = core.get_translator(MOD_NAME)
+local S = core.get_translator(core.get_current_modname())
 
-local function create_soil(pos, inv)
-	if pos == nil then
-		return false
-	end
+function mcl_farming.create_soil(pos)
+	if not pos then return false end
 	local node = core.get_node(pos)
-	local name = node.name
-	local above = core.get_node({ x = pos.x, y = pos.y + 1, z = pos.z })
-	if core.get_item_group(name, "cultivatable") == 2 then
-		if above.name == "air" then
-			node.name = "mcl_farming:soil"
-			core.set_node(pos, node)
-			core.sound_play("default_dig_crumbly", { pos = pos, gain = 0.5 }, true)
-			return true
-		end
-	elseif core.get_item_group(name, "cultivatable") == 1 then
-		if above.name == "air" then
-			node.name = "mcl_core:dirt"
-			core.set_node(pos, node)
-			core.sound_play("default_dig_crumbly", { pos = pos, gain = 0.6 }, true)
-			return true
-		end
+	local above = core.get_node(vector.offset(pos, 0, 1, 0))
+	local cultivatable = core.get_item_group(node.name, "cultivatable")
+	if above.name ~= "air" or cultivatable == 0 then return false end
+
+	if cultivatable == 2 then
+		node.name = "mcl_farming:soil"
+		core.set_node(pos, node)
+		core.sound_play("default_dig_crumbly", { pos = pos, gain = 0.5 }, true)
+		return true
+	elseif cultivatable == 1 then
+		node.name = "mcl_core:dirt"
+		core.set_node(pos, node)
+		core.sound_play("default_dig_crumbly", { pos = pos, gain = 0.6 }, true)
+		return true
 	end
 	return false
 end
 
-local hoe_on_place_function = function(wear_divisor)
-	return function(itemstack, user, pointed_thing)
-		-- Call on_rightclick if the pointed node defines it
-		local node = core.get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if core.registered_nodes[node.name] and core.registered_nodes[node.name].on_rightclick then
-				return core.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or
-					itemstack
-			end
-		end
-
-		if core.is_protected(pointed_thing.under, user:get_player_name()) then
-			core.record_protection_violation(pointed_thing.under, user:get_player_name())
-			return itemstack
-		end
-
-		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not core.is_creative_enabled(user:get_player_name()) then
-				itemstack:add_wear(65535 / wear_divisor)
-				tt.reload_itemstack_description(itemstack) -- update tooltip
-			end
-			return itemstack
+function mcl_farming.hoe_on_place(itemstack, user, pointed_thing)
+	local node = core.get_node(pointed_thing.under)
+	if user and not user:get_player_control().sneak then
+		local node_def = core.registered_nodes[node.name]
+		if node_def and node_def.on_rightclick then
+			return node_def.on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 		end
 	end
+	if core.is_protected(pointed_thing.under, user:get_player_name()) then
+		core.record_protection_violation(pointed_thing.under, user:get_player_name())
+		return itemstack
+	end
+	if mcl_farming.create_soil(pointed_thing.under) then
+		if not core.is_creative_enabled(user:get_player_name()) then
+			local wear = mcl_autogroup.get_wear(itemstack:get_name(), "hoey")
+			if wear then
+				itemstack:add_wear(wear)
+				tt.reload_itemstack_description(itemstack)
+			end
+		end
+		return itemstack
+	end
 end
-
----@class mcl_farming.HoeDef
----@field description string
----@field help_text string?
----@field long_description string?
----@field usage_help string?
----@field image string
----@field place_uses integer
----@field full_punch_interval number?
----@field punch_uses integer
----@field enchantability integer
----@field crafting_material string?
----@field repair_material string
----@field upgradeable boolean?
----@field upgrade_item string?
----@field dig_group {speed:integer, level: integer, uses: integer}
----@field damage_groups {[string]: integer}
----@field craftable boolean?
----@field burn_time integer?
----@field max_enchant_level integer?
----@field gives_fireproof integer?
 
 local hoe_tt = S("Turns block into farmland")
 local hoe_longdesc = S(
 	"Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.")
 local hoe_usagehelp = S(
 	"Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.")
-local s = "mcl_core:stick"
-local b = ""
 
----Registers a hoe for the given material
----@param material string
----@param def mcl_farming.HoeDef
-function mcl_farming:register_hoe(material, def)
-	local calling_mod = core.get_current_modname()
-	local tool_name = calling_mod .. ":hoe_" .. material
-	local m = def.crafting_material or def.repair_material
+local function pair(item_name, description, inventory_image, upgrade_item)
+	return {
+		item_name = item_name,
+		description = description,
+		inventory_image = inventory_image,
+		upgrade_item = upgrade_item,
+	}
+end
 
-	assert(def.image, "Hoe definition requires image to be set")
-	assert(def.place_uses, "Hoe definition requires place_uses to be set")
-	assert(def.punch_uses, "Hoe definition requires punch_uses to be set")
-	assert(def.enchantability, "Hoe definition requires enchantability to be set")
-	assert(def.repair_material, "Hoe definition requires repair_material to be set")
-	assert(def.dig_group, "Hoe definition requires dig_group to be set")
+local materials = {
+	wood = pair("mcl_farming:hoe_wood", S("Wood Hoe"), "farming_tool_woodhoe.png"),
+	stone = pair("mcl_farming:hoe_stone", S("Stone Hoe"), "farming_tool_stonehoe.png"),
+	iron = pair("mcl_farming:hoe_iron", S("Iron Hoe"), "farming_tool_steelhoe.png"),
+	gold = pair("mcl_farming:hoe_gold", S("Gold Hoe"), "farming_tool_goldhoe.png"),
+	diamond = pair("mcl_farming:hoe_diamond", S("Diamond Hoe"), "farming_tool_diamondhoe.png",
+		"mcl_farming:hoe_netherite"),
+	netherite = pair("mcl_farming:hoe_netherite", S("Netherite Hoe"), "farming_tool_netheritehoe.png"),
+}
 
-	local groups = { tool = 1, hoe = 1, enchantability = def.enchantability }
-	if def.gives_fireproof then
-		groups.fire_immune = 1
-	end
-	core.register_tool(tool_name, {
-		description = def.description,
-		_tt_help = def.help_text or hoe_tt,
-		_doc_items_longdesc = def.long_description or hoe_longdesc,
-		_doc_items_usagehelp = def.usage_help or hoe_usagehelp,
-		_doc_items_hidden = false,
-		inventory_image = def.image,
-		wield_scale = mcl_vars.tool_wield_scale,
-		on_place = hoe_on_place_function(def.place_uses),
-		groups = groups,
-		tool_capabilities = {
-			full_punch_interval = def.full_punch_interval or 1,
-			damage_groups = def.damage_groups or { fleshy = 1 },
-			punch_attack_uses = def.punch_uses,
+local function register_crafts(item_name, craft_material)
+	local stick = "mcl_core:stick"
+	for _, recipe in ipairs({
+		{
+			{ craft_material, craft_material },
+			{ "", stick },
+			{ "", stick },
 		},
-		_repair_material = def.repair_material,
-		_mcl_toollike_wield = true,
-		_mcl_diggroups = {
-			hoey = def.dig_group
+		{
+			{ craft_material, craft_material },
+			{ stick, "" },
+			{ stick, "" },
 		},
-		_mcl_upgradable = def.upgradeable,
-		_mcl_upgrade_item = def.upgrade_item,
-		vl_max_ench_lvl = def.max_enchant_level
-	})
-
-	if def.burn_time then
-		core.register_craft({
-			type = "fuel",
-			recipe = tool_name,
-			burntime = def.burn_time,
-		})
-	end
-
-	if def.craftable ~= false then
-		core.register_craft({
-			output = tool_name,
-			recipe = {
-				{ m, m },
-				{ b, s },
-				{ b, s }
-			}
-		})
-		core.register_craft({
-			output = tool_name,
-			recipe = {
-				{ m, m },
-				{ s, b },
-				{ s, b }
-			}
-		})
+	}) do
+		core.register_craft({ output = item_name, recipe = recipe })
 	end
 end
 
-local crafts = {
-	wood = {
-		image = "farming_tool_woodhoe.png",
-		description = S("Wood Hoe"),
-		place_uses = 60,
-		punch_uses = 60,
-		enchantability = 15,
-		crafting_material = "group:wood",
-		repair_material = "group:wood",
-		dig_group = { speed = 2, level = 1, uses = 60 },
-		burn_time = 10
+vl_weaponry.register_tool_type("mcl_farming:hoe", {
+	materials = materials,
+	smelting_yield = 18,
+	base_stats = {
+		durability = 0,
+		dig_speed = 1,
+		harvest_level = 0,
+		damage = 1,
+		enchantability = 0,
 	},
-	stone = {
-		image = "farming_tool_stonehoe.png",
-		description = S("Stone Hoe"),
-		place_uses = 132,
-		punch_uses = 132,
-		enchantability = 5,
-		crafting_material = "group:cobble",
-		repair_material = "group:cobble",
-		dig_group = { speed = 4, level = 3, uses = 132 },
-		full_punch_interval = 0.5
-	},
-	iron = {
-		image = "farming_tool_steelhoe.png",
-		description = S("Iron Hoe"),
-		place_uses = 251,
-		punch_uses = 251,
-		enchantability = 14,
-		crafting_material = "mcl_core:iron_ingot",
-		repair_material = "mcl_core:iron_ingot",
-		dig_group = { speed = 6, level = 4, uses = 251 },
-		damage_groups = { fleshy = 2 },
-		full_punch_interval = 0.33333333
-	},
-	gold = {
-		image = "farming_tool_goldhoe.png",
-		description = S("Gold Hoe"),
-		place_uses = 33,
-		punch_uses = 33,
-		enchantability = 22,
-		crafting_material = "mcl_core:gold_ingot",
-		repair_material = "mcl_core:gold_ingot",
-		dig_group = { speed = 12, level = 2, uses = 33 },
-		full_punch_interval = 0.25
-	},
-	diamond = {
-		image = "farming_tool_diamondhoe.png",
-		description = S("Diamond Hoe"),
-		place_uses = 1562,
-		punch_uses = 1562,
-		enchantability = 15,
-		crafting_material = "mcl_core:diamond",
-		repair_material = "mcl_core:diamond",
-		dig_group = { speed = 8, level = 5, uses = 1562 },
-		damage_groups = { fleshy = 3 },
-		upgradable = true,
-		upgrade_item = "mcl_farming:hoe_netherite",
-		full_punch_interval = 0.25
-	},
-	netherite = {
-		image = "farming_tool_netheritehoe.png",
-		description = S("Netherite Hoe"),
-		place_uses = 2031,
-		punch_uses = 2031,
-		enchantability = 15,
-		crafting_material = "mcl_nether:netherite_ingot",
-		repair_material = "mcl_nether:netherite_ingot",
-		craftable = false,
-		dig_group = { speed = 8, level = 5, uses = 2031 },
-		damage_groups = { fleshy = 4 },
-		full_punch_interval = 0.25,
-		gives_fireproof = true
-	},
-}
-
-mcl_farming:register_hoe("wood", crafts.wood)
-mcl_farming:register_hoe("stone", crafts.stone)
-mcl_farming:register_hoe("iron", crafts.iron)
-mcl_farming:register_hoe("gold", crafts.gold)
-mcl_farming:register_hoe("diamond", crafts.diamond)
-mcl_farming:register_hoe("netherite", crafts.netherite)
+	build_definition = function(_, material, stats)
+		return {
+			_tt_help = hoe_tt,
+			_doc_items_longdesc = hoe_longdesc,
+			_doc_items_usagehelp = hoe_usagehelp,
+			_doc_items_hidden = false,
+			wield_scale = mcl_vars.tool_wield_scale,
+			on_place = mcl_farming.hoe_on_place,
+			groups = { tool = 1, hoe = 1, dig_speed_class = material.dig_speed_class },
+			tool_capabilities = {
+				full_punch_interval = math.max(2 / stats.dig_speed, 0.25),
+				damage_groups = { fleshy = math.max(1, stats.damage) },
+				punch_attack_uses = stats.durability,
+			},
+			sound = { breaks = "default_tool_breaks" },
+			_mcl_toollike_wield = true,
+			_mcl_diggroups = { hoey = {
+				speed = stats.dig_speed,
+				level = stats.harvest_level,
+				uses = stats.durability,
+			} },
+		}
+	end,
+	register_crafts = register_crafts,
+})
