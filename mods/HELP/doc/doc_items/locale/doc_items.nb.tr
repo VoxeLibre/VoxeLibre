@@ -74,9 +74,9 @@ This item belongs to these groups: @1.=Denne gjenstanden tilhører disse gruppen
 Blocks=Blokker
 Item reference of blocks and other things which are capable of occupying space=Vareoversikt over blokker og andre ting som kan oppta plass
 Collidable: @1=Sammenstøtbar: @1
-Pointable: Yes=Pekerbar: Ja
-Pointable: Only by special items=Pekerbar: Kun av spesielle gjenstander
-Pointable: No=Pekerbar: Nei
+Pointable: Yes=Kan pekes på: Ja
+Pointable: Only by special items=Kan pekes på: Kun av spesielle gjenstander
+Pointable: No=Kan pekes på: Nei
 This block is a liquid with these properties:=Denne blokken er en væske med disse egenskapene:
 • Renewable=• Fornybar
 • Not renewable=• Ikke fornybar
@@ -160,19 +160,3 @@ follows player when these items are held:=følger spilleren når disse gjenstand
 A transparent block, basically empty space. It is usually left behind after digging something.=En gjennomsiktig blokk, egentlig tomt rom. Den blir vanligvis igjen etter at noe utvinnes.
 
 Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Når du ikke holder noe, bruker du hånden som fungerer som et verktøy med sine egne evner. Når du holder en gjenstand som ikke er et utvinningsverktøy eller et våpen, vil den oppføre seg som om det var hånden.
-
-
-
-##### not used anymore #####
-
-Using it as fuel turns it into: @1.=Å bruke det som brensel gjør det om til: @1.
-Mining level: @1=Gruvenivå: @1
-# Rating used for digging times
-Rating @1=Rangering @1
-# @1 is minimal rating, @2 is maximum rating
-Rating @1-@2=Rangering @1-@2
-any level=ethvert nivå
-level 0=nivå 0
-level 0-@1=nivå 0-@1
-• @1: @2, @3=• @1: @2, @3
-Mining durability:=Graveholdbarhet:
