@@ -1,9 +1,8 @@
 # textdomain: mcl_cartography_table
 Cartography Table=Kartografbenk
-Inventory=
-Zooming a map may take several seconds to generate the world, please wait.=
-The zoomed map is now ready.=
-Used to copy, lock, and zoom maps=
+Inventory=Inventar
+Zooming a map may take several seconds to generate the world, please wait.=Å forstørre et kart kan ta flere sekunder, da dette generere verden. Vent litt.
+The zoomed map is now ready.=Det forstørrede kartet er nå klart.
+Used to copy, lock, and zoom maps=Brukes til å kopiere, låse og forstørre kart
 
-A cartography tables allows to copy, lock, and zoom maps. Locking is not yet useful, and the maximum zoom level may be restricted by server settings to limit the performance impact.=
-
+A cartography tables allows to copy, lock, and zoom maps. Locking is not yet useful, and the maximum zoom level may be restricted by server settings to limit the performance impact.=En kartografbenk lar deg kopiere, låse og forstørre kart. Låsing er ikke nyttig ennå, og det maksimale forstørringsnivået kan være begrenset av tjenerinnstillingene for å begrense ytelsespåvirkningen.

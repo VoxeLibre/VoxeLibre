@@ -1,44 +1,44 @@
 # textdomain: mesecons_commandblock
-Command blocks are not enabled on this server=
-Placement denied. You need the “maphack” privilege to place command blocks.=
+Command blocks are not enabled on this server=Kommandoblokker er ikke aktivert på denne tjeneren
+Placement denied. You need the “maphack” privilege to place command blocks.=Plassering nektet. Du trenger «maphack»-rettighetene for å plassere kommandoblokker.
 Command Block=Kommandoblokk
-Executes server commands when powered by redstone power=
+Executes server commands when powered by redstone power=Utfører tjenerkommandoer når den forsynes med rødsteinkraft
 
-Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power.=
+Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power.=Kommandoblokker er mektige rødsteinkomponenter som er i stand til å endre selve virkeligheten. Med andre ord, de får tjeneren til å utføre tjenerkommandoer når de forsynes med rødsteinkraft.
 
-Everyone can activate a command block and look at its commands, but not everyone can edit and place them.=
+Everyone can activate a command block and look at its commands, but not everyone can edit and place them.=Alle kan "bruke" en kommandoblokk og se på kommandoene, men ikke alle kan redigere og plassere dem.
 
-To view the commands in a command block, use it. To activate the command block, just supply it with redstone power. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.=
+To view the commands in a command block, use it. To activate the command block, just supply it with redstone power. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.=For å se kommandoene i en kommandoblokk, bruk den. For å aktivere kommandoblokken, bare forsyn den med rødsteinstrøm. Dette vil utføre kommandoene én gang. For å utføre kommandoene igjen, slå rødsteinstrømmen av og på igjen.
 
-To be able to place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Use the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced usage > Server Commands” to understand how commands work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.=
+To be able to place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Use the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced usage > Server Commands” to understand how commands work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.=For å kunne plassere en kommandoblokk og endre kommandoene, må du være i kreativ modus og ha «maphack»-rettighetene. En ny kommandoblokk har ingen kommandoer og gjør ingenting. Bruk kommandoblokken (i kreativ modus!) for å redigere kommandoene. Les hjelpeoppføringen «Avansert bruk > Tjenerkommandoer» for å forstå hvordan kommandoer fungerer. Hver linje inneholder én kommando. Du skriver dem inn slik du ville gjort i konsollen, men uten innledende skråstrek. Kommandoene utføres ovenfra og ned.
 
-All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.=
+All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.=Alle kommandoer vil bli utført på vegne av spilleren som plasserte kommandoblokken, som om spilleren skrev inn kommandoene. Denne spilleren sies å være «kommandøren» for blokken.
 
-Command blocks support placeholders, insert one of these placeholders and they will be replaced by some other text:=
+Command blocks support placeholders, insert one of these placeholders and they will be replaced by some other text:=Kommandoblokker støtter plassholdere. Sett inn en av disse plassholderne, så erstattes de av annen tekst:
 
-• “@@c”: commander of this command block=
-• “@@n” or “@@p”: nearest player from the command block=
-• “@@f” farthest player from the command block=
-• “@@r”: random player currently in the world=
-• “@@@@”: literal “@@” sign=
-Example 1:@n    time 12000@nSets the game clock to 12:00=
-Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=
+• “@@c”: commander of this command block=• “@@c”: kommandoblokkens kommandør
+• “@@n” or “@@p”: nearest player from the command block=• “@@n” eller “@@p”: spilleren nærmest kommandoblokken
+• “@@f” farthest player from the command block=• “@@f”: spilleren lengst vekk fra kommandoblokken
+• “@@r”: random player currently in the world=• “@@r”: tilfeldig spiller som er til stede i verdenen
+• “@@@@”: literal “@@” sign=• “@@@@”: bokstavelig talt “@@”-tegn
+Example 1:@n    time 12000@nSets the game clock to 12:00=Eksempel 1:@n    time 12000@nSetter spillets klokke til 12:00
+Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=Eksempel 2:@n    give @@n mcl_core:apple 5@nGir nærmeste spiller 5 epler
 ##[ api.lua ]##
 
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.=Feil: Kommandoen “@1” finnes ikke; kommandoblokken din er ikke endret. Bruk chat-kommandoen «hjelp» for å se en liste over tilgjengelige kommandoer.
 
-Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=
+Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.=Feil: Kommandoen “@1” finnes ikke; kommandoblokken din ble ikke endret. Bruk chat-kommandoen «hjelp» for å se en liste over tilgjengelige kommandoer. Hint: Prøv å fjerne den innledende skråstreken.
 
-Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=
+Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.=Feil: Du har ikke tilstrekkelige rettigheter til å bruke kommandoen “@1” (manglende rettigheter: @2)! Kommandoblokken ble ikke endret.
 
-Error: No commander! Block must be replaced.=
+Error: No commander! Block must be replaced.=Feil: Ingen kommandør! Blokken må erstattes.
 Commander: @1=Kommandør: @1
-Submit=
+Submit=Bekreft
 No commands.=Ingen kommandoer.
 Commands:=Kommandoer:
 Help=Hjelp
-Access denied. You need the “maphack” privilege to edit command blocks.=
+Access denied. You need the “maphack” privilege to edit command blocks.=Tilgang nektet. Du trenger «maphack»-rettighetene for å redigere kommandoblokker.
 
-Editing the command block has failed! You can only change the command block in Creative Mode!=
+Editing the command block has failed! You can only change the command block in Creative Mode!=Redigering av kommandoblokken mislyktes! Du kan bare endre kommandoblokken i kreativ modus!
 
-Editing the command block has failed! The command block is gone.=
+Editing the command block has failed! The command block is gone.=Redigering av kommandoblokken mislyktes! Kommandoblokken er borte.

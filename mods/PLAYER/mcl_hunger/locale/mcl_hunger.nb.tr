@@ -1,7 +1,7 @@
 # textdomain: mcl_hunger
 ##[ commands.lua ]##
 [on|off]=[on|off]
-Toggle hunger and starvation mechanics=Veksle mat og sultmekanismer
+Toggle hunger and starvation mechanics=Veksle metthet og sultmekanismer
 Hunger is currently enabled.=Sult er aktivert.
 Hunger is currently disabled.=Sult er deaktivert.
 Hunger is already on.=Sulten er allerede på.
@@ -10,7 +10,7 @@ Hunger is already off.=Sult er allerede av.
 Hunger disabled.=Sult deaktivert.
 Invalid parameter.=Ugyldige parameter.
 [show|hide]=[show|hide]
-Toggle hunger and starvation debug information=Veksle feilsøkingsinfo for mat og sult
+Toggle hunger and starvation debug information=Veksle feilsøkingsinfo for metthet og sult
 Hunger debug information is currently enabled.=Feilsøkingsinfo for sult er aktiv.
 Hunger debug information is currently disabled.=Feilsøkingsinfo for sult er deaktivert.
 Hunger debug information is already shown.=Feilsøkingsinfo for sult vises allerede.

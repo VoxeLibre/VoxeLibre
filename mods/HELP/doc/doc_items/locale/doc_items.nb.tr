@@ -1,12 +1,12 @@
 # textdomain:doc_items
-This is a decorative block.=Dette er en dekorativ blokk.
+This is a decorative block.=Dette er en pynteblokk.
 This block is a building block for creating various buildings.=Denne blokken er en byggeblokk for å lage ulike bygninger.
 This item is primarily used for crafting other items.=Denne gjenstanden brukes primært til å lage andre gjenstander.
 Hold it in your hand, then left-click to eat it.=Hold den i hånden, og venstreklikk for å spise den.
 
 Hold it in your hand, then left-click to eat it. But why would you want to do this?=Hold den i hånden, og venstreklikk for å spise den. Men hvorfor skulle du ønske å gjøre dette?
 
-This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=Rotasjonen til denne blokken påvirkes av hvordan du plasserer den: Plasser den på gulvet eller taket for en vertikal orientering; plasser den på siden for en horisontal orientering. Å snike seg mens du plasserer den fører til en vinkelrett orientering i stedet.
+This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=Rotasjonen til denne blokken påvirkes av hvordan du plasserer den: Plasser den på gulvet eller taket for en vertikal orientering; plasser den på siden for en horisontal orientering. Å snike samtidig som du plasserer den fører til en vinkelrett orientering i stedet.
 
 Hand=Hånd
 Air=Luft
@@ -23,24 +23,24 @@ unknown=ukjent
 • @1, rating @2: @3 s=• @1, rangering @2: @3 s
 • @1, level @2: @3 uses=• @1, nivå @2: @3 bruk
 • @1, level @2: Unlimited=• @1, nivå @2: Ubegrenset
-This tool is capable of mining.=Dette verktøyet kan brukes til gruvedrift.
+This tool is capable of mining.=Dette verktøyet kan brukes til utvinning.
 Maximum toughness levels:=Maksimale hardhetsnivåer:
-Mining times:=Gruvetider:
-Durability:=
+Mining times:=Utvinningstid:
+Durability:=Holdbarhet:
 This is a melee weapon which deals damage by punching.=Dette er et nærkampvåpen som gir skade ved slag.
 Maximum damage per hit:=Maksimal skade per slag:
 • @1: @2 HP=• @1: @2 HP
 Full punch interval: @1 s=Fullt slagintervall: @1 s
-This block can be mined by any mining tool in half a second.=Denne blokken kan graves opp av hvilket som helst gruveverktøy på et halvt sekund.
-This block can be mined by any mining tool immediately.=Denne blokken kan graves opp umiddelbart av hvilket som helst gruveverktøy.
-This block cannot be mined by ordinary mining tools.=Denne blokken kan ikke graves opp av vanlige gruveverktøy.
-This block can be destroyed by any mining tool in half a second.=Denne blokken kan ødelegges av hvilket som helst gruveverktøy på et halvt sekund.
-This block can be destroyed by any mining tool immediately.=Denne blokken kan ødelegges umiddelbart av hvilket som helst gruveverktøy.
-This block cannot be destroyed by ordinary mining tools.=Denne blokken kan ikke ødelegges av vanlige gruveverktøy.
+This block can be mined by any mining tool in half a second.=Denne blokken kan utvinnes av hvilket som helst utvinningsverktøy på et halvt sekund.
+This block can be mined by any mining tool immediately.=Denne blokken kan utvinnes umiddelbart av hvilket som helst utvinningsverktøy.
+This block cannot be mined by ordinary mining tools.=Denne blokken kan ikke utvinnes av vanlige utvinningsverktøy.
+This block can be destroyed by any mining tool in half a second.=Denne blokken kan ødelegges av hvilket som helst utvinningsverktøy på et halvt sekund.
+This block can be destroyed by any mining tool immediately.=Denne blokken kan ødelegges umiddelbart av hvilket som helst utvinningsverktøy.
+This block cannot be destroyed by ordinary mining tools.=Denne blokken kan ikke ødelegges av vanlige utvinningsverktøy.
 
-This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=Denne blokken kan graves opp av gruveverktøy som samsvarer med en av de følgende gruverangeringene og blokkas hardhetsnivå.
+This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=Denne blokken kan utvinnes av utvinningsverktøy som samsvarer med en av de følgende utvinnings-rangeringene og blokkens hardhetsnivå.
 
-Mining ratings:=Gruverangeringer:
+Mining ratings:=Utvinnings-rangeringer:
 Toughness level: @1=Hardhetsnivå: @1
 # Range: <Hand> (<Range>)
 Range: @1=Rekkevidde: @1
@@ -50,7 +50,7 @@ Range: @1 (@2)=Rekkevidde: @1 (@2)
 This tool can serve as a smelting fuel with a burning time of @1.=Dette verktøyet kan brukes som smeltebrensel med en forbrenningstid på @1.
 This block can serve as a smelting fuel with a burning time of @1.=Denne blokken kan brukes som smeltebrensel med en forbrenningstid på @1.
 This item can serve as a smelting fuel with a burning time of @1.=Denne gjenstanden kan brukes som smeltebrensel med en forbrenningstid på @1.
- Using it as fuel turns it into: @1.=
+ Using it as fuel turns it into: @1.=Å bruke det som brensel gjør det om til: @1.
 Itemstring: "@1"=Gjenstandsstreng: "@1"
 Description: @1=Beskrivelse: @1
 Usage help: @1=Brukshjelp: @1
@@ -59,11 +59,11 @@ This block points to liquids.=Denne blokken peker mot væsker.
 This tool points to liquids.=Dette verktøyet peker mot væsker.
 This item points to liquids.=Denne gjenstanden peker mot væsker.
 
-Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=Slag med denne blokken fungerer ikke som vanlig; nærkamp og gruvedrift er enten ikke mulig eller fungerer annerledes.
+Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=Slag med denne blokken fungerer ikke som vanlig; nærkamp og utvinning er enten ikke mulig eller fungerer annerledes.
 
-Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=Slag med dette verktøyet fungerer ikke som vanlig; nærkamp og gruvedrift er enten ikke mulig eller fungerer annerledes.
+Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=Slag med dette verktøyet fungerer ikke som vanlig; nærkamp og utvinning er enten ikke mulig eller fungerer annerledes.
 
-Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=Slag med denne gjenstanden fungerer ikke som vanlig; nærkamp og gruvedrift er enten ikke mulig eller fungerer annerledes.
+Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=Slag med denne gjenstanden fungerer ikke som vanlig; nærkamp og utvinning er enten ikke mulig eller fungerer annerledes.
 
 This block belongs to the @1 group.=Denne blokken tilhører @1-gruppen.
 This tool belongs to the @1 group.=Dette verktøyet tilhører @1-gruppen.
@@ -97,10 +97,10 @@ You cannot jump while standing on this block.=Du kan ikke hoppe mens du står p�
 This block can be climbed.=Denne blokken kan klatres på.
 This block will make you bounce off with an elasticity of @1%.=Denne blokken vil få deg til å sprette av med en elastisitet på @1%.
 This block is slippery.=Denne blokken er glatt.
-This block is completely silent when walked on, mined or built.=Denne blokken er helt stille når den gås på, graves opp eller bygges.
-This block is completely silent when mined or built.=Denne blokken er helt stille når den graves opp eller bygges.
+This block is completely silent when walked on, mined or built.=Denne blokken er helt stille når den gås på, utvinnes eller bygges.
+This block is completely silent when mined or built.=Denne blokken er helt stille når den utvinnes eller bygges.
 Walking on this block is completely silent.=Å gå på denne blokken er helt stille.
-Mining this block is completely silent.=Å grave denne blokken er helt stille.
+Mining this block is completely silent.=Å utvinne denne blokken er helt stille.
 Building this block is completely silent.=Å bygge denne blokken er helt stille.
 This block is affected by gravity and can fall.=Denne blokken påvirkes av tyngdekraften og kan falle.
 Building another block at this block will place it inside and replace it.=Å bygge en annen blokk her vil plassere den inne i og erstatte den.
@@ -122,13 +122,13 @@ This block connects to this block: @1.=Denne blokken kobles til denne blokken: @
 This block connects to these blocks: @1.=Denne blokken kobles til disse blokkene: @1.
 This block connects to blocks of the @1 group.=Denne blokken kobles til blokker i @1-gruppen.
 This block connects to blocks of the following groups: @1.=Denne blokken kobles til blokker i følgende grupper: @1.
-This block won't drop anything when mined.=Denne blokken vil ikke gi noe når den graves opp.
-This block will drop the following when mined: @1×@2.=Denne blokken vil gi fra seg følgende når den graves opp: @1×@2.
-This block will drop the following when mined: @1.=Denne blokken vil gi fra seg følgende når den graves opp: @1.
-This block will drop the following items when mined: @1.=Denne blokken vil gi fra seg følgende gjenstander når den graves opp: @1.
-This block will randomly drop one of the following when mined: @1.=Denne blokken vil tilfeldig gi fra seg én av følgende når den graves opp: @1.
+This block won't drop anything when mined.=Denne blokken vil ikke gi noe når den utvinnes.
+This block will drop the following when mined: @1×@2.=Denne blokken vil gi fra seg følgende når den utvinnes: @1×@2.
+This block will drop the following when mined: @1.=Denne blokken vil gi fra seg følgende når den utvinnes: @1.
+This block will drop the following items when mined: @1.=Denne blokken vil gi fra seg følgende gjenstander når den utvinnes: @1.
+This block will randomly drop one of the following when mined: @1.=Denne blokken vil tilfeldig gi fra seg én av følgende når den utvinnes: @1.
 
-This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Denne blokken vil tilfeldig gi opptil @1 dråper av følgende mulige dråper når den graves opp: @2.
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Denne blokken vil tilfeldig slippe opptil @1 slipp av følgende mulige slipp når den utvinnes: @2.
 
 # Final list separator (e.g. “One, two and three”)
  and = og
@@ -157,9 +157,9 @@ Can Fly=Kan fly
 drops: =slipper:
 follows player when these items are held:=følger spilleren når disse gjenstandene holdes i hånden:
 
-A transparent block, basically empty space. It is usually left behind after digging something.=En gjennomsiktig blokk, egentlig tomt rom. Den blir vanligvis igjen etter at noe graves opp.
+A transparent block, basically empty space. It is usually left behind after digging something.=En gjennomsiktig blokk, egentlig tomt rom. Den blir vanligvis igjen etter at noe utvinnes.
 
-Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Når du ikke holder noe, bruker du hånden som fungerer som et verktøy med sine egne evner. Når du holder en gjenstand som ikke er et gruveverktøy eller et våpen, vil den oppføre seg som om det var hånden.
+Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Når du ikke holder noe, bruker du hånden som fungerer som et verktøy med sine egne evner. Når du holder en gjenstand som ikke er et utvinningsverktøy eller et våpen, vil den oppføre seg som om det var hånden.
 
 
 
