@@ -118,23 +118,23 @@ Technical:=Teknisk:
 Players=Spillere
 Players (actually: “player characters”) are the characters which users control.=Spillere (egentlig: “spillerkarakterer”) er figurene som brukere kontrollerer.
 
-Players are living beings. They start with a number of health points (HP) and a number of breath points (BP).=Spillere er levende vesener. De starter med et antall helsepoeng (HP) og pustepoeng (BP).
+Players are living beings. They start with a number of health points (HP) and a number of breath points (BP).=Spillere er levende vesener. De starter med et antall helsepoeng (HP) og pustepoeng (PP).
 
 Players are capable of walking, sneaking, jumping, climbing, swimming, diving, mining, building, fighting and using tools and blocks.=Spillere kan gå, snike, hoppe, klatre, svømme, dykke, utvinne, bygge, kjempe og bruke verktøy og blokker.
 
 Players can take damage for a variety of reasons, here are some:=Spillere kan ta skade av ulike grunner, her er noen:
 • Taking fall damage=• Tar fallskade
-• Touching a block which causes direct damage=• Berører en blokk som gir direkte skade
+• Touching a block which causes direct damage=• Berører en blokk som gjør direkte skade
 • Drowning=• Drukner
 • Being attacked by another player=• Blir angrepet av en annen spiller
 • Being attacked by a computer enemy=• Blir angrepet av en datastyrt fiende
-At a health of 0, the player dies. The player can just respawn in the world.=Når helsen er 0, dør spilleren. Spilleren kan da gjenoppstå i verden.
+At a health of 0, the player dies. The player can just respawn in the world.=Når helsen når 0, dør spilleren. Spilleren kan da gjenoppstå i verden.
 
-Other consequences of death depend on the game. The player could lose all items, or lose the round in a competitive game.=Andre konsekvenser av døden avhenger av spillet. Spilleren kan miste alle gjenstander, eller tape runden i et konkurransespill.
+Other consequences of death depend on the game. The player could lose all items, or lose the round in a competitive game.=Andre konsekvenser ved dødsfall avhenger av spillet. Spilleren kan miste alle gjenstander, eller tape runden i et konkurransespill.
 
 Some blocks reduce breath. While being with the head in a block which causes drowning, the breath points are reduced by 1 for every 2 seconds. When all breath is gone, the player starts to suffer drowning damage. Breath is quickly restored in any other block.=Noen blokker reduserer pust. Mens hodet er i en blokk som forårsaker drukning, reduseres pustepoengene med 1 hvert 2. sekund. Når all pust er borte, begynner spilleren å ta drukningsskade. Pusten gjenopprettes raskt i andre blokker.
 
-Damage can be disabled on any world. Without damage, players are immortal and health and breath are unimportant.=Skade kan deaktiveres i enhver verden. Uten skade er spillere udødelige, og helse og pust er uviktig.
+Damage can be disabled on any world. Without damage, players are immortal and health and breath are unimportant.=Skade kan deaktiveres i enhver verden. Uten skade er spillere udødelige, og helse og pust er irrelevant.
 
 In multi-player mode, the name of other players is written above their head.=I flerspillermodus står navnet på andre spillere over hodet deres.
 Items=Gjenstander
@@ -149,7 +149,7 @@ Items have several properties, including the following:=Gjenstander har flere eg
 • Pointing range: How close things must be to be pointed while wielding this item=• Pekerekkevidde: Hvor nær ting må være for å kunne peke mens denne gjenstanden brukes
 
 • Group memberships: See “Basics > Groups”=• Gruppetilhørighet: Se “Grunnleggende > Grupper”
-• May be used for crafting or cooking=• Kan brukes til håndverk eller matlaging
+• May be used for crafting or cooking=• Kan brukes til håndverk eller steking
 Tools=Verktøy
 
 Some items may serve as a tool when wielded. Any item which has some special use which can be directly used by its wielder is considered a tool.=Noen gjenstander kan fungere som et verktøy når de brukes. Enhver gjenstand med en spesiell brukshandling som kan benyttes direkte av brukeren anses som et verktøy.
@@ -180,7 +180,7 @@ There is a rule which sometimes makes attacks impossible: Players, animate objec
 
 Pointing=Peke
 
-“Pointing” means looking at something in range with the crosshair. Pointing is needed for interaction, like mining, punching, using, etc. Pointable things include blocks, players, computer enemies and objects.=“Peking” betyr å se på noe innen rekkevidde med siktet. Peking er nødvendig for interaksjon, som utvinning, slåing, bruk osv. Pekbare ting inkluderer blokker, spillere, datastyrte fiender og objekter.
+“Pointing” means looking at something in range with the crosshair. Pointing is needed for interaction, like mining, punching, using, etc. Pointable things include blocks, players, computer enemies and objects.=“Peking” betyr å se på noe innen rekkevidde med trådkorset/siktet. Peking er nødvendig for interaksjon, som utvinning, slåing, bruk osv. Pekbare ting inkluderer blokker, spillere, datastyrte skapninger og objekter.
 
 To point something, it must be in the pointing range (also just called “range”) of your wielded item. There's a default range when you are not wielding anything. A pointed thing will be outlined or highlighted (depending on your settings). Pointing is not possible with the 3rd person front camera.=For å peke på noe, må det være innenfor pekeavstanden (også kalt “rekkevidde”) til din holdte gjenstand. Det er en standard rekkevidde når du ikke holder noe. En utpekt ting vil bli omrisset eller markert (avhengig av innstillingene dine). Peking er ikke mulig med 3. person frontkamera.
 
@@ -224,7 +224,7 @@ Mining=Utvinning
 
 Mining (or digging) is the process of breaking blocks to remove them. To mine a block, point it and hold down the left mouse button until it breaks.=Utvinning (eller graving) er prosessen med å bryte blokker for å fjerne dem. For å utvinne en blokk, pek på den og hold nede venstre museknapp til den brytes.
 
-Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks cannot be mined by any tool. Blocks vary in hardness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining will drop on the ground, ready to be collected.=Blokker krever et gruveverktøy for å utvinnes. Ulike blokker utvinnes av forskjellige gruveverktøy, og noen blokker kan ikke utvinnes av noen verktøy. Blokker varierer i hardhet, og verktøy varierer i styrke. Gruveverktøy vil slites over tid. Utvinninstiden og verktøyslitasjen avhenger av blokken og gruveverktøyet. Den raskeste måten å finne ut hvor effektive dine gruveverktøy er på, er ved å prøve dem på forskjellige blokker. Gjenstander du samler ved utvinning vil falle på bakken, klare til å plukkes opp.
+Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks cannot be mined by any tool. Blocks vary in hardness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining will drop on the ground, ready to be collected.=Blokker krever et utvinningsverktøy for å utvinnes. Ulike blokker utvinnes av forskjellige utvinningsverktøy, og noen blokker kan ikke utvinnes av noen verktøy. Blokker varierer i hardhet, og verktøy varierer i styrke. Utvinningsverktøy vil slites over tid. Utvinninstiden og verktøyslitasjen avhenger av blokken og utvinningsverktøyet. Den raskeste måten å finne ut hvor effektive dine utvinningsverktøy er på, er ved å prøve dem på forskjellige blokker. Gjenstander du samler ved utvinning vil falle på bakken, klare til å plukkes opp.
 
 After mining, a block may leave a “drop” behind. This is a number of items you get after mining. Most commonly, you will get the block itself. There are other possibilities for a drop which depends on the block type. The following drops are possible:=Etter utvinning kan en blokk etterlate "slipp". Dette er et antall gjenstander du får etter utvinning. Vanligvis får du selve blokken. Det er andre muligheter for slipp som avhenger av blokktype. Følgende slipp er mulig:
 
@@ -295,21 +295,21 @@ There are multiple types of crafting recipes:=Det finnes flere typer håndverkso
 
 • Shapeless (images 3 and 4): Items need to be placed somewhere in input (both images show the same recipe)=• Formløs (bilder 3 og 4): Gjenstandene plasseres uvilkårlig i rutenettet (begge bildene viser samme oppskrift)
 
-• Cooking: Explained in “Basics > Cooking”=• Matlaging: Forklart i “Grunnleggende > Matlaging”
+• Cooking: Explained in “Basics > Cooking”=• Steking: Forklart i “Grunnleggende > Steking”
 
 • Repairing (image 5): Place two damaged tools into the crafting grid anywhere to get a tool which is repaired by 5%=• Reparasjon (bilde 5): Plasser to ødelagte verktøy i håndverksrutenettet for å få et verktøy som er reparert med 5 %
 
-In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.=I noen håndverksoppskrifter trenger noen gjenstander ikke å være en bestemt gjenstand, men i stedet må de tilhøre en gruppe (se “Grunnleggende > Grupper”). Disse oppskriftene gir litt mer frihet i valg av . Bildene 6-8 viser samme gruppebaserte oppskrift. Her kreves 8 gjenstander fra “stein”-gruppen, som gjelder for alle de viste gjenstandene.
+In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.=I noen håndverksoppskrifter trenger noen gjenstander ikke å være en bestemt gjenstand, men i stedet må de tilhøre en gruppe (se “Grunnleggende > Grupper”). Disse oppskriftene gir litt mer frihet i valg av håndverksgjenstander. Bildene 6-8 viser samme gruppebaserte oppskrift. Her kreves 8 gjenstander fra “stein”-gruppen, som gjelder for alle de viste gjenstandene.
 
 Rarely, crafting recipes have replacements. This means that whenever you perform a craft, some items in the crafting grid will not be consumed, but instead will be replaced by another item.=I noen håndverksoppskrifter er det "erstattninger". I slike tilfeller erstattes gjenstanden i håndverksrutenettet med en annen gjenstand idet du fullfører håndverket.
 
-Cooking=Matlaging
+Cooking=Steking
 
-Cooking (or smelting) is a form of crafting which does not involve a crafting grid. Cooking is done with a special block (like a furnace), a cookable item, a fuel item and time in order to yield a new item.=Matlaging (eller smelting) er en form for håndverk som ikke involverer et håndverksrutenett. Matlaging utføres med en spesiell blokk (som en ovn), en kokbar gjenstand, en drivstoffgjenstand og tid for å oppnå en ny gjenstand.
+Cooking (or smelting) is a form of crafting which does not involve a crafting grid. Cooking is done with a special block (like a furnace), a cookable item, a fuel item and time in order to yield a new item.=Steking (eller smelting) er en form for håndverk som ikke involverer et håndverksrutenett. Steking utføres med en spesiell blokk (som en ovn), en stekbar gjenstand, en drivstoffgjenstand og tid for å oppnå en ny gjenstand.
 
-Each fuel item has a burning time. This is the time a single item of the fuel keeps a furnace burning.=Hver drivstoffgjenstand har en brennetid. Dette er tiden en enkelt drivstoffgjenstand holder ovnen brennende.
+Each fuel item has a burning time. This is the time a single item of the fuel keeps a furnace burning.=Hver drivstoffgjenstand har en brennetid. Dette er hvor lenge én enkelt drivstoffgjenstand holder ovnen brennende.
 
-Each cookable item requires time to be cooked. This time is specific to the item type and the item must be “on fire” for the entire cooking time to actually yield the result.=Hver kokbar gjenstand trenger tid for å bli kokt. Denne tiden er spesifikk for gjenstandstypen, og gjenstanden må være “på ild” hele koketiden for å faktisk gi resultatet.
+Each cookable item requires time to be cooked. This time is specific to the item type and the item must be “on fire” for the entire cooking time to actually yield the result.=Hver stekbar gjenstand trenger tid for å stekes. Denne tiden er spesifikk for gjenstandstypen, og gjenstanden må “brennes” hele steketiden for å gi sluttproduktet.
 
 Hotbar=Hurtigfelt
 
@@ -387,7 +387,7 @@ Items, players and objects (animate and inanimate) can be members of any number 
 
 • Crafting recipes: Slots in a crafting recipe may not require a specific item, but instead an item which is a member of a particular group, or multiple groups=• Håndverksoppskrifter: Spor i en håndverksoppskrift kan kreve en gjenstand som er medlem av en bestemt gruppe eller flere grupper, i stedet for en spesifikk gjenstand.
 
-• Digging times: Diggable blocks belong to groups which are used to determine digging times. Mining tools are capable of digging blocks belonging to certain groups=• Utvinningstider: Blokker som kan utvinnes tilhører grupper som brukes til å bestemme utvinningstider. Gruveverktøy kan utvinne blokker som tilhører bestemte grupper.
+• Digging times: Diggable blocks belong to groups which are used to determine digging times. Mining tools are capable of digging blocks belonging to certain groups=• Utvinningstider: Blokker som kan utvinnes tilhører grupper som brukes til å bestemme utvinningstider. Utvinningsverktøy kan utvinne blokker som tilhører bestemte grupper.
 
 • Block behavior: Blocks may show a special behaviour and interact with other blocks when they belong to a particular group=• Blokkatferd: Blokker kan vise en spesiell oppførsel og samhandle med andre blokker når de tilhører en bestemt gruppe.
 
@@ -406,7 +406,7 @@ Controls:=Kontroller:
 • Climbing: Moving up or down a climbable block=• Klatre: Beveger seg opp eller ned en klatrebar blokk
 Blocks:=Blokker:
 • Block: Cubes that the worlds are made of=• Blokk: Kuber som verdenene er laget av
-• Mining/digging: Using a mining tool to break a block=• Utvinning/graving: Bruker et gruveverktøy for å bryte en blokk
+• Mining/digging: Using a mining tool to break a block=• Utvinning/graving: Bruker et utvinningsverktøy for å bryte en blokk
 • Building/placing: Putting a block somewhere=• Bygging/plassering: Sette en blokk et sted
 • Drop: Items you get after mining a block=• Fall: Gjenstander du får etter å ha gravd ut en blokk
 • Using a block: Right-clicking a block to access its special function=• Bruke en blokk: Høyreklikke på en blokk for å få tilgang til dens spesielle funksjon
@@ -419,32 +419,32 @@ Items:=Gjenstander:
 • Player inventory: The main inventory of a player=• Spillerinventar: Hovedinventaret til en spiller
 • Tool: An item which you can use to do special things with when wielding=• Verktøy: En gjenstand som du kan bruke til spesielle handlinger når den holdes
 • Range: How far away things can be to be pointed by an item=• Rekkevidde: Hvor langt unna ting kan være for å peke på dem med en gjenstand
-• Mining tool: A tool which allows to break blocks=• Gruveverktøy: Et verktøy som lar deg bryte blokker
+• Mining tool: A tool which allows to break blocks=• Utvinningsverktøy: Et verktøy som lar deg bryte blokker
 • Craftitem: An item which is (primarily or only) used for crafting=• Håndverksgjenstand: En gjenstand som primært eller kun brukes til håndverk
 Gameplay:=Spillmekanikk:
-• “heart”: A single health symbol, indicates 2 HP=• “hjerte”: Et enkelt helsesymbol, tilsvarer 2 HP
-• “bubble”: A single breath symbol, indicates 1 BP=• “boble”: Et enkelt pustesymbol, tilsvarer 1 BP
-• HP: Hit point (equals half 1 “heart”)=• HP: Helsetall (tilsvarer en halv “hjerte”)
-• BP: Breath point, indicates breath when diving=• BP: Pustetall, viser pust under dykking
+• “heart”: A single health symbol, indicates 2 HP=• “Hjerte”: Et enkelt helsesymbol, tilsvarer 2 HP
+• “bubble”: A single breath symbol, indicates 1 BP=• “Boble”: Et enkelt pustesymbol, tilsvarer 1 PP
+• HP: Hit point (equals half 1 “heart”)=• HP: Helsepoeng (tilsvarer et halvt “hjerte”)
+• BP: Breath point, indicates breath when diving=• PP: Pustepoeng, viser resterende lungekapasitet ved dykking
 • Mob: Computer-controlled enemy=• Mob: Datastyrt fiende
 • Crafting: Combining multiple items to create new ones=• Håndverk: Kombinere flere gjenstander for å lage nye
-• Crafting guide: A helper which shows available crafting recipes=• Håndverksguide: En hjelp som viser tilgjengelige håndverksoppskrifter
-• Spawning: Appearing in the world=• Spawning: Vises i verden
-• Respawning: Appearing again in the world after death=• Respawning: Vises igjen i verden etter død
+• Crafting guide: A helper which shows available crafting recipes=• Oppskriftsbok: En hjelp som viser tilgjengelige håndverksoppskrifter
+• Spawning: Appearing in the world=• Maning: Når noe materialiseres inn i spillverdenen
+• Respawning: Appearing again in the world after death=• Gjenoppstå: Å komme tilbake i spillverdenen etter å ha dødd
 • Group: Puts similar things together, often affects gameplay=• Gruppe: Samler lignende ting, påvirker ofte spillmekanikken
 • noclip: Allows to fly through walls=• noclip: Tillater å fly gjennom vegger
 Interface=Grensesnitt
 • Hotbar: Inventory slots at the bottom=• Hurtigfelt: De nederste inventarfeltene
 • Statbar: Indicator made out of half-symbols, used for health and breath=• Statistikkfelt: Indikator laget av halvsymboler, brukt for helse og pust
 • Minimap: The map or radar at the top right=• Minikart: Kartet eller radaren øverst til høyre
-• Crosshair: Seen in the middle, used to point at things=• Siktekorn: Synlig i midten, brukt til å peke på ting
-Online multiplayer:=
+• Crosshair: Seen in the middle, used to point at things=• Trådkors/sikte: Synlig i midten av skjermen, brukes til å peke på ting
+Online multiplayer:=Flerspiller på nett:
 • PvP: Player vs Player. If active, players can deal damage to each other=• PvP: Spiller mot spiller. Hvis aktivert, kan spillere skade hverandre
-• Griefing: Destroying the buildings of other players against their will=• Griefing: Ødelegge bygningene til andre spillere mot deres vilje
+• Griefing: Destroying the buildings of other players against their will=• Griefe: Ødelegge bygningene til andre spillere mot deres vilje
 
-• Protection: Mechanism to own areas of the world, which only allows the owners to modify blocks inside=• Beskyttelse: Mekanisme for å eie områder av verden, som bare lar eierne endre blokker inni
+• Protection: Mechanism to own areas of the world, which only allows the owners to modify blocks inside=• Beskyttelse: Mekanisme for å eie områder av verden, tillater bare eier(ne) å endre blokker der
 
-Technical terms:=
+Technical terms:=Tekniske begreper:
 • Minetest: This game engine=• Minetest: Denne spillmotoren
 • Minetest Game: A game for Minetest by the Minetest developers=• Minetest Game: Et spill for Minetest laget av Minetest-utviklerne
 
@@ -624,25 +624,25 @@ You can view your current position in the debug screen (open with [F5]).=Du kan 
 ##[ mcl_extension.lua ]##
 # MCL2 extensions
 Creative Mode=Kreativ Modus
-Enabling Creative Mode in VoxeLibre applies the following changes:=
+Enabling Creative Mode in VoxeLibre applies the following changes:=Aktivering av kreativ modus i VoxeLibre medfører følgende endringer:
 • You keep the things you've placed=• Du beholder tingene du har plassert
 • Creative inventory is available to obtain most items easily=• Kreativ inventar er tilgjengelig for å enkelt skaffe de fleste gjenstander
 • Hand breaks all default blocks instantly=• Hånden bryter alle standardblokker umiddelbart
-• Greatly increased hand pointing range=• Håndens pekeradius er sterkt økt
-• Mined blocks don't drop items=• Utgravde blokker slipper ikke gjenstander
+• Greatly increased hand pointing range=• Håndens pekedistanse økes kraftig
+• Mined blocks don't drop items=• Utvinnede blokker slipper ikke gjenstander
 • Items don't get used up=• Gjenstander blir ikke brukt opp
 • Tools don't wear off=• Verktøy slites ikke
 • You can eat food whenever you want=• Du kan spise mat når som helst
-• You can always use the minimap (including radar mode)=• Du kan alltid bruke minimap (inkludert radar-modus)
+• You can always use the minimap (including radar mode)=• Du kan alltid bruke minikart (inkludert radar-modus)
 Damage is not affected by Creative Mode, it needs to be disabled separately.=Skade påvirkes ikke av Kreativ Modus, det må deaktiveres separat.
-Mobs=Fiender
-Mobs are the living beings in the world. This includes animals and monsters.=Fiender er levende vesener i verden. Dette inkluderer dyr og monstre.
+Mobs=Skapninger
+Mobs are the living beings in the world. This includes animals and monsters.=Skapninger er levende vesener i verden. Dette inkluderer dyr og monstre.
 
-Mobs appear randomly throughout the world. This is called “spawning”. Each mob kind appears on particular block types at a given light level. The height also plays a role. Peaceful mobs tend to spawn at daylight while hostile ones prefer darkness. Most mobs can spawn on any solid block but some mobs only spawn on particular blocks (like grass blocks).=Fiender dukker opp tilfeldig rundt i verden. Dette kalles “fremkomst”. Hver type fiende dukker opp på spesifikke blokker ved bestemte lysnivåer. Høyden spiller også en rolle. Fredelige fiender har en tendens til å dukke opp i dagslys, mens fiendtlige foretrekker mørke. De fleste fiender kan dukke opp på faste blokker, men noen bare på spesifikke blokker (som gressblokker).
+Mobs appear randomly throughout the world. This is called “spawning”. Each mob kind appears on particular block types at a given light level. The height also plays a role. Peaceful mobs tend to spawn at daylight while hostile ones prefer darkness. Most mobs can spawn on any solid block but some mobs only spawn on particular blocks (like grass blocks).=Skapninger dukker opp tilfeldig rundt i verden. Dette kalles “å manes”. Hver skapningstype manes frem på spesifikke blokker ved bestemte lysnivåer. Høyde spiller også en rolle. Fredelige skapninger har en tendens til å manes i dagslys, mens fiendtlige foretrekker mørke. De fleste skapninger manes på faste blokker, men noen bare på spesifikke blokker (som gressblokker).
 
-Like players, mobs have hit points and sometimes armor points, too (which means you need better weapons to deal any damage at all). Also like players, hostile mobs can attack directly or at a distance. Mobs may drop random items after they die.=Akkurat som spillere har fiender livspoeng og noen ganger rustningspoeng (som betyr at du trenger bedre våpen for å påføre noen skade). Akkurat som spillere kan fiendtlige fiender angripe direkte eller på avstand. Fiender kan slippe tilfeldige gjenstander etter at de dør.
+Like players, mobs have hit points and sometimes armor points, too (which means you need better weapons to deal any damage at all). Also like players, hostile mobs can attack directly or at a distance. Mobs may drop random items after they die.=Akkurat som spillere har skapninger helsepoeng, og noen ganger rustningspoeng (som betyr at du trenger bedre våpen for å påføre skade). Akkurat som spillere kan fiendtlige skapninger angripe direkte eller på avstand. Skapninger kan slippe tilfeldige gjenstander etter at de dør.
 
-Most animals roam the world aimlessly while most hostile mobs hunt players. Animals can be fed, tamed and bred.=De fleste dyr vandrer målløst rundt i verden, mens de fleste fiendtlige fiender jakter på spillere. Dyr kan mates, temmes og avles.
+Most animals roam the world aimlessly while most hostile mobs hunt players. Animals can be fed, tamed and bred.=De fleste dyr vandrer målløst rundt i verden, mens de fleste fiendtlige skapninger jakter på spillere. Dyr kan mates, temmes og avles.
 
 Animals=Dyr
 
@@ -650,7 +650,7 @@ Animals are peaceful beings which roam the world aimlessly. You can feed, tame a
 
 Feeding:=Mating:
 
-Each animal has its own taste for food and doesn't just accept any food. To feed, hold an item in your hand and right-click the animal.=Hvert dyr har sin egen smak for mat og aksepterer ikke hvilken som helst mat. For å mate, hold en gjenstand i hånden og høyreklikk på dyret.
+Each animal has its own taste for food and doesn't just accept any food. To feed, hold an item in your hand and right-click the animal.=Hvert dyr har sin foretrukne kost, og spiser ikke hvilken som helst type mat. For å mate, hold en gjenstand i hånden og høyreklikk på dyret.
 
 Animals are attracted to the food they like and follow you as long you hold the food item in hand.=Dyr tiltrekkes av maten de liker og følger deg så lenge du holder matgjenstanden i hånden.
 
@@ -664,52 +664,52 @@ Breeding:=Avl:
 
 When you have fed an animal up to its maximum health, then feed it again, you will activate “Love Mode” and many hearts appear around the animal.=Når du har matet et dyr opp til dets maksimale helse, og deretter mater det igjen, aktiverer du “Kjærlighetsmodus” og mange hjerter dukker opp rundt dyret.
 
-Two animals of the same species will start to breed if they are in Love Mode and close to each other. Soon a baby animal will pop up.=To dyr av samme art vil begynne å pare seg hvis de er i Kjærlighetsmodus og nær hverandre. Snart vil et baby-dyr dukke opp.
+Two animals of the same species will start to breed if they are in Love Mode and close to each other. Soon a baby animal will pop up.=To dyr av samme art vil begynne å pare seg hvis de er i "Kjærlighetsmodus" og nærme hverandre. Snart vil et babydyr manes frem.
 
-Baby animals:=Baby-dyr:
+Baby animals:=Babydyr:
 
-Baby animals are just like their adult counterparts, but they can't be tamed or bred and don't drop anything when they die. They grow to adults after a short time. When fed, they grow to adults faster.=Baby-dyr er akkurat som sine voksne motparter, men de kan ikke temmes eller avles og slipper ikke noe når de dør. De vokser til voksne etter kort tid. Når de mates, vokser de til voksne raskere.
+Baby animals are just like their adult counterparts, but they can't be tamed or bred and don't drop anything when they die. They grow to adults after a short time. When fed, they grow to adults faster.=Babydyr er akkurat som sine voksne motparter, men de kan ikke temmes eller avles og slipper ikke noe når de dør. De blir voksne etter kort tid. Når de mates, vokser de raskere.
 
 Hunger=Sult
 
-Hunger affects your health and your ability to sprint. Hunger is not in effect when damage is disabled.=Sult påvirker helsen din og din evne til å sprinte. Sult er ikke i bruk når skade er deaktivert.
+Hunger affects your health and your ability to sprint. Hunger is not in effect when damage is disabled.=Sult påvirker helsen din og din evne til å spurte. Sult er ikke i spill når skade er deaktivert.
 
-Core hunger rules:=Kjerne-regler for sult:
+Core hunger rules:=Grunnregler for sult:
 • You start with 20/20 hunger points (more points @= less hungry)=• Du starter med 20/20 sultpoeng (flere poeng @= mindre sulten)
-• Actions like combat, jumping, sprinting, etc. decrease hunger points=• Handlinger som kamp, hopping, sprinting osv. reduserer sultpoeng
+• Actions like combat, jumping, sprinting, etc. decrease hunger points=• Handlinger som kamp, hopping, spurting osv. reduserer sultpoeng
 • Food restores hunger points=• Mat gjenoppretter sultpoeng
 • If your hunger bar decreases, you're hungry=• Hvis sultindikatoren din minker, er du sulten
 • At 18-20 hunger points, you regenerate 1 HP every 4 seconds=• Ved 18-20 sultpoeng regenererer du 1 HP hvert 4. sekund
-• At 6 hunger points or less, you can't sprint=• Ved 6 sultpoeng eller mindre kan du ikke sprinte
+• At 6 hunger points or less, you can't sprint=• Ved 6 sultpoeng eller mindre kan du ikke spurte
 • At 0 hunger points, you lose 1 HP every 4 seconds (down to 1 HP)=• Ved 0 sultpoeng mister du 1 HP hvert 4. sekund (ned til 1 HP)
 • Poisonous food decreases your health=• Giftig mat reduserer helsen din
 Details:=Detaljer:
 
-You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.=Du har 0-20 sultpoeng, indikert med 20 halve trommestikkeikoner over hurtigfeltet. Du har også en usynlig egenskap: Metning.
+You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.=Du har 0-20 sultpoeng, indikert med 10 kyllinglår-ikoner over hurtigfeltet. Du har også en usynlig egenskap: Metning.
 
-Hunger points reflect how full you are while saturation points reflect how long it takes until you're hungry again.=Sultpoeng viser hvor mett du er, mens metningspoeng viser hvor lenge det tar før du blir sulten igjen.
+Hunger points reflect how full you are while saturation points reflect how long it takes until you're hungry again.=Sultpoeng viser hvor sulten du er, mens metthetspoeng viser hvor lenge det tar før du blir sulten igjen.
 
-Each food item increases both your hunger level as well your saturation.=Hver matgjenstand øker både sultnivået ditt og metningen din.
+Each food item increases both your hunger level as well your saturation.=Hver matgjenstand øker både sultnivået ditt og metthetsgraden din.
 
-Food with a high saturation boost has the advantage that it will take longer until you get hungry again.=Mat med høy metningsboost har fordelen at det tar lenger tid før du blir sulten igjen.
+Food with a high saturation boost has the advantage that it will take longer until you get hungry again.=Mat med høy metthetsgrad har fordelen at det tar lenger tid før du blir sulten igjen.
 
-A few food items might induce food poisoning by chance. When you're poisoned, the health and hunger symbols turn sickly green. Food poisoning drains your health by 1 HP per second, down to 1 HP. Food poisoning also drains your saturation. Food poisoning goes away after a while or when you drink milk.=Noen matvarer kan tilfeldigvis føre til matforgiftning. Når du er forgiftet, blir helse- og sults-ymbolene sykelig grønne. Matforgiftning tapper helsen din med 1 HP per sekund, ned til 1 HP. Matforgiftning reduserer også metningen din. Forgiftningen forsvinner etter en stund eller når du drikker melk.
+A few food items might induce food poisoning by chance. When you're poisoned, the health and hunger symbols turn sickly green. Food poisoning drains your health by 1 HP per second, down to 1 HP. Food poisoning also drains your saturation. Food poisoning goes away after a while or when you drink milk.=Noen matvarer kan tilfedig føre til matforgiftning. Når du er matforgiftet, blir sultsymbolene sykelig grønne. Matforgiftning reduserer metthetsgraden din. Forgiftningen forsvinner etter en stund eller når du drikker melk.
 
-You start with 5 saturation points. The maximum saturation is equal to your current hunger level. So with 20 hunger points your maximum saturation is 20. What this means is that food items which restore many saturation points are more effective the more hunger points you have. This is because at low hunger levels, a lot of the saturation boost will be lost due to the low saturation cap.=Du starter med 5 metningspoeng. Maksimal metning tilsvarer ditt nåværende sultnivå. Så med 20 sultpoeng er maksimal metning 20. Dette betyr at matvarer som gir mange metningspoeng er mer effektive jo flere sultpoeng du har. Ved lavt sultnivå vil mye av metningsboosten gå tapt på grunn av lavt metningsmaksimum.
+You start with 5 saturation points. The maximum saturation is equal to your current hunger level. So with 20 hunger points your maximum saturation is 20. What this means is that food items which restore many saturation points are more effective the more hunger points you have. This is because at low hunger levels, a lot of the saturation boost will be lost due to the low saturation cap.=Du starter med 5 metthetspoeng. Maksimal metthet tilsvarer ditt nåværende sultnivå. Så med 20 sultpoeng er maksimal metthet 20. Dette betyr at matvarer som gir mange metthetspoeng er mer effektive jo flere sultpoeng du har. Ved lavt sultnivå vil mye av metthetsbonusen gå tapt grunnet denne begrensningen.
 
-If your saturation reaches 0, you're hungry and start to lose hunger points. Whenever you see the hunger bar decrease, it is a good time to eat.=Hvis metningen din når 0, er du sulten og begynner å miste sultpoeng. Når sultindikatoren minker, er det en god tid å spise.
+If your saturation reaches 0, you're hungry and start to lose hunger points. Whenever you see the hunger bar decrease, it is a good time to eat.=Hvis mettheten din når 0, er du sulten og begynner å miste sultpoeng. Når sultindikatoren minker, er det en god tid å spise.
 
-Saturation decreases by doing things which exhaust you (highest exhaustion first):=Metning reduseres ved å gjøre ting som gjør deg utmattet (høyest utmattelse først):
+Saturation decreases by doing things which exhaust you (highest exhaustion first):=Metthet reduseres ved å gjøre ting som gjør deg utmattet (høyest utmattelse først):
 
 • Regenerating 1 HP=• Regenerere 1 HP
 • Suffering food poisoning=• Få matforgiftning
-• Sprint-jumping=• Sprint-hopping
-• Sprinting=• Sprinting
-• Attacking=• Angripe
+• Sprint-jumping=• Spurt-hopping
+• Sprinting=• Spurting
+• Attacking=• Angrep
 • Taking damage=• Ta skade
 • Swimming=• Svømming
 • Jumping=• Hopping
-• Mining a block=• Bryte en blokk
+• Mining a block=• Utvinne en blokk
 Other actions, like walking, do not exhaust you.=Andre handlinger, som å gå, utmatter deg ikke.
 
 
@@ -730,7 +730,7 @@ If you jump while holding the sneak key, you also jump slightly higher than usua
 
 Dropped item stacks will be collected automatically when you stand close to them.=Slippede gjenstandsstabler blir automatisk samlet opp når du står nær dem.
 
-Mining tools are important to break all kinds of blocks. Weapons are another kind of tool. There are some other more specialized tools. Special actions of tools are usually done by right-click.=Gruveverktøy er viktige for å bryte alle slags blokker. Våpen er en annen type verktøy. Det finnes også noen mer spesialiserte verktøy. Spesialhandlinger med verktøy utføres vanligvis med høyreklikk.
+Mining tools are important to break all kinds of blocks. Weapons are another kind of tool. There are some other more specialized tools. Special actions of tools are usually done by right-click.=Utvinningsverktøy er viktige for å bryte alle slags blokker. Våpen er en annen type verktøy. Det finnes også noen mer spesialiserte verktøy. Spesialhandlinger med verktøy utføres vanligvis med høyreklikk.
 
 When nothing is wielded, players use their hand which may act as tool and weapon. The hand is capable of punching and deals minimum damage.=Når ingenting holdes, bruker spilleren hånden som kan fungere som verktøy og våpen. Hånden kan slå og gir minimal skade.
 
@@ -755,7 +755,7 @@ Minetest links:=Minetest-lenker:
 The main place to find the most recent version of Minetest, the engine used by MineClone 2.=Hovedstedet for å finne den nyeste versjonen av Minetest, motoren brukt av MineClone 2.
 
 Minetest forums: <https://forums.minetest.net/>=Minetest-forum: <https://forums.minetest.net/>
-Online multiplayer=Flerspiller online
+Online multiplayer=Flerspiller på nett
 Technical terms=Tekniske begreper
 • MineClone 2: What you play right now=• MineClone 2: Spillet du spiller akkurat nå
 Enabling Creative Mode in MineClone 2 applies the following changes:=Å aktivere Kreativ Modus i MineClone 2 medfører følgende endringer:
