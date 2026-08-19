@@ -1,0 +1,11 @@
+# textdomain: vl_fireworks
+##[ star.lua ]##
+Firework Star=Fyrverkeristjerne
+
+A firework star is the key component of a firework rocket which is responsible for the visible explosion.=Ei fyrverkeristjerne nykkelkomponent i fyrverkeri, og avgjer utsjånaden på eksplosjonen.
+
+Generic Firework Star=Generisk fyrverkeristjerne
+Size:=Storleik:
+##[ rockets.lua ]##
+Flight Duration:=Flygelengd:
+Firework Rocket=Fyrverkeri
