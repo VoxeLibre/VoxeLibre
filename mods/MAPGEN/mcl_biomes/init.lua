@@ -46,13 +46,15 @@ Based off <https://minecraft.gamepedia.com/Biomes> ]]
 
 local function register_classic_superflat_biome()
 	-- Classic Superflat: bedrock (not part of biome), 2 dirt, 1 grass block
-	vl_worlds.register_biome("overworld", "", {
+	minetest.register_biome({
 		name = "flat",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
 		node_stone = "mcl_core:dirt",
+		y_min = overworld_bounds.min - 512,
+		y_max = overworld_bounds.max,
 		humidity_point = 50,
 		heat_point = 50,
 		_mcl_biome_type = "medium",
@@ -153,7 +155,7 @@ local function register_biomes()
 	}
 
 	-- Ice Plains Spikes (rare)
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "IcePlainsSpikes",
 		node_top = "mcl_core:snowblock",
 		depth_top = 1,
@@ -164,7 +166,8 @@ local function register_biomes()
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 24,
 		heat_point = -5,
 		_mcl_biome_type = "snowy",
@@ -175,7 +178,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "IcePlainsSpikes_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 2,
@@ -184,6 +187,8 @@ local function register_biomes()
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 24,
 		heat_point = -5,
 		_mcl_biome_type = "snowy",
@@ -196,7 +201,7 @@ local function register_biomes()
 	})
 
 	-- Cold Taiga
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "ColdTaiga",
 		node_dust = "mcl_core:snow",
 		node_top = "mcl_core:dirt_with_grass_snow",
@@ -205,7 +210,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -1,
+		y_min = 3,
+		y_max = overworld_bounds.max,
 		humidity_point = 58,
 		heat_point = 8,
 		_mcl_biome_type = "snowy",
@@ -218,7 +224,7 @@ local function register_biomes()
 	})
 
 	-- A cold beach-like biome, implemented as low part of Cold Taiga
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "ColdTaiga_beach",
 		node_dust = "mcl_core:snow",
 		node_top = "mcl_core:sand",
@@ -229,8 +235,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 1,
-		offset_bottom = 4,
+		y_min = 1,
+		y_max = 2,
 		humidity_point = 58,
 		heat_point = 8,
 		_mcl_biome_type = "snowy",
@@ -242,7 +248,7 @@ local function register_biomes()
 		_mcl_fogcolor = overworld_fogcolor
 	})
 	-- Water part of the beach. Added to prevent snow being on the ice.
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "ColdTaiga_beach_water",
 		node_top = "mcl_core:sand",
 		depth_top = 2,
@@ -252,7 +258,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		limit_height_top = 4,
+		y_min = -4,
+		y_max = 0,
 		humidity_point = 58,
 		heat_point = 8,
 		_mcl_biome_type = "snowy",
@@ -263,7 +270,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "ColdTaiga_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -271,7 +278,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		limit_height_bottom = 10,
+		y_min = OCEAN_MIN,
+		y_max = -5,
 		humidity_point = 58,
 		heat_point = 8,
 		vertical_blend = 1,
@@ -285,7 +293,7 @@ local function register_biomes()
 	})
 
 	-- Mega Pine Taiga
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "MegaTaiga",
 		node_top = "mcl_core:podzol",
 		depth_top = 1,
@@ -293,7 +301,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 76,
 		heat_point = 10,
 		_mcl_biome_type = "cold",
@@ -304,7 +313,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7CA3FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "MegaTaiga_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -312,6 +321,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 76,
 		heat_point = 10,
 		_mcl_biome_type = "cold",
@@ -324,7 +335,7 @@ local function register_biomes()
 	})
 
 	-- Mega Spruce Taiga
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "MegaSpruceTaiga",
 		node_top = "mcl_core:podzol",
 		depth_top = 1,
@@ -332,7 +343,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 100,
 		heat_point = 8,
 		_mcl_biome_type = "cold",
@@ -343,7 +355,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7DA3FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "MegaSpruceTaiga_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -351,6 +363,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 100,
 		heat_point = 8,
 		_mcl_biome_type = "cold",
@@ -364,7 +378,7 @@ local function register_biomes()
 
 	-- Extreme Hills
 	-- Sparsely populated grasslands with little tallgras and trees.
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "ExtremeHills",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -372,6 +386,8 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
+		y_min = 4,
+		y_max = overworld_bounds.max,
 		humidity_point = 10,
 		heat_point = 45,
 		_mcl_biome_type = "cold",
@@ -382,7 +398,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7DA2FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "ExtremeHills_beach",
 		node_top = "mcl_core:sand",
 		depth_top = 2,
@@ -391,7 +407,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		offset_bottom = -1,
+		y_min = -4,
+		y_max = 3,
 		humidity_point = 10,
 		heat_point = 45,
 		_mcl_biome_type = "cold",
@@ -402,7 +419,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "ExtremeHills_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -410,7 +427,8 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		limit_height_bottom = 10,
+		y_min = OCEAN_MIN,
+		y_max = -5,
 		vertical_blend = 1,
 		humidity_point = 10,
 		heat_point = 45,
@@ -425,7 +443,7 @@ local function register_biomes()
 
 	-- Extreme Hills M
 	-- Just gravel.
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "ExtremeHillsM",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -433,7 +451,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 3,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 0,
 		heat_point = 25,
 		_mcl_biome_type = "cold",
@@ -444,7 +463,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7DA2FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "ExtremeHillsM_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -452,6 +471,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 3,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 0,
 		heat_point = 25,
 		_mcl_biome_type = "cold",
@@ -466,7 +487,7 @@ local function register_biomes()
 	-- Extreme Hills+
 	-- This biome is near-identical to Extreme Hills on the surface but has snow-covered mountains with spruce/oak
 	-- forests above a certain height.
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "ExtremeHills+",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -474,8 +495,8 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		offset_bottom = -3,
-		limit_height_bottom = 40,
+		y_min = 1,
+		y_max = 41,
 		humidity_point = 24,
 		heat_point = 25,
 		vertical_blend = 6,
@@ -488,7 +509,7 @@ local function register_biomes()
 		_mcl_fogcolor = overworld_fogcolor
 	})
 	---- Sub-biome for Extreme Hills+ for those snow forests
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "ExtremeHills+_snowtop",
 		node_dust = "mcl_core:snow",
 		node_top = "mcl_core:dirt_with_grass_snow",
@@ -498,7 +519,8 @@ local function register_biomes()
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		offset_bottom = 38,
+		y_min = 42,
+		y_max = overworld_bounds.max,
 		humidity_point = 24,
 		heat_point = 25,
 		_mcl_biome_type = "cold",
@@ -509,7 +531,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7DA2FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "ExtremeHills+_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -517,6 +539,7 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
+		y_min = OCEAN_MIN,
 		y_max = 0,
 		humidity_point = 24,
 		heat_point = 25,
@@ -532,12 +555,13 @@ local function register_biomes()
 	-- Stone beach
 	-- Just stone.
 	-- Not neccessarily a beach at all, only named so according to MC
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "StoneBeach",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 1,
+		y_min = -7,
+		y_max = overworld_bounds.max,
 		humidity_point = 0,
-		offset_bottom = -4,
 		heat_point = 8,
 		_mcl_biome_type = "cold",
 		_mcl_grass_palette_index = 9,
@@ -548,13 +572,14 @@ local function register_biomes()
 		_mcl_fogcolor = overworld_fogcolor
 	})
 
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "StoneBeach_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 1,
-		limit_height_bottom = 7,
+		y_min = OCEAN_MIN,
+		y_max = -8,
 		vertical_blend = 2,
 		humidity_point = 0,
 		heat_point = 8,
@@ -568,7 +593,7 @@ local function register_biomes()
 	})
 
 	-- Ice Plains
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "IcePlains",
 		node_dust = "mcl_core:snow",
 		node_top = "mcl_core:dirt_with_grass_snow",
@@ -580,7 +605,8 @@ local function register_biomes()
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 24,
 		heat_point = 8,
 		_mcl_biome_type = "snowy",
@@ -591,7 +617,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7FA1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "IcePlains_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -599,6 +625,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 24,
 		heat_point = 8,
 		_mcl_biome_type = "snowy",
@@ -611,7 +639,7 @@ local function register_biomes()
 	})
 
 	-- Plains
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "Plains",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -619,7 +647,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -1,
+		y_min = 3,
+		y_max = overworld_bounds.max,
 		humidity_point = 39,
 		heat_point = 58,
 		_mcl_biome_type = "medium",
@@ -630,7 +659,7 @@ local function register_biomes()
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "Plains_beach",
 		node_top = "mcl_core:sand",
 		depth_top = 2,
@@ -638,8 +667,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 1,
-		limit_height_top = 2,
+		y_min = 0,
+		y_max = 2,
 		humidity_point = 39,
 		heat_point = 58,
 		_mcl_biome_type = "medium",
@@ -650,7 +679,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "Plains_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -658,8 +687,9 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -1,
 		humidity_point = 39,
-		limit_height_bottom = 14,
 		heat_point = 58,
 		_mcl_biome_type = "medium",
 		_mcl_grass_palette_index = 0,
@@ -671,7 +701,7 @@ local function register_biomes()
 	})
 
 	-- Sunflower Plains
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "SunflowerPlains",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -679,6 +709,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = 4,
+		y_max = overworld_bounds.max,
 		humidity_point = 28,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -689,7 +721,7 @@ local function register_biomes()
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "SunflowerPlains_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -697,6 +729,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 28,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -709,7 +743,7 @@ local function register_biomes()
 	})
 
 	-- Taiga
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "Taiga",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -717,6 +751,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = 4,
+		y_max = overworld_bounds.max,
 		humidity_point = 58,
 		heat_point = 22,
 		_mcl_biome_type = "cold",
@@ -727,7 +763,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7DA3FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "Taiga_beach",
 		node_top = "mcl_core:sand",
 		depth_top = 2,
@@ -735,7 +771,8 @@ local function register_biomes()
 		depth_filler = 1,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		limit_height_top = 2,
+		y_min = 1,
+		y_max = 3,
 		humidity_point = 58,
 		heat_point = 22,
 		_mcl_biome_type = "cold",
@@ -746,7 +783,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "Taiga_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -754,6 +791,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 58,
 		heat_point = 22,
 		_mcl_biome_type = "cold",
@@ -766,7 +805,7 @@ local function register_biomes()
 	})
 
 	-- Forest
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "Forest",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -774,7 +813,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 61,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -785,7 +825,7 @@ local function register_biomes()
 		_mcl_skycolor = "#79A6FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "Forest_beach",
 		node_top = "mcl_core:sand",
 		depth_top = 2,
@@ -793,8 +833,8 @@ local function register_biomes()
 		depth_filler = 1,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
-		limit_height_top = 1,
+		y_min = -1,
+		y_max = 0,
 		humidity_point = 61,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -805,7 +845,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "Forest_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -813,7 +853,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		limit_height_bottom = 13,
+		y_min = OCEAN_MIN,
+		y_max = -2,
 		humidity_point = 61,
 		heat_point = 45,
 		_mcl_biome_type = "medium",
@@ -826,7 +867,7 @@ local function register_biomes()
 	})
 
 	-- Flower Forest
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "FlowerForest",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -834,7 +875,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -1,
+		y_min = 3,
+		y_max = overworld_bounds.max,
 		humidity_point = 44,
 		heat_point = 32,
 		_mcl_biome_type = "medium",
@@ -845,7 +887,7 @@ local function register_biomes()
 		_mcl_skycolor = "#79A6FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "FlowerForest_beach",
 		node_top = "mcl_core:sand",
 		depth_top = 2,
@@ -853,8 +895,8 @@ local function register_biomes()
 		depth_filler = 1,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 1,
-		offset_bottom = 1,
+		y_min = -2,
+		y_max = 2,
 		humidity_point = 44,
 		heat_point = 32,
 		_mcl_biome_type = "medium",
@@ -865,7 +907,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "FlowerForest_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -873,7 +915,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		limit_height_bottom = 12,
+		y_min = OCEAN_MIN,
+		y_max = -3,
 		humidity_point = 44,
 		heat_point = 32,
 		_mcl_biome_type = "medium",
@@ -886,7 +929,7 @@ local function register_biomes()
 	})
 
 	-- Birch Forest
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "BirchForest",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -894,7 +937,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 78,
 		heat_point = 31,
 		_mcl_biome_type = "medium",
@@ -905,7 +949,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7AA5FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "BirchForest_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -913,6 +957,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 78,
 		heat_point = 31,
 		_mcl_biome_type = "medium",
@@ -925,7 +971,7 @@ local function register_biomes()
 	})
 
 	-- Birch Forest M
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "BirchForestM",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -933,7 +979,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 77,
 		heat_point = 27,
 		_mcl_biome_type = "medium",
@@ -944,7 +991,7 @@ local function register_biomes()
 		_mcl_skycolor = "#7AA5FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "BirchForestM_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -952,6 +999,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 77,
 		heat_point = 27,
 		_mcl_biome_type = "medium",
@@ -964,7 +1013,7 @@ local function register_biomes()
 	})
 
 	-- Desert
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "Desert",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -972,8 +1021,9 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
 		node_stone = "mcl_core:sandstone",
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 26,
 		heat_point = 94,
 		_mcl_biome_type = "hot",
@@ -984,7 +1034,7 @@ local function register_biomes()
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "Desert_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -992,6 +1042,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 26,
 		heat_point = 94,
 		_mcl_biome_type = "hot",
@@ -1004,7 +1056,7 @@ local function register_biomes()
 	})
 
 	-- Roofed Forest
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "RoofedForest",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1012,7 +1064,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 94,
 		heat_point = 27,
 		_mcl_biome_type = "medium",
@@ -1023,7 +1076,7 @@ local function register_biomes()
 		_mcl_skycolor = "#79A6FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "RoofedForest_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -1031,6 +1084,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 94,
 		heat_point = 27,
 		_mcl_biome_type = "medium",
@@ -1044,7 +1099,7 @@ local function register_biomes()
 
 	-- Mesa: Starts with a couple of sand-covered layers (the "sandlevel"),
 	-- followed by terracotta with colorful (but imperfect) strata
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "Mesa",
 		node_top = "mcl_colorblocks:hardened_clay",
 		depth_top = 1,
@@ -1052,7 +1107,8 @@ local function register_biomes()
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
-		offset_bottom = 7,
+		y_min = 11,
+		y_max = overworld_bounds.max,
 		humidity_point = 0,
 		heat_point = 100,
 		_mcl_biome_type = "hot",
@@ -1064,7 +1120,7 @@ local function register_biomes()
 		_mcl_fogcolor = overworld_fogcolor
 	})
 	-- Helper biome for the red sand at the bottom of Mesas.
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "Mesa_sandlevel",
 		node_top = "mcl_core:redsand",
 		depth_top = 1,
@@ -1072,9 +1128,9 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 1,
-		offset_top = -7,
-		offset_bottom = -1,
 		node_stone = "mcl_colorblocks:hardened_clay_orange",
+		y_min = -4,
+		y_max = 10,
 		humidity_point = 0,
 		heat_point = 100,
 		_mcl_biome_type = "hot",
@@ -1085,7 +1141,7 @@ local function register_biomes()
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "Mesa_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 3,
@@ -1093,7 +1149,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 5,
+		y_min = OCEAN_MIN,
+		y_max = -5,
 		vertical_blend = 1,
 		humidity_point = 0,
 		heat_point = 100,
@@ -1107,7 +1164,7 @@ local function register_biomes()
 	})
 
 	-- Mesa Bryce: Variant of Mesa, but with perfect strata and a much smaller red sand desert
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "MesaBryce",
 		node_top = "mcl_colorblocks:hardened_clay",
 		depth_top = 1,
@@ -1115,6 +1172,8 @@ local function register_biomes()
 		node_riverbed = "mcl_colorblocks:hardened_clay",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 4,
+		y_max = overworld_bounds.max,
 		humidity_point = -5,
 		heat_point = 100,
 		_mcl_biome_type = "hot",
@@ -1125,7 +1184,7 @@ local function register_biomes()
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "MesaBryce_sandlevel",
 		node_top = "mcl_core:redsand",
 		depth_top = 1,
@@ -1134,7 +1193,8 @@ local function register_biomes()
 		node_riverbed = "mcl_colorblocks:hardened_clay",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay_orange",
-		offset_bottom = -1,
+		y_min = -4,
+		y_max = 3,
 		humidity_point = -5,
 		heat_point = 100,
 		_mcl_biome_type = "hot",
@@ -1145,7 +1205,7 @@ local function register_biomes()
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "MesaBryce_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 3,
@@ -1153,7 +1213,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 5,
+		y_min = OCEAN_MIN,
+		y_max = -5,
 		vertical_blend = 1,
 		humidity_point = -5,
 		heat_point = 100,
@@ -1168,7 +1229,7 @@ local function register_biomes()
 
 	-- Mesa Plateau F
 	-- Identical to Mesa below Y=30. At Y=30 and above there is a "dry" oak forest
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "MesaPlateauF",
 		node_top = "mcl_colorblocks:hardened_clay",
 		depth_top = 1,
@@ -1176,8 +1237,8 @@ local function register_biomes()
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
-		limit_height_bottom = 18,
-		offset_bottom = 7,
+		y_min = 11,
+		y_max = 29,
 		humidity_point = 0,
 		heat_point = 60,
 		vertical_blend = 0, -- we want a sharp transition
@@ -1192,7 +1253,7 @@ local function register_biomes()
 	-- The oak forest plateau of this biome.
 	-- This is a plateau for grass blocks, dry shrubs, tall grass, coarse dirt and oaks.
 	-- Strata don't generate here.
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "MesaPlateauF_grasstop",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1201,7 +1262,8 @@ local function register_biomes()
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
-		offset_bottom = 26,
+		y_min = 30,
+		y_max = overworld_bounds.max,
 		humidity_point = 0,
 		heat_point = 60,
 		_mcl_biome_type = "hot",
@@ -1212,7 +1274,7 @@ local function register_biomes()
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "MesaPlateauF_sandlevel",
 		node_top = "mcl_core:redsand",
 		depth_top = 2,
@@ -1221,8 +1283,8 @@ local function register_biomes()
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay_orange",
-		offset_top = -7,
-		offset_bottom = -2,
+		y_min = -5,
+		y_max = 10,
 		humidity_point = 0,
 		heat_point = 60,
 		_mcl_biome_type = "hot",
@@ -1233,7 +1295,7 @@ local function register_biomes()
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "MesaPlateauF_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 3,
@@ -1241,7 +1303,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 6,
+		y_min = OCEAN_MIN,
+		y_max = -6,
 		vertical_blend = 1,
 		humidity_point = 0,
 		heat_point = 60,
@@ -1258,7 +1321,7 @@ local function register_biomes()
 	-- Dryer and more "chaotic"/"weathered down" variant of MesaPlateauF:
 	-- oak forest is less dense, more coarse dirt, more erratic terrain, vertical blend, more red sand layers,
 	-- red sand as ores, red sandstone at sandlevel
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "MesaPlateauFM",
 		node_top = "mcl_colorblocks:hardened_clay",
 		depth_top = 1,
@@ -1266,8 +1329,8 @@ local function register_biomes()
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 2,
 		node_stone = "mcl_colorblocks:hardened_clay",
-		limit_height_bottom = 17,
-		offset_bottom = 8,
+		y_min = 12,
+		y_max = 29,
 		humidity_point = -5,
 		heat_point = 60,
 		vertical_blend = 5,
@@ -1280,7 +1343,7 @@ local function register_biomes()
 		_mcl_fogcolor = overworld_fogcolor
 	})
 	-- Grass plateau
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "MesaPlateauFM_grasstop",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1289,7 +1352,8 @@ local function register_biomes()
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
-		offset_bottom = 26,
+		y_min = 30,
+		y_max = overworld_bounds.max,
 		humidity_point = -5,
 		heat_point = 60,
 		_mcl_biome_type = "hot",
@@ -1300,7 +1364,7 @@ local function register_biomes()
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "MesaPlateauFM_sandlevel",
 		node_top = "mcl_core:redsand",
 		depth_top = 3,
@@ -1310,8 +1374,8 @@ local function register_biomes()
 		depth_riverbed = 2,
 		node_stone = "mcl_colorblocks:hardened_clay",
 		-- red sand has wider reach than in other mesa biomes
-		offset_top = -8,
-		offset_bottom = -4,
+		y_min = -7,
+		y_max = 11,
 		humidity_point = -5,
 		heat_point = 60,
 		vertical_blend = 4,
@@ -1323,7 +1387,7 @@ local function register_biomes()
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "MesaPlateauFM_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 3,
@@ -1331,7 +1395,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 3,
-		offset_top = 8,
+		y_min = OCEAN_MIN,
+		y_max = -8,
 		vertical_blend = 2,
 		humidity_point = -5,
 		heat_point = 60,
@@ -1346,7 +1411,7 @@ local function register_biomes()
 
 
 	-- Savanna
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "Savanna",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1354,7 +1419,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 36,
 		heat_point = 79,
 		_mcl_biome_type = "hot",
@@ -1365,7 +1431,7 @@ local function register_biomes()
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "Savanna_beach",
 		node_top = "mcl_core:sand",
 		depth_top = 3,
@@ -1373,8 +1439,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
-		limit_height_top = 1,
+		y_min = -1,
+		y_max = 0,
 		humidity_point = 36,
 		heat_point = 79,
 		_mcl_biome_type = "hot",
@@ -1385,7 +1451,7 @@ local function register_biomes()
 		_mcl_skycolor = beach_skycolor,
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "Savanna_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -1393,7 +1459,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 2,
+		y_min = OCEAN_MIN,
+		y_max = -2,
 		humidity_point = 36,
 		heat_point = 79,
 		_mcl_biome_type = "hot",
@@ -1408,7 +1475,7 @@ local function register_biomes()
 	-- Savanna M
 	-- Changes to Savanna: Coarse Dirt. No sand beach. No oaks.
 	-- Otherwise identical to Savanna
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "SavannaM",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1416,7 +1483,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 48,
 		heat_point = 100,
 		_mcl_biome_type = "hot",
@@ -1427,7 +1495,7 @@ local function register_biomes()
 		_mcl_skycolor = "#6EB1FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "SavannaM_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -1435,6 +1503,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 48,
 		heat_point = 100,
 		_mcl_biome_type = "hot",
@@ -1447,7 +1517,7 @@ local function register_biomes()
 	})
 
 	-- Jungle
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "Jungle",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1455,7 +1525,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 88,
 		heat_point = 81,
 		_mcl_biome_type = "medium",
@@ -1466,7 +1537,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "Jungle_shore",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
@@ -1474,8 +1545,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
-		offset_bottom = 1,
+		y_min = -2,
+		y_max = 0,
 		humidity_point = 88,
 		heat_point = 81,
 		_mcl_biome_type = "medium",
@@ -1486,7 +1557,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "Jungle_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -1494,7 +1565,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
+		y_min = OCEAN_MIN,
+		y_max = -3,
 		vertical_blend = 1,
 		humidity_point = 88,
 		heat_point = 81,
@@ -1509,7 +1581,7 @@ local function register_biomes()
 
 	-- Jungle M
 	-- Like Jungle but with even more dense vegetation
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "JungleM",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1517,7 +1589,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 92,
 		heat_point = 81,
 		_mcl_biome_type = "medium",
@@ -1528,7 +1601,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "JungleM_shore",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
@@ -1536,8 +1609,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
-		offset_bottom = 1,
+		y_min = -2,
+		y_max = 0,
 		humidity_point = 92,
 		heat_point = 81,
 		_mcl_biome_type = "medium",
@@ -1548,7 +1621,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "JungleM_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -1556,7 +1629,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
+		y_min = OCEAN_MIN,
+		y_max = -3,
 		vertical_blend = 1,
 		humidity_point = 92,
 		heat_point = 81,
@@ -1570,7 +1644,7 @@ local function register_biomes()
 	})
 
 	-- Jungle Edge
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "JungleEdge",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1578,7 +1652,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 88,
 		heat_point = 76,
 		_mcl_biome_type = "medium",
@@ -1589,7 +1664,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "JungleEdge_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -1597,6 +1672,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 88,
 		heat_point = 76,
 		_mcl_biome_type = "medium",
@@ -1612,7 +1689,7 @@ local function register_biomes()
 	-- Almost identical to Jungle Edge. Has deeper dirt. Melons spawn here a lot.
 	-- This biome occours directly between Jungle M and Jungle Edge but also has a small border to Jungle.
 	-- This biome is very small in general.
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "JungleEdgeM",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1620,7 +1697,8 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 90,
 		heat_point = 79,
 		_mcl_biome_type = "medium",
@@ -1631,7 +1709,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "JungleEdgeM_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -1639,6 +1717,8 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 90,
 		heat_point = 79,
 		_mcl_biome_type = "medium",
@@ -1651,7 +1731,7 @@ local function register_biomes()
 	})
 
 	-- Mangrove swamp
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "MangroveSwamp",
 		node_top = "mcl_mud:mud",
 		depth_top = 1,
@@ -1659,9 +1739,9 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
 		-- Note: Limited in height!
-		limit_height_bottom = 26,
+		y_max = 27,
 		humidity_point = 95,
 		heat_point = 94,
 		_mcl_biome_type = "hot",
@@ -1672,7 +1752,7 @@ local function register_biomes()
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "MangroveSwamp_shore",
 		node_top = "mcl_mud:mud",
 		depth_top = 1,
@@ -1680,8 +1760,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
-		offset_top = 3,
-		offset_bottom = -2,
+		y_min = -5,
+		y_max = 0,
 		humidity_point = 95,
 		heat_point = 94,
 		_mcl_biome_type = "hot",
@@ -1692,7 +1772,7 @@ local function register_biomes()
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "MangroveSwamp_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
@@ -1700,7 +1780,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 2,
-		offset_top = 6,
+		y_min = OCEAN_MIN,
+		y_max = -6,
 		vertical_blend = 1,
 		humidity_point = 95,
 		heat_point = 94,
@@ -1713,7 +1794,7 @@ local function register_biomes()
 		_mcl_fogcolor = overworld_fogcolor
 	})
 	-- Swampland
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "Swampland",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1721,9 +1802,9 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
 		-- Note: Limited in height!
-		limit_height_bottom = 22,
+		y_max = 23,
 		humidity_point = 90,
 		heat_point = 50,
 		_mcl_biome_type = "medium",
@@ -1734,7 +1815,7 @@ local function register_biomes()
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "Swampland_shore",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
@@ -1742,8 +1823,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
-		offset_bottom = -2,
+		y_min = -5,
+		y_max = 0,
 		humidity_point = 90,
 		heat_point = 50,
 		_mcl_biome_type = "medium",
@@ -1754,7 +1835,7 @@ local function register_biomes()
 		_mcl_skycolor = "#78A7FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "Swampland_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -1762,7 +1843,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 6,
+		y_min = OCEAN_MIN,
+		y_max = -6,
 		vertical_blend = 1,
 		humidity_point = 90,
 		heat_point = 50,
@@ -1777,7 +1859,7 @@ local function register_biomes()
 
 	-- Mushroom Island / Mushroom Island Shore (rare)
 	-- Not neccessarily an island at all, only named after Minecraft's biome
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "MushroomIsland",
 		node_top = "mcl_core:mycelium",
 		depth_top = 1,
@@ -1785,8 +1867,9 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = 4,
 		-- Note: Limited in height!
-		limit_height_bottom = 16,
+		y_max = 20,
 		vertical_blend = 1,
 		humidity_point = 106,
 		heat_point = 50,
@@ -1799,7 +1882,7 @@ local function register_biomes()
 		_mcl_fogcolor = overworld_fogcolor
 	})
 
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "MushroomIslandShore",
 		node_top = "mcl_core:mycelium",
 		depth_top = 1,
@@ -1807,7 +1890,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = 4,
+		y_min = 1,
+		y_max = 3,
 		humidity_point = 106,
 		heat_point = 50,
 		_mcl_biome_type = "medium",
@@ -1818,7 +1902,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "MushroomIsland_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 1,
@@ -1826,6 +1910,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 106,
 		heat_point = 50,
 		_mcl_biome_type = "medium",
@@ -1839,7 +1925,7 @@ local function register_biomes()
 
 	-- Bamboo Jungle areas are like the Jungle areas, but warmer and more humid.
 	-- Bamboo Jungle
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "BambooJungle",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1847,7 +1933,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 90,
 		heat_point = 95,
 		_mcl_biome_type = "medium",
@@ -1858,7 +1945,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "BambooJungle_shore",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
@@ -1866,8 +1953,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
-		offset_bottom = 1,
+		y_min = -2,
+		y_max = 0,
 		humidity_point = 90,
 		heat_point = 95,
 		_mcl_biome_type = "medium",
@@ -1878,7 +1965,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "BambooJungle_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -1886,7 +1973,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
+		y_min = OCEAN_MIN,
+		y_max = -3,
 		vertical_blend = 1,
 		humidity_point = 95,
 		heat_point = 90,
@@ -1901,7 +1989,7 @@ local function register_biomes()
 
 	-- Bamboo Jungle M
 	-- Like Bamboo Jungle but with even more dense vegetation
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "BambooJungleM",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1909,7 +1997,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 95,
 		heat_point = 95,
 		_mcl_biome_type = "medium",
@@ -1920,7 +2009,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "shore", {
+	minetest.register_biome({
 		name = "BambooJungleM_shore",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
@@ -1928,8 +2017,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
-		offset_bottom = 1,
+		y_min = -2,
+		y_max = 0,
 		humidity_point = 95,
 		heat_point = 90,
 		_mcl_biome_type = "medium",
@@ -1940,7 +2029,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "BambooJungleM_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -1948,7 +2037,8 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_top = 3,
+		y_min = OCEAN_MIN,
+		y_max = -3,
 		vertical_blend = 1,
 		humidity_point = 95,
 		heat_point = 95,
@@ -1962,7 +2052,7 @@ local function register_biomes()
 	})
 
 	-- Bamboo Jungle Edge
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "BambooJungleEdge",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -1970,7 +2060,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 92,
 		heat_point = 90,
 		_mcl_biome_type = "medium",
@@ -1981,7 +2072,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "BambooJungleEdge_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -1989,6 +2080,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 95,
 		heat_point = 88,
 		_mcl_biome_type = "medium",
@@ -2004,7 +2097,7 @@ local function register_biomes()
 	-- Almost identical to Jungle Edge. Has deeper dirt. Melons spawn here a lot.
 	-- This biome occours directly between Jungle M and Jungle Edge but also has a small border to Jungle.
 	-- This biome is very small in general.
-	vl_worlds.register_biome("overworld", "land", {
+	minetest.register_biome({
 		name = "BambooJungleEdgeM",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
@@ -2012,7 +2105,8 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		offset_bottom = -3,
+		y_min = 1,
+		y_max = overworld_bounds.max,
 		humidity_point = 95,
 		heat_point = 95,
 		_mcl_biome_type = "medium",
@@ -2023,7 +2117,7 @@ local function register_biomes()
 		_mcl_skycolor = "#77A8FF",
 		_mcl_fogcolor = overworld_fogcolor
 	})
-	vl_worlds.register_biome("overworld", "ocean", {
+	minetest.register_biome({
 		name = "BambooJungleEdgeM_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
@@ -2031,6 +2125,8 @@ local function register_biomes()
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = 0,
 		humidity_point = 97,
 		heat_point = 90,
 		_mcl_biome_type = "medium",
@@ -2047,18 +2143,18 @@ local function register_biomes()
 		local biome = overworld_biomes[i]
 
 		-- Deep Ocean
-		vl_worlds.register_biome("overworld", "underground-sea", {
+		minetest.register_biome({
 			name = biome .. "_deep_ocean",
 			heat_point = minetest.registered_biomes[biome].heat_point,
 			humidity_point = minetest.registered_biomes[biome].humidity_point,
+			y_min = DEEP_OCEAN_MIN,
+			y_max = DEEP_OCEAN_MAX,
 			node_top = minetest.registered_biomes[biome .. "_ocean"].node_top,
 			depth_top = 2,
 			node_filler = minetest.registered_biomes[biome .. "_ocean"].node_filler,
 			depth_filler = 3,
 			node_riverbed = minetest.registered_biomes[biome .. "_ocean"].node_riverbed,
 			depth_riverbed = 2,
-			offset_top = 12,
-			limit_height_top = 15,
 			vertical_blend = 5,
 			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
 			_mcl_grass_palette_index = minetest.registered_biomes[biome]._mcl_grass_palette_index,
@@ -2070,11 +2166,12 @@ local function register_biomes()
 
 		-- Underground biomes are used to identify the underground and to prevent nodes from the surface
 		-- (sand, dirt) from leaking into the underground.
-		vl_worlds.register_biome("overworld", "underground-sea", {
+		minetest.register_biome({
 			name = biome .. "_underground",
-			offset_top = 28,
 			heat_point = minetest.registered_biomes[biome].heat_point,
 			humidity_point = minetest.registered_biomes[biome].humidity_point,
+			y_min = overworld_bounds.min,
+			y_max = DEEP_OCEAN_MIN - 1,
 			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
 			_mcl_grass_palette_index = minetest.registered_biomes[biome]._mcl_grass_palette_index,
 			_mcl_foliage_palette_index = minetest.registered_biomes[biome]._mcl_foliage_palette_index,
@@ -2119,7 +2216,7 @@ local function register_dimension_biomes()
 		param2 = 0,
 	})
 
-	vl_worlds.register_biome("underworld", "land", {
+	minetest.register_biome({
 		name = "Nether",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
@@ -2127,6 +2224,8 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
+		y_min = underworld_bounds.min,
+		y_max = underworld_bounds.max + 80,
 		heat_point = 100,
 		humidity_point = 0,
 		_mcl_biome_type = "hot",
@@ -2151,7 +2250,7 @@ local function register_dimension_biomes()
 		param2 = 0,
 	})
 
-	vl_worlds.register_biome("underworld", "land", {
+	minetest.register_biome({
 		name = "SoulsandValley",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
@@ -2159,6 +2258,8 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
+		y_min = underworld_bounds.min,
+		y_max = underworld_bounds.max + 80,
 		heat_point = 77,
 		humidity_point = 33,
 		_mcl_biome_type = "hot",
@@ -2203,7 +2304,7 @@ local function register_dimension_biomes()
 			flags = "defaults",
 		}
 	})
-	vl_worlds.register_biome("underworld", "land", {
+	minetest.register_biome({
 		name = "CrimsonForest",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
@@ -2211,6 +2312,8 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
+		y_min = underworld_bounds.min,
+		y_max = underworld_bounds.max + 80,
 		heat_point = 60,
 		humidity_point = 47,
 		_mcl_biome_type = "hot",
@@ -2233,7 +2336,7 @@ local function register_dimension_biomes()
 		flags = "all_floors",
 		param2 = 0,
 	})
-	vl_worlds.register_biome("underworld", "land", {
+	minetest.register_biome({
 		name = "WarpedForest",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
@@ -2241,6 +2344,8 @@ local function register_dimension_biomes()
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
+		y_min = underworld_bounds.min,
+		y_max = underworld_bounds.max + 80,
 		heat_point = 37,
 		humidity_point = 70,
 		_mcl_biome_type = "hot",
@@ -2263,7 +2368,7 @@ local function register_dimension_biomes()
 		flags = "all_floors",
 		param2 = 0,
 	})
-	vl_worlds.register_biome("underworld", "land", {
+	minetest.register_biome({
 		name = "BasaltDelta",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
@@ -2272,7 +2377,7 @@ local function register_dimension_biomes()
 		node_river_water = "air",
 		node_cave_liquid = "air",
 		y_min = underworld_bounds.min,
-		y_max = underworld_bounds.max - 48, -- TODO: remove offset before merge
+		y_max = underworld_bounds.max + 80,
 		heat_point = 27,
 		humidity_point = 80,
 		_mcl_biome_type = "hot",
@@ -2320,13 +2425,15 @@ local function register_dimension_biomes()
 	})
 
 	--[[ THE END ]]
-	vl_worlds.register_biome("fringe", "islands", {
+	minetest.register_biome({
 		name = "End",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
+		y_min = fringe_bounds.min,
+		y_max = fringe_bounds.max + 80,
 		heat_point = 1000, --ridiculously high values so End Island always takes precedent
 		humidity_point = 1000,
 		vertical_blend = 16,
@@ -2338,13 +2445,15 @@ local function register_dimension_biomes()
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
-	vl_worlds.register_biome("fringe", "islands", {
+	minetest.register_biome({
 		name = "EndBarrens",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
+		y_min = fringe_bounds.min,
+		y_max = fringe_bounds.max + 80,
 		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
@@ -2356,13 +2465,15 @@ local function register_dimension_biomes()
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
-	vl_worlds.register_biome("fringe", "islands", {
+	minetest.register_biome({
 		name = "EndMidlands",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
+		y_min = fringe_bounds.min,
+		y_max = fringe_bounds.max + 80,
 		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
@@ -2374,13 +2485,15 @@ local function register_dimension_biomes()
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
-	vl_worlds.register_biome("fringe", "islands", {
+	minetest.register_biome({
 		name = "EndHighlands",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
+		y_min = fringe_bounds.min,
+		y_max = fringe_bounds.max + 80,
 		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
@@ -2392,13 +2505,15 @@ local function register_dimension_biomes()
 		_mcl_skycolor = end_skycolor,
 		_mcl_fogcolor = end_fogcolor
 	})
-	vl_worlds.register_biome("fringe", "islands", {
+	minetest.register_biome({
 		name = "EndSmallIslands",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
+		y_min = fringe_bounds.min,
+		y_max = fringe_bounds.max + 80,
 		heat_point = 1000,
 		humidity_point = 1000,
 		vertical_blend = 16,
@@ -2411,13 +2526,15 @@ local function register_dimension_biomes()
 		_mcl_fogcolor = end_fogcolor
 	})
 
-	vl_worlds.register_biome("fringe", "islands", {
+	minetest.register_biome({
 		name = "EndBorder",
 		node_stone = "air",
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
 		node_cave_liquid = "air",
+		y_min = fringe_bounds.min,
+		y_max = fringe_bounds.max + 80,
 		heat_point = 500,
 		humidity_point = 500,
 		vertical_blend = 16,
@@ -2432,7 +2549,7 @@ local function register_dimension_biomes()
 		_mcl_fogcolor = end_fogcolor
 	})
 
-	vl_worlds.register_biome("fringe", "islands", {
+	minetest.register_biome({
 		name = "EndIsland",
 		node_stone = "air",
 		node_filler = "air",
@@ -3105,7 +3222,7 @@ local function register_dimension_ores()
 		wherein = end_wherein,
 		biomes = {"EndSmallIslands", "Endborder"},
 		y_min = fringe_bounds.min + 64,
-		y_max = fringe_bounds.min,
+		y_max = fringe_bounds.min + 80,
 		clust_num_ores = 3375,
 		clust_size = 15,
 
@@ -3139,7 +3256,7 @@ local function register_dimension_ores()
 		wherein = end_wherein,
 		biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens"},
 		y_min = fringe_bounds.min + 64,
-		y_max = fringe_bounds.min,
+		y_max = fringe_bounds.min + 80,
 
 		noise_params = {
 			offset = fringe_bounds.min + 70,
@@ -3167,7 +3284,7 @@ local function register_dimension_ores()
 		wherein = end_wherein,
 		biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens"},
 		y_min = fringe_bounds.min + 64,
-		y_max = fringe_bounds.min,
+		y_max = fringe_bounds.min + 80,
 
 		noise_params = {
 			offset = fringe_bounds.min + 72,
@@ -3194,7 +3311,7 @@ local function register_dimension_ores()
 		wherein = end_wherein,
 		biomes = {"End", "EndMidlands", "EndHighlands", "EndBarrens"},
 		y_min = fringe_bounds.min + 64,
-		y_max = fringe_bounds.min,
+		y_max = fringe_bounds.min + 80,
 
 		noise_params = {
 			offset = fringe_bounds.min + 70,

@@ -166,7 +166,6 @@ function vl_worlds.register_world(def)
 		if new_start then
 			local wdef = {}
 			wdef.name = def.name
-			wdef.layers = {}
 
 			registered_worlds[id] = wdef
 
@@ -186,7 +185,6 @@ function vl_worlds.register_world(def)
 				id = id,
 				start = new_start,
 				height = def.height,
-				layers = {},
 			})
 			table.insert(world_structure, i, {
 				id = "void",
@@ -468,210 +466,6 @@ minetest.register_globalstep(function(dtime)
 end)
 
 
--- API
----@class vl_worlds.LayerDef
----@field id string - layer ID in code
----@field bottom integer - start height from the bottom of the dimension (starts from 0)
----@field top integer - height of the last node of the layer relative to start of dimension
----@field has_separate_biomes boolean? defaults to false
--- -- determines whether biomes can be registered as a part of this layer
----@param dim_id string - id of a valid registered dimension
----@param def vl_worlds.LayerDef
-function vl_worlds.register_layer(dim_id, def)
-	assert(type(dim_id) == "string", "dim_id must be a string")
-	assert(registered_worlds[dim_id], "Dimension \""..dim_id.."\" is not registered")
-	local id = def.id
-	assert(type(id) == "string", "Layer id must be a string")
-	assert(not registered_worlds[dim_id].layers[id],
-		   "Layer \""..id.."\" in dimension \""..dim_id.."\" already registered")
-	assert(type(def.bottom) == "number" and type(def.top) == "number"
-				and def.bottom == def.bottom and def.top == def.top,
-		   "Unable to register layer \""..id.."\": height of bottom or top of the layer is not a number")
-	assert(def.bottom >= 0 and def.top >= def.bottom,
-		   "Unable to register layer \""..id.."\": layer bounds negative or inverted")
-	for _, dim in ipairs(world_structure) do
-		if dim.id == dim_id then
-			assert(def.top <= dim.height,
-				   "Unable to register layer \""..id.."\" in world \""..dim_id.."\": top out of world bounds")
-			local targ_index
-			if #dim.layers == 0 then
-				targ_index = 1
-			else
-				if def.has_separate_biomes then
-					for i, layer in ipairs(dim.layers) do
-						assert(not layer.has_separate_biomes
-							or layer.bottom > def.top or layer.top < def.bottom,
-							"Separate biome layers colliding: "..layer.id.." and "..def.id)
-					end
-				end
-				for i, layer in ipairs(dim.layers) do
-					if layer.bottom > def.bottom then
-						targ_index = i
-						break
-					end
-				end
-			end
-			if not targ_index then
-				targ_index = #dim.layers + 1
-			end
-			table.insert(dim.layers, targ_index, {
-				id = id,
-				bottom = def.bottom,
-				top = def.top,
-				has_separate_biomes = def.has_separate_biomes,
-			})
-			registered_worlds[dim_id].layers[id] = true -- set for now
-		end
-	end
-end
-
--- API
----@param string dim_id
----@param string layer_id
----@returns {min: integer, max: integer}?
-function vl_worlds.get_layer_bounds(dim_id, layer_id)
-	for _, dim in ipairs(world_structure) do
-		-- Treat layer "" as the entire dimension (for biome registration)
-		if layer_id == "" then
-			return {
-				min = dim.start,
-				max = dim.start + dim.height,
-			}
-		end
-
-		if dim.id == dim_id then
-			for _, layer in ipairs(dim.layers) do
-				if layer.id == layer_id then
-					return {
-						min = dim.start + layer.bottom,
-						max = dim.start + layer.top,
-					}
-				end
-			end
-		end
-	end
-
-	return nil
-end
-
-
-vl_worlds.register_layer("overworld", {
-	id = "underground-sea",
-	bottom = 0,
-	top = 58,
-	has_separate_biomes = true,
-})
-
-vl_worlds.register_layer("overworld", {
-	id = "ocean",
-	bottom = 58 + 4 - 15,
-	top = 58 + 4,
-})
-
-vl_worlds.register_layer("overworld", {
-	id = "shore",
-	bottom = 59,
-	top = 65,
-	has_separate_biomes = true,
-})
-
-local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
-vl_worlds.register_layer("overworld", {
-	id = "land",
-	bottom = 66,
-	top = overworld_bounds.max - overworld_bounds.min,
-	has_separate_biomes = true,
-})
-
-local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
-vl_worlds.register_layer("underworld", {
-	id = "land",
-	bottom = 0,
-	top = 127,
-	has_separate_biomes = true,
-})
-if not superflat then
-	vl_worlds.register_layer("underworld", {
-		id = "floor",
-		top = 4,
-		bottom = 0,
-		has_separate_biomes = false,
-	})
-	vl_worlds.register_layer("underworld", {
-		id = "roof",
-		top = 127,
-		bottom = 123,
-		has_separate_biomes = false,
-	})
-	vl_worlds.register_layer("underworld", {
-		id = "lava",
-		bottom = 0,
-		top = 31,
-	})
-else
-	vl_worlds.register_layer("underworld", {
-		id = "floor",
-		top = 0,
-		bottom = 0,
-		has_separate_biomes = false,
-	})
-	vl_worlds.register_layer("underworld", {
-		id = "roof",
-		top = 127,
-		bottom = 127,
-		has_separate_biomes = false,
-	})
-	vl_worlds.register_layer("underworld", {
-		id = "lava",
-		bottom = 0,
-		top = 2,
-	})
-end
-vl_worlds.register_layer("underworld", {
-	id = "air_over_roof",
-	bottom = 128,
-	top = 255,
-	has_separate_biomes = false,
-})
-
-local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
-vl_worlds.register_layer("fringe", {
-	id = "islands",
-	bottom = 0,
-	top = fringe_bounds.max - fringe_bounds.min,
-	has_separate_biomes = true,
-})
-
--- API
----@param string dim
----@param string layer
----@param core.BiomeDef def - everything except for ymin/ymax
-function vl_worlds.register_biome(dim, layer, def)
-	local bounds = vl_worlds.get_layer_bounds(dim, layer)
-	assert(bounds, "Unknown dimension layer: "..dim.."."..layer)
-
-	def.y_min = bounds.min + (def.offset_bottom or 0)
-	def.y_max = bounds.max - (def.offset_top or 0)
-	if def.limit_height_bottom then
-		def.y_max = math.min(def.y_max, def.y_min + def.limit_height_bottom)
-	elseif def.limit_height_top then
-		def.y_min = math.max(def.y_min, def.y_max - def.limit_height_top)
-	end
-
-	-- Erase these parameters from biome registration data
-	def.offset_bottom = nil
-	def.offset_top = nil
-	def.limit_height_bottom = nil
-	def.limit_height_top = nil
-
-	-- TODO support minp/maxp as well
-
-	core.register_biome(def)
-end
-
--- TODO register bedrock, lava and other utility layers from below as has_separate_biomes = false
-
-
 -- DEPRECATED
 local deprecated = {}
 vl_legacy.show_deprecated_field_warnings(mcl_vars, "mcl_vars", deprecated)
@@ -691,7 +485,7 @@ else
 	deprecated.mg_bedrock_is_rough = false
 end
 
-local nether_bounds = vl_worlds.get_layer_bounds("underworld", "land")
+local nether_bounds = vl_worlds.get_dimension_bounds("underworld")
 deprecated.mg_nether_min = nether_bounds.min
 deprecated.mg_nether_max = nether_bounds.max
 
@@ -710,17 +504,19 @@ end
 -- end of DEPRECATED
 
 -- TODO remove
-local underworld_roof_bounds  = vl_worlds.get_layer_bounds("underworld", "roof")
-local underworld_floor_bounds = vl_worlds.get_layer_bounds("underworld", "floor")
-local underworld_lava_bounds  = vl_worlds.get_layer_bounds("underworld", "lava")
-
-mcl_vars.mg_bedrock_nether_bottom_min = underworld_floor_bounds.min
+mcl_vars.mg_bedrock_nether_bottom_min = nether_bounds.min
 mcl_vars.mg_nether_deco_max = mcl_vars.mg_nether_max - 11 -- this is so ceiling decorations don't spill into other biomes as bedrock generation calls core.generate_decorations to put netherrack under the bedrock
-mcl_vars.mg_bedrock_nether_top_max = underworld_roof_bounds.max
-mcl_vars.mg_bedrock_nether_bottom_max = underworld_floor_bounds.max
-mcl_vars.mg_bedrock_nether_top_min = underworld_roof_bounds.min
-mcl_vars.mg_lava_nether_max = underworld_lava_bounds.max
-
+mcl_vars.mg_bedrock_nether_top_max = mcl_vars.mg_nether_max
+if not superflat then
+	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
+	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
+	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 31
+else
+	-- Thin bedrock in classic superflat mapgen
+	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min
+	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max
+	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 2
+end
 if mg_name == "flat" then
 	if superflat then
 		mcl_vars.mg_flat_nether_floor = mcl_vars.mg_bedrock_nether_bottom_max + 4
