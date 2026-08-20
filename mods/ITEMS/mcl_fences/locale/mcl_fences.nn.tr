@@ -1,0 +1,22 @@
+# textdomain: mcl_fences
+
+Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump.=Gjerde er strukturar som blokkerar vegen. Gjerde blir kopla til kvarandre og solide blokker. Dei kan ikkje hoppast over med eit enkelt hopp.
+
+Openable by players and redstone power=Opnast av spelarar og raudsteinkraft
+
+Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates.=Grind kan opnast eller lukkast og kan ikkje hoppast over. Gjerde koplast saumlaust til grinder.
+
+Right-click the fence gate to open or close it.=Høgreklikk på grinda for å opne eller lukke ho.
+Oak Fence=Eikegjerde
+Oak Fence Gate=Eikegrind
+Spruce Fence=Grangjerde
+Spruce Fence Gate=Grangrind
+Birch Fence=Bjørkegjerde
+Birch Fence Gate=Bjørkegrind
+Jungle Fence=Jungelgjerde
+Jungle Fence Gate=Jungelgrind
+Dark Oak Fence=Mørkeikgjerde
+Dark Oak Fence Gate=Mørkeikgrind
+Acacia Fence=Akasiegjerde
+Acacia Fence Gate=Akasiegrind
+Nether Brick Fence=Mur av nethertegl

@@ -1,0 +1,166 @@
+# textdomain: mcl_farming
+##[ soil.lua ]##
+Farmland=Dyrkbar jord
+Surface for crops=Overflate for avlingar
+Can become wet=Kan bli våt
+
+Farmland is used for farming, a necessary surface to plant crops. It is created when a hoe is used on dirt or a similar block. Plants are able to grow on farmland, but slowly. Farmland will become hydrated farmland (on which plants grow faster) when it rains or a water source is nearby. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.=Dyrkbar jord nyttast til jordbruk, ei nødvendig overflate for å plante avlingar. Det skapast når eit grev nyttast på jord eller liknande blokker. Planter er i stand til å vekse på dyrkbar jord, men dei veks sakte. Dyrkbar jord blir fuktig dyrkbar jord (der planter veks raskare) når det regnar eller ei vasskjelde er i nærleiken. Denne blokka blir til jord igjen når ei solid blokk plasserast oppå ho eller ei stempelarm strekkjer seg over henne.
+
+Hydrated Farmland=Fuktig dyrkbar jord
+
+Hydrated farmland is used in farming, this is where you can plant and grow some plants. It is created when farmland is under rain or near water. Without water, this block will dry out eventually. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.=Fuktig dyrkbar jord nyttast til jordbruk, det er her du kan plante og dyrke visse planter. Det skapast når dyrkbar jord regnast på eller er nær vatn. Utan vatn vil denne blokka tørke ut til slutt. Denne blokka blir til jord igjen når ei solid blokk plasserast oppå ho eller ei stempelarm strekkjer seg over henne.
+
+##[ hoes.lua ]##
+Turns block into farmland=Gjer blokk om til dyrkbar jord
+
+Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.=Grev er viktige verktøy for dyrking av avlingar. Dei blir nytta til å lage dyrkbar jord som det kan plantast ulike frø i. Grev kan, i ei knipe, også nyttast som svært svake våpen.
+
+Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.=Nytta grevet på ei dyrkbar blokk (ved å høgreklikke på ho) for å gjere ho om til dyrka jord. Jord, grasblokker og grasstiar er dyrkbare blokker. Ved å nytta eit grev på grov jord blir ho til vanleg jord.
+
+Wood Hoe=Tregrev
+Stone Hoe=Steingrev
+Iron Hoe=Jarngrev
+Gold Hoe=Gullgrev
+Diamond Hoe=Diamantgrev
+Netherite Hoe=Nethereittgrev
+##[ wheat.lua ]##
+Grows on farmland=Veks på dyrkbar jord
+This is a food item which can be eaten.=Dette er ei matvare som kan etast.
+Wheat Seeds=Kveitefrø
+Grows into a wheat plant. Chickens like wheat seeds.=Veks til ein kveiteplante. Høns likar kveitefrø.
+
+Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant.=Plasser kveitefrøa på dyrkbar jord (som kan lagast med eit grev) for å plante ein kveiteplante.
+
+They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.=Dei veks i sollys og veks raskare på fuktig dyrkbar jord. Høgreklikk på eit dyr for å mata det med kveitefrø.
+
+Premature Wheat Plant=Umoden kveiteplante
+Premature wheat plants grow on farmland under sunlight in 8 stages.=Umodne kveiteplantar veks på dyrkbar jord under sollys gjennom 8 stadium.
+
+On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.=På fuktig dyrkbar jord veks dei raskare. Dei kan haustast når som helst, men gjev berre avkasting når dei er modne.
+
+Premature Wheat Plant (Stage @1)=Umoden kveiteplante (stadium @1)
+Mature Wheat Plant=Moden kveiteplante
+Mature wheat plants are ready to be harvested for wheat and wheat seeds.=Modne hveteplanter er klare for å høstes for hvete og hvetefrø.
+They won't grow any further.=Dei veks ikkje lenger.
+Wheat=Kveite
+Wheat is used in crafting. Some animals like wheat.=Kveite nyttast i emning. Nokre dyr likar kveite.
+Use the “Place” key on an animal to try to feed it wheat.=Nytta "Plasser"-tasten på eit dyr for å prøve å mate det med kveite.
+Cookie=Kjeks
+Bread=Brød
+Hay Bale=Høyball
+Hay bales are decorative blocks made from wheat.=Høyballar er dekorative blokkar laga av kveite.
+##[ pumpkin.lua ]##
+Pumpkin Seeds=Graskarfrø
+
+Grows into a pumpkin stem which in turn grows pumpkins. Chickens like pumpkin seeds.=Veks til ein graskarsstilk som i gjengjeld veks graskar. Høns likar graskarfrø.
+
+Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkin stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem attempts to grow a pumpkin next to it. Rightclick an animal to feed it pumpkin seeds.=Plasser graskarfrø på dyrkbar jord (som kan lagast med eit grev) for å plante ein graskarstilk. Graskarstilkar veks i sollys og veks raskare på fuktig dyrkbar jord. Når moden, vil stilken forsøke å vekse eit graskar ved sida av seg. Høgreklikk på eit dyr for å mate det med graskarfrø.
+
+Premature Pumpkin Stem=Umoden graskarstilk
+
+Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins.=Graskarstilkar veks på dyrkbar jord i 8 stadium. På fuktig dyrkbar jord er veksten litt raskare. Modne graskarstilkar er i stand til å vekse graskar.
+
+Premature Pumpkin Stem (Stage @1)=Umoden graskarstilk(stadium @1)
+Mature Pumpkin Stem=Moden graskarstilk
+
+A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.=Ein moden graskarstilk prøvar å gro eit graskar på ei av dei fire tilstøytande blokkene rundt. Eit graskar kan berre vekse på dyrkbar jord, jord eller ei grasblokk. Når eit graskar er ved sida av ein graskarstilk, bøyer graskarstilken seg med det same og koplar seg til graskaret. Medan han er tilkopla, kan ikkje graskarstilken gro eit nytt graskar. Så snart alle graskar rundt stilken er fjerna, mister han sambandet og er klar til å dyrke enda eit graskar.
+
+Pumpkin=Graskar
+
+A pumpkin is a decorative block. It can be carved with shears to obtain a carved pumpkin and pumpkin seeds.=Eit graskar er ei dekorativ blokk. Det kan klippast med saks for å få eit utskore graskar og graskarfrø.
+
+To carve a pumpkin, use the shears on the side you want the face to appear.=For å skjære ut et gresskar, bruk saksen på den siden du vil at ansiktet skal vises.
+Carved Pumpkin=Utskore graskar
+
+A carved pumpkin is a decorative block that can be used to summon snow and iron golems. It can also be worn as a helmet. It is made from shearing a pumpkin.=Eit utskore graskar er ei dekorativ blokk som kan nyttast til å mane fram snømenn og jarnkjemper. Det kan òg nyttast som ein hjelm. Det vert laga ved å klippe eit graskar.
+
+Jack o'Lantern=Graskarlykt
+
+A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly.=Ei graskarlykt er ein tradisjonell Halloween-dekorasjon laga av eit graskar. Ho lyser sterkt.
+
+Pumpkin Pie=Graskarpai
+A pumpkin pie is a tasty food item which can be eaten.=Eit graskarpai er ei velsmakande matvare som kan etast.
+##[ melon.lua ]##
+Melon Seeds=Melonfrø
+Grows into a melon stem which in turn grows melons. Chickens like melon seeds.=Veks til ein melonstilk som igjen veks melonar. Høns likar melonfrø.
+
+Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melon stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem will attempt to grow a melon at the side. Rightclick an animal to feed it melon seeds.=Plasser melonfrø på dyrkbar jord (som kan lagast med eit grev) for å plante ein melonstilk. Melonstilkar veks i sollys og veks raskare på fuktig dyrkbar jord. Når han er moden, vil stilken forsøke å vekse ein melon ved sida av seg. Høgreklikk på eit dyr for å mate det med melonfrø.
+
+Melon=Melon
+
+A melon is a block which can be grown from melon stems, which in turn are grown from melon seeds. It can be harvested for melon slices.=Ein melon er ei blokk som veks frå melonstilkar, som gror frå melonfrø. Den kan haustast for melonbåtar.
+
+Premature Melon Stem=Umoden melonstilk
+
+Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons.=Melonstilkar veks på dyrkbar jord i 8 stadium. På fuktig dyrkbar jord er veksten litt raskare. Modne melonstilkar er i stand til å gro melonar.
+
+Premature Melon Stem (Stage @1)=Umoden melonstilk (stadium @1)
+Mature Melon Stem=Moden melonstilk
+
+A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.=Ein moden melonstilk prøvar å gro ein melon på ei av dei fire tilstøytande blokkene rundt. Ein melon kan berre vekse på dyrkbar jord, jord eller ei grasblokk. Når ein melon er ved sida av ein melonstilk, bøyer melonstilken seg med det same og koplar seg til melonen. Medan han er tilkopla, kan ikkje melonstilken gro ein ny melon. Så snart alle melonar rundt stilken er fjerna, mister han sambandet og er klar til å gro enda ein melon.
+
+Melon Slice=Melonbåt
+##[ carrots.lua ]##
+Premature Carrot Plant=Umoden gulrotplante
+
+Carrot plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Gulrotplantar er plantar som veks på dyrkbar jord under sollys gjennom 8 stadium, men berre 4 av stadia kan synleg skiljast frå kvarandre. På fuktig dyrkbar jord veks dei litt raskare. Dei kan haustast når som helst, men gjev berre avkasting når dei er modne.
+
+Premature Carrot Plant (Stage @1)=Umoden gulrotplante (stadium @1)
+Mature Carrot Plant=Moden gulrotplante
+
+Mature carrot plants are ready to be harvested for carrots. They won't grow any further.=Modne gulrotplanter er klare til å bli hausta for gulrøtter. Dei veks ikkje lenger.
+
+Carrot=Gulrot
+Carrots can be eaten and planted. Pigs and rabbits like carrots.=Gulrot kan etast og plantast. Grisar og kaninar likar gulrøter.
+
+Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Hald den i handa og høgreklikk for å ete den. Plasser den i dyrkbar jord for å plante gulrota. Ho veks i sollys og veks raskare på fuktig dyrkbar jord. Høgreklikk på eit dyr for å mate det.
+
+Golden Carrot=Gullrot
+
+A golden carrot is a precious food item which can be eaten. It is really, really filling!=Ei gullrot er ei verdifull matvare som kan etast. Det er verkeleg, verkeleg mettande!
+
+##[ potatoes.lua ]##
+Premature Potato Plant=Umoden potetplante
+
+Potato plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Potetplantar er plantar som veks på dyrkbar jord under sollys gjennom 8 stadium, men berre 4 av stadia kan skiljast synleg frå kvarandre. På fuktig dyrkbar jord veks dei litt raskare. Dei kan haustast når som helst, men gjev berre avkasting når dei er modne.
+
+Premature Potato Plant (Stage @1)=Umoden potetplante (stadium @1)
+Mature Potato Plant=Moden potetplante
+
+Mature potato plants are ready to be harvested for potatoes. They won't grow any further.=Modne potetplantar er klare til å bli hausta for poteter. Dei veks ikkje lenger.
+Potato=Potet
+
+Potatoes are food items which can be eaten, cooked in the furnace and planted. Pigs like potatoes.=Poteter er matvarer som kan etast, bakast i omnen og plantast. Grisar likar poteter.
+
+Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant it. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.=Hald den i handa og høgreklikk for å ete den. Plasser den i dyrkbar jord for å plante den. Den veks i sollys og veks raskare på fuktig dyrkbar jord. Høgreklikk på eit dyr for å mate det.
+
+Baked Potato=Bakt potet
+Baked potatoes are food items which are more filling than the unbaked ones.=Bakte poteter er matvarer som er meir mettande enn dei ubakte.
+Poisonous Potato=Giftig potet
+60% chance of poisoning=60% sjanse for forgifting
+
+This potato doesn't look too healthy. You can eat it to restore hunger points, but there's a 60% chance it will poison you briefly.=Denne poteta ser ikkje så sunn ut. Du kan eta henne for å attvinne svoltpoeng, men det er 60 % sjanse for at ho vil forgifta deg ei kort stund.
+
+##[ beetroot.lua ]##
+Beetroot Seeds=Raudbetefrø
+Grows into a beetroot plant. Chickens like beetroot seeds.=Veks til ei raudbeteplante. Høns likar raudbetefrø.
+
+Place the beetroot seeds on farmland (which can be created with a hoe) to plant a beetroot plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it beetroot seeds.=Plasser raudbetefrøa på dyrkbar jord (som kan lagast med eit grev) for å plante ei raudbeteplante. Dei veks i sollys og veks raskare på fuktig dyrkbar jord. Høgreklikk på eit dyr for å mate det med raudbetefrø.
+
+Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.=Raudbeteplantar er plantar som veks på dyrkbar jord under sollys gjennom 4 stadium. På fuktig dyrkbar jord veks dei litt raskare. Dei kan haustast når som helst, men gjev berre avkasting når dei er modne.
+
+Premature Beetroot Plant=Umoden raudbeteplante
+Mature Beetroot Plant=Moden raudbeteplante
+
+A mature beetroot plant is a farming plant which is ready to be harvested for a beetroot and some beetroot seeds. It won't grow any further.=Ei moden raudbeteplante er ei oppdrettsplante som er klar til å bli hausta for raudbete og litt raudbetefrø. Ho veks ikkje lenger.
+
+Beetroot=Raudbete
+
+Beetroots are both used as food item and a dye ingredient. Pigs like beetroots, too.=Raudbeter nyttast både som matvare og som fargestoffingrediens. Grisar likar også raudbete.
+
+Hold it in your hand and right-click to eat it. Rightclick an animal to feed it.=Hald den i handa og høgreklikk for å ete den. Høgreklikk på eit dyr for å mate det.
+Beetroot Soup=Raudbetesuppe
+Beetroot soup is a food item.=Raudbetesuppe er ein matvare.
+##[ sweet_berry.lua ]##
+Sweet Berry Bush (Stage @1)=Søtbærbusk (stadium @1)
+Sweet Berry=Søtbær

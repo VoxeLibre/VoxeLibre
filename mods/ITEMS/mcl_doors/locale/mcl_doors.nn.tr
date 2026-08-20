@@ -1,0 +1,51 @@
+# textdomain: mcl_doors
+##[ api_doors.lua ]##
+
+This door is a 2-block high barrier which can only be opened by redstone power, not by hand.=Denne døra er ein 2-blokkar høg barriere som berre kan opnast eller lukkast med eit raudsteinsignal.
+
+This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.=Denne døra er ei 2-blokkar høg barriere som kan opnast eller lukkast for hand eller via eit raudsteinsignal.
+
+To open or close this door, send a redstone signal to its bottom half.=For å opne eller lukka denne døra, send eit raudsteinsignal til den nedre halvdelen.
+
+To open or close this door, rightclick it or send a redstone signal to its bottom half.=For å opne eller lukka denne døra, høgreklikk på ho eller send eit raudsteinsignal til den nedre halvdelen.
+
+Openable by redstone power=Opnast av raudsteinsignal
+Openable by players and redstone power=Opnast av spelarar og raudsteinsignal
+##[ api_trapdoors.lua ]##
+
+Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power.=Lemmer er horisontale barrierar som kan opnast eller lukkast, og klatrast i som ein stige når dei er opne. Dei opptek den øvre eller nedre delen av ein blokk, avhengig av korleis dei har vorte plasserte. Denne lemmen kan berre opnast eller lukkast med raudsteinskraft.
+
+Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.=
+
+To open or close this trapdoor, rightclick it or send a redstone signal to it.=
+##[ register.lua ]##
+
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Tredører er 2-blokkar høye barrierer som kan åpnes eller lukkas for hånd eller via et raudsteinsignal.
+
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=For å opne eller lukka ei tredør, høgreklikk på henne eller forsyn den nedre halvdelen med eit raudsteinsignal.
+
+Oak Door=Eikedør
+Acacia Door=Akasiedør
+Birch Door=Bjørkedør
+Dark Oak Door=Mørkeikdør
+Jungle Door=Jungeltredør
+Spruce Door=Grandør
+Iron Door=Jarndør
+
+Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand.=Jerndører er 2-blokker høge barrierar som kan opnast eller lukkast via eit raudsteinsignal, men ikkje for hand.
+
+To open or close an iron door, supply its lower half with a redstone signal.=For å åpne eller lukka en jarndør, forsyn den nedre halvdelen med eit raudsteinsignal.
+Oak Trapdoor=Eikelem
+Acacia Trapdoor=Akasielem
+Birch Trapdoor=Bjørkelem
+Spruce Trapdoor=Granlem
+Dark Oak Trapdoor=Mørkeiklem
+Jungle Trapdoor=Jungeltrelem
+
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Trelemmar er horisontale barrierar som kan opnast og lukkast for hand eller via eit raudsteinsignal. Dei tek opp den øvre eller nedre delen av ei blokk, avhengig av korleis dei har vorte plasserte. Når dei er opne, kan dei klatrast i som ein stige.
+
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=For å opne eller lukka lemmen, høgreklikk på den eller forsyn den med eit raudsteinsignal.
+Iron Trapdoor=Jarnlem
+
+Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Jarnlemmar er horisontale barrierar som kan opnast og lukkast via eit raudsteinsignal, men ikkje for hand. Dei tek opp den øvre eller nedre delen av ei blokk, avhengig av korleis dei har vorte plasserte. Når dei er opne, kan dei klatrast i som ein stige.
+

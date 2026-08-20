@@ -1,0 +1,54 @@
+# textdomain: mcl_crimson
+Warped Fungus=Vridesopp
+Warped fungus is a mushroom found in the nether's warped forest.=Vridesopp er ein sopp som finst i dei forvrridde skogane i nether.
+Twisting Vines=Vridvin
+Weeping Vines=Slengvin
+Nether Sprouts=Netherspirar
+Warped Roots=Vriderøter
+Warped Wart Block=Vriden vorteblokk
+Shroomlight=Lampinjong
+Warped Hyphae=Vridehyfe
+The stem of a warped hyphae=Stomnen åt ei vriden hyfe
+Warped Nylium=Vridenylium
+Warped Hyphae Bark=Vridehyfebark
+This is a decorative block surrounded by the bark of an hyphae.=Dette er ei dekorativ blokk omgitt av barken åt ei hyfe.
+Stripped Warped Hyphae=Slinda vridehyfe
+The stripped hyphae of a warped fungus=Den avbarka hyfa åt ein vridesopp
+Stripped Warped Hyphae Bark=Slindeta vridehyfebark
+The stripped hyphae bark of a warped fungus=Den avbarka hyfebarken åt ein vridesopp
+Warped Hyphae Wood=Vridehyfeplanker
+Warped Stairs=Vridetrapp
+Warped Slab=Vridehelle
+Double Warped Slab=Dobbel vridehelle
+Crimson Fungus=Karmosinsopp
+Crimson fungus is a mushroom found in the nether's crimson forest.=Karmosinsopp er ein sopp som fins i nethers karmosinskogar.
+Crimson Roots=Karmosinrøter
+Crimson Hyphae=Karmosinhyfe
+The stem of a crimson hyphae=Stilken åt ei karmosinhyfe
+Crimson Hyphae Bark=Karmosinhyfebark
+Stripped Crimson Hyphae=Slinda karmosinhyfe
+The stripped stem of a crimson hyphae=Den avbarka stilken åt eikarmosinhyfe
+Stripped Crimson Hyphae Bark=Slindet karmosinhyfebark
+The stripped wood of a crimson hyphae=Det avbarka trevirket åt ei karmosinhyfe
+Crimson Hyphae Wood=Karmosinhyfeplanker
+Crimson Nylium=Karmosinnylium
+Crimson Stairs=Karmosintrapp
+Crimson Slab=Karmosinhelle
+Double Crimson Slab=Dobbel karmosinhelle
+Crimson Door=Karmosindør
+
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Tredører er 2-blokkar høye barrierer som kan åpnes eller lukkas for hånd eller via et raudsteinsignal.
+
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=For å opne eller lukka ei tredør, høgreklikk på ho eller send eit raudsteinsignal til den nedre halvdelen.
+
+Crimson Trapdoor=Karmosinfallem
+
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Trelemmar er horisontale barrierar som kan opnast og lukkast for hand eller via eit raudsteinsignal. Dei tek opp den øvre eller nedre delen av ei blokk, avhengig av korleis dei har vorte plasserte. Når dei er opne, kan dei klatrast i som ein stige.
+
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=For å opne eller lukka lemmen, høgreklikk på den eller forsyn den med eit raudsteinsignal.
+Crimson Fence=Karmosingjerde
+Crimson Fence Gate=Karmosingrind
+Warped Door=Vridedør
+Warped Trapdoor=Vridelem
+Warped Fence=Vridegjerde
+Warped Fence Gate=Vridegrind
