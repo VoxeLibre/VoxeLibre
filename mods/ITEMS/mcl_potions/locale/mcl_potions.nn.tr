@@ -24,13 +24,13 @@ River water bottles can be used to fill cauldrons. Drinking it has no effect.=Fl
 Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Bruk "Plasser"-knappen for å drikka. "Plasser" denne gjenstanden på ei gryte for å helle elvevatnet i gryten.
 
 Splash Water Bottle=Kastbar vassflaske
-Extinguishes fire and hurts some mobs=Sløkkjar brann og skadar nokon skapnadar
+Extinguishes fire and hurts some mobs=Sløkkjar brann og skadar nokon skapningar
 
-A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Ei kastbar vassflaske som knusast ved treff og skapar en sky av vassdamp, som sløkkjer brann og skadar skapnadar som er sårbare for vatn.
+A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Ei kastbar vassflaske som knusast ved treff og skapar en sky av vassdamp, som sløkkjer brann og skadar skapningar som er sårbare for vatn.
 
 Lingering Water Bottle=Vedvarande vassflaske
 
-A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Ei kastbar vassflaske som knusast ved treff og skapar en sky av vassdamp som vedvarar ei stund. Denne skya sløkkjer brann og skadar skapnadar som er sårbare for vatn.
+A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Ei kastbar vassflaske som knusast ved treff og skapar en sky av vassdamp som vedvarar ei stund. Denne skya sløkkjer brann og skadar skapningar som er sårbare for vatn.
 
 Glistering Melon=Glitrande melon
 
@@ -125,7 +125,7 @@ Giving effect @1 to player @2 failed.=Mislyktes å gje effekta @1 til spelar @2
 ##[ splash.lua ]##
 Use the “Punch” key to throw it.=Nytt "Slå"-knappen for å kaste den.
 
-A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=Eit kastbart brygg som knuses ved treff, og gir alle nærliggende spelarar og skapninger en status-effekt eller et sett med status-effekter.
+A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=Eit kastbart brygg som knuses ved treff, og gjev alle nærliggende spelarar og skapningar ei statuseffekt eller eit sett med statuseffekter.
 
 ##[ lingering.lua ]##
 
@@ -133,11 +133,11 @@ A throwable potion that will shatter on impact, where it creates a magic cloud t
 
 ##[ tipped_arrow.lua ]##
 
-This particular arrow is tipped and will give an effect when it hits a player or mob.=Denne særskilde pila er duppa og gjev ei effekt når den treff en spelar eller skapnad.
+This particular arrow is tipped and will give an effect when it hits a player or mob.=Denne særskilde pila er duppa og gjev ei effekt når den treff en spelar eller skapning.
 
 ##[ potions.lua ]##
 Use the “Place” key to drink it.=Bruk "Plasser"-knappen for å drikke den.
-Drinking a potion gives you a particular effect or set of effects.=Å drikke et brygg gir deg en bestemt effekt eller et sett med effekter.
+Drinking a potion gives you a particular effect or set of effects.=Å drikke et brygg gjev deg en bestemt effekt eller et sett med effekter.
 @1 Potion @2=@1 @2brygg
 @1 Potion=@1brygg
 Potion @1=@1brygg

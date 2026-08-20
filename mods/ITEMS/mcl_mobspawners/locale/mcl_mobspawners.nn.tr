@@ -1,0 +1,8 @@
+# textdomain: mcl_mobspawners
+Mob Spawner=Skapningsmanar
+Makes mobs appear=Manar fram skapningar
+
+A mob spawner regularily causes mobs to appear around it while a player is nearby. Some mob spawners are disabled while in light.=Ein skapningsmanar får jamleg skapningar til å dukke opp rundt seg medan ein spelar er i nærleiken. Nokre skapningsmanarar blir deaktiverte når dei er i ljos.
+
+If you have a spawn egg, you can use it to change the mob to spawn. Just place the item on the mob spawner. Player-set mob spawners always spawn mobs regardless of the light level.=Dersom du har eit maneegg, kan du nytte det til å endre skapningen som vert mana fram. Berre plasser egget i skapningsmanaren. Spelarlaga skapningsmanarar manar alltid fram skapningar uavhengig av lysnivået.
+

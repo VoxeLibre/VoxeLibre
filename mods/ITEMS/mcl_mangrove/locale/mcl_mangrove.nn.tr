@@ -1,0 +1,46 @@
+# textdomain: mcl_mangrove
+Mangrove Wood=Mangrovestomn
+Mangrove Bark=Mangrovebark
+The trunk of a Mangrove tree.=Stammen til et mangrovetre.
+Mangrove Wood Planks=Mangroveplanker
+Mangrove Leaves=Mangrovelauv
+Mangrove leaves are grown from mangrove trees.=Mangrovelauv veks på mangrovetre.
+Stripped Mangrove Log=Slinda mangrovetømmer
+Stripped Mangrove Wood=Slinda mangrovetre
+The stripped wood of a Mangrove tree=Den slinda stomnen til eit mangrovetre
+The stripped bark of a Mangrove tree=Den slinda barken til eit mangrovetre
+Mangrove Roots=Mangroverøter
+Mangrove roots are decorative blocks that form as part of mangrove trees.=Mangroverøter er dekorative blokker som oppstår som ein del av mangrovetre.
+Mangrove Propagule=Mangrovebulbill
+Needs soil and light to grow=Treng jordsmonn og ljos for å veksa
+
+When placed on soil (such as dirt) and exposed to light, an propagule will grow into an mangrove after some time.=Når han blir plassert på jordsmonn (som mold) og utsett for ljos, vil ein bulbill vekse til eit mangrovetre etter ei stund.
+
+Hanging Propagule=Hengenande bulbill
+Grows on Mangrove leaves=Veks på mangrovelauv
+water logged mangrove roots=Vassmetta mangroverøter
+
+Mangrove roots, despite being a full block, can be waterlogged and do not flow water out=Mangroverøter, til trass for at det er ei full blokk, kan vere vassfylte og vatnet strøymer ikkje ut
+
+These cannot be crafted yet only occure when get in contact of water.=Disse kan ikke lages enda og forekommer bare i kontakt med vann.
+Muddy Mangrove Roots=Gjørmete mangroverøter
+Crafted with Mud and Mangrove roots=Emnast med gjørme og mangroverøter
+
+Muddy Mangrove Roots is a block from mangrove swamp.It drowns player a bit inside it.=Gjørmete mangroverøter er ei blokk frå mangrovesumpen. Spelaren synk litt nedi den.
+
+Mangrove Door=Mangrovedør
+
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Tredører er 2-blokker høge barrierar som kan opnast eller lukkast for hand eller via eit raudsteinsignal.
+
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=For å opne eller lukke ei tredør, høgreklikk på henne eller forsyn den nedre halvdelen med eit raudsteinsignal.
+
+Mangrove Trapdoor=Mangrovelem
+
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Trelemmar er horisontale barrierar som kan opnast og lukkast for hand eller via eit raudsteinsignal. Dei tek opp den øvre eller nedre delen av ei blokk, avhengig av korleis dei har vorte plasserte. Når dei er opne, kan dei klatrast i som ein stige.
+
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=For å opne eller lukka lemmen, høgreklikk på den eller forsyn den med eit raudsteinsignal.
+Mangrove Wood Fence=Mangrovegjerde
+Mangrove Wood Fence Gate=Mangrovegrind
+Mangrove Wood Stairs=Mangrovetrapp
+Mangrove Wood Slab=Mangrovehelle
+Double Mangrove Wood Slab=Dobbel mangrovehelle

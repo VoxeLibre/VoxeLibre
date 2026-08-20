@@ -1,0 +1,73 @@
+# textdomain: mcl_ocean
+##[ prismarine.lua ]##
+Sea Lantern=Sjølanterne
+
+Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=Sjølanterner er dekorative lyskjelder som ser flotte ut under vatn, men som kan plasserast overalt.
+
+Prismarine=Prismarin
+Prismarine is used as a building block. It slowly changes its color.=Prismarin nyttast som ei byggjeblokk. Den endrar langsamt farge.
+Prismarine Bricks=Prismarinmur
+Dark Prismarine=Mørk prismarin
+Prismarine Crystals=Prismarinkrystallar
+Prismarine Shard=Prismarinbrot
+##[ corals.lua ]##
+Tube Coral Block=Tubekorallblokk
+Dead Tube Coral Block=Død tubekorallblokk
+Tube Coral=Tubekorall
+Dead Tube Coral=Død tubekorall
+Tube Coral Fan=Tubekorallvifte
+Dead Tube Coral Fan=Død tubekorallvifte
+Brain Coral Block=Hjernekorallblokk
+Dead Brain Coral Block=Død hjernekorallblokk
+Brain Coral=Hjernekorall
+Dead Brain Coral=Død hjernekorall
+Brain Coral Fan=Hjernekorallvifte
+Dead Brain Coral Fan=Død hjernekorallvifte
+Bubble Coral Block=Boblekorallblokk
+Dead Bubble Coral Block=Død boblekorallblokk
+Bubble Coral=Boblekorall
+Dead Bubble Coral=Død boblekorall
+Bubble Coral Fan=Boblekorallvifte
+Dead Bubble Coral Fan=Død boblekorallvifte
+Fire Coral Block=Eldkorallblokk
+Dead Fire Coral Block=Død eldkorallblokk
+Fire Coral=Eldkorall
+Dead Fire Coral=Død eldkorall
+Fire Coral Fan=Eldkorallvifte
+Dead Fire Coral Fan=Død eldkorallvifte
+Horn Coral Block=Hornkorallblokk
+Dead Horn Coral Block=Død hornkorallblokk
+Horn Coral=Hornkorall
+Dead Horn Coral=Død hornkorall
+Horn Coral Fan=Hornkorallvifte
+Dead Horn Coral Fan=Død hornkorallvifte
+
+Coral blocks live in the oceans and need a water source next to them to survive. Without water, they die off.=Korallblokker lev i hav og treng vatn for å overleve. Utan vatn døyr dei.
+
+Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Korallar veks på korallblokker og må vere i vatn for å overleve. Utan vatn døyr dei, så vel som korallblokka under.
+
+Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.=Korallvifter veks på korallblokker og må vere i vatn for å overleve. Utan vatn døyr dei, så vel som korallblokka under.
+
+Needs water to live=Treng vatn for å leve
+Grows on coral block of same species=Veks på korallblokker av same art
+##[ seagrass.lua ]##
+Grows in water on dirt, sand, gravel=Veks i vann på jord, sand og grus
+Seagrass=Sjøgras
+Seagrass grows inside water on top of dirt, sand or gravel.=Sjøgras veks i vatn på jord, sand eller grus.
+##[ kelp.lua ]##
+Kelp=Tare
+Kelp grows inside water on top of dirt, sand or gravel.=Tare veks i vatn på jord, sand eller grus.
+Dried Kelp=Tørka tare
+Dried kelp is a food item.=Tørka tare er ein matvare.
+Dried Kelp Block=Tørka tareblokk
+A decorative block that serves as a great furnace fuel.=Ei dekorativ blokk som kan nyttast som omnsbrensel.
+##[ sea_pickle.lua ]##
+Sea Pickle=Sjøagurk
+
+Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=Sjøagurk veks på daude hjernekorallblokker og gjev lys når dei er under vatn. Dei finst i 4 storleikar som varierer i ljosstyrkje.
+
+It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=Den kan berre plasserast på toppen av døde hjernekorallblokker. Om du plasserer ein sjøagurk på ein annan sjøagurk, vil han vekse og bli lysare.
+
+Glows in the water=Veks i vatn
+4 possible sizes=4 mulige storleikar
+Grows on dead brain coral block=Veks på død hjernekorallblokk
