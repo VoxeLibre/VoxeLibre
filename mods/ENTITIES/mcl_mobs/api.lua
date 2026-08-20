@@ -1,6 +1,7 @@
 local mob_class = mcl_mobs.mob_class
 local mob_class_meta = {__index = mcl_mobs.mob_class}
 local math, vector, minetest, mcl_mobs = math, vector, minetest, mcl_mobs
+local validate_vector = mcl_util.validate_vector
 
 local PATHFINDING = "gowp"
 local CRASH_WARN_FREQUENCY = 60
@@ -148,10 +149,37 @@ function mob_class:mob_activate(staticdata, def, dtime)
 	end
 
 	-- Fix entity fields if missing
-	self.base_colbox = self.base_colbox or table.copy(def.initial_properties.collisionbox)
-	self.base_selbox = self.base_selbox or table.copy(def.initial_properties.selectionbox) or self.base_colbox
+	if not self.base_colbox or #self.base_colbox ~= 6 then
+		if def.initial_properties.collisionbox then
+			core.log("verbose", "Assigned collisionbox from initial properties to: " .. dump(self))
+			self.base_colbox = table.copy(def.initial_properties.collisionbox)
+		else
+			core.log("warning", "Mob without collisionbox: " .. dump(self))
+			self.base_colbox = {-.5, 0, -.5, .5, 2, .5} -- assumption: probably humanoid
+		end
+	end
+	if not self.base_selbox or #self.base_selbox ~= 6 then
+		if def.initial_properties.selectionbox then
+			core.log("verbose", "Assigned selectionbox from initial properties to: " .. dump(self))
+			self.base_selbox = table.copy(def.initial_properties.selectionbox)
+		else
+			core.log("verbose", "Assigned selectionbox from colbox to: " .. dump(self))
+			self.base_selbox = self.base_colbox
+		end
+	end
 	self.base_mesh = self.base_mesh or def.initial_properties.mesh
-	self.base_size = self.base_size or table.copy(def.initial_properties.visual_size or self.initial_properties.visual_size) or vector.new(1,1,1)
+	if not self.base_size then
+		if self.initial_properties.visual_size then
+			core.log("verbose", "Assigned visual size from initial properties to: " .. dump(self))
+			self.base_size = table.copy(self.initial_properties.visual_size)
+		elseif def.initial_properties.visual_size then
+			core.log("verbose", "Assigned visual size from SELF initial properties to: " .. dump(self))
+			self.base_size = table.copy(def.initial_properties.visual_size)
+		else
+			core.log("verbose", "Assigned default visual size to: " .. dump(self))
+			self.base_size = vector.new(1,1,1)
+		end
+	end
 
 	local textures = self.base_texture
 	local mesh = self.base_mesh
@@ -343,6 +371,9 @@ local function on_step_work(self, dtime, moveresult)
 
 	if player_in_active_range then
 		self:set_animation_speed() -- set animation speed relative to velocity
+		if validate_vector(self.acc) then
+			self.object:add_velocity(self.acc)
+		end
 		self:check_head_swivel(dtime)
 
 		if mcl_util.check_dtime_timer(self, dtime, "onstep_engage", 0.2) then
@@ -515,11 +546,11 @@ minetest.register_chatcommand("clearmobs", {
 				if mob_match and not (default and o.persistent) then
 					local in_range = (not range or range <= 0) or vector.distance(p:get_pos(), o.object:get_pos()) <= range
 					if nametagged then
-						if o.nametag then o.object:remove() end
+						if o.nametag then mcl_util.remove_entity(o) end
 					elseif tamed then
-						if o.tamed then o.object:remove() end
+						if o.tamed then mcl_util.remove_entity(o) end
 					elseif in_range and (not o.nametag or o.nametag == "") and not o.tamed then
-						o.object:remove()
+						mcl_util.remove_entity(o)
 					end
 				end
 			end

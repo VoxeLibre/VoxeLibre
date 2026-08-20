@@ -7,6 +7,8 @@ mcl_gamemode.gamemodes = {
 	"creative",
 }
 
+mcl_gamemode.default_gamemode = core.settings:get_bool("creative_mode") and "creative" or "survival"
+
 ---@type fun(player: mt.PlayerObjectRef, old_gamemode: '"survival"'|'"creative"', new_gamemode: '"survival"'|'"creative"')[]
 mcl_gamemode.registered_on_gamemode_change = {}
 
@@ -26,31 +28,19 @@ function mcl_gamemode.set_gamemode(player, gamemode)
 	end
 end
 
-local mt_is_creative_enabled = minetest.is_creative_enabled
-
 ---@param player mt.PlayerObjectRef
----@return '"survival"'|'"creative"'
+---@return string
 function mcl_gamemode.get_gamemode(player)
-	if mt_is_creative_enabled(player:get_player_name()) then
-		return "creative"
-	end
-
-	local gm = player:get_meta():get("gamemode")
-	if gm then
-		---@diagnostic disable-next-line: return-type-mismatch
-		return gm
-	else
-		player:get_meta():set_string("gamemode", "survival")
-		return "survival"
-	end
+	local gamemode = player:get_meta():get_string("gamemode")
+	if gamemode == "" then return mcl_gamemode.default_gamemode end
+	return gamemode
 end
 
 function minetest.is_creative_enabled(name)
-	if mt_is_creative_enabled(name) then return true end
 	if not name or name == "" then return false end
-	local p = minetest.get_player_by_name(name)
-	if p then
-		return p:get_meta():get_string("gamemode") == "creative"
+	local player = core.get_player_by_name(name)
+	if player then
+		return mcl_gamemode.get_gamemode(player) == "creative"
 	end
 	return false
 end

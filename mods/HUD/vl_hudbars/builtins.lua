@@ -129,6 +129,15 @@ local function update_hud(player, has_damage)
 	end
 end
 
+-- Checks if the player should see health/breath bars
+local function should_show_hud_for_player(player)
+	-- health/breath is irrelevant in creative mode so don't show it
+	if core.is_creative_enabled(player:get_player_name()) then
+		return false
+	end
+	return core.settings:get_bool("enable_damage")
+end
+
 minetest.register_on_player_hpchange(function(player, hp_change)
 	if vl_hudbars.has_hudbar(player, "health") then
 		vl_hudbars.update_health(player, hp_change)
@@ -145,6 +154,9 @@ minetest.register_on_joinplayer(function(player)
 	custom_hud(player)
 end)
 
+mcl_gamemode.register_on_gamemode_change(function(player, _, _)
+	update_hud(player, should_show_hud_for_player(player))
+end)
 
 
 local main_timer = 0
@@ -160,7 +172,7 @@ minetest.register_globalstep(function(dtime)
 			for name, _ in pairs(vl_hudbars.players) do
 				-- update all hud elements
 				local player = minetest.get_player_by_name(name)
-				update_hud(player, has_dmg)
+				update_hud(player, should_show_hud_for_player(player))
 			end
 		end
 	end

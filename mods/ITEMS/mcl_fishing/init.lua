@@ -439,6 +439,7 @@ minetest.register_craftitem("mcl_fishing:fish_raw", {
 	stack_max = 64,
 	groups = { food=2, eatable = 2, smoker_cookable = 1, campfire_cookable = 1 },
 	_mcl_saturation = 0.4,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_fishing:fish_cooked", {
@@ -450,6 +451,7 @@ minetest.register_craftitem("mcl_fishing:fish_cooked", {
 	stack_max = 64,
 	groups = { food=2, eatable=5 },
 	_mcl_saturation = 6,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craft({
@@ -469,6 +471,7 @@ minetest.register_craftitem("mcl_fishing:salmon_raw", {
 	stack_max = 64,
 	groups = { food=2, eatable = 2, smoker_cookable = 1, campfire_cookable = 1 },
 	_mcl_saturation = 0.4,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craftitem("mcl_fishing:salmon_cooked", {
@@ -480,6 +483,7 @@ minetest.register_craftitem("mcl_fishing:salmon_cooked", {
 	stack_max = 64,
 	groups = { food=2, eatable=6 },
 	_mcl_saturation = 9.6,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craft({
@@ -499,6 +503,7 @@ minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 	stack_max = 64,
 	groups = { food=2, eatable = 1 },
 	_mcl_saturation = 0.2,
+	touch_interaction = "short_dig_long_place"
 })
 
 
@@ -511,7 +516,8 @@ minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	on_secondary_use = minetest.item_eat(1),
 	stack_max = 64,
 	groups = { food=2, eatable=1, brewitem = 1 },
-	-- _mcl_saturation = 0.2,
+	_mcl_saturation = 0.2,
+	touch_interaction = "short_dig_long_place"
 })
 
 

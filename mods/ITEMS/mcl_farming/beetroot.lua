@@ -114,6 +114,7 @@ core.register_craftitem("mcl_farming:beetroot_item", {
 	on_secondary_use = core.item_eat(1),
 	groups = {food = 2, eatable = 1, compostability = 65},
 	_mcl_saturation = 1.2,
+	touch_interaction = "short_dig_long_place"
 })
 
 core.register_craftitem("mcl_farming:beetroot_soup", {
@@ -126,6 +127,7 @@ core.register_craftitem("mcl_farming:beetroot_soup", {
 	on_secondary_use = core.item_eat(6, "mcl_core:bowl"),
 	groups = { food = 2, eatable = 6 },
 	_mcl_saturation = 7.2,
+	touch_interaction = "short_dig_long_place"
 })
 
 core.register_craft({

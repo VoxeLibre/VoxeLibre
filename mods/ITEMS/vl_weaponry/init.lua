@@ -12,6 +12,10 @@ local spear_tt = S("Reaches farther") .. "\n" .. S("Can be thrown")
 local spear_longdesc = S("Spears are great in melee combat, as they have an increased reach. They can also be thrown.")
 local spear_use = S("To throw a spear, hold it in your hand, then hold use (rightclick) in the air.")
 
+local scythe_tt = S("Cuts plants in range")
+local scythe_longdesc = S("Scythes are great in melee combat.")
+local scythe_use = S("When you cut down a plant with a scythe, it cuts down other plants in a 3x3 area.")
+
 local wield_scale = mcl_vars.tool_wield_scale
 
 vl_weaponry.hammer_tt = hammer_tt
@@ -19,9 +23,11 @@ vl_weaponry.spear_tt = spear_tt
 
 local spear_entity = table.copy(mcl_bows.arrow_entity)
 table.update(spear_entity,{
-	visual = "item",
-	visual_size = {x=-0.5, y=-0.5},
-	textures = {"vl_weaponry:spear_wood"},
+	initial_properties = {
+		visual = "item",
+		visual_size = {x=-0.5, y=-0.5},
+		textures = {"vl_weaponry:spear_wood"},
+	},
 	_on_remove = function(self)
 		vl_projectile.replace_with_item_drop(self, self.object:get_pos())
 	end,
@@ -242,6 +248,8 @@ local materials = {
 
 local SPEAR_RANGE = 4.5
 
+local SCYTHE_RANGE = 4.0
+
 --Hammers
 core.register_tool("vl_weaponry:hammer_wood", {
 	description = S("Wooden Hammer"),
@@ -352,7 +360,7 @@ core.register_tool("vl_weaponry:hammer_diamond", {
 	_mcl_toollike_wield = true,
 	_mcl_diggroups = {
 		pickaxey = { speed = 4, level = 5, uses = uses.diamond },
-		pickaxey = { speed = 4, level = 5, uses = uses.diamond }
+		shovely = { speed = 4, level = 5, uses = uses.diamond }
 	},
 	_mcl_upgradable = true,
 	_mcl_upgrade_item = "vl_weaponry:hammer_netherite"
@@ -548,6 +556,178 @@ core.register_tool("vl_weaponry:spear_netherite", {
 	_mcl_spear_thrown_damage = 12,
 })
 
+-- Scythes
+core.register_tool("vl_weaponry:scythe_wood", {
+	description = S("Wooden Scythe"),
+	_tt_help = scythe_tt,
+	_doc_items_longdesc = scythe_longdesc,
+	_doc_items_usagehelp = scythe_use,
+	inventory_image = "vl_tool_woodscythe.png",
+	wield_scale = wield_scale,
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=15 },
+	range = SCYTHE_RANGE,
+	tool_capabilities = {
+		full_punch_interval = 1.1,
+		max_drop_level=1,
+		damage_groups = {fleshy=5},
+		punch_attack_uses = uses.wood,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "group:wood",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		swordy = { speed = 2, level = 1, uses = uses.wood },
+		swordy_cobweb = { speed = 2, level = 1, uses = uses.wood },
+		hoey = { speed = 2, level = 1, uses = uses.wood }
+	},
+})
+core.register_tool("vl_weaponry:scythe_stone", {
+	description = S("Stone Scythe"),
+	_tt_help = scythe_tt,
+	_doc_items_longdesc = scythe_longdesc,
+	_doc_items_usagehelp = scythe_use,
+	inventory_image = "vl_tool_stonescythe.png",
+	wield_scale = wield_scale,
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=5 },
+	range = SCYTHE_RANGE,
+	tool_capabilities = {
+		full_punch_interval = 1.2,
+		max_drop_level=3,
+		damage_groups = {fleshy=6},
+		punch_attack_uses = uses.stone,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "group:cobble",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		swordy = { speed = 2, level = 3, uses = uses.stone },
+		swordy_cobweb = { speed = 2, level = 3, uses = uses.stone },
+		hoey = { speed = 2, level = 3, uses = uses.stone }
+	},
+})
+core.register_tool("vl_weaponry:scythe_iron", {
+	description = S("Iron Scythe"),
+	_tt_help = scythe_tt,
+	_doc_items_longdesc = scythe_longdesc,
+	_doc_items_usagehelp = scythe_use,
+	inventory_image = "vl_tool_steelscythe.png",
+	wield_scale = wield_scale,
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=14 },
+	range = SCYTHE_RANGE,
+	tool_capabilities = {
+		full_punch_interval = 1.1,
+		max_drop_level=4,
+		damage_groups = {fleshy=7},
+		punch_attack_uses = uses.iron,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_core:iron_ingot",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		swordy = { speed = 3, level = 4, uses = uses.iron },
+		swordy_cobweb = { speed = 3, level = 4, uses = uses.iron },
+		hoey = { speed = 3, level = 4, uses = uses.iron }
+	},
+})
+core.register_tool("vl_weaponry:scythe_gold", {
+	description = S("Golden Scythe"),
+	_tt_help = scythe_tt,
+	_doc_items_longdesc = scythe_longdesc,
+	_doc_items_usagehelp = scythe_use,
+	inventory_image = "vl_tool_goldscythe.png",
+	wield_scale = wield_scale,
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=6, enchantability=22 },
+	range = SCYTHE_RANGE,
+	tool_capabilities = {
+		full_punch_interval = 0.8,
+		max_drop_level=2,
+		damage_groups = {fleshy=5},
+		punch_attack_uses = uses.gold,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_core:gold_ingot",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		swordy = { speed = 12, level = 2, uses = uses.gold },
+		swordy_cobweb = { speed = 12, level = 2, uses = uses.gold },
+		hoey = { speed = 12, level = 2, uses = uses.gold }
+	},
+})
+core.register_tool("vl_weaponry:scythe_diamond", {
+	description = S("Diamond Scythe"),
+	_tt_help = scythe_tt,
+	_doc_items_longdesc = scythe_longdesc,
+	_doc_items_usagehelp = scythe_use,
+	inventory_image = "vl_tool_diamondscythe.png",
+	wield_scale = wield_scale,
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=5, enchantability=10 },
+	range = SCYTHE_RANGE,
+	tool_capabilities = {
+		full_punch_interval = 1.1,
+		max_drop_level=5,
+		damage_groups = {fleshy=8},
+		punch_attack_uses = uses.diamond,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_core:diamond",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		swordy = { speed = 8, level = 5, uses = uses.diamond },
+		swordy_cobweb = { speed = 8, level = 5, uses = uses.diamond },
+		hoey = { speed = 8, level = 5, uses = uses.diamond }
+	},
+	_mcl_upgradable = true,
+	_mcl_upgrade_item = "vl_weaponry:scythe_netherite"
+})
+core.register_tool("vl_weaponry:scythe_netherite", {
+	description = S("Netherite Scythe"),
+	_tt_help = scythe_tt,
+	_doc_items_longdesc = scythe_longdesc,
+	_doc_items_usagehelp = scythe_use,
+	inventory_image = "vl_tool_netheritescythe.png",
+	wield_scale = wield_scale,
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=6, enchantability=10 },
+	range = SCYTHE_RANGE,
+	tool_capabilities = {
+		full_punch_interval = 1.1,
+		max_drop_level=5,
+		damage_groups = {fleshy=9},
+		punch_attack_uses = uses.netherite,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_nether:netherite_ingot",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		swordy = { speed = 9, level = 6, uses = uses.netherite },
+		swordy_cobweb = { speed = 9, level = 6, uses = uses.netherite },
+		hoey = { speed =9, level = 6, uses = uses.netherite }
+	},
+})
+
+local locked_digger = false
+core.register_on_dignode(function(pos, oldnode, digger)
+	if locked_digger then return false end
+	if not digger then return false end
+	locked_digger = true
+	local tool = digger:get_wielded_item()
+	if tool and core.get_item_group(tool:get_name(), "scythe") > 0 then
+		local def = core.registered_nodes[oldnode.name]
+		if def and def.drawtype == "plantlike"
+				and core.get_item_group(oldnode.name, "plant") > 0 then
+			for x=-1, 1 do for z=-1, 1 do
+				local p = vector.offset(pos, x, 0, z)
+				local n = core.get_node(p)
+				local d = core.registered_nodes[n.name]
+				if d and d.drawtype == "plantlike"
+						and core.get_item_group(n.name, "plant") > 0 then
+					core.dig_node(p, digger)
+				end
+			end end
+		end
+	end
+	locked_digger = false
+end)
+
 -- Crafting recipes
 local s = "mcl_core:stick"
 local b = ""
@@ -574,6 +754,22 @@ for t,m in pairs(materials) do
 			{ b, b, m },
 			{ b, s, b },
 			{ s, b, b },
+		}
+	})
+	core.register_craft({
+		output = "vl_weaponry:scythe_"..t,
+		recipe ={
+			{ m, m, s },
+			{ b, s, b },
+			{ s, b, b }
+		}
+	})
+	core.register_craft({
+		output = "vl_weaponry:scythe_"..t,
+		recipe ={
+			{ s, m, m },
+			{ b, s, b },
+			{ b, b, s }
 		}
 	})
 end

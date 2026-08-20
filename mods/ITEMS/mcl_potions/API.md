@@ -1,27 +1,26 @@
 ## Potions and Effects API
 
 <!-- TOC -->
-* [Potions and Effects API](#potions-and-effects-api)
-    * [Namespace](#namespace)
-    * [Effects](#effects)
-        * [Functions](#functions)
-        * [Deprecated Functions](#deprecated-functions)
-        * [Tables](#tables)
-        * [Internally registered effects](#internally-registered-effects)
-        * [Constants](#constants)
-        * [Effect Definition](#effect-definition)
-    * [HP Hudbar Modifiers](#hp-hudbar-modifiers)
-        * [Functions](#functions)
-        * [HP Hudbar Modifier Definition](#hp-hudbar-modifier-definition)
-    * [Potions](#potions)
-        * [Functions](#functions)
-        * [Tables](#tables)
-        * [Internally registered potions](#internally-registered-potions)
-        * [Constants](#constants)
-        * [Potion Definition](#potion-definition)
-    * [Brewing](#brewing)
-        * [Functions](#functions)
-    * [Miscellaneous Functions](#miscellaneous-functions)
+- [Potions and Effects API](#potions-and-effects-api)
+  - [Namespace](#namespace)
+  - [Effects](#effects)
+    - [Functions](#functions)
+    - [Deprecated functions](#deprecated-functions)
+    - [Tables](#tables)
+    - [Internally registered effects](#internally-registered-effects)
+    - [Constants](#constants)
+    - [Effect Definition](#effect-definition)
+  - [HP Hudbar Modifiers](#hp-hudbar-modifiers)
+    - [Functions](#functions-1)
+    - [HP Hudbar Modifier Definition](#hp-hudbar-modifier-definition)
+  - [Potions](#potions)
+    - [Functions](#functions-2)
+    - [Tables](#tables-1)
+    - [Constants](#constants-1)
+    - [Potion Definition](#potion-definition)
+  - [Brewing](#brewing)
+    - [Functions](#functions-3)
+  - [Miscellaneous Functions](#miscellaneous-functions)
 <!-- TOC -->
 
 ### Namespace
@@ -122,6 +121,7 @@ This section describes parts of the API related to defining and managing effects
 
 `mcl_potions.healing_func(object, hp)` – attempts to heal the `object` by `hp`. Negative `hp` harms magically instead.
 
+`mcl_potions.get_lingering_clouds_at(check_pos)` - returns a table of lingering effects at pos of shape: {pos, color, timer, def, is_water, potency, plus, radius}
 
 #### Deprecated functions
 **Don't use the following functions, use the above API instead!** The following are only provided for backwards compatibility and will be removed later. They all call `mcl_potions.give_effect()` internally.

@@ -228,6 +228,7 @@ function mcl_potions.register_potion(def)
 	local on_use
 	if def.drinkable ~= false then
 		on_use = generate_on_use(pdef._effect_list, color, def.custom_on_use, def.custom_effect)
+		pdef.touch_interaction = "short_dig_long_place"
 	end
 	pdef.on_place = on_use
 	pdef.on_secondary_use = on_use

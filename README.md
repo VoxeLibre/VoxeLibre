@@ -73,7 +73,7 @@ issues, head over there.
 * ContentDB: <https://content.luanti.org/packages/wuzzy/mineclone2/>
 * Luanti Forums: <https://forum.luanti.org/viewtopic.php?f=50&t=16407>
 * Discord: <https://discord.gg/xE4z8EEpDC>
-* Matrix space: <https://app.element.io/#/room/#voxelibre:matrix.org>
+* Matrix space: <https://matrix.to/#/#voxelibre:matrix.org>
 * Mastodon: <https://fosstodon.org/@VoxeLibre>
 * Lemmy: <https://programming.dev/c/VoxeLibre>
 * Reddit: <https://www.reddit.com/r/VoxeLibre/>

@@ -137,6 +137,7 @@ core.register_craftitem("mcl_farming:cookie", {
 	_mcl_saturation = 0.4,
 	on_place = core.item_eat(2),
 	on_secondary_use = core.item_eat(2),
+	touch_interaction = "short_dig_long_place"
 })
 
 
@@ -148,6 +149,7 @@ core.register_craftitem("mcl_farming:bread", {
 	_mcl_saturation = 6.0,
 	on_place = core.item_eat(5),
 	on_secondary_use = core.item_eat(5),
+	touch_interaction = "short_dig_long_place"
 })
 
 local mod_screwdriver = core.get_modpath("screwdriver")

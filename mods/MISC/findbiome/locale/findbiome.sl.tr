@@ -1,0 +1,12 @@
+# textdomain: findbiome
+# mod title
+# mod strings
+Wait until all mods have loaded!=Počakajte da se vsi modi naložijo!
+Find and teleport to biome=Poišči biom in se vanj teleportiraj
+<biome>=<biome>
+No player.=Ni igralca.
+Biome found at @1.=Biom najden na @1
+No biome found!=Biom ni najden!
+Biome does not exist!=Biom ne obstaja!
+List all biomes=Seznam vseh biomov
+No biomes.=Ni biomov.

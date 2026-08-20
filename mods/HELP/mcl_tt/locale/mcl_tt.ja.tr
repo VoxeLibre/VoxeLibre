@@ -45,6 +45,7 @@ Deals damage when falling=落下時にダメージ発生
 Grows on grass blocks or dirt=草原や土の上に生育
 Grows on grass blocks, podzol, dirt or coarse dirt=草原、ポドゾル、土、粗い土の上に生育
 Flammable=可燃性
+Collectible=
 Zombie view range: -50%=ゾンビに見つかる距離：-50%
 Skeleton view range: -50%=スケルトンに見つかる距離：-50%
 Stalker view range: -50%=

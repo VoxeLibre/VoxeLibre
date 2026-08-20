@@ -33,7 +33,7 @@ Currently supported character sets:
 * See `LICENSE` file for details
 
 **Font:** CC0
-* Originally by PilzAdam (WTFPL)
+* Originally by PilzAdam
 * Modified and massively extended by rudzik8
 * Can be found in the `/textures` sub-directory of game root, prefixed with `_`
 * See <https://creativecommons.org/publicdomain/zero/1.0/> for details

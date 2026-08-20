@@ -1,0 +1,16 @@
+# textdomain: mcl_furnaces
+Furnace=Peč
+Inventory=Inventar
+Recipe book=Knjiga receptov
+Uses fuel to smelt or cook items=Uporablja gorivo za taljenje ali pečenje predmetov
+Furnaces cook or smelt several items, using a furnace fuel, into something else.=Peči z uporabo goriva pečejo ali talijo številne predmete v nekaj drugega.
+Use the furnace to open the furnace menu.=Uporabite peč, da odprete meni peči.
+
+Place a furnace fuel in the lower slot and the source material in the upper slot.=Postavite gorivo za peč v spodnjo režo in izvorni material v zgornjo režo.
+
+The furnace will slowly use its fuel to smelt the item.=Peč bo počasi porabljala gorivo za taljenje predmeta.
+The result will be placed into the output slot at the right side.=Rezultat bo postavljen v izhodno režo na desni strani.
+
+Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn.=Uporabite knjigo receptov, da vidite, kaj lahko talite, kaj lahko uporabite kot gorivo in kako dolgo bo gorelo.
+
+Burning Furnace=Goreča peč

@@ -78,6 +78,7 @@ minetest.register_craftitem("mcl_honey:honey_bottle", {
 	on_secondary_use = minetest.item_eat(6, "mcl_potions:glass_bottle"),
 	_mcl_saturation = 1.2,
 	stack_max = 16,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_node("mcl_honey:honey_block", {

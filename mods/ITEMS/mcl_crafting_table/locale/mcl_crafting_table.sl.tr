@@ -1,0 +1,10 @@
+# textdomain: mcl_crafting_table
+Crafting=Izdelovanje
+Inventory=Inventar
+Recipe book=Knjiga receptov
+Crafting Table=Delovna miza
+3×3 crafting grid=Mreža za izdelavo 3×3
+
+A crafting table is a block which grants you access to a 3×3 crafting grid which allows you to perform advanced crafts.=Delovna miza je blok, ki vam omogoča dostop do mreže za izdelavo 3×3, s katero lahko izvajate napredno izdelovanje.
+
+Rightclick the crafting table to access the 3×3 crafting grid.=Desno kliknite na delovno mizo za dostop do mreže za izdelavo 3×3.

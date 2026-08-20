@@ -17,8 +17,7 @@ for i=0,4 do
 				mcl_explosions.explode(pos, 5, {drop_chance = 0, fire = true})
 			end
 		elseif string.match(node.name, "mcl_beds:respawn_anchor_charged_") then
-			minetest.chat_send_player(player.get_player_name(player), S"New respawn position set!")
-			mcl_spawn.set_spawn_pos(player, pos, nil)
+			mcl_spawn.set_player_spawn_pos(player, pos, true, true)
 			if i == 4 then
 				awards.unlock(player:get_player_name(), "mcl:notQuiteNineLives")
 			end

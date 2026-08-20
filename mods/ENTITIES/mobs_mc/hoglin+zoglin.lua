@@ -1,7 +1,5 @@
 --MCmobs v0.4
 --maikerumine
---made for MC like Survival game
---License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
 local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")

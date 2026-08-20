@@ -65,6 +65,11 @@ local hamburger_def = {
 	wield_image = "mcl_hamburger.png",
 	on_place = minetest.item_eat(8),
 	on_secondary_use = minetest.item_eat(8),
+	touch_interaction = {
+		pointed_nothing = "short_dig_long_place",
+		pointed_node    = "short_dig_long_place",
+		pointed_object  = "user",
+	},
 	groups = { food = 2, eatable = 8 },
 	_mcl_saturation = 13.8,
 }

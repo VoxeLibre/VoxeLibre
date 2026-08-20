@@ -1,0 +1,7 @@
+# textdomain: mesecons_walllever
+Lever=Ročica
+Provides redstone power while it's turned on=Zagotavlja energijo rdečega kamna, ko je vklopljena
+
+A lever is a redstone component which can be flipped on and off. It supplies redstone power to adjacent blocks while it is in the “on” state.=Ročica je komponenta rdečega kamna, ki jo je mogoče vklopiti in izklopiti. Sosednje bloke napaja z energijo rdečega kamna, ko je v stanju »vklopljeno«.
+
+Use the lever to flip it on or off.=Uporabite ročico, da jo vklopite ali izklopite.

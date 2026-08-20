@@ -49,6 +49,19 @@ mcl_disabled_events (Disabled events) string
 vl_plant_growth (Plant growth factor) float 1.0 0 100
 
 [Players]
+# If enabled, nodes that would light the surroundings when placed
+# do so also when held by players
+enable_vl_wieldlight (Wielded lights) bool true
+
+# Negative values disable the limit
+vl_wieldlight_player_step_lim (Maximum players processed for wieldlight per step) int -1
+
+# How many server steps miss wieldlight recalculations after one recalculation step
+vl_wieldlight_steps_skipped (Wieldlight steps skipped after each step) int 0
+
+# In seconds. Try changing this if you experience issues with wielded lights
+vl_wieldlight_recalc_interval (Same-spot wieldlight recalculation interval) float 2.0
+
 # If enabled, players respawn at the bed they last lay on instead of normal
 # spawn.
 # This setting is only read at startup.
@@ -119,6 +132,8 @@ mcl_health_regen_delay (Health regen delay) float 0.5 0
 # Eating delay while holding right-click
 # Default: 1.61 s
 mcl_eating_delay (Eating delay) float 1.61 0
+
+# Controls where items go when shift-clicking in the survival inventory.
 
 [Mobs]
 # If enabled, mobs will spawn naturally. This does not affect
@@ -393,3 +408,6 @@ mcl_logging_structures (Structure generation logging) bool false
 
 # Debug logging for mcl_events.
 mcl_logging_event_api (Debug logging for mcl_events) bool false
+
+# Announcements
+vl_announcements_auto_show (Show new release announcements when players join) bool true

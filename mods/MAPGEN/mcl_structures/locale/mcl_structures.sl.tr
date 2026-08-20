@@ -1,0 +1,6 @@
+# textdomain: mcl_structures
+Generate a pre-defined structure near your position.=Ustvari vnaprej določeno strukturo blizu vašega položaja.
+Structure placed.=Struktura je postavljena.
+Error: No structure type given. Please use “/spawnstruct <type>”.=Napaka: Ni podana vrsta strukture. Uporabite: „/spawnstruct <type>“.
+Error: Unknown structure type. Please use “/spawnstruct <type>”.=Napaka: Neznana vrsta strukture. Uporabite: „/spawnstruct <type>“.
+Use /help spawnstruct to see a list of available types.=Uporabite /help spawnstruct za ogled razpoložljivih struktur.

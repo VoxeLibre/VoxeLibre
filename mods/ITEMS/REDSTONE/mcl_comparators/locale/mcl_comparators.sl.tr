@@ -1,0 +1,19 @@
+# textdomain: mcl_comparators
+Redstone comparators are multi-purpose redstone components.=Primerjalniki rdečega kamna so večnamenske komponente rdečega kamna.
+
+They can transmit a redstone signal, detect whether a block contains any items and compare multiple signals.=Lahko prenašajo signal rdečega kamna, zaznavajo, ali blok vsebuje kakršne koli predmete, in primerjajo več signalov.
+
+A redstone comparator has 1 main input, 2 side inputs and 1 output. The output is in arrow direction, the main input is in the opposite direction. The other 2 sides are the side inputs.=Primerjalnik rdečega kamna ima 1 glavni vhod, 2 stranska vhoda in 1 izhod. Izhod je v smeri puščice, glavni vhod je v nasprotni smeri. Ostali dve strani sta stranska vhoda.
+
+The main input can powered in 2 ways: First, it can be powered directly by redstone power like any other component. Second, it is powered if, and only if a container (like a chest) is placed in front of it and the container contains at least one item.=Glavni vhod se lahko napaja na dva načina: Prvič, lahko se napaja neposredno z energijo rdečega kamna kot katera koli druga komponenta. Drugič, napaja se, če in samo če je pred njim postavljena posoda (kot je skrinja) in posoda vsebuje vsaj en predmet.
+
+The side inputs are only powered by normal redstone power. The redstone comparator can operate in two modes: Transmission mode and subtraction mode. It starts in transmission mode and the mode can be changed by using the block.=Stranska vhoda se napajata le z običajno energijo rdečega kamna. Primerjalnik rdečega kamna lahko deluje v dveh načinih: način prenosa in način odštevanja. Začne v načinu prenosa, način pa lahko spremenite z uporabo bloka.
+
+Transmission mode:@nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.=Način prenosa:@nSprednja bakla je ugasnjena in spuščena. Izhod se napaja, če in samo če se napaja glavni vhod. Stranska vhoda sta prezrta.
+
+Subtraction mode:@nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.=Način odštevanja:@nSprednja bakla sveti. Izhod se napaja, če in samo če se napaja glavni vhod in se ne napaja nobeden od stranskih vhodov.
+
+Redstone Comparator=Primerjalnik rdečega kamna
+Redstone Comparator (Powered)=Primerjalnik rdečega kamna (napajan)
+Redstone Comparator (Subtract)=Primerjalnik rdečega kamna (odštevanje)
+Redstone Comparator (Subtract, Powered)=Primerjalnik rdečega kamna (odštevanje, napajan)

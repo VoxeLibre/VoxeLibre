@@ -1,0 +1,12 @@
+# textdomain: mcl_cozy
+Sit down=Usedi se
+@1 sits=@1 sedi
+You can't sit, the block's too far away!=Ne moreš se usesti, blok je predaleč!
+You have to stop moving before sitting down!=Morate se ustaviti pred sedenjem!
+Lie down=Uleži se
+@1 lies=@1 leži
+You can't lay, the block's too far away!=Ne moreš se uležti, blok je predaleč!
+You have to stop moving before lying down!=Morate se ustaviti pred leganjem!
+@1 stands up=@1 je vstal
+Move to stand up=Premaknite se za vstajanje
+This block is already occupied!=Ta blok je zaseden!

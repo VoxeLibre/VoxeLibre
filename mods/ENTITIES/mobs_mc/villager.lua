@@ -1,7 +1,5 @@
 --MCmobs v0.4
 --maikerumine
---made for MC like Survival game
---License for code WTFPL and otherwise stated in readmes
 
 --###################
 --################### VILLAGER
@@ -2308,11 +2306,7 @@ mcl_mobs.register_mob("mobs_mc:villager", {
 				return true
 			end
 		end
-	end,
-	on_lightning_strike = function(self, pos, pos2, objects)
-		 mcl_util.replace_mob(self.object, "mobs_mc:witch")
-		 return true
-	end,
+	end
 })
 
 -- spawn eggs

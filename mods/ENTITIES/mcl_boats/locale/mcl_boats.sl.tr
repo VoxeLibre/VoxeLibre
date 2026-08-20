@@ -1,0 +1,25 @@
+# textdomain: mcl_boats
+Sneak to dismount=Prikradite se za sestop
+Boat=Čoln
+Oak Boat=Hrastov čoln
+Spruce Boat=Smrekov čoln
+Birch Boat=Brezov čoln
+Jungle Boat=Džunglov čoln
+Acacia Boat=Akacijev čoln
+Dark Oak Boat=Čoln iz temnega hrasta
+Obsidian Boat=Obsidianov čoln
+Mangrove Boat=Mangronov čoln
+Cherry Boat=Česnjev čoln
+Oak Chest Boat=Hrastov čoln s skrinjo
+Spruce Chest Boat=Smrekov čoln s skrinjo
+Birch Chest Boat=Brezov čoln s skrinjo
+Jungle Chest Boat=Džunglov čoln s skrinjo
+Acacia Chest Boat=Akacijev čoln s skrinjo
+Dark Oak Chest Boat=Čoln iz temnega hrasta se skrinjo
+Mangrove Chest Boat=Mangronov čoln s skrinjo
+Cherry Chest Boat=Česnjev čoln s skrinjo
+Boats are used to travel on the surface of water.=Čolni se uporabljajo za potovanje po vodnih površinah.
+
+Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Use [Sneak] to leave the boat, punch the boat to make it drop as an item.=Z desno tipko miške kliknite na vir vode, da postavite čoln. Z desno tipko miške kliknite čoln, da vanj vstopite. Uporabite [Levo] in [Desno] za krmiljenje, [Naprej] za pospešitev in [Nazaj] za upočasnitev ali premikanje nazaj. Uporabite [Prikradite se], da zapustite čoln, udarite čoln, da se spusti kot predmet.
+
+Water vehicle=Vodno plovilo

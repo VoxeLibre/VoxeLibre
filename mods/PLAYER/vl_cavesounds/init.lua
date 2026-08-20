@@ -62,6 +62,7 @@ local function play()
 	local time = core.get_timeofday()
 
 	for _, player1 in pairs(core.get_connected_players()) do
+		repeat
 		if not player1:get_meta():get("vl_cavesounds:disable") then
 
 			local player1_name = player1:get_player_name()
@@ -74,6 +75,8 @@ local function play()
 				if pos1.y < 0 then
 					local fear      = listeners[player1_name].fear
 					local light_lvl = core.get_node_light(pos1)
+
+					if not light_lvl then break end
 
 					-- Mapping light level to extra fear
 					local new_fear = fear + slope * (max_light_lvl - light_lvl)
@@ -116,6 +119,7 @@ local function play()
 				end
 			end
 		end
+		until true
 	end
 
 	core.after(interval, play)

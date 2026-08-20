@@ -14,7 +14,7 @@ minetest.register_craftitem("mcl_totems:totem", {
 	inventory_image = "mcl_totems_totem.png",
 	wield_image = "mcl_totems_totem.png",
 	stack_max = 1,
-	groups = {combat_item = 1, offhand_item = 1},
+	groups = {combat_item = 1},
 })
 minetest.register_alias("mobs_mc:totem", "mcl_totems:totem")
 

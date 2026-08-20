@@ -14,7 +14,7 @@ construisez, explorez et bien plus encore. Inspiré par Minecraft, mais allant e
 
 À l’origine forké depuis MineClone (par davedevils) sous le nom MineClone 2, puis renommé
 et considérablement amélioré. Développé par de nombreuses personnes, voir
-[`CREDITS.md`](CREDITS.md) pour une liste complète.
+[`CREDITS.md`](../CREDITS.md) pour une liste complète.
 
 
 ## À propos
@@ -27,7 +27,7 @@ du jeu, comme l'extraction de minerai, l'agriculture et la construction de machi
 vous pouvez jouer en **mode créatif** où vous pouvez construire à peu près n'importe quoi
 instantanément.
 
-Voir [`GETTING_STARTED.md`](GETTING_STARTED.md) pour un guide rapide sur comment commencer
+Voir [`GETTING_STARTED.md`](../GETTING_STARTED.md) pour un guide rapide sur comment commencer
 à jouer à VoxeLibre.
 
 ### Résumé du gameplay
@@ -73,7 +73,7 @@ des problèmes, allez là-bas.
 * ContentDB : <https://content.luanti.org/packages/wuzzy/mineclone2/>
 * Forums Luanti : <https://forum.luanti.org/viewtopic.php?f=50&t=16407>
 * Discord: <https ://discord.gg/xE4z8EEpDC>
-* Espace Matrix : <https://app.element.io/#/room/#voxelibre:matrix.org>
+* Espace Matrix : <https://matrix.to/#/#voxelibre:matrix.org>
 * Mastodon : <https://fosstodon.org/@VoxeLibre>
 * Lemmy : <https://programming.dev/c/VoxeLibre>
 * Reddit : <https://www.reddit.com/r/VoxeLibre/>
@@ -99,15 +99,15 @@ pour obtenir le contenu le plus récent et nous aider à trouver des bugs avant 
   et les [Projects](/VoxeLibre/VoxeLibre/projects) thématiques pour rendre le jeu meilleur
 * Assurer une bonne prise en charge de la localisation, en permettant des traductions
   dans autant de langues que possible
-* [Maintenir une communauté conviviale et inclusive de joueurs et de développeurs](CODE_OF_CONDUCT.md)
+* [Maintenir une communauté conviviale et inclusive de joueurs et de développeurs](../CODE_OF_CONDUCT.md)
 
 
 ## Voir aussi
 
-* [`GETTING_STARTED.md`](GETTING_STARTED.md): Guide rapide sur comment commencer
+* [`GETTING_STARTED.md`](../GETTING_STARTED.md): Guide rapide sur comment commencer
   à jouer
-* [`CONTRIBUTING.md`](CONTRIBUTING.md): Information pour les personnes qui veulent contribuer
-* [`API.md`](API.md): Pour les personnes qui veulent modder VoxeLibre
-* [`LICENSE.txt`](LICENSE.txt): Texte complet de la licence GNU GPLv3
-* [`LEGAL.md`](LEGAL.md): Information légale
-* [`CREDITS.md`](CREDITS.md): Liste de toutes les personnes qui ont contribué
+* [`CONTRIBUTING.md`](../CONTRIBUTING.md): Information pour les personnes qui veulent contribuer
+* [`API.md`](../API.md): Pour les personnes qui veulent modder VoxeLibre
+* [`LICENSE.txt`](../LICENSE.txt): Texte complet de la licence GNU GPLv3
+* [`LEGAL.md`](../LEGAL.md): Information légale
+* [`CREDITS.md`](../CREDITS.md): Liste de toutes les personnes qui ont contribué

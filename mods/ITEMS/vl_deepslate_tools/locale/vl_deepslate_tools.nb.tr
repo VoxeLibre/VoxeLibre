@@ -25,6 +25,11 @@ Can be thrown=Kan kastes
 Spears are great in melee combat, as they have an increased reach. They can also be thrown.=Spyd er bra i nærkamp, da de har lengre rekkevidde. De kan også kastes.
 
 To throw a spear, hold it in your hand, then hold use (rightclick) in the air.=For å kaste et spyd, hold det i hånden. Deretter hold bruk (høyreklikk) i luften.
+Cuts plants in range=
+Scythes are great in melee combat.=
+
+When you cut down a plant with a scythe, it cuts down other plants in a 3x3 area.=
+
 Deepslate Pickaxe=Dypskiferhakke
 Deepslate Shovel=Dypskiferspade
 Deepslate Hoe=Dypskifergrev
@@ -32,6 +37,7 @@ Deepslate Axe=Dypskiferøks
 Deepslate Sword=Dypskifersverd
 Deepslate Hammer=Dypskiferhammer
 Deepslate Spear=Dypskiferspyd
+Deepslate Scythe=
 
 
 ##### not used anymore #####

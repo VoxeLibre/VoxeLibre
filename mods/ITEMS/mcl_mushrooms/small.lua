@@ -137,6 +137,7 @@ minetest.register_craftitem("mcl_mushrooms:mushroom_stew", {
 	groups = { food = 2, eatable = 6 },
 	_mcl_saturation = 7.2,
 	stack_max = 1,
+	touch_interaction = "short_dig_long_place"
 })
 
 minetest.register_craft({

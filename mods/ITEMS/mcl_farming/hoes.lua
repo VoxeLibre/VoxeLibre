@@ -86,17 +86,8 @@ local b = ""
 ---@param def mcl_farming.HoeDef
 function mcl_farming:register_hoe(material, def)
 	local calling_mod = core.get_current_modname()
-	local description = def.description
-	local help_text = def.help_text or hoe_tt
-	local long_description = def.long_description or hoe_longdesc
-	local usage_help = def.usage_help or hoe_usagehelp
-	local m = def.crafting_material or def.repair_material
 	local tool_name = calling_mod .. ":hoe_" .. material
-	local upgrade = def.upgradeable or false
-	local craftable = (def.craftable ~= nil and def.craftable) or true
-	local burn_time = def.burn_time or 0
-	local damage_groups = def.damage_groups or { fleshy = 1 }
-	local full_punch_interval = def.full_punch_interval or 1
+	local m = def.crafting_material or def.repair_material
 
 	assert(def.image, "Hoe definition requires image to be set")
 	assert(def.place_uses, "Hoe definition requires place_uses to be set")
@@ -110,18 +101,18 @@ function mcl_farming:register_hoe(material, def)
 		groups.fire_immune = 1
 	end
 	core.register_tool(tool_name, {
-		description = description,
-		_tt_help = help_text,
-		_doc_items_longdesc = long_description,
-		_doc_items_usagehelp = usage_help,
+		description = def.description,
+		_tt_help = def.help_text or hoe_tt,
+		_doc_items_longdesc = def.long_description or hoe_longdesc,
+		_doc_items_usagehelp = def.usage_help or hoe_usagehelp,
 		_doc_items_hidden = false,
 		inventory_image = def.image,
 		wield_scale = mcl_vars.tool_wield_scale,
 		on_place = hoe_on_place_function(def.place_uses),
 		groups = groups,
 		tool_capabilities = {
-			full_punch_interval = full_punch_interval,
-			damage_groups = damage_groups,
+			full_punch_interval = def.full_punch_interval or 1,
+			damage_groups = def.damage_groups or { fleshy = 1 },
 			punch_attack_uses = def.punch_uses,
 		},
 		_repair_material = def.repair_material,
@@ -129,7 +120,7 @@ function mcl_farming:register_hoe(material, def)
 		_mcl_diggroups = {
 			hoey = def.dig_group
 		},
-		_mcl_upgradable = upgrade,
+		_mcl_upgradable = def.upgradeable,
 		_mcl_upgrade_item = def.upgrade_item,
 		vl_max_ench_lvl = def.max_enchant_level
 	})
@@ -138,11 +129,11 @@ function mcl_farming:register_hoe(material, def)
 		core.register_craft({
 			type = "fuel",
 			recipe = tool_name,
-			burntime = burn_time,
+			burntime = def.burn_time,
 		})
 	end
 
-	if craftable then
+	if def.craftable ~= false then
 		core.register_craft({
 			output = tool_name,
 			recipe = {
@@ -172,7 +163,7 @@ local crafts = {
 		crafting_material = "group:wood",
 		repair_material = "group:wood",
 		dig_group = { speed = 2, level = 1, uses = 60 },
-		burntime = 10
+		burn_time = 10
 	},
 	stone = {
 		image = "farming_tool_stonehoe.png",

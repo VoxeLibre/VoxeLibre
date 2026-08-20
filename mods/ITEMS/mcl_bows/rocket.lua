@@ -65,9 +65,11 @@ core.register_craftitem("mcl_bows:rocket", {
 local arrow_entity = mcl_bows.arrow_entity
 local rocket_entity = table.copy(arrow_entity)
 table.update(rocket_entity,{
-	mesh = "mcl_bows_rocket.obj",
-	textures = {"mcl_bows_rocket.png"},
-	visual_size = {x=2.5, y=2.5},
+	initial_properties = {
+		mesh = "mcl_bows_rocket.obj",
+		textures = {"mcl_bows_rocket.png"},
+		visual_size = {x=2.5, y=2.5},
+	},
 	save_fields = {
 		"stuck", "fuse", "stuckin", "lastpos", "startpos", "damage", "is_critical", "shootername",
 	},
@@ -101,7 +103,7 @@ if core.get_modpath("mcl_core") and core.get_modpath("mcl_mobitems") and core.ge
 		output = "mcl_bows:rocket 1",
 		recipe = {
 			{"mcl_core:paper"},
-			{"vl_fireworks:rocket_2"},
+			{"vl_fireworks:rocket"},
 			{"mcl_bows:arrow"},
 		}
 	})

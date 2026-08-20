@@ -158,6 +158,17 @@ function mcl_mobs.register_mob(name, def)
 		}
 	end
 
+	-- Initialize drops
+	local drops = {}
+	for _, drop in ipairs(def.drops or {}) do
+		drop = table.copy(drop)
+		drop.chance = drop.chance or 1
+		drop.looting = drop.looting or "common"
+		drop.min = drop.min or 1
+		drop.max = drop.max or drop.min
+		table.insert(drops, drop)
+	end
+
 	local collisionbox = def.collisionbox or def.initial_properties.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
 	local avg_radius = 0
 	for _, r in ipairs(collisionbox) do
@@ -186,6 +197,7 @@ function mcl_mobs.register_mob(name, def)
 		owner = def.owner or "",
 		order = def.order or "",
 		on_die = def.on_die,
+		on_corpse_remove = def.on_corpse_remove,
 		spawn_small_alternative = def.spawn_small_alternative,
 		do_custom = def.do_custom,
 		detach_child = def.detach_child,
@@ -226,7 +238,7 @@ function mcl_mobs.register_mob(name, def)
 		suffocation = def.suffocation or true,
 		fall_damage = def.fall_damage or 1,
 		fall_speed = def.fall_speed or DEFAULT_FALL_SPEED, -- must be lower than -2
-		drops = def.drops or {},
+		drops = drops,
 		armor = def.armor or 100,
 		on_rightclick = create_mob_on_rightclick(def.on_rightclick),
 		arrow = def.arrow,
@@ -260,6 +272,7 @@ function mcl_mobs.register_mob(name, def)
 		hornytimer = 0,
 		gotten = false,
 		health = 0,
+		old_health = 0,
 		frame_speed_multiplier = 1,
 		reach = def.reach or 3,
 		htimer = 0,
@@ -293,7 +306,7 @@ function mcl_mobs.register_mob(name, def)
 		is_mob = true,
 		pushable = def.pushable or true,
 
-		-- MCL2 extensions
+		-- VoxeLibre extensions
 		shooter_avoid_enemy = def.shooter_avoid_enemy,
 		strafes = def.strafes,
 		avoid_distance = def.avoid_distance or 9,
@@ -322,7 +335,7 @@ function mcl_mobs.register_mob(name, def)
 		particlespawners = def.particlespawners,
 		spawn_check = def.spawn_check,
 		_vl_projectile = def._vl_projectile,
-		-- End of MCL2 extensions
+		-- End of VoxeLibre extensions
 		on_spawn = def.on_spawn,
 		on_blast = def.on_blast or function(self,damage)
 			self.object:punch(self.object, 1.0, {

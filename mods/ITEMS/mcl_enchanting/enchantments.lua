@@ -65,6 +65,15 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 	inv_tool_tab = true,
 }
 
+mcl_death_drop.register_on_death_drop_per_stack(function (player, inv, listname, idx, stack)
+	if mcl_enchanting.has_enchantment(stack, "curse_of_vanishing") then
+		inv:set_stack(listname, idx, nil)
+		return true
+	end
+	return false
+end, mcl_death_drop.ORDER.VOID)
+
+
 -- implemented in mcl_playerplus
 mcl_enchanting.enchantments.depth_strider = {
 	name = S("Depth Strider"),
@@ -88,7 +97,7 @@ mcl_enchanting.enchantments.depth_strider = {
 mcl_enchanting.enchantments.efficiency = {
 	name = S("Efficiency"),
 	max_level = 5,
-	primary = {pickaxe = true, shovel = true, axe = true, hoe = true, hammer = true},
+	primary = {pickaxe = true, shovel = true, axe = true, hoe = true, hammer = true, scythe = true},
 	secondary = {shears = true},
 	disallow = {},
 	incompatible = {},
@@ -163,7 +172,7 @@ mcl_enchanting.enchantments.flame = {
 mcl_enchanting.enchantments.fortune = {
 	name = S("Fortune"),
 	max_level = 3,
-	primary = {pickaxe = true, shovel = true, axe = true, hoe = true},
+	primary = {pickaxe = true, shovel = true, axe = true, hoe = true, scythe = true},
 	secondary = {},
 	disallow = {},
 	incompatible = {silk_touch = true},
@@ -258,7 +267,7 @@ mcl_enchanting.enchantments.knockback = {
 	name = S("Knockback"),
 	max_level = 2,
 	primary = {sword = true, hammer = true},
-	secondary = {axe = true, spear = true},
+	secondary = {axe = true, spear = true, scythe = true},
 	disallow = {},
 	incompatible = {},
 	weight = 5,
@@ -356,7 +365,7 @@ mcl_enchanting.enchantments.looting = {
 	name = S("Looting"),
 	max_level = 3,
 	primary = {sword = true, spear = true, hammer = true},
-	secondary = {axe = true},
+	secondary = {axe = true, scythe = true},
 	disallow = {},
 	incompatible = {},
 	weight = 2,
@@ -629,7 +638,7 @@ mcl_enchanting.enchantments.quick_charge = {
 mcl_enchanting.enchantments.sharpness = {
 	name = S("Sharpness"),
 	max_level = 5,
-	primary = {sword = true, spear = true},
+	primary = {sword = true, spear = true, scythe = true},
 	secondary = {axe = true, hammer = true},
 	disallow = {},
 	incompatible = {bane_of_arthropods = true, smite = true, impaling = true},
@@ -648,7 +657,7 @@ mcl_enchanting.enchantments.sharpness = {
 mcl_enchanting.enchantments.silk_touch = {
 	name = S("Silk Touch"),
 	max_level = 1,
-	primary = {pickaxe = true, shovel = true, axe = true, hoe = true},
+	primary = {pickaxe = true, shovel = true, axe = true, hoe = true, scythe = true},
 	secondary = {shears = true},
 	disallow = {},
 	incompatible = {fortune = true},
@@ -668,7 +677,7 @@ mcl_enchanting.enchantments.smite = {
 	name = S("Smite"),
 	max_level = 5,
 	primary = {sword = true, hammer = true},
-	secondary = {axe = true, spear = true},
+	secondary = {axe = true, spear = true, scythe = true},
 	disallow = {},
 	incompatible = {bane_of_arthropods = true, sharpness = true, impaling = true},
 	weight = 5,

@@ -1,11 +1,10 @@
 # textdomain: mcl_beds
 ##[ functions.lua ]##
-New respawn position set!=Nouvelle position de réapparition définie !
 You can only sleep at night or during a thunderstorm.=Vous ne pouvez dormir que la nuit ou pendant un orage.
 You can't sleep, the bed's too far away!=Vous ne pouvez pas dormir, le lit est trop loin !
 This bed is already occupied!=Ce lit est déjà occupé !
 You have to stop moving before going to bed!=Vous devez arrêter de bouger avant de vous coucher !
-You can't sleep now, monsters are nearby!=Vous ne pouvez pas dormir maintenant, les monstres sont à proximité !
+You can't sleep now, you are under attack!=
 You can't sleep, the bed is obstructed!=Vous ne pouvez pas dormir, le lit est obstrué !
 It's too dangerous to sleep here!=C'est trop dangereux de dormir ici !
 Leave bed=Quitter le lit
@@ -61,6 +60,8 @@ Respawn Anchor=Ancre de réapparition
 
 ##### not used anymore #####
 
+New respawn position set!=Nouvelle position de réapparition définie !
+You can't sleep now, monsters are nearby!=Vous ne pouvez pas dormir maintenant, les monstres sont à proximité !
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=Nouvelle position de réapparition définie ! Mais vous ne pouvez dormir que la nuit ou pendant un orage.
 

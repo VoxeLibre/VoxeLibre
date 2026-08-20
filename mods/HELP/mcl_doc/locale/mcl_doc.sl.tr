@@ -1,0 +1,87 @@
+# textdomain: mcl_doc
+Water can flow into this block and cause it to drop as an item.=Voda lahko steče v ta blok in povzroči, da izpade kot predmet.
+This block can be turned into dirt with a hoe.=Ta blok se lahko z motiko spremeni v zemljo.
+This block can be turned into farmland with a hoe.=Ta blok se lahko z motiko spremeni v njivo.
+This block can be turned into grass path with a shovel.=Ta blok se lahko z lopato spremeni v travnato pot.
+This block acts as a soil for all saplings.=Ta blok služi kot zemlja za vse sadike.
+This block acts as a soil for some saplings.=Ta blok služi kot zemlja za nekatere sadike.
+Sugar canes will grow on this block.=Na tem bloku raste sladkorni trs.
+Nether wart will grow on this block.=Na tem bloku raste Nether bradavica.
+
+This block quickly decays when there is no wood block of any species within a distance of @1. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.=Ta blok hitro propade, če na razdalji @1 ni nobenega lesenega bloka katere koli vrste. Pri propadanju izgine in lahko izpleni enega od svojih običajnih izplenov. Blok ne propade, če ga je postavil igralec.
+
+This block quickly decays and disappears when there is no wood block of any species within a distance of @1. The block does not decay when the block has been placed by a player.=Ta blok hitro propade in izgine, če na razdalji @1 ni nobenega lesenega bloka katere koli vrste. Blok ne propade, če ga je postavil igralec.
+
+This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Ta rastlina lahko raste samo na travnatih blokih in zemlji. Za preživetje potrebuje neoviran pogled na nebo nad njo ali pa mora biti izpostavljena stopnji svetlobe 8 ali več.
+
+This plant can grow on grass blocks, podzol, dirt and coarse dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Ta rastlina lahko raste na travnatih blokih, podzolu, zemlji in grobi zemlji. Za preživetje potrebuje neoviran pogled na nebo nad njo ali pa mora biti izpostavljena stopnji svetlobe 8 ali več.
+
+This block is flammable.=Ta blok je vnetljiv.
+This block destroys any item it touches.=Ta blok uniči vsak predmet, ki se ga dotakne.
+To eat it, wield it, then right-click.=Da ga pojeste, ga držite v roki in kliknite z desnim gumbom.
+You can eat this even when your hunger bar is full.=To lahko pojeste, tudi ko je vaša vrstica lakote polna.
+You cannot eat this when your hunger bar is full.=Tega ne morete pojesti, ko je vaša vrstica lakote polna.
+To drink it, wield it, then right-click.=Da ga spijete, ga držite v roki in kliknite z desnim gumbom.
+You cannot drink this when your hunger bar is full.=Tega ne morete spiti, ko je vaša vrstica lakote polna.
+To consume it, wield it, then right-click.=Da ga zaužijete, ga držite v roki in kliknite z desnim gumbom.
+You cannot consume this when your hunger bar is full.=Tega ne morete zaužiti, ko je vaša vrstica lakote polna.
+You have to wait for around 2 seconds before you can eat or drink again.=Počakati morate približno 2 sekundi, preden lahko spet jeste ali pijete.
+Hunger points restored: @1=Obnovljene točke lakote: @1
+Saturation points restored: @1=Obnovljene točke sitosti: @1
+It can be worn on the head.=Lahko se nosi na glavi.
+It can be worn on the torso.=Lahko se nosi na trupu.
+It can be worn on the legs.=Lahko se nosi na nogah.
+It can be worn on the feet.=Lahko se nosi na stopalih.
+Armor points: @1=Točke oklepa: @1
+Armor durability: @1=Vzdržljivost oklepa: @1
+This item can be repaired at an anvil with: @1.=Ta predmet se lahko popravi na nakovalu z: @1.
+This item can be repaired at an anvil with any wooden planks.=Ta predmet se lahko popravi na nakovalu s katerimi koli lesenimi deskami.
+This item can be repaired at an anvil with any item in the “@1” group.=Ta predmet se lahko popravi na nakovalu s katerim koli predmetom iz skupine »@1«.
+This item cannot be renamed at an anvil.=Tega predmeta ni mogoče preimenovati na nakovalu.
+This block crushes any block it falls into.=Ta blok zdrobi vsak blok, v katerega pade.
+
+When this block falls deeper than 1 block, it causes damage to any player it hits. The damage dealt is B×2−2 hit points with B @= number of blocks fallen. The damage can never be more than 40 HP.=Ko ta blok pade globlje kot 1 blok, povzroči škodo vsakemu igralcu, ki ga zadene. Povzročena škoda znaša B×2−2 točk zdravja, kjer je B @= število blokov padca. Škoda nikoli ne more biti večja od 40 HP.
+
+Diamond Pickaxe=Diamantni kramp
+Iron Pickaxe=Železni kramp
+Stone Pickaxe=Kamniti kramp
+Golden Pickaxe=Zlati kramp
+Wooden Pickaxe=Leseni kramp
+Diamond Axe=Diamantna sekira
+Iron Axe=Železna sekira
+Stone Axe=Kamnita sekira
+Golden Axe=Zlata sekira
+Wooden Axe=Lesena sekira
+Diamond Shovel=Diamantna lopata
+Iron Shovel=Železna lopata
+Stone Shovel=Kamnita lopata
+Golden Shovel=Zlata lopata
+Wooden Shovel=Lesena lopata
+This block can be mined instantly by any tool.=Ta blok je mogoče takoj zrudariti s katerim koli orodjem.
+• Shears=• Škarje
+• Sword=• Meč
+• Hand=• Roka
+This block can be mined by:=Ta blok je mogoče rudariti z:
+Hardness: ∞=Trdota: ∞
+Hardness: @1=Trdota: @1
+This block will not be destroyed by TNT explosions.=Eksplozije TNT-ja tega bloka ne bodo uničile.
+This block drops itself when mined by shears.=Ta blok izpleni samega sebe, ko je rudarjen s škarjami.
+@1×@2=@1×@2
+This block drops the following when mined by shears: @1=Ta blok izpleni naslednje, ko je rudarjen s škarjami: @1
+, =, 
+Painfully slow=Mučno počasi
+Very slow=Zelo počasi
+Slow=Počasi
+Fast=Hitro
+Very fast=Zelo hitro
+Extremely fast=Izjemno hitro
+Instantaneous=Takoj
+@1 uses=@1 uporab
+Unlimited uses=Neomejeno uporab
+Mining speed: @1=Hitrost rudarjenja: @1
+Durability: @1=Vzdržljivost: @1
+This tool is capable of mining.=To orodje lahko rudari.
+Block breaking strength: @1=Moč lomljenja blokov: @1
+This is a melee weapon that deals damage by punching.=To je orožje za boj od blizu, ki povzroča škodo z udarjanjem.
+Maximum damage: @1 HP=Največja škoda: @1 HP
+Full punch interval: @1 s=Interval polnega udarca: @1 s

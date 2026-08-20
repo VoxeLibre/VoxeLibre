@@ -103,6 +103,7 @@ core.register_craftitem("mcl_farming:carrot_item", {
 	_mcl_saturation = 3.6,
 	on_secondary_use = core.item_eat(3),
 	on_place = mcl_farming:get_seed_or_eat_callback("mcl_farming:carrot_1", 3),
+	touch_interaction = "short_dig_long_place"
 })
 
 core.register_craftitem("mcl_farming:carrot_item_gold", {
@@ -113,6 +114,7 @@ core.register_craftitem("mcl_farming:carrot_item_gold", {
 	on_secondary_use = core.item_eat(6),
 	groups = { brewitem = 1, food = 2, eatable = 6 },
 	_mcl_saturation = 14.4,
+	touch_interaction = "short_dig_long_place"
 })
 
 core.register_craft({

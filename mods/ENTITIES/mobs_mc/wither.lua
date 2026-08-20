@@ -1,8 +1,6 @@
 --MCmobs v0.4
 --maikerumine
 --updated by Herowl
---made for MC like Survival game
---License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing", true)
@@ -356,7 +354,7 @@ mcl_mobs.register_mob("mobs_mc:wither", {
 				mcl_potions.give_effect("withering", objs[n], 2, 10)
 			end
 			if hit_some then
-				mcl_mobs.effect(pos, 32, "mcl_particles_soul_fire_flame.png", 5, 10, self.reach, 1, 0)
+				mcl_mobs.effect(pos, 32, "mcl_particles_soul_fire_flame.png", 5, 10, self.reach, 1, 7)
 			end
 		end
 

@@ -10,4 +10,14 @@ Display or set customizable options=Exibir ou definir opções personalizáveis
 Usage: /gamerule <rule> [<value>]=Uso: /gamerule <regra> [<valor>]
 Game rule @1 doesn't exist=A regra do jogo @1 não existe
 ##[ settings.lua ]##
+Allows creative players to kill mobs with only a single punch.=
 Prevents beds/respawn anchors from exploding in other dimensions.=Evita que camas/âncoras de renascimento explodam em outras dimensões.
+##[ gui.lua ]##
+Player @1 is not online.=
+You need the server privilege to edit other players' settings.=
+Player: @1=
+Your player settings were changed by @1.=
+
+Open personal settings, or another player's settings if you have the server privilege=
+
+[player_name]=

@@ -13,7 +13,7 @@ local tunables = {}
 vl_tuning.registered_settings = tunables
 
 -- Supported variable types
-local tunable_types = {
+vl_tuning.tunable_types = {
 	bool = {
 		to_string = tostring,
 		from_string = function(value)
@@ -31,6 +31,11 @@ local tunable_types = {
 		from_string = function(v) return v end,
 		default = "",
 	},
+	slider = {
+		to_string = tostring,
+		from_string = tonumber,
+		default = 0
+	}
 }
 
 ---@alias vl_tuning.Value string|number|boolean
@@ -38,7 +43,7 @@ local tunable_types = {
 -- Tunable metatable functions
 ---@class (exact) vl_tuning.Setting
 ---@field name string
----@field setting_type "string"|"number"|"bool"
+---@field setting_type "string"|"number"|"bool"|"slider"
 ---@field description string
 ---@field default vl_tuning.Value
 ---@field set fun(self : vl_tuning.Setting, value : vl_tuning.Value, no_hook : boolean?)
@@ -88,7 +93,7 @@ end
 ---@field formspec_desc_lines? number
 
 ---@param name string
----@param p_type? "bool"|"number"|"string"
+---@param p_type? "bool"|"number"|"string"|"slider"
 ---@param def? vl_tuning.SettingDef
 ---@return vl_tuning.Setting
 function mod.setting(name, p_type, def)
@@ -99,7 +104,7 @@ function mod.setting(name, p_type, def)
 	assert(def)
 	assert(type(def.set) == "function", "Tunable requires set method")
 	assert(type(def.get) == "function", "Tunable required get method")
-	assert(tunable_types[p_type])
+	assert(vl_tuning.tunable_types[p_type])
 
 	-- Setup the tunable data
 	---@type vl_tuning.Setting
@@ -111,8 +116,8 @@ function mod.setting(name, p_type, def)
 		getter = def.get,
 		set = tunable_class.set,
 		get_string = tunable_class.get_string,
-		from_string = tunable_types[p_type].from_string,
-		to_string = tunable_types[p_type].to_string,
+		from_string = vl_tuning.tunable_types[p_type].from_string,
+		to_string = vl_tuning.tunable_types[p_type].to_string,
 		formspec_desc_lines = def.formspec_desc_lines,
 		default = def.default or tunable_class.default,
 	}
@@ -212,6 +217,7 @@ core.register_chatcommand("gamerule", {
 })
 
 dofile(modpath.."/settings.lua")
+dofile(modpath.."/player_settings.lua")
 dofile(modpath.."/gui.lua")
 
 mod.setting("debug:vl_tuning:report_value_changes", "bool", {

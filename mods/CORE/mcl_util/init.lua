@@ -812,6 +812,9 @@ end
 function mcl_util.get_active_object_id_from_uuid(uuid)
 	return uuid_to_aoid_cache[uuid] or scan_active_objects() or uuid_to_aoid_cache[uuid]
 end
+
+--- @param uuid string
+--- @return core.LuaEntity?
 function mcl_util.get_luaentity_from_uuid(uuid)
 	return minetest.luaentities[ mcl_util.get_active_object_id_from_uuid(uuid) ]
 end

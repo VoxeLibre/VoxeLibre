@@ -1,0 +1,42 @@
+# textdomain: mcl_inventory
+##[ creative.lua ]##
+
+When enabled, ask for confirmation to clear the inventory when clicking the trash icon in creative mode.=
+
+Building Blocks=Gradniki
+Decoration Blocks=Dekorativni bloki
+Redstone=Rdeči kamen
+Transportation=Prevoz
+Miscellaneous=Razno
+Search Items=Iskanje predmetov
+Foodstuffs=Živila
+Tools=Orodja
+Combat=Boj
+Mobs=Bitja
+Brewing=Varjenje
+Materials=Materiali
+Survival Inventory=Preživetveni inventar
+Recipe book=Knjiga receptov
+Help=Pomoč
+Clear Inventory=
+Advancements=Napredki
+Switch stack size=Sprememba velikosti sklada
+Select player skin=Izbor preoblek za igralca
+Settings=
+@1 / @2=@1 / @2
+Are you sure you want to remove all items from your inventory?=
+Do not ask again=
+Cancel=
+Remove All Items=
+You may change this back in the player settings.=
+##[ survival.lua ]##
+
+When enabled, shift-click moves items between hotbar and inventory rows instead of routing them into the crafting grid.=
+
+Crafting=Izdelovanje
+Achievements=Dosežki
+
+
+##### not used anymore #####
+
+Server Settings=Nastavitve

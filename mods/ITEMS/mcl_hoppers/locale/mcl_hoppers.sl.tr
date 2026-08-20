@@ -1,0 +1,23 @@
+# textdomain: mcl_hoppers
+Hopper=Lijak
+Inventory=Inventar
+5 inventory slots=5 rež inventarja
+Collects items from above, moves items to container below=Zbira predmete od zgoraj, premika predmete v vsebnik spodaj
+Can be disabled with redstone power=Lahko se onemogoči z energijo rdečega kamna
+
+Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempt to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.=Lijaki so vsebniki s 5 režami inventarja. Zbirajo odvržene predmete od zgoraj, jemljejo predmete iz vsebnika zgoraj in jih poskušajo prestaviti v sosednji vsebnik. Lijaki so lahko usmerjeni navzdol ali vstran. Lijaki delujejo s skrinjami, kapalniki, podajalniki, školjkarskimi škatlami, pečmi in drugimi lijaki.
+
+Hoppers interact with containers the following way:=Lijaki z vsebniki delujejo na naslednji način:
+
+• Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers that point to the furnace put items into the fuel slot=• Peči: Lijaki od zgoraj bodo predmete vstavili v izvorno režo. Lijaki od spodaj jemljejo predmete iz izhodne reže. Prav tako jemljejo predmete iz reže za gorivo, če jih ni mogoče uporabiti kot gorivo. Stranski lijaki, ki so usmerjeni v peč, vstavljajo predmete v režo za gorivo
+
+• Ender chests: No interaction.=• Skrinje ender: Ni interakcije.
+• Other containers: Normal interaction.=• Ostali vsebniki: Običajna interakcija.
+
+Hoppers can be disabled when supplied with redstone power. Disabled hoppers don't move items.=Lijake je mogoče onemogočiti, če jim dovedete energijo rdečega kamna. Onemogočeni lijaki ne premikajo predmetov.
+
+To place a hopper vertically, place it on the floor or a ceiling. To place it sideways, place it at the side of a block. Use the hopper to access its inventory.=Če želite lijak postaviti navpično, ga postavite na tla ali strop. Če ga želite postaviti vstran, ga postavite na stran bloka. Uporabite lijak za dostop do njegovega inventarja.
+
+Disabled Hopper=Onemogočen lijak
+Side Hopper=Stranski lijak
+Disabled Side Hopper=Onemogočen stranski lijak

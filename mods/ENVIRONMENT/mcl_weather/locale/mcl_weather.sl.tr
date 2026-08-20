@@ -1,0 +1,19 @@
+# textdomain: mcl_weather
+##[ skycolor.lua ]##
+Time of day to use when gamerule:doDaylightCycle @=@= false=Čas dneva ko nastavite pravilo igre: doDaylightCycle @=@=false
+Whether the daylight cycle and moon phases progress=Ali se cikel dnevne svetlobe in luninih men spreminjata
+##[ weather_core.lua ]##
+
+Whether the weather can change naturally. The /weather command can still change weather.=Ali se vreme lahko naravno spreminja. Ukaz /weather vedno lahko spremeni vreme.
+
+Gives ability to control weather=Omogočite nadzor nad vremenom
+Changes the weather to the specified parameter.=Spremeni vreme na določen parameter.
+Error: No weather specified.=Napaka: Vreme ni določeno.
+Error: Invalid parameters.=Napaka: Neveljavni parametri
+Error: Duration can't be less than 1 second.=Napaka: Trajanje ne sme biti krajše od 1 sekunde.
+Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”.=Napaka: Določeno je neveljavno vreme. Uporabite „clear“, „rain“, „snow“, ali „thunder“.
+
+Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)=Preklaplja med jasnim vremenom in padavinami (naključno dež, sneg ali nevihta)
+
+##[ snow.lua ]##
+The maximum number of snow layers that can be accumulated on each block=Največje število plasti snega, ki se naberejo na vsakem bloku

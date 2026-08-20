@@ -83,7 +83,7 @@
 * OpenCollective: <https://opencollective.com/mineclone2>
 * Mastodon: <https://fosstodon.org/@MineClone2>
 * Lemmy: <https://lemmy.world/c/mineclone2>
-* Matrix space: <https://app.element.io/#/room/#mcl2:matrix.org>
+* Matrix space: <https://matrix.to/#/#voxelibre:matrix.org>
 * Форум Luanti: <https://forum.luanti.org/viewtopic.php?f=50&t=16407>
 * Reddit: <https://www.reddit.com/r/MineClone2/>
 * IRC (едва используется): <https://web.libera.chat/#mineclone2>

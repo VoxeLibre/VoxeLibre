@@ -458,3 +458,13 @@ function mcl_util.match_node_to_filter(node_name, filters)
 	return false
 end
 
+---Returns whether the node definition represents a full solid cube.
+---@param node string|table Node name or node definition table
+---@return boolean|nil
+function mcl_util.is_solid_block(node)
+	local def = type(node) == "table" and node or core.registered_nodes[node]
+	return def
+		and def.walkable
+		and (def.node_box == nil or def.node_box.type == "regular")
+		and (def.collision_box == nil or def.collision_box.type == "regular")
+end

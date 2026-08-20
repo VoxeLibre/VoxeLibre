@@ -1,0 +1,35 @@
+# textdomain: mcl_books
+Book=Knjiga
+Books are used to make bookshelves and book and quills.=Knjige se uporabljajo za izdelavo knjižnih polic ter knjig in peres.
+“@1”=„@1“
+Copy of “@1”=Kopija „@1“
+Copy of Copy of “@1”=Kopija kopije „@1“
+Tattered Book=Raztrgana knjiga
+by @1=avtor: @1
+# as in “to sign a book”
+Sign=Podpiši
+Done=Končano
+Book and Quill=Knjiga in pero
+Write down some notes=Napiši nekaj zapiskov
+This item can be used to write down some notes.=Ta predmet se lahko uporabi za pisanje zapiskov.
+
+Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.=Držite jo v roki, nato desno kliknite za branje trenutnih zapiskov in njihovo urejanje. Besedilo lahko urejate, kolikokrat želite. Knjigo lahko tudi podpišete, kar jo spremeni v napisano knjigo, ki jo lahko zlagate v svežnje, vendar je ni več mogoče urejati.
+
+A book can hold up to 4500 characters. The title length is limited to 64 characters.=Knjiga lahko vsebuje do 4500 znakov. Dolžina naslova je omejena na 64 znakov.
+
+Enter book title:=Vnesite naslov knjige:
+Sign and Close=Podpiši in zapri
+Note: The book will no longer be editable after signing=Opomba: Po podpisu knjige ne bo več mogoče urejati
+Cancel=Prekliči
+Nameless Book=Neimenovana knjiga
+Written Book=Napisana knjiga
+
+Written books contain some text written by someone. They can be read and copied, but not edited.=Napisane knjige vsebujejo besedilo, ki ga je nekdo napisal. Lahko jih beremo in kopiramo, ne pa urejamo.
+
+Hold it in your hand, then rightclick to read the book.=Drži jo v roki, nato desno kliknite nanjo, da preberete knjigo.
+
+To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied.=Za kopiranje besedila napisane knjige jo postavite v mrežo za izdelavo skupaj s knjigo in peresom (ali več le-teh) in izdelajte. Napisana knjiga se ne bo porabila. Kopij kopij ni mogoče kopirati.
+
+Bookshelf=Knjižna polica
+Inventory=Inventar
+Bookshelves are used for decoration.=Knjižne police se uporabljajo za okras.

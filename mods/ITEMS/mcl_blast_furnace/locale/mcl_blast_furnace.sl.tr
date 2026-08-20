@@ -1,0 +1,18 @@
+# textdomain: mcl_blast_furnace
+Blast Furnace=Plavž
+Inventory=Inventar
+Recipe book=Knjiga receptov
+Smelts ores faster than furnace=Rude tali hitreje kot peč
+
+Blast Furnaces smelt several items, mainly ores and armor, using a furnace fuel, but twice as fast as a normal furnace.=Plavži talijo različne predmete, predvsem rude in oklepe, z uporabo goriva za peč, vendar dvakrat hitreje kot navadna peč.
+
+Use the blast furnace to open the furnace menu.=Uporabite plavž, da odprete meni pečenje.
+
+Place a furnace fuel in the lower slot and the source material in the upper slot.=Postavite gorivo v spodnjo režo in material za taljenje v zgornjo režo.
+
+The blast furnace will slowly use its fuel to smelt the item.=Plavž bo počasi porabljal gorivo za taljenje predmeta.
+The result will be placed into the output slot at the right side.=Rezultat bo postavljen v izhodno režo na desni strani.
+
+Use the recipe book to see what ores you can smelt, what you can use as fuel and how long it will burn.=Uporabite knjigo receptov, da vidite, katere rude lahko talite, kaj lahko uporabite kot gorivo in kako dolgo bo gorelo.
+
+Burning Blast Furnace=Goreč plavž

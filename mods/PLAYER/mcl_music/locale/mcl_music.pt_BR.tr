@@ -1,4 +1,5 @@
 # textdomain: mcl_music
+Background music volume (0-1000)=
 Turn music for yourself or another player on or off.=Liga ou desliga a música para você ou outro jogador.
 
 You need the debug privilege in order to turn in-game music on or off for somebody else!=Você precisa do privilégio debug para poder ligar ou desligar a música para alguém!
@@ -7,3 +8,6 @@ Could not find player @1!=O jogador @1 não pôde ser localizado!
 off=desligado
 on=ligado
 Set music for @1 to: @2=Definida música @1 para: @2
+
+Force playing a specific or random (no param) track to yourself. Beware, selected track may be interrupted by the scheduler (each 5-15 seconds).=
+

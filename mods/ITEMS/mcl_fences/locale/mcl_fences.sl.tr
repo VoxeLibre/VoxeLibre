@@ -1,0 +1,22 @@
+# textdomain: mcl_fences
+
+Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump.=Ograje so strukture, ki blokirajo pot. Ograje se povežejo med seboj in s trdnimi bloki. Ni jih mogoče preskočiti z navadnim skokom.
+
+Openable by players and redstone power=Odprejo jih lahko igralci in signali rdečega kamna
+
+Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates.=Vrata za ograje se lahko odprejo ali zaprejo in jih ni mogoče preskočiti. Ograje se lepo povežejo z vrati za ograje.
+
+Right-click the fence gate to open or close it.=Z desnim klikom kliknite na vrata za ograje, da jih odprete ali zaprete.
+Oak Fence=Hrastova ograja
+Oak Fence Gate=Hrastova vrata za ograje
+Spruce Fence=Smrekova ograja
+Spruce Fence Gate=Smrekova vrata za ograje
+Birch Fence=Brezova ograja
+Birch Fence Gate=Brezova vrata za ograje
+Jungle Fence=Džungelska ograja
+Jungle Fence Gate=Džungelska vrata za ograje
+Dark Oak Fence=Temna hrastova ograja
+Dark Oak Fence Gate=Temna hrastova vrata za ograje
+Acacia Fence=Akacijeva ograja
+Acacia Fence Gate=Akacijeva vrata za ograje
+Nether Brick Fence=Ograja iz neter opek

@@ -1,5 +1,6 @@
 # textdomain: mesecons_solarpanel
-Daylight Sensor=Датчик дневного света
+##TODO: fuzzy matched - verify and remove the comment
+Sunlight Sensor=Датчик дневного света
 Provides redstone power when in sunlight=Генерирует сигнал редстоуна от солнечного света
 Can be inverted=Может быть инвертирован
 
@@ -8,4 +9,9 @@ Daylight sensors are redstone components which provide redstone power when they 
 In inverted state, they provide redstone power when they are not in sunlight and no power otherwise.=В инвертированном состоянии он производит сигнал редстоуна, когда на него не попадает солнечный свет, а когда попадает - перестаёт производить.
 
 Use the daylight sensor to toggle its state.=Используйте датчик дневного света для смены его состояния
+Moonlight Sensor=
+
+
+##### not used anymore #####
+
 Inverted Daylight Sensor=Инвертированный датчик дневного света

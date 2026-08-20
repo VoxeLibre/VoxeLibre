@@ -1,0 +1,17 @@
+# textdomain: mesecons_wires
+Transmits redstone power, powers mechanisms=Prenaša energijo rdečega kamna, napaja mehanizme
+
+Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on the ground as a trail.=Rdeči kamen je vsestranski prevoden mineral, ki prenaša energijo rdečega kamna. Lahko ga položite na tla kot sled.
+
+A redstone trail can be in two states: Powered or not powered. A powered redstone trail will power (and thus activate) adjacent redstone components.=Sled rdečega kamna je lahko v dveh stanjih: napajana ali nenapajana. Napajana sled rdečega kamna bo napajala (in s tem aktivirala) sosednje komponente rdečega kamna.
+
+Redstone power can be received from various redstone components, such as a block of redstone or a button. Redstone power is used to activate numerous mechanisms, such as redstone lamps or pistons.=Energijo rdečega kamna lahko prejme od različnih komponent rdečega kamna, kot sta blok rdečega kamna ali gumb. Energija rdečega kamna se uporablja za aktiviranje številnih mehanizmov, kot so svetilke rdečega kamna ali bati.
+
+Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills.=Postavite rdeči kamen na tla, da zgradite sled rdečega kamna. Sledi se bodo samodejno povezale med seboj in lahko potekajo tudi čez vzpetine.
+
+Read the help entries on the other redstone components to learn how redstone components interact.=Preberite vnose pomoči o drugih komponentah rdečega kamna, da izveste, kako komponente rdečega kamna delujejo skupaj.
+
+Redstone=Rdeči kamen
+Powered Redstone Spot (@1)=Napajana točka rdečega kamna (@1)
+Redstone Trail (@1)=Sled rdečega kamna (@1)
+Powered Redstone Trail (@1)=Napajana sled rdečega kamna (@1)

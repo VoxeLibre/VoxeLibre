@@ -1,0 +1,27 @@
+# textdomain: mcl_hunger
+##[ commands.lua ]##
+[on|off]=[on|off]
+Toggle hunger and starvation mechanics=Preklopi mehaniko lakote in stradanja
+Hunger is currently enabled.=Lakota je trenutno omogočena 
+Hunger is currently disabled.=Lakota je trenutno onemogočena.
+Hunger is already on.=Lakota je že omogočena.
+Hunger enabled.=Lakota je omogočena.
+Hunger is already off.=Lakota je že onemogočena.
+Hunger disabled.=Lakota je onemogočena.
+Invalid parameter.=Neveljavni parametri.
+[show|hide]=[show|hide]
+Toggle hunger and starvation debug information=Preklopi informacije za razhroščevanja lakote in stradanja
+Hunger debug information is currently enabled.=Informacije za razhroščevanje lakote so trenutno vklopljene.
+Hunger debug information is currently disabled.=Informacije za razhroščevanje lakote so trenutno izklopljene.
+Hunger debug information is already shown.=Informacije za razhroščevanja lakote so že prikazene.
+Hunger debug information shown.=Informacije za razhroščevanja lakote so prikazene.
+Hunger debug information is already hidden.=Informacije za razhroščevanja lakote so že skrite.
+Hunger debug information hidden.=Informacije za razhroščevanja lakote so skrite.
+Gives the ability to set player hunger level.=Omogoča nastavitev ravni lakote igralca.
+[player] [0-20]=[player] [0-20]
+Set a player's hunger level.=Nastavi stopnjo lakote igralca.
+Player name and/or hunger level is required.=Ime igralca in/ali stopnja lakote sta potrebna.
+Player not found.=Igralec ni najden.
+Hunger level is required.=Stopnja lakoti je zahtevana.
+Hunger parameter must be a whole number from 0 to 20.=Parameter lakoti mora biti celo število med 0 in 20.
+Done!=Končano!

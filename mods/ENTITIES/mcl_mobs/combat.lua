@@ -319,18 +319,23 @@ function mob_class:monster_attack()
 	end
 
 	for n = 1, #objs do
-		if objs[n]:is_player() then
-			if mcl_mobs.invis[ objs[n]:get_player_name() ] or (not self:object_in_range(objs[n])) then
+		local obj_ref = objs[n]
+		if obj_ref:is_player() then
+			local player_name = obj_ref:get_player_name()
+			if mcl_mobs.invis[player_name]
+					or (not self:object_in_range(obj_ref))
+					or core.is_creative_enabled(player_name)
+					then
 				type = ""
 			elseif (self.type == "monster" or self._aggro) then
 				-- self.aggro made player be attacked by npc again if out of range then back in again
 				-- Does it serve a purpose other than that?
-				player = objs[n]
+				player = obj_ref
 				type = "player"
 				name = "player"
 			end
 		else
-			obj = objs[n]:get_luaentity()
+			obj = obj_ref:get_luaentity()
 			if obj then
 				player = obj.object
 				type = obj.type
@@ -361,18 +366,24 @@ function mob_class:monster_attack()
 			end
 		end
 	end
+
 	if not min_player and #blacklist_attack > 0 then
-		min_player=blacklist_attack[random(#blacklist_attack)]
+		local candidate = blacklist_attack[random(#blacklist_attack)]
+		if self:target_visible(self.object, candidate) then
+			min_player = candidate
+		end
 	end
 	-- attack player
 	if min_player then
 		local target_pos = min_player:get_pos()
-		if self:target_in_direct_sight(target_pos) then
-			-- Target in direct sight, attack immediately
-			self:do_attack(min_player)
-		else
-			-- Target not in direct sight, schedule delayed attack by 0.5-1.0 seconds
-			self:delayed_attack(min_player, 0.5, 0.5)
+		if target_pos then
+			if self:target_in_direct_sight(target_pos) then
+				-- Target in direct sight, attack immediately
+				self:do_attack(min_player)
+			else
+				-- Target not in direct sight, schedule delayed attack by 0.5-1.0 seconds
+				self:delayed_attack(min_player, 0.5, 0.5)
+			end
 		end
 	end
 end
@@ -503,7 +514,8 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	if is_player then
 		-- is mob out of reach?
-		if (vector.distance(mob_pos, player_pos) - self._avg_radius) > (weapon:get_definition().range or 3) then
+		if not core.is_creative_enabled(hitter:get_player_name()) and
+				(vector.distance(mob_pos, player_pos) - self._avg_radius) > (weapon:get_definition().range or 3) then
 			return
 		end
 
@@ -541,7 +553,11 @@ function mob_class:on_punch(hitter, tflp, tool_capabilities, dir)
 
 	if is_player then
 		-- Instant kill mobs in creative
-		if core.is_creative_enabled(hitter:get_player_name()) then self.health = 0 end
+		if core.settings:get_bool("vl_creative_instant_kill", true)
+				and core.is_creative_enabled(hitter:get_player_name())
+				then
+			self.health = 0
+		end
 
 		-- exhaust attacker
 		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
@@ -904,12 +920,14 @@ function mob_class:do_states_attack(dtime)
 	local p = self.attack:get_pos() or s
 	local yaw = self.object:get_yaw() or 0
 
-	-- stop attacking if player invisible or out of range
+	-- stop attacking if the player is invisible, out of range, or creative
 	if not self.attack
 			or not self.attack:get_pos()
 			or not self:object_in_range(self.attack)
 			or self.attack:get_hp() <= 0
-			or (self.attack:is_player() and mcl_mobs.invis[ self.attack:get_player_name() ]) then
+			or (self.attack:is_player() and mcl_mobs.invis[ self.attack:get_player_name() ])
+			or (self.attack:is_player() and core.is_creative_enabled(self.attack:get_player_name()))
+			then
 
 		clear_aggro(self)
 		return

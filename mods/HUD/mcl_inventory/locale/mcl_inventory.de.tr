@@ -1,5 +1,8 @@
 # textdomain: mcl_inventory
 ##[ creative.lua ]##
+
+When enabled, ask for confirmation to clear the inventory when clicking the trash icon in creative mode.=
+
 Building Blocks=Baublöcke
 Decoration Blocks=Dekoblöcke
 Redstone=Redstone
@@ -15,12 +18,21 @@ Materials=Materialien
 Survival Inventory=Überlebensinventar
 Recipe book=Fertigungsbuch
 Help=Hilfe
+Clear Inventory=
 Advancements=Fortschritte
 Switch stack size=Stapelgröße ändern
 Select player skin=Spieleraussehen ändern
-Server Settings=
+Settings=
 @1 / @2=@1 / @2
+Are you sure you want to remove all items from your inventory?=
+Do not ask again=
+Cancel=
+Remove All Items=
+You may change this back in the player settings.=
 ##[ survival.lua ]##
+
+When enabled, shift-click moves items between hotbar and inventory rows instead of routing them into the crafting grid.=
+
 Crafting=Fertigen
 Achievements=Errungenschaften
 

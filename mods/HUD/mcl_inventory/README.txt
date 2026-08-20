@@ -2,17 +2,10 @@ Luanti mod "Crafting"
 =======================
 Version: 2.0.1
 
-License of source code and Textures: WTFPL
-------------------------------------
+GNU GPLv3
+
 Copyright (c. 2013) by BlockMen
 Creative inventory overhaul (c. 2025): Thomas Conway
-
-This program is free software. It comes without any warranty, to
-the extent permitted by applicable law. You can redistribute it
-and/or modify it under the terms of the Do What The Fuck You Want
-To Public License, Version 2, as published by Sam Hocevar. See
-http://sam.zoy.org/wtfpl/COPYING for more details.
-
 
 --USING the mod--
 =================

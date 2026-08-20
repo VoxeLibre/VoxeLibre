@@ -117,3 +117,17 @@ Shields can now be used with zoom key too, thanks to Herowl, to support their us
 ## 0.91.1 hotfix
 * Fixed a crash when punching mobs – by Herowl
 * Fixed an undeclared variable warning – by Herowl
+
+
+## 0.91.2 hotfix
+* Minor fixes to the decorative star – by TANGaming
+* Fixed diamond hammer being slow at digging gravel – by ralisv
+* Fixed water bottle behavior in a few ways – by ralisv and Herowl
+* Fixed some igloos lacking mob spawns – by Herowl
+* Updated documentation – by Herowl and ralisv
+* Fixed some mobs not dropping anything when not killed by player – by ralisv
+* Fixed mobs seeing through blocks occasionally – by ralisv
+* Fixed stuck arrow behavior – by Herowl
+* Fixed rare crashes related to mobs – by ralisv and Herowl
+* Fixed a rare crash related to sounds – by Herowl
+* Fixed a rare crash related to minecarts – by teknomunk

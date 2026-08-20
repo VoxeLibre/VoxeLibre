@@ -401,6 +401,38 @@ local function get_rail_direction_inner(pos, dir)
 
 	return dir
 end
+
+local function get_cart_base_position(staticdata)
+	if not staticdata or not staticdata.connected_at then
+		return nil
+	end
+
+	return vector.add(
+		staticdata.connected_at,
+		vector.multiply(staticdata.dir or vector.zero(), staticdata.distance or 0)
+	)
+end
+
+local function is_cart_visually_on_slope(staticdata)
+	local pos = get_cart_base_position(staticdata)
+	if not pos then return false end
+
+	local candidates = {
+		vector.round(pos),
+		vector.round(vector.offset(pos, 0, -1, 0)),
+	}
+
+	for _, rail_pos in ipairs(candidates) do
+		if core.get_item_group(core.get_node(rail_pos).name, "rail") ~= 0 then
+			return core.get_item_group(core.get_node(rail_pos).name, "rail_slope") ~= 0
+		end
+	end
+
+	-- Fallback to connected_at if no rail was found at the visual position
+	local connected_name = core.get_node(vector.round(staticdata.connected_at)).name
+	return core.get_item_group(connected_name, "rail_slope") ~= 0
+end
+
 function mcl_minecarts.get_rail_direction(self, pos_, dir)
 	-- Compatibility with mcl_minecarts:get_rail_direction() usage
 	if self ~= mcl_minecarts then
@@ -474,16 +506,18 @@ function mod.update_cart_orientation(self)
 	end
 
 	-- Forward/backwards tilt (pitch)
-	if dir.y > 0 then
-		rot.x = _quart_pi
-	elseif dir.y < 0 then
-		rot.x = -_quart_pi
+	if dir.y ~= 0 and is_cart_visually_on_slope(staticdata) then
+		if dir.y > 0 then
+			rot.x = _quart_pi
+		else
+			rot.x = -_quart_pi
+		end
+
+		if (staticdata.rot_adjust or 0) < 0.01 then
+			rot.x = -rot.x
+		end
 	else
 		rot.x = 0
-	end
-
-	if ( staticdata.rot_adjust or 0 ) < 0.01 then
-		rot.x = -rot.x
 	end
 
 	rot.y = (rot.y + _half_pi) % _2_pi
@@ -495,7 +529,16 @@ function mod.get_cart_position(cart_staticdata)
 	if not data then return nil end
 	if not data.connected_at then return nil end
 
-	return vector.add(data.connected_at, vector.multiply(data.dir or vector.zero(), data.distance or 0))
+	local pos = vector.add(
+		data.connected_at,
+		vector.multiply(data.dir or vector.zero(), data.distance or 0)
+	)
+
+	if data.dir and data.dir.y ~= 0 and is_cart_visually_on_slope(data) then
+		pos.y = pos.y + 0.5
+	end
+
+	return pos
 end
 
 function mod.reverse_cart_direction(staticdata)

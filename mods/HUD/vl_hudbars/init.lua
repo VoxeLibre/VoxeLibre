@@ -163,6 +163,7 @@ local function draw_proportional_hudbar_part(player, part_state, part_def,
 				local layer_id = part_state.layer_ids[i]
 				-- Change layer value and offset
 				player:hud_change(layer_id, "number", current_layer_value)
+				player:hud_change(layer_id, "item", bar_length)
 				local offset_old = player:hud_get(layer_id).offset
 				player:hud_change(layer_id, "offset", {x = offset_old.x, y = offset_y})
 			else

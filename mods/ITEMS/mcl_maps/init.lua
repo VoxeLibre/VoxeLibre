@@ -421,6 +421,7 @@ core.register_craft_predict(on_craft)
 
 -- Render handheld maps as part of HUD overlay
 local maps = {}
+local maps_offhand = {}
 local huds = {}
 
 core.register_on_joinplayer(function(player)
@@ -434,14 +435,23 @@ core.register_on_joinplayer(function(player)
 	}
 	local marker_def = table.copy(map_def)
 	marker_def.alignment = {x = 0, y = 0}
+	local offhand_map_def = table.copy(map_def)
+	offhand_map_def.position = {x = 0, y = 0.9}
+	offhand_map_def.alignment = {x = 1, y = -1}
+	offhand_map_def.offset = {x = 0, y = 0}
+	local offhand_marker_def = table.copy(offhand_map_def)
+	offhand_marker_def.alignment = {x = 1, y = 0}
 	huds[player] = {
 		map = player:hud_add(map_def),
 		marker = player:hud_add(marker_def),
+		offhand_map = player:hud_add(offhand_map_def),
+		offhand_marker = player:hud_add(offhand_marker_def),
 	}
 end)
 
 core.register_on_leaveplayer(function(player)
 	maps[player] = nil
+	maps_offhand[player] = nil
 	huds[player] = nil
 end)
 
@@ -523,6 +533,62 @@ core.register_globalstep(function(dtime)
 			player:hud_change(hud.map, "text", "blank.png")
 			player:hud_change(hud.marker, "text", "blank.png")
 			maps[player] = nil
+		end
+
+		-- Offhand (left side)
+		local offhand = player:get_inventory():get_stack("offhand", 1)
+		local offhand_texture = mcl_maps.load_map_item(offhand)
+		if offhand_texture then
+			local hud = huds[player]
+			local pos = player:get_pos()
+			local light = get_node_light(vector.offset(pos, 0, 0.5, 0)) or 0
+
+			if not maps_offhand[player] or offhand_texture ~= maps_offhand[player][1] or light ~= maps_offhand[player][4] then
+				local light_overlay = "^[colorize:black:" .. 255 - (light * 17)
+				player:hud_change(hud.offhand_map, "text", "[combine:140x140:0,0=mcl_maps_map_background.png:6,6=" .. offhand_texture .. light_overlay)
+				local meta = offhand:get_meta()
+				local minp = string_to_pos(meta:get_string("mcl_maps:minp"))
+				local maxp = string_to_pos(meta:get_string("mcl_maps:maxp"))
+				maps_offhand[player] = {offhand_texture, minp, maxp, light}
+			end
+
+			local minp, maxp = maps_offhand[player][2], maps_offhand[player][3]
+
+			local marker
+			if pos.x < minp.x then
+				marker = abs(minp.x - pos.x) < 256 and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
+				pos.x = minp.x
+			elseif pos.x > maxp.x then
+				marker = abs(pos.x - maxp.x) < 256 and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
+				pos.x = maxp.x
+			end
+			if pos.z < minp.z then
+				marker = (abs(minp.z - pos.z) < 256 and marker ~= "mcl_maps_player_dot.png")
+					and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
+				pos.z = minp.z
+			elseif pos.z > maxp.z then
+				marker = (abs(pos.z - maxp.z) < 256 and marker ~= "mcl_maps_player_dot.png")
+					and "mcl_maps_player_dot_large.png" or "mcl_maps_player_dot.png"
+				pos.z = maxp.z
+			end
+			if not marker then
+				local yaw = (floor(player:get_look_horizontal() * 180 / pi / 45 + 0.5) % 8) * 45
+				if yaw == 0 or yaw == 90 or yaw == 180 or yaw == 270 then
+					marker = "mcl_maps_player_arrow.png^[transformR" .. yaw
+				else
+					marker = "mcl_maps_player_arrow_diagonal.png^[transformR" .. (yaw - 45)
+				end
+			end
+
+			local f = 2 * 128 / (maxp.x - minp.x + 1)
+			player:hud_change(hud.offhand_marker, "offset", {x = (pos.x - minp.x) * f + 4, y = (maxp.z - pos.z) * f - 256})
+			player:hud_change(hud.offhand_marker, "text", marker)
+
+		elseif maps_offhand[player] then
+			local hud = huds[player]
+			player:hud_change(hud.offhand_map, "text", "blank.png")
+			player:hud_change(hud.offhand_marker, "text", "blank.png")
+			maps_offhand[player] = nil
 		end
 	end
 end)

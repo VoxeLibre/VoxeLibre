@@ -54,7 +54,6 @@ local nether_plants = {
 	["mcl_crimson:crimson_nylium"] = {
 		"mcl_crimson:crimson_roots",
 		"mcl_crimson:crimson_fungus",
-		"mcl_crimson:warped_fungus",
 	},
 	["mcl_crimson:warped_nylium"] = {
 		"mcl_crimson:warped_roots",
@@ -99,6 +98,10 @@ minetest.register_node("mcl_crimson:warped_fungus", {
 	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1,compostability=65},
 	light_source = 1,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = { -6/16, -0.5, -6/16, 6/16, 7/16, 6/16 },
+	},
 	node_placement_prediction = "",
 	_on_bone_meal = function(itemstack, placer, pointed_thing)
 		local pos = pointed_thing.under
@@ -199,10 +202,11 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 	end,
 	on_dig = function(pos, node, digger)
 		local above = vector.offset(pos,0,1,0)
-		local abovenode = minetest.get_node(above)
-		minetest.node_dig(pos, node, digger)
+		local abovenode = core.get_node(above)
+		abovenode._vl_indirectly_mined = true
+		core.node_dig(pos, node, digger)
 		if abovenode.name == node.name then
-			minetest.registered_nodes[node.name].on_dig(above, node, digger)
+			core.registered_nodes[node.name].on_dig(above, node, digger)
 		end
 	end,
 
@@ -225,6 +229,12 @@ minetest.register_node("mcl_crimson:twisting_vines", {
 		"mcl_crimson:twisting_vines",
 	},
 	_mcl_blast_resistance = 0,
+})
+
+mcl_flowerpots.register_potted_flower("mcl_crimson:twisting_vines", {
+	name = "twisting_vines",
+	desc = S("Twisting Vines"),
+	image = "mcl_crimson_twisting_vines.png",
 })
 
 core.register_abm({
@@ -306,10 +316,11 @@ minetest.register_node("mcl_crimson:weeping_vines", {
 	end,
 	on_dig = function(pos, node, digger)
 		local below = vector.offset(pos,0,-1,0)
-		local belownode = minetest.get_node(below)
-		minetest.node_dig(pos, node, digger)
+		local belownode = core.get_node(below)
+		belownode._vl_indirectly_mined = true
+		core.node_dig(pos, node, digger)
 		if belownode.name == node.name then
-			minetest.registered_nodes[node.name].on_dig(below, node, digger)
+			core.registered_nodes[node.name].on_dig(below, node, digger)
 		end
 	end,
 	drop = {
@@ -356,13 +367,19 @@ minetest.register_node("mcl_crimson:nether_sprouts", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = { -4/16, -0.5, -4/16, 4/16, 0, 4/16 },
+		fixed = { -5/16, -0.5, -5/16, 5/16, 1/16, 5/16 },
 	},
 	node_placement_prediction = "",
 	drop = "",
 	_mcl_shears_drop = true,
 	_mcl_silk_touch_drop = false,
 	_mcl_blast_resistance = 0,
+})
+
+mcl_flowerpots.register_potted_flower("mcl_crimson:nether_sprouts", {
+	name = "nether_sprouts",
+	desc = S("Nether Sprouts"),
+	image = "mcl_crimson_nether_sprouts.png",
 })
 
 minetest.register_node("mcl_crimson:warped_roots", {
@@ -378,7 +395,7 @@ minetest.register_node("mcl_crimson:warped_roots", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = { -6/16, -0.5, -6/16, 6/16, -4/16, 6/16 },
+		fixed = { -6/16, -0.5, -6/16, 6/16, 7/16, 6/16 },
 	},
 	node_placement_prediction = "",
 	_mcl_silk_touch_drop = false,
@@ -591,7 +608,7 @@ minetest.register_node("mcl_crimson:crimson_fungus", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
+		fixed = { -4/16, -0.5, -4/16, 4/16, 5/16, 4/16 },
 	},
 	node_placement_prediction = "",
 	_on_bone_meal = function(itemstack, placer, pointed_thing)
@@ -632,7 +649,7 @@ minetest.register_node("mcl_crimson:crimson_roots", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = { -6/16, -0.5, -6/16, 6/16, -4/16, 6/16 },
+		fixed = { -6/16, -0.5, -6/16, 6/16, 7/16, 6/16 },
 	},
 	node_placement_prediction = "",
 	_mcl_silk_touch_drop = false,

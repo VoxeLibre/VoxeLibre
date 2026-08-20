@@ -37,6 +37,39 @@ local function get_gravity()
 	return tonumber(minetest.settings:get("movement_gravity")) or 9.81
 end
 
+mcl_item_entity.registered_on_pickup = {}
+
+---Register a callback called before an item is added to a player's inventory on pickup.
+---Receives (itemstack, player, inv, object, checkpos) where object is the item entity.
+---Return a modified ItemStack to change what gets picked up, an empty ItemStack to cancel pickup, or nil to keep original itemStack unchange.
+---@param func fun(itemstack: ItemStack, player: ObjectRef, inv: InvRef, object: ObjectRef, checkpos: vector): ItemStack|nil
+function mcl_item_entity.register_on_pickup(func)
+	table.insert(mcl_item_entity.registered_on_pickup, func)
+end
+
+-- Example pickup interception callback showcasing how item pickup can be intercepted.
+-- Uncomment to print pickup names to chat, double iron ingots, and void cobble.
+--[[ mcl_item_entity.register_on_pickup(function(itemstack, player, _inv, _object, _checkpos)
+	local itemname = itemstack:get_name()
+
+	if itemname == "mcl_core:cobble" then
+		core.chat_send_player(player:get_player_name(), "Voided: " .. itemname)
+		return ItemStack()
+	end
+
+	minetest.chat_send_player(player:get_player_name(), "Picked up: " .. itemname)
+
+	if itemname == "mcl_core:iron_ingot" then
+		itemstack:set_count(math.min(itemstack:get_count() * 2, itemstack:get_stack_max()))
+		return itemstack
+	end
+
+	if itemname == "mcl_core:diamond" then
+		itemstack:set_count(1)
+		return itemstack
+	end
+end) --]]
+
 mcl_item_entity.registered_pickup_achievement = {}
 
 ---Register an achievement that will be unlocked on pickup.
@@ -107,7 +140,32 @@ local function disable_physics(object, luaentity, ignore_check, reset_movement)
 			object:set_velocity(vector.zero())
 			object:set_acceleration(vector.zero())
 		end
+		-- Reset smooth drop sliding state
+		luaentity._slide_timer = 0
+		luaentity._slide_vx = 0
+		luaentity._slide_vz = 0
 	end
+end
+
+local function remove_item_entity(player, le, object, checkpos)
+	le.target = checkpos
+	le.itemstring = ""
+	le._removed = true
+	object:set_velocity(vector.zero())
+	object:set_acceleration(vector.zero())
+	if checkpos then
+		object:move_to(checkpos)
+	end
+
+	-- Update sound pool
+	local name = player:get_player_name()
+	pool[name] = ( pool[name] or 0 ) + 1
+
+	core.after(0.25, function()
+		if object and object:get_luaentity() then
+			object:remove()
+		end
+	end)
 end
 
 local function try_object_pickup(player, inv, object, checkpos)
@@ -125,36 +183,27 @@ local function try_object_pickup(player, inv, object, checkpos)
 	-- Ignore if itemstring is not set yet
 	if le.itemstring == "" then return end
 
-	-- Add what we can to the inventory
+	-- Run registered pickup callbacks (may modify or cancel the item)
 	local itemstack = ItemStack(le.itemstring)
 	tt.reload_itemstack_description(itemstack)
-	local leftovers = inv:add_item("main", itemstack )
+	for _, func in ipairs(mcl_item_entity.registered_on_pickup) do
+		local result = func(itemstack, player, inv, object, checkpos)
+		if result then
+			itemstack = result
+		end
+		if itemstack:is_empty() then
+			remove_item_entity(player, le, object, checkpos)
+			return
+		end
+	end
+
+	-- Add what we can to the inventory
+	local leftovers = inv:add_item("main", itemstack)
 
 	check_pickup_achievements(object, player)
 
 	if leftovers:is_empty() then
-		-- Destroy entity
-		-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
-		le.target = checkpos
-		le.itemstring = ""
-		le._removed = true
-
-		-- Stop the object
-		object:set_velocity(vector.zero())
-		object:set_acceleration(vector.zero())
-		object:move_to(checkpos)
-
-		-- Update sound pool
-		local name = player:get_player_name()
-		pool[name] = ( pool[name] or 0 ) + 1
-
-		-- Make sure the object gets removed
-		minetest.after(0.25, function()
-			--safety check
-			if object and object:get_luaentity() then
-				object:remove()
-			end
-		end)
+		remove_item_entity(player, le, object, checkpos)
 	else
 		-- Update entity itemstring
 		le.itemstring = leftovers:to_string()
@@ -529,7 +578,7 @@ function minetest.node_dig(pos, node, digger)
 	-- Handle drops
 	minetest.handle_node_drops(pos, drops, digger)
 
-	if wielded then
+	if wielded and not node._vl_indirectly_mined then
 		local wdef = wielded:get_definition()
 		local tp = wielded:get_tool_capabilities()
 		local dp = minetest.get_dig_params(def and def.groups, tp, wielded:get_wear())
@@ -1013,6 +1062,10 @@ minetest.register_entity(":__builtin:item", {
 		self._force = nil
 		self._forcestart = nil
 		self._forcetimer = 0
+		-- Smooth drop sliding state
+		self._slide_vx = 0
+		self._slide_vz = 0
+		self._slide_timer = 0
 
 		self.object:set_armor_groups({ immortal = 1 })
 		-- self.object:set_velocity(vector.new(0, 2, 0))
@@ -1075,6 +1128,25 @@ minetest.register_entity(":__builtin:item", {
 			})
 			self.object:set_velocity(vector.zero())
 			self.object:set_acceleration(vector.zero())
+			return
+		end
+
+		-- Smooth drop: slide with friction after landing
+		if self._slide_timer and self._slide_timer > 0 then
+			self._slide_timer = self._slide_timer - dtime
+			-- Frame-rate independent friction (1 - k*dtime), no math.pow needed
+			local friction = math.max(0, 1 - 4 * dtime)
+			self._slide_vx = self._slide_vx * friction
+			self._slide_vz = self._slide_vz * friction
+			-- Stop sliding when velocity is negligible
+			if math.abs(self._slide_vx) < 0.01 and math.abs(self._slide_vz) < 0.01 then
+				self._slide_timer = 0
+				self._slide_vx = 0
+				self._slide_vz = 0
+				self.object:set_velocity(vector.zero())
+			else
+				self.object:set_velocity(vector.new(self._slide_vx, 0, self._slide_vz))
+			end
 			return
 		end
 
@@ -1170,8 +1242,19 @@ minetest.register_entity(":__builtin:item", {
 						return
 					end
 				end
-				-- don't disable if underwater
-				if not is_in_water then
+			end
+			-- don't disable if underwater
+			if not is_in_water then
+				-- Smooth drop: if item has horizontal velocity, start sliding instead of snapping
+				if is_on_floor and (v.x*v.x + v.z*v.z) > 0.0225 then -- 0.15 squared
+					self._slide_vx = v.x
+					self._slide_vz = v.z
+					self._slide_timer = 0.6
+					self.object:set_velocity(vector.new(v.x, 0, v.z))
+					self.object:set_acceleration(vector.zero())
+					self.object:set_properties({ physical = false })
+					self.physical_state = false
+				else
 					disable_physics(self.object, self)
 				end
 			end

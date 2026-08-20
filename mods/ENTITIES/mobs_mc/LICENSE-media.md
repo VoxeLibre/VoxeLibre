@@ -308,6 +308,8 @@ Origin of those models:
 * [epCode]
     * `extra_mobs_hoglin*.ogg` (LGPL 3.0)
         * Source: <https://git.minetest.land/epCode/extra_mobs/src/branch/master/sounds>
+* DarkReaven (sounds) and Herowl (filtering)
+    * vl_witch_*.ogg (CC0)
 
 Note: Many of these sounds have been more or less modified to fit the game.
 

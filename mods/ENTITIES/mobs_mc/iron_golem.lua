@@ -1,7 +1,5 @@
 --MCmobs v0.4
 --maikerumine
---made for MC like Survival game
---License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
 local allow_nav_hacks = minetest.settings:get_bool("mcl_mob_allow_nav_hacks ",false)

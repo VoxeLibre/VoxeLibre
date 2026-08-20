@@ -1,0 +1,22 @@
+# textdomain: mesecons_lightstone
+Redstone Lamp=Svetilka rdečega kamna
+Glows when powered by redstone power=Sveti, ko je napajana z energijo rdečega kamna
+
+Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.=Svetilke rdečega kamna so preproste komponente rdečega kamna, ki močno svetijo (raven svetlobe @1), ko prejmejo energijo rdečega kamna.
+
+White Redstone Lamp=Bela svetilka rdečega kamna
+Grey Redstone Lamp=Siva svetilka rdečega kamna
+Light Grey Redstone Lamp=Svetlo siva svetilka rdečega kamna
+Black Redstone Lamp=Črna svetilka rdečega kamna
+Red Redstone Lamp=Rdeča svetilka rdečega kamna
+Yellow Redstone Lamp=Rumena svetilka rdečega kamna
+Green Redstone Lamp=Zelena svetilka rdečega kamna
+Cyan Redstone Lamp=Sinja svetilka rdečega kamna
+Blue Redstone Lamp=Modra svetilka rdečega kamna
+Magenta Redstone Lamp=Škrlatna svetilka rdečega kamna
+Orange Redstone Lamp=Oranžna svetilka rdečega kamna
+Purple Redstone Lamp=Vijolična svetilka rdečega kamna
+Brown Redstone Lamp=Rjava svetilka rdečega kamna
+Pink Redstone Lamp=Roza svetilka rdečega kamna
+Lime Redstone Lamp=Svetlo zelena svetilka rdečega kamna
+Light Blue Redstone Lamp=Svetlo modra svetilka rdečega kamna

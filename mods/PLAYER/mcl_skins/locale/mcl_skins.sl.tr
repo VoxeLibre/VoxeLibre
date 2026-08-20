@@ -1,0 +1,17 @@
+# textdomain: mcl_skins
+##[ edit_skin.lua ]##
+Templates=Predloge
+Arm size=Velikost rok
+Bases=Podnožje
+Footwears=Obutev
+Eyes=Oči
+Mouths=Usta
+Bottoms=Noge
+Tops=Trup
+Hairs=Lasje
+Headwears=Pokrivala
+Skins=Kože
+Capes=Ogrinjala
+Open skin configuration screen.= Odpri zaslon za nastavitev kože
+Select=Izberi
+(None)=(Nič)

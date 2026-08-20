@@ -42,6 +42,10 @@ local spear_tt = S("Reaches farther") .. "\n" .. S("Can be thrown")
 local spear_longdesc = S("Spears are great in melee combat, as they have an increased reach. They can also be thrown.")
 local spear_use = S("To throw a spear, hold it in your hand, then hold use (rightclick) in the air.")
 
+local scythe_tt = S("Cuts plants in range")
+local scythe_longdesc = S("Scythes are great in melee combat.")
+local scythe_use = S("When you cut down a plant with a scythe, it cuts down other plants in a 3x3 area.")
+
 local wield_scale = mcl_vars.tool_wield_scale
 
 ---- variable values... (partial list.)
@@ -91,7 +95,8 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 	if (core.get_item_group(node.name, "path_remove_possible") == 1) and placer:get_player_control().sneak then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
-		if core.get_node(above).name == "air" then
+		local above_name = core.get_node(above).name
+		if above_name ~= "ignore" and not mcl_util.is_solid_block(above_name) then
 			if core.is_protected(pointed_thing.under, placer:get_player_name()) then
 				core.record_protection_violation(pointed_thing.under, placer:get_player_name())
 				return itemstack
@@ -115,7 +120,8 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 	if (core.get_item_group(node.name, "path_creation_possible") == 1) and not placer:get_player_control().sneak then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
-		if core.get_node(above).name == "air" then
+		local above_name = core.get_node(above).name
+		if above_name ~= "ignore" and not mcl_util.is_solid_block(above_name) then
 			if core.is_protected(pointed_thing.under, placer:get_player_name()) then
 				core.record_protection_violation(pointed_thing.under, placer:get_player_name())
 				return itemstack
@@ -339,6 +345,32 @@ core.register_tool("vl_deepslate_tools:spear_deepslate", {
 	},
 	touch_interaction = "short_dig_long_place",
 	_mcl_spear_thrown_damage = 6,
+	vl_max_ench_lvl = 2,
+})
+
+core.register_tool("vl_deepslate_tools:scythe_deepslate", {
+	description = S("Deepslate Scythe"),
+	_tt_help = scythe_tt,
+	_doc_items_longdesc = scythe_longdesc,
+	_doc_items_usagehelp = scythe_use,
+	inventory_image = "vl_tool_deepslatescythe.png",
+	wield_scale = wield_scale,
+	groups = { weapon=1, tool=1, scythe=1, dig_speed_class=2, enchantability=5 },
+	range = 4.0,
+	tool_capabilities = {
+		full_punch_interval = 1.2,
+		max_drop_level=3,
+		damage_groups = {fleshy=6.5},
+		punch_attack_uses = deepslate.uses,
+	},
+	sound = { breaks = "default_tool_breaks" },
+	_repair_material = "mcl_deepslate:deepslate_cobbled",
+	_mcl_toollike_wield = true,
+	_mcl_diggroups = {
+		swordy = { speed = 2, level = 3, uses = deepslate.uses },
+		swordy_cobweb = { speed = 2, level = 3, uses = deepslate.uses },
+		hoey = { speed = 2, level = 3, uses = deepslate.uses }
+	},
 	vl_max_ench_lvl = 2,
 })
 

@@ -1687,6 +1687,7 @@ function mcl_potions.make_invisible(obj_ref, hide)
 		end
 	else
 		local luaentity = obj_ref:get_luaentity()
+		if not luaentity then return end
 		if hide then
 			EF.invisibility[obj_ref].old_size = luaentity.visual_size
 			obj_ref:set_properties({ visual_size = { x = 0, y = 0 }, show_on_minimap = false })

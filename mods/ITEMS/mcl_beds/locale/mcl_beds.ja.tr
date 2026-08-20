@@ -1,11 +1,10 @@
 # textdomain: mcl_beds
 ##[ functions.lua ]##
-New respawn position set!=新たなリスポーン地点を設定しました！
 You can only sleep at night or during a thunderstorm.=眠れるのは夜間か雷雨のときだけです。
 You can't sleep, the bed's too far away!=ベッドが遠くて、寝られません！
 This bed is already occupied!=このベッドは、すでに占有されてます！
 You have to stop moving before going to bed!=寝るなら、まず動くのを止めてからです！
-You can't sleep now, monsters are nearby!=今は眠れません…モンスターが近くにいます！
+You can't sleep now, you are under attack!=
 You can't sleep, the bed is obstructed!=ベッドが妨げられていて、寝られません！
 It's too dangerous to sleep here!=ここで寝るのは危険すぎます！
 Leave bed=
@@ -61,6 +60,8 @@ Respawn Anchor=リスポーンアンカー
 
 ##### not used anymore #####
 
+New respawn position set!=新たなリスポーン地点を設定しました！
+You can't sleep now, monsters are nearby!=今は眠れません…モンスターが近くにいます！
 
 New respawn position set! But you can only sleep at night or during a thunderstorm.=新たなリスポーン地点を設定しました！ただし、眠れるのは夜間か雷雨のときだけです。
 

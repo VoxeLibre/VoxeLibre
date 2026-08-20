@@ -1,0 +1,9 @@
+# textdomain: mcl_campfires
+##[ api.lua ]##
+Cooks food and keeps bees happy.=Peče hrano in ohranja čebele srečne.
+
+Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap.=Taborni ognji imajo več uporab, vključno z ohranjanjem čebel srečnih, pečenjem surovega mesa in rib ter uporabo kot pasti.
+
+##[ register.lua ]##
+Campfire=Taborni ogenj
+Soul Campfire=Taborni ogenj duš

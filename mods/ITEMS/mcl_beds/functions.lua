@@ -60,20 +60,6 @@ local function check_in_beds(players)
 	return players_in_bed_setting() <= (player_in_bed * 100) / players_in_overworld(players)
 end
 
--- These monsters do not prevent sleep
-local monster_exceptions = {
-	["mobs_mc:ghast"] = true,
-	["mobs_mc:enderdragon"] = true,
-	["mobs_mc:killer_bunny"] = true,
-	["mobs_mc:slime_big"] = true,
-	["mobs_mc:slime_small"] = true,
-	["mobs_mc:slime_tiny"] = true,
-	["mobs_mc:magma_cube_big"] = true,
-	["mobs_mc:magma_cube_small"] = true,
-	["mobs_mc:magma_cube_tiny"] = true,
-	["mobs_mc:shulker"] = true,
-}
-
 function mcl_beds.is_night(tod)
 	-- Values taken from Minecraft Wiki with offset of +600
 	if not tod then
@@ -99,8 +85,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		bed_center = {x = bed_pos.x - dir.x/2, y = bed_pos.y + 0.1, z = bed_pos.z - dir.z/2}
 
 		-- save respawn position when entering bed
-		if spawn_mod and mcl_spawn.set_spawn_pos(player, bed_pos, nil) then
-			minetest.chat_send_player(name, S("New respawn position set!"))
+		if spawn_mod and mcl_spawn.set_player_spawn_pos(player, bed_pos, true, true) then
 			awards.unlock(player:get_player_name(), "mcl:sweetDreams")
 		end
 
@@ -128,22 +113,13 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			return false, S("You have to stop moving before going to bed!")
 		end
 
-		-- No sleeping if monsters nearby.
-		for _, obj in pairs(minetest.get_objects_inside_radius(bed_pos, 8)) do
+		-- No sleeping if mobs are attacking.
+		for obj in core.objects_inside_radius(bed_pos, 16) do
 			if obj and not obj:is_player() then
 				local ent = obj:get_luaentity()
-				local mobname = ent.name
-				local def = minetest.registered_entities[mobname]
-				-- Approximation of monster detection range
-				if def.is_mob and (def.type == "monster" or mobname == "mobs_mc:zombified_piglin") then
-					if monster_exceptions[mobname] or
-							(mobname == "mobs_mc:zombified_piglin" and ent.state ~= "attack") then
-						-- Some exceptions do not prevent sleep. Zombie piglin only prevent sleep while they are hostile.
-					else
-						if math.abs(bed_pos.y - obj:get_pos().y) <= 5 then
-							return false, S("You can't sleep now, monsters are nearby!")
-						end
-					end
+
+				if ent.is_mob and ent.attack == player then
+					return false, S("You can't sleep now, you are under attack!")
 				end
 
 			end

@@ -1,0 +1,41 @@
+# textdomain: mcl_mushrooms
+##[ small.lua ]##
+
+Brown mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=Rjave gobe so glive, ki rastejo in se širijo v temi, a so občutljive na svetlobo. Same po sebi niso užitne, vendar se lahko uporabijo za pripravo jedi.
+
+Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=Rdeče gobe so glive, ki rastejo in se širijo v temi, a so občutljive na svetlobo. Same po sebi niso užitne, vendar se lahko uporabijo za pripravo jedi.
+
+A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.=Posamezna goba te vrste se bo sčasoma počasi širila proti naključnemu trdnemu neprosojnemu bloku z ravnjo svetlobe 12 ali manj v kocki 3×3×3 okoli gobe. Širjenje se ustavi, ko je v območju 9×3×9 blokov okoli gobe 5 ali več gob iste vrste.
+
+Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.=Gobe se bodo pri ravni svetlobe 12 ali več sčasoma izpulile. Na miceliju ali podzolu preživijo in se širijo pri kateri koli ravni svetlobe.
+
+Grows on podzol, mycelium and other blocks=Raste na podzolu, miceliju in drugih blokih
+Spreads in darkness=Širi se v temi
+
+This mushroom can be placed on mycelium and podzol at any light level. It can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.=To gobo lahko postavite na micelij in podzol pri kateri koli ravni svetlobe. Lahko jo postavite tudi na bloke, ki so hkrati trdni in neprosojni, dokler raven svetlobe podnevi ni višja od 12.
+
+Brown Mushroom=Rjava goba
+Red Mushroom=Rdeča goba
+Mushroom Stew=Gobova juha
+
+Mushroom stew is a healthy soup which can be consumed to restore some hunger points.=Gobova juha je zdrava juha, ki jo lahko zaužijete za obnovitev nekaj točk lakote.
+
+##[ huge.lua ]##
+
+This decorative block is like a huge mushroom stem, but with the stem texture on all sides.=Ta okrasni blok je kot bet velike gobe, vendar s teksturo beta na vseh straneh.
+
+By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently.=S postavljanjem blokov velike gobe iste vrste enega poleg drugega se bodo strani, ki se dotikajo, trajno spremenile v pore.
+
+Huge red mushroom blocks are the cap parts of huge red mushrooms. It consists of a red skin and can have pores on each of its sides.=Bloki velike rdeče gobe so deli klobuka velikih rdečih gob. Sestavljen je iz rdeče kože in ima lahko pore na vsaki od svojih strani.
+
+The stem part of a huge red mushroom.=Bet velike rdeče gobe.
+Huge Red Mushroom Block=Blok velike rdeče gobe
+Huge Red Mushroom Stem=Bet velike rdeče gobe
+Huge Red Mushroom All-Faces Stem=Bet velike rdeče gobe (vse strani)
+
+Huge brown mushroom blocks are the cap parts of huge brown mushrooms. It consists of a brown skin and can have pores on each of its sides.=Bloki velike rjave gobe so deli klobuka velikih rjavih gob. Sestavljen je iz rjave kože in ima lahko pore na vsaki od svojih strani.
+
+The stem part of a huge brown mushroom.=Bet velike rjave gobe.
+Huge Brown Mushroom Block=Blok velike rjave gobe
+Huge Brown Mushroom Stem=Bet velike rjave gobe
+Huge Brown Mushroom All-Faces Stem=Bet velike rjave gobe (vse strani)

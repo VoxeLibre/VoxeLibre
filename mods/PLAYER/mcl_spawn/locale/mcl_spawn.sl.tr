@@ -1,0 +1,30 @@
+# textdomain: mcl_spawn
+##TODO: fuzzy matched - verify and remove the comment
+New world spawn position set!=Točka za ponovno pojavljanje je nastavljena!
+Trying to set invalid world spawn position!=
+Respawn position cleared!=Točka ponovnega pojavljanja je izbrisana!
+New respawn position set!=Točka za ponovno pojavljanje je nastavljena!
+Trying to set invalid respawn position!=
+Couldn't get level of your respawn anchor!=Ni bilo mogoče dobiti stopnje vašega sidra za ponovno pojavljanje!
+Your spawn bed was missing or blocked, and you had no charged respawn anchor!=Vaša postlja ali sidro za ponovno pojavljanje manjkata ali sta blokirana, ali niste napolnili sidra!
+Can set or remove spawn point via command=
+Sets the spawn point for a player, works in all dimensions.=
+[<player>] [<x> <y> <z>]=
+Invalid parameters (see /help spawnpoint)=
+You need the 'server' privilege in order to set spawn point for somebody else!=
+Invalid target player=
+Invalid respawn position=
+
+Warning: The respawn point of @1 is set in the end. Use /clearspawn command to get out if the player is stuck.=
+
+Set respawn point for @1 to @2=
+Resets the spawn point for a player.=
+[<player>]=
+Invalid parameters (see /help clearspawn)=
+You need the 'server' privilege in order to reset spawn point for somebody else!=
+Cleared respawn point for @1=
+Sets the default spawn point for all players, works only in the Overworld.=
+[<x> <y> <z>]=
+Invalid parameters (see /help setworldspawn)=
+Invalid world spawn position=
+Set world spawn point to @1=

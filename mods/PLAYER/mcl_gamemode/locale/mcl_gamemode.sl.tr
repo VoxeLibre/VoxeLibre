@@ -1,0 +1,8 @@
+# textdomain: mcl_gamemode
+[<gamemode>] [<player>]=[<gamemode>] [<player>]
+Change gamemode (survival/creative) for yourself or player=Spremeni način igre (preživetveni/ustvarjalni) zase ali za druge igralce
+Player not online=Igralec ni na spletu
+Gamemode @1 does not exist.=Način igre „@1“ ne obstaja.
+More than one gamemode fit @1=Več kot en igralni način ustreza @1
+Gamemode for player =Način igre za igralca
+: =: 

@@ -1,0 +1,9 @@
+# textdomain: mcl_composters
+Composter=Kompostnik
+Composters can convert various organic items into bone meal.=Kompostniki lahko pretvorijo različne organske predmete v kostno moko.
+
+Use organic items on the composter to fill it with layers of compost. Every time an item is put in the composter, there is a chance that the composter adds another layer of compost.  Some items have a bigger chance of adding an extra layer than other items.  After filling up with 7 layers of compost, the composter is full.  After a delay of approximately one second the composter becomes ready and bone meal can be retrieved from it. Right-clicking the composter takes out the bone meal empties the composter.=Uporabite organske predmete na kompostniku, da ga napolnite s plastmi komposta. Vsakič, ko v kompostnik vložite predmet, obstaja možnost, da se doda nova plast komposta. Nekateri predmeti imajo večjo verjetnost za dodajanje plasti kot drugi. Ko se napolni s 7 plastmi komposta, je kompostnik poln. Po približno eni sekundi je kompostnik pripravljen, iz njega pa lahko vzamete kostno moko. Z desnim klikom na kompostnik poberete kostno moko in ga izpraznite.
+
+Converts organic items into bone meal=Pretvarja organske predmete v kostno moko
+filled=napolnjen
+ready for harvest=pripravljen za pobiranje

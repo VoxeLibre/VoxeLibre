@@ -13,11 +13,24 @@ local function is_group(pos, group)
 end
 
 local is_water = flowlib.is_water
-local function is_river_water(p)
-	local n = minetest.get_node(p).name
-	if n == "mclx_core:river_water_source" or n == "mclx_core:river_water_flowing" then
+local function is_unsinking_water(p)
+	local n = core.get_node(p).name
+	if n == "mcl_core:water_source" then
+		local p2 = vector.offset(p, 0, 1, 0)
+		local def2 = core.registered_nodes[core.get_node(p2).name]
+		if def2 and def2.liquidtype ~= "source" then
+			return true
+		end
+	elseif n == "mcl_core:water_flowing" then
+		local p2 = vector.offset(p, 0, 2, 0)
+		local n2 = core.get_node(p2).name
+		if core.get_item_group(n2, "liquid") == 0 then
+			return true
+		end
+	elseif n == "mclx_core:river_water_source" or n == "mclx_core:river_water_flowing" then
 		return true
 	end
+	return false
 end
 
 local function is_ice(pos)
@@ -243,7 +256,7 @@ function boat.on_step(self, dtime, moveresult)
 	local on_water = true
 	local on_ice = false
 	local in_water = is_water({x=p.x, y=p.y-boat_y_offset+1, z=p.z})
-	local in_river_water = is_river_water({x=p.x, y=p.y-boat_y_offset+1, z=p.z})
+	local in_safe_water = is_unsinking_water({x=p.x, y=p.y-boat_y_offset+1, z=p.z})
 	local waterp = {x=p.x, y=p.y-boat_y_offset - 0.1, z=p.z}
 	if not is_water(waterp) then
 		on_water = false
@@ -257,7 +270,7 @@ function boat.on_step(self, dtime, moveresult)
 			v_slowdown = 0.04
 			v_factor = 0.5
 		end
-	elseif in_water and not in_river_water then
+	elseif in_water and not in_safe_water then
 		on_water = false
 		in_water = true
 		v_factor = 0.75
@@ -389,18 +402,19 @@ function boat.on_step(self, dtime, moveresult)
 	else
 		p.y = p.y + 1
 		local is_obsidian_boat = self.object:get_luaentity()._itemstring == "mcl_boats:boat_obsidian"
-		if is_river_water(p) then
+		if is_unsinking_water(p) then
 			local y = self.object:get_velocity().y
 			if y >= 5 then
 				y = 5
-			elseif y < 0 then
+			end
+			if y < 0 then
 				new_acce = {x = 0, y = 10, z = 0}
 			else
 				new_acce = {x = 0, y = 2, z = 0}
 			end
 			new_velo = get_velocity(self._v, self.object:get_yaw(), y)
 			self.object:set_pos(self.object:get_pos())
-		elseif is_water(p) and not is_river_water(p) or is_obsidian_boat then
+		elseif is_water(p) and not is_unsinking_water(p) or is_obsidian_boat then
 			-- Inside water: Slowly sink
 			local y = self.object:get_velocity().y
 			y = y - 0.01
@@ -441,10 +455,10 @@ end
 minetest.register_entity("mcl_boats:boat", boat)
 
 local cboat = table.copy(boat)
-cboat.textures = { "mcl_boats_texture_oak_chest_boat.png", "mcl_chests_normal.png" }
+cboat.initial_properties.textures = { "mcl_boats_texture_oak_chest_boat.png", "mcl_chests_normal.png" }
 cboat._itemstring = "mcl_boats:chest_boat"
-cboat.collisionbox = {-0.5, -0.15, -0.5, 0.5, 0.75, 0.5}
-cboat.selectionbox = {-0.7, -0.15, -0.7, 0.7, 0.75, 0.7}
+cboat.initial_properties.collisionbox = {-0.5, -0.15, -0.5, 0.5, 0.75, 0.5}
+cboat.initial_properties.selectionbox = {-0.7, -0.15, -0.7, 0.7, 0.75, 0.7}
 
 minetest.register_entity("mcl_boats:chest_boat", cboat)
 mcl_entity_invs.register_inv("mcl_boats:chest_boat",S("Boat"),27)
