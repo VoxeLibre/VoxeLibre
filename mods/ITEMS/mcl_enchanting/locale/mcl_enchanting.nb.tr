@@ -43,7 +43,7 @@ Inventory=Inventar
 @1 Enchantment Levels=@1 fortryllelsesnivåer
 Level requirement: @1=Nivåkrav: @1
 ##[ enchantments.lua ]##
-Bane of Arthropods=Leddyrets skrekk
+Bane of Arthropods=Leddyrsbane
 
 Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Øker skade og kaster Treghet IV på leddyrmobber (edderkopper, huledderkopper, sølvkre og endermidd).
 
@@ -53,7 +53,7 @@ Channels a bolt of lightning toward a target. Works only during thunderstorms an
 
 Curse of Vanishing=Forsvinnelsesforbannelse
 Item destroyed on death.=Gjenstand ødelegges ved dødsfall.
-Depth Strider=Vannløper
+Depth Strider=Dybdeganger
 Increases underwater movement speed.=Øker undervannshastighet.
 Efficiency=Effektivitet
 Increases mining speed.=Øker utvinningsfart.
@@ -61,7 +61,7 @@ Fire Aspect=Ildaspekt
 Sets target on fire.=Setter fyr på målet.
 Flame=Flamme
 Arrows set target on fire.=Piler setter målet på fyr.
-Fortune=Formue
+Fortune=Rikdom
 Increases certain block drops.=Øker visse blokkers slipprate.
 Frost Walker=Frostvandrer
 
@@ -81,7 +81,7 @@ Luck of the Sea=Havets hell
 Increases rate of good loot (enchanting books, etc.)=Øker frekvensen av gode gjenstandsslipp(fortryllende bøker, o.l.)
 Lure=Agn
 Decreases time until rod catches something.=Forkorter tiden det tar før fiskestangen fanger noe.
-Mending=Veling
+Mending=Vøling
 Repair the item while gaining XP orbs.=Reparerer gjenstanden når du plukker opp erfaringskuler
 Multishot=Flerskudd
 Shoot 3 arrows at the cost of one.=Skyter 3 piler men forbruker bare 1.
@@ -95,19 +95,19 @@ Quick Charge=Rask ladning
 Decreases crossbow charging time.=Minsker omladningshastigheten til armbrøst.
 Respiration=Respirasjon
 Extends underwater breathing time.=Utvider lungekapasiteten under vann.
-Riptide=Tidevannstrøm
+Riptide=Vannbyks
 Trident launches player with itself when thrown. Works only in water or rain.=Treforken drar spilleren med seg når den kastes. Virker bare i vann eller i regn.
 Sharpness=Skarphet
 Increases damage.=Øker skade.
 Silk Touch=Silkeberøring
 Mined blocks drop themselves.=Utvinnede blokker slipper seg selv.
-Smite=Vandødes skrekk
+Smite=Vandødsbane
 Increases damage to undead mobs.=Økt skade mot vandøde skapninger.
 Soul Speed=Sjelefart
 Increases walking speed on soul sand and soul soil.=Øker gangehastighet på sjelesand og sjelejord.
 Sweeping Edge=Sveipende knivsegg
 Increases sweeping attack damage.=Øker sveipeskade.
-Unbreaking=Uknuselig
+Unbreaking=Herdet
 Increases item durability.=Øker gjenstandsvarighet.
-Swift Sneak=Løpelusk
+Swift Sneak=Hurtigsnik
 Increases movement speed while sneaking.=Øker gangehastighet når du sniker.
