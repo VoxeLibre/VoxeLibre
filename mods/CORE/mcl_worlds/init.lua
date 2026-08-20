@@ -28,7 +28,7 @@ end
 function mcl_worlds.pos_to_dimension(pos)
 	local dim = vl_worlds.dimension_at_pos(pos)
 	if not dim or dim.id == "void" then
-		return nil, "void", 3
+		return "void", 3
 	end
 
 	return DIMENSION_NAME_COMPAT[dim.id] or dim.id, DIMENSION_IDS[dim.id] or -1
