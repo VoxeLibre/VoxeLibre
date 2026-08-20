@@ -120,9 +120,92 @@ vl_worlds.registered_worlds = registered_worlds
 local world_structure = {
 	{
 		start = vl_worlds.mapgen_edge_min,
-		height = vl_worlds.mapgen_edge_max - vl_worlds.mapgen_edge_min,
+		height = vl_worlds.mapgen_edge_max - vl_worlds.mapgen_edge_min + 1,
 	},
 }
+
+local ALLOCATIONS_STORAGE_KEY = "dimension_allocations"
+local dimension_allocations = core.deserialize(storage:get_string(ALLOCATIONS_STORAGE_KEY)) or {}
+assert(type(dimension_allocations) == "table", "Invalid saved dimension allocations")
+
+local function replace_structure_entry(index, parts)
+	table.remove(world_structure, index)
+	local inserted = 0
+	for _, part in ipairs(parts) do
+		if part.height > 0 then
+			table.insert(world_structure, index + inserted, part)
+			inserted = inserted + 1
+		end
+	end
+end
+
+local function allocation_parts(allocation, id)
+	local dimension_start = allocation.start
+	local lower_void_start = dimension_start - vl_worlds.dimensional_void_size
+	local upper_void_start = dimension_start + allocation.height
+	local upper_void_height = allocation.reservation_start + allocation.reservation_height - upper_void_start
+
+	return {
+		{
+			start = allocation.reservation_start,
+			height = lower_void_start - allocation.reservation_start,
+		},
+		{
+			id = "void",
+			start = lower_void_start,
+			height = vl_worlds.dimensional_void_size,
+		},
+		{
+			id = id,
+			start = dimension_start,
+			height = allocation.height,
+		},
+		{
+			id = "void",
+			start = upper_void_start,
+			height = upper_void_height,
+		},
+	}
+end
+
+-- Pre-allocate areas from storage. If mod load order will change or one of the mods
+-- is no longer loaded, no one should encroach onto this area.
+for id, allocation in pairs(dimension_allocations) do
+	assert(type(id) == "string" and type(allocation) == "table"
+		and type(allocation.start) == "number" and type(allocation.height) == "number"
+		and type(allocation.reservation_start) == "number"
+		and type(allocation.reservation_height) == "number",
+		"Invalid saved allocation for dimension "..tostring(id))
+	table.insert(saved_allocations, { id = id, allocation = allocation })
+end
+table.sort(saved_allocations, function(a, b)
+	return a.allocation.reservation_start < b.allocation.reservation_start
+end)
+
+for _, saved in ipairs(saved_allocations) do
+	local allocation = saved.allocation
+	local reservation_end = allocation.reservation_start + allocation.reservation_height
+	local inserted = false
+	for i, region in ipairs(world_structure) do
+		local region_end = region.start + region.height
+		if not region.id and allocation.reservation_start >= region.start
+				and reservation_end <= region_end then
+			replace_structure_entry(i, {
+				{ start = region.start, height = allocation.reservation_start - region.start },
+				{
+					id = "void",
+					reservation_id = saved.id,
+					start = allocation.reservation_start,
+					height = allocation.reservation_height,
+				},
+				{ start = reservation_end, height = region_end - reservation_end },
+			})
+			inserted = true
+			break
+		end
+	end
+	assert(inserted, "Saved allocation for dimension \""..saved.id.."\" overlaps another allocation or is out of bounds")
+end
 
 -- API - attempts to register a world - crashes on failure to prevent damaging the save
 -- required parameters in def:
@@ -141,63 +224,77 @@ function vl_worlds.register_world(def)
 	assert(id ~= "void", "Unable to register world from mod "..modname..": \""..id.."\" is a reserved keyword")
 	assert(not registered_worlds[id], "World \""..id.."\" already registered!")
 	assert(type(def.name) == "string", "Unable to register world \""..id.."\": name is not a string")
-	assert(type(def.height) == "number", "Unable to register world \""..id.."\": height is not a number")
+	assert(type(def.height) == "number" and def.height > 0 and def.height % 1 == 0,
+		"Unable to register world \""..id.."\": height is not a positive integer")
 
-	local chunk_alignment = def.height%80>0 and 80-def.height%80 or 0
+	local saved = dimension_allocations[id]
+	if saved then
+		assert(saved.height == def.height,
+			"Dimension \""..id.."\" was previously allocated with height "..saved.height
+			..", but is now being registered with height "..def.height)
+		assert(not def.forced_start or def.forced_start == saved.start,
+			"Dimension \""..id.."\" was previously allocated at "..saved.start
+			..", but is now being forced to start at "..def.forced_start)
+
+		for i, region in ipairs(world_structure) do
+			if region.reservation_id == id then
+				replace_structure_entry(i, allocation_parts(saved, id))
+				registered_worlds[id] = { name = def.name }
+				return
+			end
+		end
+		error("Saved allocation for dimension \""..id.."\" was not reserved")
+	end
+
+	local chunk_alignment = def.height % vl_worlds.chunk_size_in_nodes
+	chunk_alignment = chunk_alignment > 0 and vl_worlds.chunk_size_in_nodes - chunk_alignment or 0
 	local total_dim_size = def.height
 		+ 2*vl_worlds.dimensional_void_size -- void below and above the dimension
 		+ vl_worlds.dimensional_barrier_size -- barrier below
 		+ chunk_alignment -- goes into void above the dimension
 	for i, dim in ipairs(world_structure) do
-		local void_start1, new_start
-		if def.forced_start and dim.start < def.forced_start and dim.start + dim.height > def.forced_start then
-			assert(not dim.id, "Tried to force start of dimension \""..dump(id).."\" in space taken by dimension \""..dump(dim.id))
-			assert(dim.height - vl_worlds.dimensional_barrier_size >= total_dim_size,
-				   "Not enough space to register dimension \""..id.."\" at designed coordinates")
-
+		local void_start1, new_start, forced_reservation_end
+		if def.forced_start then
 			void_start1 = def.forced_start - vl_worlds.dimensional_void_size
 			new_start = def.forced_start
-
-		elseif not dim.id and dim.height - vl_worlds.dimensional_barrier_size >= total_dim_size then
+			local reservation_start = void_start1 - vl_worlds.dimensional_barrier_size
+			local region_end = dim.start + dim.height
+			local dimension_end = def.forced_start + def.height
+			forced_reservation_end = math.min(reservation_start + total_dim_size, region_end)
+			if dim.id or reservation_start < dim.start or dimension_end > region_end then
+				new_start = nil
+			end
+		elseif not dim.id and dim.height >= total_dim_size then
 			void_start1 = dim.start + vl_worlds.dimensional_barrier_size
-			new_start = dim.start + vl_worlds.dimensional_void_size
+			new_start = void_start1 + vl_worlds.dimensional_void_size
 
 		end
 		if new_start then
-			local wdef = {}
-			wdef.name = def.name
-
-			registered_worlds[id] = wdef
-
-			local barrier_start1 = dim.start
 			local void_start2 = new_start + def.height
 			local void_height2 = vl_worlds.dimensional_void_size + chunk_alignment
-			local barrier_start2 = void_start2 + void_height2
-
-			dim.start = barrier_start2
-			dim.height = dim.height - barrier_start2 + barrier_start1
-			table.insert(world_structure, i, {
-				id = "void",
-				start = void_start2,
-				height = void_height2,
-			})
-			table.insert(world_structure, i, {
-				id = id,
+			local reservation_start = void_start1 - vl_worlds.dimensional_barrier_size
+			local reservation_end = forced_reservation_end or void_start2 + void_height2
+			local region_end = dim.start + dim.height
+			local allocation = {
 				start = new_start,
 				height = def.height,
-			})
-			table.insert(world_structure, i, {
-				id = "void",
-				start = void_start1,
-				height = new_start - void_start1,
-			})
-			table.insert(world_structure, i, {
-				start = barrier_start1,
-				height = void_start1 - barrier_start1,
-			})
+				reservation_start = reservation_start,
+				reservation_height = reservation_end - reservation_start,
+			}
 
-			core.log(dump(world_structure)) -- TODO debug - remove
-			core.log(dump(registered_worlds))
+			local parts = allocation_parts(allocation, id)
+			table.insert(parts, 1, {
+				start = dim.start,
+				height = reservation_start - dim.start,
+			})
+			table.insert(parts, {
+				start = reservation_end,
+				height = region_end - reservation_end,
+			})
+			replace_structure_entry(i, parts)
+			dimension_allocations[id] = allocation
+			storage:set_string(ALLOCATIONS_STORAGE_KEY, core.serialize(dimension_allocations))
+			registered_worlds[id] = { name = def.name }
 			return
 		end
 	end
@@ -210,7 +307,7 @@ end
 function vl_worlds.dimension_at_pos(pos)
 	local pos_y = pos.y
 	for _, dim in ipairs(world_structure) do
-		if( pos_y >= dim.start and pos_y <= dim.start + dim.height) then
+		if pos_y >= dim.start and pos_y < dim.start + dim.height then
 			return dim
 		end
 	end
@@ -319,7 +416,7 @@ function vl_worlds.get_dimension_bounds(id)
 		if dim.id == id then
 			return {
 				min = dim.start,
-				max = dim.start + dim.height,
+				max = dim.start + dim.height - 1,
 			}
 		end
 	end
@@ -361,7 +458,7 @@ function vl_worlds.is_void(pos)
 	local below = vl_worlds.dimension_at_pos(vector.new(0, dim.start - 1, 0 ))
 	if not below or not below.id then
 		-- above the current position
-		distance = dim.start + dim.height - pos.y
+		distance = dim.start + dim.height - 1 - pos.y
 	else
 		-- below the current position
 		distance = pos.y - dim.start
@@ -431,18 +528,14 @@ local dimension_change = vl_worlds.dimension_change
 local DIM_UPDATE = 1
 local dimtimer = 0
 
--- Track player dimensions
----@type {string: vl_worlds.Dimension}
-local player_dimensions = {}
-
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
-
 	local dim = vl_worlds.dimension_at_pos(player:get_pos())
-	assert(dim)
+	last_dimension[name] = dim and (DIMENSION_NAME_COMPAT[dim.id] or dim.id) or "void"
+end)
 
-	player_dimensions[name] = dim
-	last_dimension[name] = REVERSE_DIMENSION_NAME_COMPAT[dim.id] or dim.id
+minetest.register_on_leaveplayer(function(player)
+	last_dimension[player:get_player_name()] = nil
 end)
 
 minetest.register_globalstep(function(dtime)
@@ -454,12 +547,9 @@ minetest.register_globalstep(function(dtime)
 	local players = core.get_connected_players()
 	for _,player in ipairs(players) do
 		local name = player:get_player_name()
-		local curr_dim = player_dimensions[name]
-		local pos  = player:get_pos()
-		if not curr_dim or pos.y < curr_dim.start or pos.y >= curr_dim.start + curr_dim.height then
-			dim = vl_worlds.dimension_at_pos(pos)
-			player_dimensions[name] = dim
-			local compat_name = DIMENSION_NAME_COMPAT[dim.id] or dim.id
+		local dim = vl_worlds.dimension_at_pos(player:get_pos())
+		local compat_name = dim and (DIMENSION_NAME_COMPAT[dim.id] or dim.id) or "void"
+		if compat_name ~= last_dimension[name] then
 			dimension_change(player, compat_name)
 		end
 	end
@@ -497,7 +587,7 @@ for i, dim in ipairs(world_structure) do
 	if dim.id == "fringe" then
 		local barrier = world_structure[i+2]
 		deprecated.mg_realm_barrier_overworld_end_min = barrier.start
-		deprecated.mg_realm_barrier_overworld_end_max = barrier.start + barrier.height
+		deprecated.mg_realm_barrier_overworld_end_max = barrier.start + barrier.height - 1
 		break
 	end
 end
