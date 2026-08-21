@@ -1,11 +1,11 @@
 # textdomain: mcl_hoppers
 Hopper=Trakt
-Inventory=Inventar
-5 inventory slots=5 lagerfelt
+Inventory=Forråd
+5 inventory slots=5 forrådsfelt
 Collects items from above, moves items to container below=Samlar gjenstandar ovanfrå, flytter gjenstandar inn i behaldarar under
 Can be disabled with redstone power=Kan skruast av med raudsteinkraft
 
-Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempt to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.=Trakter er behaldarar med 5 lagringsfelt. Dei samlar gjenstandar ovanfrå, flyttar gjenstandar frå ein behaldar over seg og prøver å leggje gjenstandane i ein tilstøytande behaldar. Trakter kan gå anten nedover eller til sides. Trakter samhandlar med kister, utslepparar, utskytarar, shulkerboksar, omnar og andre trakter.
+Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempt to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.=Trakter er behaldarar med 5 forrådsfelt. Dei samlar gjenstandar ovanfrå, flyttar gjenstandar frå ein behaldar over seg og prøver å leggje gjenstandane i ein tilstøytande behaldar. Trakter kan gå anten nedover eller til sides. Trakter samhandlar med kister, utslepparar, utskytarar, shulkerboksar, omnar og andre trakter.
 
 Hoppers interact with containers the following way:=Trakter samhandlar med behaldarar på følgjande måtar:
 
@@ -16,7 +16,7 @@ Hoppers interact with containers the following way:=Trakter samhandlar med behal
 
 Hoppers can be disabled when supplied with redstone power. Disabled hoppers don't move items.=Trakter kan deaktiverast når dei blir forsynte med raudsteinkraft. Deaktiverte trakter flyttar ikkje gjenstandar.
 
-To place a hopper vertically, place it on the floor or a ceiling. To place it sideways, place it at the side of a block. Use the hopper to access its inventory.=For å plassere ei trakt vertikalt, plasser ho på golvet eller i taket. For å plassere ho sidelengs, plasser ved sida av ei blokk. Bruk trakta for å få tilgang til inventaret.
+To place a hopper vertically, place it on the floor or a ceiling. To place it sideways, place it at the side of a block. Use the hopper to access its inventory.=For å plassere ei trakt vertikalt, plasser ho på golvet eller i taket. For å plassere ho sidelengs, plasser ved sida av ei blokk. Bruk trakta for å få tilgang til forrådet.
 
 Disabled Hopper=Deaktivert trakt
 Side Hopper=Sidetrakt

@@ -1,0 +1,38 @@
+# textdomain: mcl_buckets
+Empty Bucket=Tom bøtte
+A bucket can be used to collect and release liquids.=Ei bøtte kan nyttast til å samle opp og setje ut væsker.
+
+Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else.=Bruk på væskekjelde for å samle ho. Du kan deretter bruke den fylte bøtta til å plassere væska ein annan stad.
+
+Collects liquids=Samlar væsker.
+##[ register.lua ]##
+Lava Bucket=Lavabøtte
+
+A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.=Ei bøtte kan nyttast til å samle opp og setje ut væsker. Denne inneheld varm lava, trygt bevart oppi bøtta. Nytta forsvarleg.
+
+Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!=Stå på trygg avstand og nytta bøtta for å tømme ho og laga ei lavakjelde på den valde staden. Ikkje brenn deg sjølv!
+
+Places a lava source=Plasserar ei lavakilde
+Water Bucket=Vatnbøtte
+
+A bucket can be used to collect and release liquids. This one is filled with water.=Ei bøtte kan nyttast til å samle opp og setje ut væsker. Denne inneheld vatn.
+
+Place it to empty the bucket and create a water source.=Nytta for å tømma bøtta og laga ei vasskjelde.
+Places a water source=Plasserar ei vasskjelde
+River Water Bucket=Elvevatnbøtte
+
+A bucket can be used to collect and release liquids. This one is filled with river water.=Ei bøtte kan nyttast til å samle opp og setje ut væsker. Denne inneheld elvevatn.
+
+Place it to empty the bucket and create a river water source.=Nytta for å tømma bøtta og laga ei elvevasskjelde.
+Places a river water source=Plasserar ei elvevasskjelde
+##[ fishbuckets.lua ]##
+Bucket of Cod=Bøtte med torsk
+Bucket of Salmon=Bøtte med laks
+Bucket of Tropical Fish=Bøtte med tropisk fisk
+Bucket of Axolotl=Bøtte med axolotl
+Bucket of Pufferfish=Bøtte med kulefisk
+This bucket is filled with water and contains an aquatic mob.=Denne bøtta er fylt med vatn og inneheld ein vasskapning.
+
+Place it to empty the bucket and place a mob. Obtain by right clicking on a small aquatic mob with a bucket of water.=Nytta for å tømme bøtta og plassere skapningen. Plukk opp ved å høgreklikke på ein vasskapning med ei bøtte vatn
+
+Places a water source and a mob.=Plasser ei vasskjelde og ein skapning.

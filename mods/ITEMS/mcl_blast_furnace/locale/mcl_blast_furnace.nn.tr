@@ -1,0 +1,18 @@
+# textdomain: mcl_blast_furnace
+Blast Furnace=Masomn
+Inventory=Forråd
+Recipe book=Oppskrifsbok
+Smelts ores faster than furnace=Smeltar erts raskare enn vanlege omnar
+
+Blast Furnaces smelt several items, mainly ores and armor, using a furnace fuel, but twice as fast as a normal furnace.=Masomnar smelta fleire gjenstandar, hovudsakleg erts og rustningar, ved å nytta omnsbrensel. Det blir gjort dobbelt så raskt som i ein vanleg omn.
+
+Use the blast furnace to open the furnace menu.=Nytta masovnen for å opna omnmenyen.
+
+Place a furnace fuel in the lower slot and the source material in the upper slot.=Plasser eit omnsbrensel i det nedre feltet og kjeldematerialet i det øvre feltet.
+
+The blast furnace will slowly use its fuel to smelt the item.=Masovnen vil sakte bruke brenselet sitt til å smelte gjenstanden.
+The result will be placed into the output slot at the right side.=Resultatet plasserast i produktfeltet på høgre side.
+
+Use the recipe book to see what ores you can smelt, what you can use as fuel and how long it will burn.=Bruk oppskriftsboka for å sjå kva erts du kan smelta, kva du kan nytta som drivstoff og kor lenge det vil brenna.
+
+Burning Blast Furnace=Brennande masomn

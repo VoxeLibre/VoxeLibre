@@ -1,0 +1,17 @@
+# textdomain: mcl_brewing
+Brewing Stand=Bryggestativ
+Inventory=Forråd
+To use a brewing stand, rightclick it.=For å nytta bryggestativet, høgreklikk på det.
+
+##TODO: fuzzy matched - verify and remove the comment
+To brew, you need flaming powder as fuel, a brewing material and at least 1 glass bottle filled with a liquid.=For å brygge treng du eldpulver som drivstoff, eit bryggemateriale og minst 1 glasflaske fylt med væske.
+
+##TODO: fuzzy matched - verify and remove the comment
+Place the flaming powder in the left slot, the brewing material in the middle slot and 1-3 bottles in the remaining slots.=Plasser eldpulveret i det venstre feltet, bryggematerialet i midtfeltet og 1–3 flasker i dei resterande felta.
+
+When you have found a good combination, the brewing will commence automatically and steam starts to appear, using up the fuel and brewing material. The potions will soon be ready.=Når du har funne ein gyldig kombinasjon, vil bryggjinga starte automatisk og det byrjar å kome damp, som forbrukar drivstoff og bryggemateriale. Brygga er snart klare.
+
+Different combinations of brewing materials and liquids will give different results. Try to experiment!=Ulike kombinasjonar av bryggemateriale og væsker gjev ulike resultat. Prøv deg fram!
+
+The stand allows you to brew potions!=Stativet lar deg brygge trolldomsdrikkar!
+Brew Potions=Lag trolldomsbrygg

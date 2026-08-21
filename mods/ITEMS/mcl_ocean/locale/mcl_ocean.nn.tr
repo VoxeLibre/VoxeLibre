@@ -57,9 +57,9 @@ Seagrass grows inside water on top of dirt, sand or gravel.=Sjøgras veks i vatn
 ##[ kelp.lua ]##
 Kelp=Tare
 Kelp grows inside water on top of dirt, sand or gravel.=Tare veks i vatn på jord, sand eller grus.
-Dried Kelp=Tørka tare
-Dried kelp is a food item.=Tørka tare er ein matvare.
-Dried Kelp Block=Tørka tareblokk
+Dried Kelp=Turka tare
+Dried kelp is a food item.=Turka tare er ein matvare.
+Dried Kelp Block=Turka tareblokk
 A decorative block that serves as a great furnace fuel.=Ei dekorativ blokk som kan nyttast som omnsbrensel.
 ##[ sea_pickle.lua ]##
 Sea Pickle=Sjøagurk

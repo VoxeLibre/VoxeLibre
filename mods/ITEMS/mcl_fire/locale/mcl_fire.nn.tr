@@ -12,7 +12,7 @@ Eternal fire is a damaging block. Eternal fire can be extinguished by punches an
 Fire=Eld
 Eternal Fire=Evig eld
 ##[ fire_charge.lua ]##
-Fire Charge=Ildladning
+Fire Charge=Eldladning
 Dispenser projectile=Utskytarprosjektil
 Starts fires and ignites blocks=Startar brann og kveikjar blokkar
 

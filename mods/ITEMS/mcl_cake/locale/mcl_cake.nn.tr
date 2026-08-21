@@ -1,0 +1,15 @@
+# textdomain: mcl_cake
+Cake=Kake
+With 7 tasty slices!=Med 7 smakfulle stykker!
+Hunger points: +@1 per slice=Svoltpoeng: +@1 per stykke
+
+Cakes can be placed and eaten to restore hunger points. A cake has 7 slices. Each slice restores 2 hunger points and 0.4 saturation points. Cakes will be destroyed when dug or when the block below them is broken.=Kaker kan plasserast og etast for å attreise svoltpoeng. Ei kake har 7 stykke. Kvart stykke attreiser 2 svoltpoeng og 0,4 metningspoeng. Kaker vil bli øydelagde når dei utvinnast eller når blokka under dei blir øydelagd.
+
+Place the cake anywhere, then rightclick it to eat a single slice. You can't eat from the cake when your hunger bar is full.=Plasser kaken hvor som helst, og høyreklikk den for å spise ett enkelt stykke. Du kan ikke spise av kaken når sultbaren er full.
+
+Cake (6 Slices Left)=Kake (6 stykke att)
+Cake (5 Slices Left)=Kake (5 stykke att)
+Cake (4 Slices Left)=Kake (4 stykke att)
+Cake (3 Slices Left)=Kake (3 stykke att)
+Cake (2 Slices Left)=Kake (2 stykke att)
+Cake (1 Slice Left)=Kake (1 stykke att)

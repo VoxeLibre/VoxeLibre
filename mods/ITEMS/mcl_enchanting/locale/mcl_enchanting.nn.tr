@@ -4,7 +4,7 @@ Enchant an item=Fortrylla ein gjenstand
 <player> <enchantment> [<level>]=<spelar> <trolldom> [<nivå>]
 Usage: /enchant <player> <enchantment> [<level>]=Bruk: /enchant <spelar> <trolldom> [<nivå>]
 Player '@1' cannot be found.=Spelar '@1' blei ikkje funnen.
-There is no such enchantment '@1'.=Det finst ikkje ei slik trolldom '@1'
+There is no such enchantment '@1'.=Det finst ikkje ein slik trolldom '@1'
 The target doesn't hold an item.=Målet held ikkje ein gjenstand.
 The selected enchantment can't be added to the target item.=Den valde trolldoma kan ikkje leggjast til målgjenstaden.
 ### init.lua ###
@@ -16,7 +16,7 @@ Enchanting succeded.=Fortrylling vellukka
 Forcefully enchant an item=Tving trolldom på ein gjenstand
 Usage: /forceenchant <player> <enchantment> [<level>]=Bruk: /foceenchant <spelar> <trolldom> [<nivå>]
 The target item is not enchantable.=Målgjenstanden kan ikke fortryllast
-'@1' is not a valid number.='@1' er ikke et gyldig tall.
+'@1' is not a valid number.='@1' er ikkje eit gyldig tal.
 Enchanted Book=Fortrylla bok
 Enchanting Table=Trolldomsbord
 Spend experience, and lapis to enchant various items.=Nytta erfaringspoeng og lasurstein for å fortrylla ulike gjenstandar.
@@ -37,7 +37,7 @@ After finally selecting your enchantment; left-click on the selection, and you w
 
 Enchant=Fortryll
 ##[ engine.lua ]##
-Inventory=Inventar
+Inventory=Forråd
 @1 Lapis Lazuli=@1 Lasurstein
 ### engine.lua ###
 @1 Enchantment Levels=@1 trolldomsnivå
@@ -95,7 +95,7 @@ Quick Charge=Snøgglading
 Decreases crossbow charging time.=Aukar omladingsfarten til armbrøst.
 Respiration=Respirasjon
 Extends underwater breathing time.=Utvidar lungekapasiteten under vatn.
-Riptide=Sjøgang
+Riptide=Vassbyks
 Trident launches player with itself when thrown. Works only in water or rain.=Ljosteret slengjer spelaren med seg sjølv når det blir kasta. Verkar berre i vatn eller i regn.
 Sharpness=Kvassleik
 Increases damage.=Aukar skade.

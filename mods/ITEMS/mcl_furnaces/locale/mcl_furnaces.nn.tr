@@ -1,6 +1,6 @@
 # textdomain: mcl_furnaces
 Furnace=Omn
-Inventory=Inventar
+Inventory=Forråd
 Recipe book=Oppskriftsbok
 Uses fuel to smelt or cook items=Nyttar brensel til å smelte eller steike gjenstandar.
 Furnaces cook or smelt several items, using a furnace fuel, into something else.=Omnar steiker eller smeltar fleire gjenstandar til noko nytt, ved å nytte brennbart materiale.
