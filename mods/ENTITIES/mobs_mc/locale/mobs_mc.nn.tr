@@ -1,0 +1,146 @@
+# textdomain: mobs_mc
+##[ axolotl.lua ]##
+Axolotl=Axolotl
+##[ bat.lua ]##
+Bat=Skinnvengje
+##[ rabbit.lua ]##
+Rabbit=Kanin
+Killer Bunny=Mordarkanin
+##[ chicken.lua ]##
+Chicken=Høns
+##[ cow+mooshroom.lua ]##
+Cow=Ku
+Mooshroom=Soppku
+##[ horse.lua ]##
+Horse=Hest
+Skeleton Horse=Skjeletthest
+Zombie Horse=Vandaud hest
+Donkey=Esel
+Mule=Mulldyr
+##[ llama.lua ]##
+Llama=Lama
+ - Strength @1= - Styrke @1
+##[ ocelot.lua ]##
+Ocelot=Ocelot
+Cat=Katt
+##[ parrot.lua ]##
+Parrot=Papegøye
+##[ pig.lua ]##
+Pig=Gris
+##[ polar_bear.lua ]##
+Polar Bear=Isbjørn
+##[ sheep.lua ]##
+Sheep=Får
+##[ wolf.lua ]##
+Wolf=Ulv
+Dog=Hund
+##[ squid.lua ]##
+Squid=Blekksprut
+##[ villager.lua ]##
+Novice=Nybyrjar
+Apprentice=Lærling
+Journeyman=Handverkar
+Expert=Fagmann
+Master=Meister
+Unemployed=Arbeidslaus
+Farmer=Bonde
+Fisherman=Fiskar
+Fletcher=Pilmakar
+Shepherd=Sauebonde
+Librarian=Bibliotekar
+Cartographer=Kartograf
+Armorer=Rustningsmed
+Leatherworker=Lærarbeidar
+Butcher=Slaktar
+Weapon Smith=Våpensmed
+Tool Smith=Verktøysmed
+Cleric=Geistleg
+Mason=Steinhoggar
+Nitwit=Tomskalle
+Villager=Landsbyboer
+##[ pillager.lua ]##
+Pillager=Plyndrar
+##[ villager_evoker.lua ]##
+Evoker=Åndemanar
+##[ villager_vindicator.lua ]##
+Vindicator=Forsvarar
+##[ villager_zombie.lua ]##
+Zombie Villager=Vandaud bygding
+##[ witch.lua ]##
+Witch=Heks
+##[ elementals.lua ]##
+Fire Elemental=Eldvette
+##[ ender_dragon.lua ]##
+Ender Dragon=Enderdrake
+##[ endermite.lua ]##
+Endermite=Endermidd
+##[ villager_illusioner.lua ]##
+Illusioner=Illusjonist
+##[ ghast.lua ]##
+Ghast=Skrekk
+##[ guardian.lua ]##
+Guardian=Vaktar
+##[ guardian_elder.lua ]##
+Elder Guardian=Urvaktar
+##[ snowman.lua ]##
+Snow Golem=Snømann
+##[ iron_golem.lua ]##
+Iron Golem=Jarnkjempe
+##[ rover.lua ]##
+Rover=Drivar
+##[ shulker.lua ]##
+Shulker=Shulkar
+##[ silverfish.lua ]##
+Silverfish=Sølvkre
+##[ skeleton+stray.lua ]##
+Skeleton=Skjelett
+Stray=Streifar
+##[ skeleton_wither.lua ]##
+Wither Skeleton=Visningskjelett
+##[ stalker.lua ]##
+Stalker=Snikar
+Overloaded Stalker=Overbelasta snika
+##[ zombie.lua ]##
+Zombie=Vandaud
+Baby Zombie=Babyvandaud
+Husk=Ørkenvandaud
+Baby Husk=Baby ørkenvandaud
+##[ slime+magma_cube.lua ]##
+Slime - big=Slim - stor
+Slime - small=Slim - liten
+Slime - tiny=Slim - knøttliten
+Magma Cube - big=Magmakube - stor
+Magma Cube - small=Magmakube - liten
+Magma Cube - tiny=Magmakube - knøttliten
+Magma Cube=Magmakube
+Slime=Slim
+##[ spider.lua ]##
+Spider=Edderkopp
+Cave Spider=Holedderkopp
+##[ vex.lua ]##
+Vex=Plageånd
+##[ wither.lua ]##
+Wither=Forvitrar
+##[ cod.lua ]##
+Cod=Torsk
+##[ salmon.lua ]##
+Salmon=Laks
+##[ tropical_fish.lua ]##
+Tropical fish=Tropisk fisk
+##[ dolphin.lua ]##
+Dolphin=Delfin
+##[ glow_squid.lua ]##
+Glow Squid=Glødeblekksprut
+##[ piglin.lua ]##
+Piglin=Grisling
+Sword Piglin=Sverdgrisling
+Zombie Piglin=Vandaud grisling
+Baby Zombie Piglin=Babyvandaud grisling
+Piglin Brute=Grislingbølle
+##[ hoglin+zoglin.lua ]##
+Hoglin=Hoglin
+Zoglin=Voglin
+Baby hoglin=Babyhoglin
+##[ strider.lua ]##
+Strider=Lavavandrar
+Baby Strider=Babylavavandrar

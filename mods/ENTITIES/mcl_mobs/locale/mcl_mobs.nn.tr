@@ -1,0 +1,33 @@
+# textdomain: mcl_mobs
+You need the “maphack” privilege to change the mob spawner.=Du treng "maphack"-privilegiet for å endre ein skapningsmanar.
+Only peaceful mobs allowed!=Berre fredlege skapningar tillatne!
+This allows you to place a single mob.=Let deg plassere éin skapning
+
+Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Plasser der du vil at skapningen skal manast. Dyr manast som tamde, med mindre du held snikeknappen når du plasserer. Dersom du plasserer den på ein skapningsmanar, vil det endre kva skapning han manar fram.
+
+##[ physics.lua ]##
+
+The maximum number of pushable entities a mob or player can push, before taking 6♥♥♥ entity cramming damage per half-second.=Maksimalt tal skubbare einingar ein skapning eller spelar kan skubbe, før dei tek 6♥♥♥ einingsskade per halvt sekund.
+
+Whether mobs should drop items and experience orbs.=Om skapningar skal sleppe gjenstandar og erfaringskuler
+##[ api.lua ]##
+Peaceful mode active! No monsters will spawn.=Fredfull modus aktivert! Ingen monster manast fram.
+
+Removes specified mobs except nametagged and tamed ones. For the second parameter, use nametagged/tamed to select only nametagged/tamed mobs, or a range to specify a maximum distance from the player.=Fjernar spesifiserte skapningar bortsett frå namnemerkte og temde. I det andre parameteret, bruk namnemerkt/temd for å velje berre namnemerkte/temde skapningar, eller eit område for å spesifisere ein maksimal avstand frå spelaren.
+
+Default usage. Clearing hostile mobs. For more options please type: /help clearmobs=Standardbruk. Ryddar fiendtlege skapningar. For fleire alternativ venlegst skriv inn: /help clearmobs
+
+##[ spawning.lua ]##
+
+Whether mobs should spawn naturally, or via global spawning logic, such as for cats, phantoms, patrols, wandering traders, or zombie sieges. Does not affect special spawning attempts, like monster spawners, raids, or iron golems.=Om monster skal manast fram naturleg, eller via global maningslogikk, for eksempel for kattar, fantom, patruljar, vandrande handelsmenn eller vandaudsomleiringar. Påverkar ikkje spesielle maningsforsøk, som skapningsmanarar, herjingar eller jarnkjemper.
+
+spawn_mob is a chatcommand that allows you to type in the name of a mob without 'typing mobs_mc:' all the time like so; 'spawn_mob spider'. however, there is more you can do with this special command, currently you can edit any number, boolean, and string variable you choose with this format: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. any_mob being your mob of choice, mobs_variable being the variable, and variable value being the value of the chosen variable. and example of this format: @n spawn_mob skeleton:var<passive@=true>:@n this would spawn a skeleton that wouldn't attack you. REMEMBER-THIS> when changing a number value always prefix it with 'NUM', example: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n this setting the skelly's jump height to 10. if you want to make multiple changes to a mob, you can, example: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n etc.=spawn_mob er ein chat-kommando som lèt deg skrive namnet på ein skapning utan å skrive 'mobs_mc:' kvar gong, slik som dette: 'spawn_mob spider'. Det er likevel meir du kan gjere med denne spesialkommandoen. Førebels kan du endre kva som helst tal-, boolsk- og strengvariabel du vel med dette formatet: spawn_mob 'any_mob:var<mobs_variable@=variable_value>:'. Her er 'any_mob' mobben du vel, 'mobs_variable' er variabelen, og 'variable_value' er verdien til den valde variabelen. Eit døme på dette formatet: @n spawn_mob skeleton:var<passive@=true>:@n Dette vil mane fram eit skjelett som ikkje vil angripe deg. HUGS DETTE: Når du endrar ein talverdi, må du alltid bruke prefikset 'NUM', døme: @n spawn_mob skeleton:var<jump_height@=NUM10>:@n Dette set hopphøgda til skjelettet til 10. Dersom du ynskjer å gjere fleire endringar på ein skapning, kan du gjere det, døme: @n spawn_mob skeleton:var<passive@=true>::var<jump_height@=NUM10>::var<fly@=true>:@n osb.
+
+##[ crafts.lua ]##
+Name Tag=Namnelapp
+Give names to mobs=Gjev namn til skapningar
+Set name at anvil=Angi namn i ein ambolt
+A name tag is an item to name a mob.=Ein namnelapp er ein bruksgjenstand for å gje namn til ein skapning.
+
+Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Før du bruker namnelapp, må du angi eit namn via ein ambolt. Deretter kan du bruke namnelappen til å gje ein skapning namn. Dette bruker opp namnelappen.
+
