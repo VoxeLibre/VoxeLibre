@@ -1,6 +1,7 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
+local sea_level = assert(vl_worlds.get_level("overworld", "sea"))
 
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
 assert(overworld_bounds)
@@ -83,7 +84,7 @@ local cold = {
 	make_foundation = true,
 	y_offset = -1,
 	y_min = overworld_bounds.min,
-	y_max = -2,	-- TODO: de-hardcode this
+	y_max = sea_level - 2,
 	biomes = cold_oceans,
 	chunk_probability = 400,
 	sidelen = 20,

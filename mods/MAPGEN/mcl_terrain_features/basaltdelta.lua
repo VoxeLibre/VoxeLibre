@@ -12,6 +12,7 @@ local adjacents = {
 
 local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
 assert(underworld_bounds)
+local lava_sea_level = assert(vl_worlds.get_level("underworld", "lava_sea"))
 
 mcl_structures.register_structure("basalt_column",{
 	place_on = {"mcl_blackstone:blackstone","mcl_blackstone:basalt"},
@@ -29,7 +30,7 @@ mcl_structures.register_structure("basalt_column",{
 	},
 	flags = "all_floors",
 	y_max = underworld_bounds.max - 20, -- TODO make technical layer
-	y_min = mcl_vars.mg_lava_nether_max + 1,
+	y_min = lava_sea_level + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
 		local nn = minetest.find_nodes_in_area(vector.offset(pos,-5,0,-5),vector.offset(pos,5,0,5),{"air","mcl_blackstone:basalt","mcl_blackstone:blackstone"})
@@ -72,7 +73,7 @@ mcl_structures.register_structure("basalt_pillar",{
 	},
 	flags = "all_floors",
 	y_max = underworld_bounds.max - 40, -- TODO make technical layer
-	y_min = mcl_vars.mg_lava_nether_max + 1,
+	y_min = lava_sea_level + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
 		local nn = minetest.find_nodes_in_area(vector.offset(pos,-2,0,-2),vector.offset(pos,2,0,2),{"air","mcl_blackstone:basalt","mcl_blackstone:blackstone"})
@@ -116,7 +117,7 @@ mcl_structures.register_structure("lavadelta",{
 	},
 	flags = "all_floors",
 	y_max = underworld_bounds.max, -- TODO make technical layer
-	y_min = mcl_vars.mg_lava_nether_max + 1,
+	y_min = lava_sea_level + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
 		local nn = minetest.find_nodes_in_area_under_air(vector.offset(pos,-10,0,-10),vector.offset(pos,10,-1,10),{"mcl_blackstone:basalt","mcl_blackstone:blackstone","mcl_nether:netherrack"})

@@ -5,6 +5,7 @@ local peaceful = minetest.settings:get_bool("only_peaceful_mobs", false)
 
 local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
 assert(underworld_bounds)
+local lava_sea_level = assert(vl_worlds.get_level("underworld", "lava_sea"))
 
 local ELEMENTAL_SPAWNER_MAX_LIGHT = 11
 
@@ -17,7 +18,7 @@ mcl_structures.register_structure("nether_outpost",{
 	sidelen = 24,
 	solid_ground = true,
 	make_foundation = true,
-	y_min = mcl_vars.mg_lava_nether_max - 1,
+	y_min = lava_sea_level - 1,
 	y_max = underworld_bounds.max - 30,
 	filenames = { modpath.."/schematics/mcl_nether_fortresses_nether_outpost.mts" },
 	y_offset = 0,
@@ -42,7 +43,7 @@ mcl_structures.register_structure("nether_bridge",{
 	solid_ground = false,
 	make_foundation = false,
 	y_min = underworld_bounds.min - 4,
-	y_max = mcl_vars.mg_lava_nether_max - 20,
+	y_max = lava_sea_level - 20,
 	filenames = nbridges,
 	y_offset = function(pr) return pr:next(15,20) end,
 	after_place = function(pos,def,pr)
@@ -61,7 +62,7 @@ mcl_structures.register_structure("nether_outpost_with_bridges",{
 	sidelen = 24,
 	solid_ground = true,
 	make_foundation = true,
-	y_min = mcl_vars.mg_lava_nether_max - 1,
+	y_min = lava_sea_level - 1,
 	y_max = underworld_bounds.max - 30,
 	filenames = { modpath.."/schematics/mcl_nether_fortresses_nether_outpost.mts" },
 	daughters = {{
@@ -108,7 +109,7 @@ mcl_structures.register_structure("nether_outpost_with_bridges",{
 
 mcl_structures.register_structure_spawn({
 	name = "mobs_mc:witherskeleton",
-	y_min = mcl_vars.mg_lava_nether_max,
+	y_min = lava_sea_level,
 	y_max = underworld_bounds.max,
 	chance = 15,
 	interval = 60,
@@ -125,7 +126,7 @@ mcl_structures.register_structure("nether_bulwark",{
 	sidelen = 36,
 	solid_ground = true,
 	make_foundation = true,
-	y_min = mcl_vars.mg_lava_nether_max - 1,
+	y_min = lava_sea_level - 1,
 	y_max = underworld_bounds.max - 30,
 	filenames = {
 		modpath.."/schematics/mcl_nether_fortresses_nether_bulwark_1.mts",
