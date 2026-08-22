@@ -47,7 +47,6 @@ local string_to_pos = minetest.string_to_pos
 local get_connected_players = minetest.get_connected_players
 local get_item_group = minetest.get_item_group
 local setting_get_pos = minetest.setting_get_pos
-local y_to_layer = mcl_worlds.y_to_layer
 
 local COMPASS_WORKS = {overworld = true, underworld = false, fringe = false}
 function mcl_compass.register_compass_works(dim)
@@ -140,11 +139,10 @@ local function get_compass_frame(pos, dir, itemstack)
 			minetest.log("warning", "mcl_compass: invalid lodestone position!")
 			return random_frame
 		end
-		local _, l_dim = y_to_layer(lpos.y)
-		local _, p_dim = y_to_layer(pos.y)
+		local l_dim = vl_worlds.dimension_at_pos(lpos)
+		local p_dim = vl_worlds.dimension_at_pos(pos)
 		-- compass and lodestone must be in the same dimension
-		-- TODO migrate to new vl_worlds API
-		if l_dim == p_dim then
+		if l_dim and p_dim and l_dim.id == p_dim.id then
 			--check if lodestone still exists
 			if get_far_node(lpos, itemstack).name == "mcl_compass:lodestone" then
 				return get_compass_angle(pos, lpos, dir)

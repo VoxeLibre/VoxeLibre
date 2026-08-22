@@ -127,6 +127,7 @@ local world_structure = {
 local ALLOCATIONS_STORAGE_KEY = "dimension_allocations"
 local dimension_allocations = core.deserialize(storage:get_string(ALLOCATIONS_STORAGE_KEY)) or {}
 assert(type(dimension_allocations) == "table", "Invalid saved dimension allocations")
+local saved_allocations = {}
 
 local function replace_structure_entry(index, parts)
 	table.remove(world_structure, index)
@@ -213,6 +214,7 @@ end
 ---@field id string - world ID in code and mod storage
 ---@field name string - translated string - world name anywhere it would be displayed
 ---@field height integer - buildable height of the world, this includes bedrock and such
+---@field levels? table<string, integer> - named Y levels relative to the world's start
 ---@field forced_start? integer forced start height of the world (optional)
 ---@param def vl_worlds.DimensionDef
 -- -- - if a dimension is already registered there or the dimension wouldn't fit, causes an error
@@ -226,6 +228,16 @@ function vl_worlds.register_world(def)
 	assert(type(def.name) == "string", "Unable to register world \""..id.."\": name is not a string")
 	assert(type(def.height) == "number" and def.height > 0 and def.height % 1 == 0,
 		"Unable to register world \""..id.."\": height is not a positive integer")
+	assert(def.levels == nil or type(def.levels) == "table",
+		"Unable to register world \""..id.."\": levels is not a table")
+	for level_id, level in pairs(def.levels or {}) do
+		assert(type(level_id) == "string" and level_id ~= "",
+			"Unable to register world \""..id.."\": level ID is not a non-empty string")
+		assert(type(level) == "number" and level % 1 == 0,
+			"Unable to register world \""..id.."\": level \""..level_id.."\" is not an integer")
+	end
+
+	local world_metadata = { name = def.name, levels = table.copy(def.levels or {}) }
 
 	local saved = dimension_allocations[id]
 	if saved then
@@ -239,7 +251,7 @@ function vl_worlds.register_world(def)
 		for i, region in ipairs(world_structure) do
 			if region.reservation_id == id then
 				replace_structure_entry(i, allocation_parts(saved, id))
-				registered_worlds[id] = { name = def.name }
+				registered_worlds[id] = world_metadata
 				return
 			end
 		end
@@ -294,7 +306,7 @@ function vl_worlds.register_world(def)
 			replace_structure_entry(i, parts)
 			dimension_allocations[id] = allocation
 			storage:set_string(ALLOCATIONS_STORAGE_KEY, core.serialize(dimension_allocations))
-			registered_worlds[id] = { name = def.name }
+			registered_worlds[id] = world_metadata
 			return
 		end
 	end
@@ -318,99 +330,71 @@ end
 
 -- test for nonexistent 0.89 patch to allow testing on prerelease versions
 -- TODO migrate to {0, 90} before release
+local water_level = tonumber(core.get_mapgen_setting("water_level")) or 0
 if false and mcl_vars.minimum_version(mcl_vars.map_initial_version, {0, 89, 4}) then
 	vl_worlds.register_world({
 		id = "overworld",
 		name = S("Overworld"),
 		height = 7550,
 		forced_start = -62,
+		levels = { sea = water_level + 62 },
 	})
 
 	vl_worlds.register_world({
 		id = "underworld",
 		name = S("Underworld"),
 		height = 256,
+		levels = { lava_sea = superflat and 2 or 31 },
 	})
 
 	vl_worlds.register_world({
 		id = "fringe",
 		name = S("Fringe"),
 		height = 2048,
+		levels = { island = 64 },
 	})
 else
-	if not superflat and not singlenode then
-		vl_worlds.register_world({
-			id = "overworld",
-			name = S("Overworld"),
-			height = 30989,
-			forced_start = -62,
-		})
-
-		vl_worlds.register_world({
-			id = "underworld",
-			name = S("Underworld"),
-			height = 256,
-			forced_start = -29067,
-		})
-
-		vl_worlds.register_world({
-			id = "fringe",
-			name = S("Fringe"),
-			height = 25012,
-			forced_start = -27073,
-		})
-	elseif superflat then
+	local overworld_height, overworld_start, fringe_height
+	if superflat then
 		local ground = tonumber(core.get_mapgen_setting("mgflat_ground_level")) or 8
-		vl_worlds.register_world({
-			id = "overworld",
-			name = S("Overworld"),
-			height = vl_worlds.mapgen_edge_max - ground + 3,
-			forced_start = ground - 3,
-		})
-
-		vl_worlds.register_world({
-			id = "underworld",
-			name = S("Underworld"),
-			height = 256,
-			forced_start = -29067,
-		})
-
-		vl_worlds.register_world({
-			id = "fringe",
-			name = S("Fringe"),
-			height = 25079,
-			forced_start = -27073,
-		})
+		overworld_height = vl_worlds.mapgen_edge_max - ground + 3
+		overworld_start = ground - 3
+		fringe_height = 25079
+	elseif singlenode then
+		overworld_height = vl_worlds.mapgen_edge_max + 65
+		overworld_start = -65
+		fringe_height = 25007
 	else
-		vl_worlds.register_world({
-			id = "overworld",
-			name = S("Overworld"),
-			height = vl_worlds.mapgen_edge_max + 65,
-			forced_start = -65,
-		})
+		overworld_height = 30989
+		overworld_start = -62
+		fringe_height = 25012
+	end
 
-		vl_worlds.register_world({
-			id = "underworld",
-			name = S("Underworld"),
-			height = 256,
-			forced_start = -29067,
-		})
+	local dimensions = {
+		{ id = "overworld", name = S("Overworld"), height = overworld_height, forced_start = overworld_start,
+			levels = { sea = water_level - overworld_start } },
+		{ id = "underworld", name = S("Underworld"), height = 256, forced_start = -29067,
+			levels = { lava_sea = superflat and 2 or 31 } },
+		{ id = "fringe", name = S("Fringe"), height = fringe_height, forced_start = -27073,
+			levels = { island = 64 } },
+	}
 
-		vl_worlds.register_world({
-			id = "fringe",
-			name = S("Fringe"),
-			height = 25007,
-			forced_start = -27073,
-		})
+	for _, def in ipairs(dimensions) do
+		vl_worlds.register_world(def)
 	end
 end
 
 -- API
----@paramm id string - registered dimension
+---@param id string - registered dimension
 ---@returns {min: integer, max: integer}?
 function vl_worlds.get_dimension_bounds(id)
-	if id == "void" then -- TODO improve the warning, maybe log also for nil id?
+	if type(id) ~= "string" then
+		core.log("warning", "vl_worlds.get_dimension_bounds: id must be a string, got "..type(id))
+		return nil
+	end
+	if id == "void" then
 		core.log("warning", "There's more than one void, attempting to check void bounds this way is not recommended")
+		return nil
 	end
 	for _, dim in ipairs(world_structure) do
 		if dim.id == id then
@@ -420,13 +404,36 @@ function vl_worlds.get_dimension_bounds(id)
 			}
 		end
 	end
+	core.log("warning", "vl_worlds.get_dimension_bounds: unknown dimension \""..id.."\"")
+	return nil
+end
+
+---Return the absolute Y coordinate of a named level in a registered world.
+---@param id string
+---@param level_id string
+---@return integer?
+function vl_worlds.get_level(id, level_id)
+	local world = registered_worlds[id]
+	local relative_y = world and world.levels[level_id]
+	if relative_y == nil then return nil end
+
+	local bounds = vl_worlds.get_dimension_bounds(id)
+	return bounds and bounds.min + relative_y or nil
 end
 
 -- API
--- id - string - registered dimension
--- diff - integer - negative expands downwards, positive expands upwards
+---@param id string - registered dimension
+---@param diff integer - negative expands downwards, positive expands upwards
+---@return boolean success
 function vl_worlds.expand_dimension(id, diff)
-	if not id or id == "void" or not diff or diff == 0 then return end -- TODO log a warning
+	if type(id) ~= "string" or id == "void" then
+		core.log("warning", "vl_worlds.expand_dimension: id must name a registered non-void dimension")
+		return false
+	end
+	if type(diff) ~= "number" or diff % 1 ~= 0 or diff == 0 then
+		core.log("warning", "vl_worlds.expand_dimension: diff must be a non-zero integer")
+		return false
+	end
 	for i, dim in ipairs(world_structure) do
 		if dim.id == id then
 			if diff < 0 and world_structure[i-2].height >= vl_worlds.dimensional_barrier_size - diff then
@@ -434,15 +441,20 @@ function vl_worlds.expand_dimension(id, diff)
 				world_structure[i-1].start = world_structure[i-1].start + diff
 				dim.start = dim.start + diff
 				dim.height = dim.height - diff
+				return true
 			elseif diff > 0 and world_structure[i+2].height >= vl_worlds.dimensional_barrier_size + diff then
 				world_structure[i+2].height = world_structure[i+2].height - diff
 				world_structure[i+2].start = world_structure[i+2].start + diff
-				world_structure[i-1].start = world_structure[i-1].start + diff
+				world_structure[i+1].start = world_structure[i+1].start + diff
 				dim.height = dim.height + diff
+				return true
 			end
-			return -- TODO signal success/failure
+			core.log("warning", "vl_worlds.expand_dimension: not enough space to expand dimension \""..id.."\"")
+			return false
 		end
 	end
+	core.log("warning", "vl_worlds.expand_dimension: unknown dimension \""..id.."\"")
+	return false
 end
 
 local VOID_DEADLY_TOLERANCE = 64 -- the player must be this many nodes “deep” into the void to be damaged
@@ -616,5 +628,6 @@ if mg_name == "flat" then
 		mcl_vars.mg_flat_nether_ceiling = mcl_vars.mg_lava_nether_max + 52
 	end
 end
-mcl_vars.mg_end_platform_pos = { x = 100, y = mcl_vars.mg_end_min + 64, z = 0 }
-mcl_vars.mg_end_exit_portal_pos = vector.new(0, mcl_vars.mg_end_min + 71, 0)
+local island_level = assert(vl_worlds.get_level("fringe", "island"))
+mcl_vars.mg_end_platform_pos = { x = 100, y = island_level, z = 0 }
+mcl_vars.mg_end_exit_portal_pos = vector.new(0, island_level + 7, 0)

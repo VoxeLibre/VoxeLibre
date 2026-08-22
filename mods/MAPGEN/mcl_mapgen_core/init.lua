@@ -55,6 +55,7 @@ end)
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local sea_level = tonumber(minetest.get_mapgen_setting("water_level"))
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+local lava_sea_level = assert(vl_worlds.get_level("underworld", "lava_sea"))
 
 -- Content IDs
 local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
@@ -363,7 +364,7 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 		-- Big lava seas by replacing air below a certain height
 		if mcl_vars.mg_lava then
 			lvm_used = set_layers(data, area, c_lava, c_air, overworld_bounds.min, mcl_vars.mg_lava_overworld_max, minp, maxp, pr) or lvm_used
-			lvm_used = set_layers(data, area, c_nether_lava, c_air, underworld_bounds.min, mcl_vars.mg_lava_nether_max, minp, maxp, pr) or lvm_used
+			lvm_used = set_layers(data, area, c_nether_lava, c_air, underworld_bounds.min, lava_sea_level, minp, maxp, pr) or lvm_used
 		end
 	end
 	local deco, ores = false, false

@@ -1,6 +1,7 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
+local sea_level = assert(vl_worlds.get_level("overworld", "sea"))
 
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
 assert(overworld_bounds)
@@ -45,7 +46,7 @@ mcl_structures.register_structure("desert_temple",{
 	y_offset = -12,
 	chunk_probability = 300,
 	y_max = overworld_bounds.max,
-	y_min = 1, -- TODO: de-hardcode
+	y_min = sea_level + 1,
 	biomes = { "Desert" },
 	filenames = { modpath.."/schematics/mcl_structures_desert_temple.mts" },
 	after_place = temple_placement_callback,
