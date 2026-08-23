@@ -62,12 +62,12 @@ Thorns=Tornar
 
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Gjenspeiler noe av skaden som ble tatt når truffet, på bekostning av redusert holdbarhet per aktivering.
 
-Elytra=Elytra
+Elytra=Vengjer
 ##[ leather.lua ]##
-Leather Cap=Lærhatt
-Leather Tunic=Lærtrøye
-Leather Pants=Lærbukser
-Leather Boots=Lærstøvlar
+Leather Cap=Lerhatt
+Leather Tunic=Lertrøye
+Leather Pants=Lerbukser
+Leather Boots=Lerstøvlar
 ##[ trims.lua ]##
 #Translations for armor trims
 Smithing Template '@1'=Smimal '@1'
