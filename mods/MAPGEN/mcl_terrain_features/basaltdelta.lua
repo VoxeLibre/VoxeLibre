@@ -29,7 +29,7 @@ mcl_structures.register_structure("basalt_column",{
 		flags = "absvalue",
 	},
 	flags = "all_floors",
-	y_max = underworld_bounds.max - 20, -- TODO make technical layer
+	y_max = underworld_bounds.max - 20,
 	y_min = lava_sea_level + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
@@ -72,7 +72,7 @@ mcl_structures.register_structure("basalt_pillar",{
 		flags = "absvalue",
 	},
 	flags = "all_floors",
-	y_max = underworld_bounds.max - 40, -- TODO make technical layer
+	y_max = underworld_bounds.max - 40,
 	y_min = lava_sea_level + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)
@@ -116,7 +116,7 @@ mcl_structures.register_structure("lavadelta",{
 		flags = "absvalue",
 	},
 	flags = "all_floors",
-	y_max = underworld_bounds.max, -- TODO make technical layer
+	y_max = underworld_bounds.max,
 	y_min = lava_sea_level + 1,
 	biomes = { "BasaltDelta" },
 	place_func = function(pos,def,pr)

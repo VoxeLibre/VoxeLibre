@@ -1,6 +1,8 @@
 
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
 assert(overworld_bounds)
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+assert(underworld_bounds)
 local deepslate_max = mcl_worlds.layer_to_y(16)
 local deepslate_min = overworld_bounds.min
 
@@ -455,8 +457,8 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 12000, -- MC would be 25000, MCLA uses 15000, needs balancing
 		clust_num_ores = 3,
 		clust_size     = 3,
-		y_min = mcl_vars.mg_nether_min + 8,
-		y_max = mcl_vars.mg_nether_min + 22,
+		y_min = underworld_bounds.min + 8,
+		y_max = underworld_bounds.min + 22,
 	})
 
 	-- Rare spawn (below)
@@ -467,8 +469,8 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 20000,
 		clust_num_ores = 2,
 		clust_size     = 3,
-		y_min = mcl_vars.mg_nether_min,
-		y_max = mcl_vars.mg_nether_min + 8,
+		y_min = underworld_bounds.min,
+		y_max = underworld_bounds.min + 8,
 	})
 
 	-- Rare spawn (above)
@@ -479,8 +481,8 @@ if minetest.settings:get_bool("mcl_generate_ores", true) then
 		clust_scarcity = 20000,
 		clust_num_ores = 2,
 		clust_size     = 3,
-		y_min = mcl_vars.mg_nether_min + 22,
-		y_max = mcl_vars.mg_nether_min + 119,
+		y_min = underworld_bounds.min + 22,
+		y_max = underworld_bounds.min + 119,
 	})
 
 	--

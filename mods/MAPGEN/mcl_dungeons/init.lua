@@ -4,6 +4,8 @@ mcl_dungeons = {}
 
 local logging = minetest.settings:get_bool("mcl_logging_dungeons", false)
 local mg_name = minetest.get_mapgen_setting("mg_name")
+local overworld_bounds = assert(vl_worlds.get_dimension_bounds("overworld"))
+local overworld_bedrock_top = assert(vl_worlds.get_level("overworld", "bedrock_top"))
 -- Are dungeons disabled?
 if mcl_vars.mg_dungeons == false or mg_name == "singlenode" then return end
 
@@ -34,8 +36,8 @@ local math_ceil        = math.ceil
 local get_node = mcl_vars.get_node
 
 
-local min_y = math_max(mcl_vars.mg_overworld_min, mcl_vars.mg_bedrock_overworld_max) + 1
-local max_y = mcl_vars.mg_overworld_max - 1
+local min_y = math_max(overworld_bounds.min, overworld_bedrock_top) + 1
+local max_y = overworld_bounds.max - 1
 -- Calculate the number of dungeon spawn attempts
 -- In Minecraft, there 8 dungeon spawn attempts Minecraft chunk (16*256*16 = 65536 blocks).
 -- Luanti chunks don't have this size, so scale the number accordingly.

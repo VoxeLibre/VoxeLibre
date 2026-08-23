@@ -3,8 +3,6 @@ local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
 local spawnon = {"mcl_end:purpur_block"}
-local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
-assert(fringe_bounds)
 
 local function spawn_shulkers(pos,def,pr)
 	local p1 = vector.offset(pos,-def.sidelen/2,-1,-def.sidelen/2)
@@ -23,8 +21,6 @@ mcl_structures.register_structure("end_shipwreck",{
 	flags = "place_center_x, place_center_z, all_floors",
 	y_offset = function(pr) return pr:next(-50,-20) end,
 	chunk_probability = 800,
-	--y_max = mcl_vars.mg_end_max,
-	--y_min = mcl_vars.mg_end_min -100,
 	biomes = { "End", "EndHighlands", "EndMidlands", "EndBarrens", "EndSmallIslands" },
 	sidelen = 32,
 	filenames = {
@@ -94,8 +90,6 @@ mcl_structures.register_structure("end_boat",{
 	flags = "place_center_x, place_center_z, all_floors",
 	y_offset = function(pr) return pr:next(15,30) end,
 	chunk_probability = 900,
-	--y_max = mcl_vars.mg_end_max,
-	--y_min = mcl_vars.mg_end_min -100,
 	biomes = { "End", "EndHighlands", "EndMidlands", "EndBarrens", "EndSmallIslands" },
 	sidelen = 20,
 	filenames = {

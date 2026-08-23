@@ -109,6 +109,10 @@ local ACCEPTABLE_PORTAL_REPLACES	= 2
 
 local PORTAL				= "mcl_portals:portal"
 local OBSIDIAN				= "mcl_core:obsidian"
+local overworld_bounds = assert(vl_worlds.get_dimension_bounds("overworld"))
+local nether_lava_sea = assert(vl_worlds.get_level("underworld", "lava_sea"))
+local nether_bedrock_ceiling_bottom = assert(vl_worlds.get_level("underworld", "bedrock_ceiling_bottom"))
+local overworld_lava_ceiling = assert(vl_worlds.get_level("overworld", "lava_ceiling"))
 
 -- Dimension-specific Y boundaries for portal exit search.  Portal search
 -- algorithm will only ever look at two vertically offset chunks.  It will
@@ -117,15 +121,15 @@ local OBSIDIAN				= "mcl_core:obsidian"
 -- *_Y_MAX).
 -- For nether, selection of the boundaries doesn't matter, because it fits
 -- entirely within two chunks.
-local N_Y_MIN				= mcl_vars.mg_lava_nether_max + 1
-local N_Y_MAX				= mcl_vars.mg_bedrock_nether_top_min
+local N_Y_MIN				= nether_lava_sea + 1
+local N_Y_MAX				= nether_bedrock_ceiling_bottom
 local N_Y_SPAN				= N_Y_MAX - N_Y_MIN
 -- Overworld however is much taller. Let's select the boundaries so that we
 -- maximise the Y-space (so align with chunk boundary), and also pick an area
 -- that has a good chance of having "find_nodes_in_area_under_air" return
 -- something (so ideally caves, or surface, not just sky).
 -- For the bottom bound, we try for the first chunk boundary in the negative Ys (-32).
-local O_Y_MIN				= max(mcl_vars.mg_lava_overworld_max + 1, vl_worlds.central_chunk_offset_in_nodes)
+local O_Y_MIN				= max(overworld_lava_ceiling + 1, vl_worlds.central_chunk_offset_in_nodes)
 -- Since O_Y_MIN is also used as a base for converting coordinates, we need to
 -- make sure the top bound is high enough to encompass entire nether height. In
 -- v7 mapgen nether is flatter than overworld, so this results in a span of
@@ -135,7 +139,7 @@ local O_Y_MIN				= max(mcl_vars.mg_lava_overworld_max + 1, vl_worlds.central_chu
 -- the high locations will be used as a fallback.  If we see too many
 -- underground portals, we may need to shift just this base upwards (new setting).
 local O_Y_SPAN				= max(N_Y_SPAN, 2 * vl_worlds.chunk_size_in_nodes - 1)
-local O_Y_MAX				= min(mcl_vars.mg_overworld_min+256, O_Y_MIN + O_Y_SPAN)
+local O_Y_MAX				= min(overworld_bounds.min + 256, O_Y_MIN + O_Y_SPAN)
 
 log("verbose", string.format("N_Y_MIN=%.1f, N_Y_MAX=%.1f, O_Y_MIN=%.1f, O_Y_MAX=%.1f", N_Y_MIN, N_Y_MAX, O_Y_MIN, O_Y_MAX))
 log("verbose", string.format("Nether span is %.1f, overworld span is %.1f", N_Y_MAX-N_Y_MIN+1, O_Y_MAX-O_Y_MIN+1))
@@ -963,10 +967,12 @@ local function find_build_limits(pos, target_dim)
 end
 
 local function get_lava_level(pos, pos1, pos2)
-	if pos.y > -1000 then
-		return mcl_vars.mg_lava_overworld_max
+	local dimension = vl_worlds.dimension_at_pos(pos)
+	if dimension and dimension.id == "underworld" then
+		return nether_lava_sea
+	else
+		return overworld_lava_ceiling
 	end
-	return mcl_vars.mg_lava_nether_max
 end
 
 local function search_for_build_location(blockpos, action, calls_remaining, param)

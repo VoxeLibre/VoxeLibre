@@ -410,8 +410,8 @@ mcl_mobs:spawn_setup({
 	chance = 100,
 	interval = 30,
 	aoc = 2,
-	min_height = mcl_vars.mg_overworld_min,
-	max_height = mcl_vars.mg_overworld_max
+	min_height = overworld_bounds.min,
+	max_height = overworld_bounds.max
 })
 
 -- spawn eggs

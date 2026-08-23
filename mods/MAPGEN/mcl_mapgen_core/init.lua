@@ -55,6 +55,7 @@ end)
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local sea_level = tonumber(minetest.get_mapgen_setting("water_level"))
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+local generate_lava = not superflat and mg_name ~= "singlenode"
 local lava_sea_level = assert(vl_worlds.get_level("underworld", "lava_sea"))
 
 -- Content IDs
@@ -96,6 +97,21 @@ local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
 assert(overworld_bounds)
 assert(underworld_bounds)
 assert(fringe_bounds)
+local overworld_lava_ceiling = assert(vl_worlds.get_level("overworld", "lava_ceiling"))
+local overworld_bedrock_top = assert(vl_worlds.get_level("overworld", "bedrock_top"))
+local underworld_bedrock_floor_top = assert(vl_worlds.get_level("underworld", "bedrock_floor_top"))
+local underworld_bedrock_ceiling_bottom = assert(vl_worlds.get_level("underworld", "bedrock_ceiling_bottom"))
+local flat_nether_floor = (superflat and underworld_bedrock_floor_top or lava_sea_level) + 4
+local flat_nether_ceiling = flat_nether_floor + 48
+local overworld_allocation = assert(vl_worlds.get_dimension_allocation("overworld"))
+local overworld_barrier_below
+for _, technical_area in ipairs(overworld_allocation.technical_areas) do
+	if technical_area.type == "barrier" and technical_area.side == "below" then
+		overworld_barrier_below = technical_area
+		break
+	end
+end
+assert(overworld_barrier_below)
 
 -- Inform other mods of dungeon setting for MCL2-style dungeons
 mcl_vars.mg_dungeons = mg_flags.dungeons and not superflat
@@ -170,15 +186,15 @@ end
 -- Also perform some basic node replacements.
 
 local bedrock_check
-if mcl_vars.mg_bedrock_is_rough then
+if generate_lava then
 	function bedrock_check(pos, _, pr)
 		local y = pos.y
 		-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
 		-- This code assumes a bedrock height of 5 layers.
 
-		local diff = mcl_vars.mg_bedrock_overworld_max - y -- Overworld bedrock
-		local ndiff1 = mcl_vars.mg_bedrock_nether_bottom_max - y -- Nether bedrock, bottom
-		local ndiff2 = mcl_vars.mg_bedrock_nether_top_max - y -- Nether bedrock, ceiling
+		local diff = overworld_bedrock_top - y -- Overworld bedrock
+		local ndiff1 = underworld_bedrock_floor_top - y -- Nether bedrock, bottom
+		local ndiff2 = underworld_bounds.max - y -- Nether bedrock, ceiling
 
 		local top
 		if diff == 0 or ndiff1 == 0 or ndiff2 == 4 then
@@ -342,34 +358,37 @@ local function world_structure(vm, data, data2, emin, emax, area, minp, maxp, bl
 
 	-- [[ THE END:						fringe_bounds.min			       fringe_bounds.max							]]
 
+	local barrier_min = overworld_barrier_below.start
+	local barrier_max = barrier_min + overworld_barrier_below.height - 1
 	-- The Void above the End below the Realm barrier:
-	lvm_used = set_layers(data, area, c_void         , nil, fringe_bounds.max                        +1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, pr) or lvm_used
+	lvm_used = set_layers(data, area, c_void         , nil, fringe_bounds.max + 1, barrier_min - 1, minp, maxp, pr) or lvm_used
 	-- Realm barrier between the Overworld void and the End
-	lvm_used = set_layers(data, area, c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min  , mcl_vars.mg_realm_barrier_overworld_end_max  , minp, maxp, pr) or lvm_used
+	lvm_used = set_layers(data, area, c_realm_barrier, nil, barrier_min, barrier_max, minp, maxp, pr) or lvm_used
 	-- The Void above Realm barrier below the Overworld:
-	lvm_used = set_layers(data, area, c_void         , nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, overworld_bounds.min                  -1, minp, maxp, pr) or lvm_used
+	lvm_used = set_layers(data, area, c_void         , nil, barrier_max + 1, overworld_bounds.min - 1, minp, maxp, pr) or lvm_used
 
 
 	if mg_name ~= "singlenode" then
 		-- Bedrock
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_overworld_min, mcl_vars.mg_bedrock_overworld_max, minp, maxp, pr) or lvm_used
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_bottom_max, minp, maxp, pr) or lvm_used
-		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_top_min, mcl_vars.mg_bedrock_nether_top_max, minp, maxp, pr) or lvm_used
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, overworld_bounds.min, overworld_bedrock_top, minp, maxp, pr) or lvm_used
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, underworld_bounds.min, underworld_bedrock_floor_top, minp, maxp, pr) or lvm_used
+		lvm_used = set_layers(data, area, c_bedrock, bedrock_check, underworld_bedrock_ceiling_bottom, underworld_bounds.max, minp, maxp, pr) or lvm_used
 
 		-- Flat Nether
 		if mg_name == "flat" then
-			lvm_used = set_layers(data, area, c_air, nil, mcl_vars.mg_flat_nether_floor, mcl_vars.mg_flat_nether_ceiling, minp, maxp, pr) or lvm_used
+			lvm_used = set_layers(data, area, c_air, nil, flat_nether_floor, flat_nether_ceiling, minp, maxp, pr) or lvm_used
 		end
 
 		-- Big lava seas by replacing air below a certain height
-		if mcl_vars.mg_lava then
-			lvm_used = set_layers(data, area, c_lava, c_air, overworld_bounds.min, mcl_vars.mg_lava_overworld_max, minp, maxp, pr) or lvm_used
+		if generate_lava then
+			lvm_used = set_layers(data, area, c_lava, c_air, overworld_bounds.min, overworld_lava_ceiling, minp, maxp, pr) or lvm_used
 			lvm_used = set_layers(data, area, c_nether_lava, c_air, underworld_bounds.min, lava_sea_level, minp, maxp, pr) or lvm_used
 		end
 	end
 	local deco, ores = false, false
-	if minp.y >  mcl_vars.mg_nether_deco_max - 64 and maxp.y <  underworld_bounds.max + 128 then
-		deco = {min=mcl_vars.mg_nether_deco_max,max=underworld_bounds.max}
+	local nether_deco_max = underworld_bounds.max - 11
+	if minp.y > nether_deco_max - 64 and maxp.y < underworld_bounds.max + 128 then
+		deco = {min=nether_deco_max,max=underworld_bounds.max}
 	end
 	if minp.y <  underworld_bounds.min + 10 or maxp.y <  underworld_bounds.min + 60 then
 		deco = {min=underworld_bounds.min - 10,max=underworld_bounds.min + 20}

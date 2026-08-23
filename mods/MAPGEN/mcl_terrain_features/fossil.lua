@@ -2,6 +2,7 @@ local modpath = minetest.get_modpath(minetest.get_current_modname())
 
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
 assert(overworld_bounds)
+local sea_level = assert(vl_worlds.get_level("overworld", "sea"))
 
 mcl_structures.register_structure("fossil",{
 	place_on = {"group:material_stone","group:sand"},
@@ -11,8 +12,8 @@ mcl_structures.register_structure("fossil",{
 	sidelen = 16,
 	chunk_probability = 1000,
 	y_offset = function(pr) return ( pr:next(1,16) * -1 ) -16 end,
-	y_max = 15,
-	y_min = overworld_bounds.min + 35, -- TODO make technical layer?
+	y_max = sea_level + 15,
+	y_min = overworld_bounds.min + 35,
 	biomes = { "Desert" },
 	filenames = {
 		modpath.."/schematics/mcl_structures_fossil_skull_1.mts", -- 4×5×5
