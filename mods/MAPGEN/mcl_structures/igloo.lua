@@ -6,6 +6,7 @@ local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
 assert(overworld_bounds)
 local underworld_lava_sea = assert(vl_worlds.get_level("underworld", "lava_sea"))
 local sea_level = assert(vl_worlds.get_level("overworld", "sea"))
+local overworld_lava_ceiling = assert(vl_worlds.get_level("overworld", "lava_ceiling"))
 
 function mcl_structures.generate_igloo_top(pos, pr)
 	-- Furnace does ot work atm because apparently meta is not set. Need a bit of help with fixing this for furnaces, bookshelves, and brewing stands.
@@ -62,14 +63,13 @@ function mcl_structures.generate_igloo(pos, def, pr)
 		local dim = vl_worlds.dimension_at_pos(pos)
 		if not dim then return false end
 
-		--local buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
 		local buffer
 		if dim.id == "underworld" then
 			buffer = pos.y - (underworld_lava_sea + 10)
 		elseif dim.id == "fringe" then
 			buffer = pos.y - (dim.start + 1)
 		elseif dim.id == "overworld" then
-			buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10) -- TODO: update once layers are available
+			buffer = pos.y - (overworld_lava_ceiling + 10)
 		else
 			return success
 		end

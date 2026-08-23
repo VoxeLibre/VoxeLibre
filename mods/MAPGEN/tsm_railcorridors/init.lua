@@ -97,10 +97,14 @@ end
 
 -- Max. and min. heights between rail corridors are generated
 local height_min
-if mcl_vars.mg_lava then
-	height_min = mcl_vars.mg_lava_overworld_max + 2
+local overworld_lava_ceiling = assert(vl_worlds.get_level("overworld", "lava_ceiling"))
+local overworld_bedrock_top = assert(vl_worlds.get_level("overworld", "bedrock_top"))
+local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
+
+if not superflat and mg_name ~= "singlenode" then
+	height_min = overworld_lava_ceiling + 2
 else
-	height_min = mcl_vars.mg_bedrock_overworld_max + 2
+	height_min = overworld_bedrock_top + 2
 end
 local height_max = mcl_worlds.layer_to_y(60)
 
@@ -1087,12 +1091,13 @@ mcl_structures.register_structure("mineshaft",{
 	flags = "place_center_x, place_center_z, force_placement, all_floors",
 	sidelen = 32,
 	y_max = 40,
-	y_min = mcl_vars.mg_overworld_min,
+	y_min = assert(vl_worlds.get_dimension_bounds("overworld")).min,
 	place_func = function(pos,_,pr,blockseed)
 		local r = pr:next(-50,-10)
 		local p = vector.offset(pos,0,r,0)
-		if p.y < mcl_vars.mg_overworld_min + 5 then
-			p.y = mcl_vars.mg_overworld_min + 5
+		local overworld_min = assert(vl_worlds.get_dimension_bounds("overworld")).min
+		if p.y < overworld_min + 5 then
+			p.y = overworld_min + 5
 		end
 		if p.y > -10 then return true end
 		InitRandomizer(blockseed)

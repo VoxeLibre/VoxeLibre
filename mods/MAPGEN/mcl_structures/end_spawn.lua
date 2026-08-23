@@ -1,10 +1,13 @@
 local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
+local island_level = assert(vl_worlds.get_level("fringe", "island"))
+local end_platform_pos = vector.new(100, island_level, 0)
+local end_exit_portal_pos = vector.new(0, island_level + 7, 0)
 
 
 mcl_structures.register_structure("end_spawn_obsidian_platform",{
-	static_pos ={mcl_vars.mg_end_platform_pos},
+	static_pos = { end_platform_pos },
 	place_func = function(pos,def,pr)
 		local obby = minetest.find_nodes_in_area(vector.offset(pos,-2,0,-2),vector.offset(pos,2,0,2),{"air","mcl_end:end_stone"})
 		local air = minetest.find_nodes_in_area(vector.offset(pos,-2,1,-2),vector.offset(pos,2,3,2),{"air","mcl_end:end_stone"})
@@ -15,7 +18,7 @@ mcl_structures.register_structure("end_spawn_obsidian_platform",{
 })
 
 mcl_structures.register_structure("end_exit_portal",{
-	static_pos = { mcl_vars.mg_end_exit_portal_pos },
+	static_pos = { end_exit_portal_pos },
 	filenames = {
 		modpath.."/schematics/mcl_structures_end_exit_portal.mts"
 	},
@@ -103,7 +106,7 @@ local function get_points_on_circle(pos,r,n)
 end
 
 mcl_structures.register_structure("end_spike",{
-	static_pos =get_points_on_circle(vector.offset(mcl_vars.mg_end_exit_portal_pos,0,-20,0),43,10),
+	static_pos = get_points_on_circle(vector.offset(end_exit_portal_pos, 0, -20, 0), 43, 10),
 	place_func = function(pos,def,pr)
 		local d = pr:next(6,12)
 		local h = d * pr:next(4,6)

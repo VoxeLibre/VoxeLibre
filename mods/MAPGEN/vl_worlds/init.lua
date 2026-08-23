@@ -110,6 +110,20 @@ vl_worlds.registered_worlds = registered_worlds
 ---@field start integer - lowest y position that is part of this world
 ---@field height integer - buildable height of the world, this includes bedrock and such
 ---@field layers? vl_worlds.Layer[]
+---@field allocation? vl_worlds.DimensionAllocation
+
+---@class vl_worlds.TechnicalArea
+---@field type "barrier"|"void"
+---@field side "below"|"above"
+---@field start integer
+---@field height integer
+
+---@class vl_worlds.DimensionAllocation
+---@field start integer
+---@field height integer
+---@field reservation_start integer
+---@field reservation_height integer
+---@field technical_areas vl_worlds.TechnicalArea[]
 
 ---@class vl_worlds.Layer
 ---@field id string
@@ -140,31 +154,62 @@ local function replace_structure_entry(index, parts)
 	end
 end
 
-local function allocation_parts(allocation, id)
+local function get_technical_areas(allocation)
 	local dimension_start = allocation.start
 	local lower_void_start = dimension_start - vl_worlds.dimensional_void_size
 	local upper_void_start = dimension_start + allocation.height
-	local upper_void_height = allocation.reservation_start + allocation.reservation_height - upper_void_start
+	local reservation_end = allocation.reservation_start + allocation.reservation_height
 
 	return {
 		{
+			type = "barrier",
+			side = "below",
 			start = allocation.reservation_start,
 			height = lower_void_start - allocation.reservation_start,
 		},
 		{
-			id = "void",
+			type = "void",
+			side = "below",
 			start = lower_void_start,
-			height = vl_worlds.dimensional_void_size,
+			height = dimension_start - lower_void_start,
+		},
+		{
+			type = "void",
+			side = "above",
+			start = upper_void_start,
+			height = reservation_end - upper_void_start,
+		},
+	}
+end
+
+local function allocation_parts(allocation, id)
+	local technical_areas = get_technical_areas(allocation)
+	local barrier_below = technical_areas[1]
+	local void_below = technical_areas[2]
+	local void_above = technical_areas[3]
+
+	return {
+		{
+			technical_area = barrier_below,
+			start = barrier_below.start,
+			height = barrier_below.height,
+		},
+		{
+			id = "void",
+			technical_area = void_below,
+			start = void_below.start,
+			height = void_below.height,
 		},
 		{
 			id = id,
-			start = dimension_start,
+			start = allocation.start,
 			height = allocation.height,
 		},
 		{
 			id = "void",
-			start = upper_void_start,
-			height = upper_void_height,
+			technical_area = void_above,
+			start = void_above.start,
+			height = void_above.height,
 		},
 	}
 end
@@ -238,6 +283,16 @@ function vl_worlds.register_world(def)
 	end
 
 	local world_metadata = { name = def.name, levels = table.copy(def.levels or {}) }
+	local function register_metadata(allocation)
+		world_metadata.allocation = {
+			start = allocation.start,
+			height = allocation.height,
+			reservation_start = allocation.reservation_start,
+			reservation_height = allocation.reservation_height,
+			technical_areas = get_technical_areas(allocation),
+		}
+		registered_worlds[id] = world_metadata
+	end
 
 	local saved = dimension_allocations[id]
 	if saved then
@@ -251,7 +306,7 @@ function vl_worlds.register_world(def)
 		for i, region in ipairs(world_structure) do
 			if region.reservation_id == id then
 				replace_structure_entry(i, allocation_parts(saved, id))
-				registered_worlds[id] = world_metadata
+				register_metadata(saved)
 				return
 			end
 		end
@@ -306,12 +361,32 @@ function vl_worlds.register_world(def)
 			replace_structure_entry(i, parts)
 			dimension_allocations[id] = allocation
 			storage:set_string(ALLOCATIONS_STORAGE_KEY, core.serialize(dimension_allocations))
-			registered_worlds[id] = world_metadata
+			register_metadata(allocation)
 			return
 		end
 	end
 
 	error("Failed to register world \""..id.."\": not enough dimensional space")
+end
+
+---Return the allocation belonging to a registered dimension.
+---@param id string
+---@return vl_worlds.DimensionAllocation?
+function vl_worlds.get_dimension_allocation(id)
+	local world = registered_worlds[id]
+	if not world or not world.allocation then return nil end
+	local allocation = world.allocation
+	local technical_areas = {}
+	for i, area in ipairs(allocation.technical_areas) do
+		technical_areas[i] = table.copy(area)
+	end
+	return {
+		start = allocation.start,
+		height = allocation.height,
+		reservation_start = allocation.reservation_start,
+		reservation_height = allocation.reservation_height,
+		technical_areas = technical_areas,
+	}
 end
 
 ---@param pos vector.Vector
@@ -337,14 +412,22 @@ if false and mcl_vars.minimum_version(mcl_vars.map_initial_version, {0, 89, 4}) 
 		name = S("Overworld"),
 		height = 7550,
 		forced_start = -62,
-		levels = { sea = water_level + 62 },
+		levels = {
+			sea = water_level + 62,
+			lava_ceiling = (not superflat and not singlenode) and 10 or 0,
+			bedrock_top = 4,
+		},
 	})
 
 	vl_worlds.register_world({
 		id = "underworld",
 		name = S("Underworld"),
 		height = 256,
-		levels = { lava_sea = superflat and 2 or 31 },
+		levels = {
+			lava_sea = superflat and 2 or 31,
+			bedrock_floor_top = superflat and 0 or 4,
+			bedrock_ceiling_bottom = superflat and 255 or 251,
+		},
 	})
 
 	vl_worlds.register_world({
@@ -372,9 +455,17 @@ else
 
 	local dimensions = {
 		{ id = "overworld", name = S("Overworld"), height = overworld_height, forced_start = overworld_start,
-			levels = { sea = water_level - overworld_start } },
+			levels = {
+				sea = water_level - overworld_start,
+				lava_ceiling = (not superflat and not singlenode) and 10 or 0,
+				bedrock_top = 4,
+			} },
 		{ id = "underworld", name = S("Underworld"), height = 256, forced_start = -29067,
-			levels = { lava_sea = superflat and 2 or 31 } },
+			levels = {
+				lava_sea = superflat and 2 or 31,
+				bedrock_floor_top = superflat and 0 or 4,
+				bedrock_ceiling_bottom = superflat and 255 or 251,
+			} },
 		{ id = "fringe", name = S("Fringe"), height = fringe_height, forced_start = -27073,
 			levels = { island = 64 } },
 	}
@@ -436,17 +527,28 @@ function vl_worlds.expand_dimension(id, diff)
 	end
 	for i, dim in ipairs(world_structure) do
 		if dim.id == id then
+			local function update_allocation(expanded_upwards)
+				local allocation = registered_worlds[id].allocation
+				allocation.start = dim.start
+				allocation.height = dim.height
+				if expanded_upwards then
+					allocation.reservation_height = allocation.reservation_height + diff
+				end
+				allocation.technical_areas = get_technical_areas(allocation)
+			end
 			if diff < 0 and world_structure[i-2].height >= vl_worlds.dimensional_barrier_size - diff then
 				world_structure[i-2].height = world_structure[i-2].height + diff
 				world_structure[i-1].start = world_structure[i-1].start + diff
 				dim.start = dim.start + diff
 				dim.height = dim.height - diff
+				update_allocation(false)
 				return true
 			elseif diff > 0 and world_structure[i+2].height >= vl_worlds.dimensional_barrier_size + diff then
 				world_structure[i+2].height = world_structure[i+2].height - diff
 				world_structure[i+2].start = world_structure[i+2].start + diff
 				world_structure[i+1].start = world_structure[i+1].start + diff
 				dim.height = dim.height + diff
+				update_allocation(true)
 				return true
 			end
 			core.log("warning", "vl_worlds.expand_dimension: not enough space to expand dimension \""..id.."\"")
@@ -465,7 +567,8 @@ function vl_worlds.is_void(pos)
 	if not dim then return true, true end
 	if dim.id ~= "void" then return false, false end
 
-	-- Check if the registered dimension is above or below pos and calculate the distance into the void
+	-- Check if the registered dimension is above or below pos and calculate
+	-- the distance into the void
 	local distance
 	local below = vl_worlds.dimension_at_pos(vector.new(0, dim.start - 1, 0 ))
 	if not below or not below.id then
@@ -573,10 +676,12 @@ local deprecated = {}
 vl_legacy.show_deprecated_field_warnings(mcl_vars, "mcl_vars", deprecated)
 
 local overworld_bounds = vl_worlds.get_dimension_bounds("overworld")
+local overworld_lava_ceiling = assert(vl_worlds.get_level("overworld", "lava_ceiling"))
+local overworld_bedrock_top = assert(vl_worlds.get_level("overworld", "bedrock_top"))
 deprecated.mg_overworld_min = overworld_bounds.min
 deprecated.mg_bedrock_overworld_min = overworld_bounds.min
-deprecated.mg_bedrock_overworld_max = overworld_bounds.min + 4
-deprecated.mg_lava_overworld_max = overworld_bounds.min + 10 -- TODO query layers instead
+deprecated.mg_bedrock_overworld_max = overworld_bedrock_top
+deprecated.mg_lava_overworld_max = overworld_lava_ceiling
 deprecated.mg_overworld_max = overworld_bounds.max
 if not superflat and not singlenode then
 	deprecated.mg_lava = true
@@ -588,8 +693,14 @@ else
 end
 
 local nether_bounds = vl_worlds.get_dimension_bounds("underworld")
+local nether_bedrock_floor_top = assert(vl_worlds.get_level("underworld", "bedrock_floor_top"))
+local nether_bedrock_ceiling_bottom = assert(vl_worlds.get_level("underworld", "bedrock_ceiling_bottom"))
 deprecated.mg_nether_min = nether_bounds.min
 deprecated.mg_nether_max = nether_bounds.max
+deprecated.mg_bedrock_nether_bottom_min = nether_bounds.min
+deprecated.mg_bedrock_nether_bottom_max = nether_bedrock_floor_top
+deprecated.mg_bedrock_nether_top_min = nether_bedrock_ceiling_bottom
+deprecated.mg_bedrock_nether_top_max = nether_bounds.max
 
 local end_bounds = vl_worlds.get_dimension_bounds("fringe")
 deprecated.mg_end_min = end_bounds.min
@@ -604,30 +715,3 @@ for i, dim in ipairs(world_structure) do
 	end
 end
 -- end of DEPRECATED
-
--- TODO remove
-mcl_vars.mg_bedrock_nether_bottom_min = nether_bounds.min
-mcl_vars.mg_nether_deco_max = mcl_vars.mg_nether_max - 11 -- this is so ceiling decorations don't spill into other biomes as bedrock generation calls core.generate_decorations to put netherrack under the bedrock
-mcl_vars.mg_bedrock_nether_top_max = mcl_vars.mg_nether_max
-if not superflat then
-	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
-	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
-	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 31
-else
-	-- Thin bedrock in classic superflat mapgen
-	mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min
-	mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max
-	mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 2
-end
-if mg_name == "flat" then
-	if superflat then
-		mcl_vars.mg_flat_nether_floor = mcl_vars.mg_bedrock_nether_bottom_max + 4
-		mcl_vars.mg_flat_nether_ceiling = mcl_vars.mg_bedrock_nether_bottom_max + 52
-	else
-		mcl_vars.mg_flat_nether_floor = mcl_vars.mg_lava_nether_max + 4
-		mcl_vars.mg_flat_nether_ceiling = mcl_vars.mg_lava_nether_max + 52
-	end
-end
-local island_level = assert(vl_worlds.get_level("fringe", "island"))
-mcl_vars.mg_end_platform_pos = { x = 100, y = island_level, z = 0 }
-mcl_vars.mg_end_exit_portal_pos = vector.new(0, island_level + 7, 0)

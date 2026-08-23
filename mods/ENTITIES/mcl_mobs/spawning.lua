@@ -71,6 +71,7 @@ local MISSING_CAP_DEFAULT = 15
 local MOBS_CAP_CLOSE = 10
 
 local SPAWN_MAPGEN_LIMIT  = vl_worlds.mapgen_limit - 150
+local overworld_bounds = assert(vl_worlds.get_dimension_bounds("overworld"))
 
 local mob_cap = {
 	hostile = tonumber(core.settings:get("mcl_mob_cap_monster")) or 70,
@@ -269,8 +270,8 @@ function mcl_mobs:spawn_setup(def)
 	def.dimension = def.dimension or "overworld"
 	def.type_of_spawning = def.type_of_spawning or "overworld"
 	def.interval = def.interval or 1
-	def.min_height = def.min_height or mcl_vars.mg_overworld_min
-	def.max_height = def.max_height or mcl_vars.mg_overworld_max
+	def.min_height = def.min_height or overworld_bounds.min
+	def.max_height = def.max_height or overworld_bounds.max
 	def.min_light = def.min_light or 0
 	def.max_light = def.max_light or core.LIGHT_MAX + 1
 

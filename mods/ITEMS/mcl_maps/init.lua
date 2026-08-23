@@ -23,6 +23,8 @@ local pairs = pairs
 local min, max, round, floor, ceil, abs, pi = math.min, math.max, math.round, math.floor, math.ceil, math.abs, math.pi
 local char = string.char
 local concat = table.concat
+local fringe_bounds = assert(vl_worlds.get_dimension_bounds("fringe"))
+local underworld_bounds = assert(vl_worlds.get_dimension_bounds("underworld"))
 
 local pos_to_string = core.pos_to_string
 local string_to_pos = core.string_to_pos
@@ -199,12 +201,12 @@ local function configure_map(itemstack, cx, dim, cz, zoom, callback)
 	-- Prefer smaller ranges for performance!
 	local miny, maxy
 	if dim == "end" then
-		miny, maxy = mcl_vars.mg_end_min + 48, mcl_vars.mg_end_min + 127
+		miny, maxy = fringe_bounds.min + 48, fringe_bounds.min + 127
 	elseif dim == "nether" then
 		if mcl_maps.allow_nether_maps then
-			miny, maxy = mcl_vars.mg_nether_min + 16, mcl_vars.mg_nether_deco_max
+			miny, maxy = underworld_bounds.min + 16, underworld_bounds.max - 11
 		else
-			miny, maxy = mcl_vars.mg_nether_max, mcl_vars.mg_nether_max -- map the nether roof...
+			miny, maxy = underworld_bounds.max, underworld_bounds.max -- map the nether roof...
 		end
 	elseif dim == "overworld" then
 		miny, maxy = -32, 63

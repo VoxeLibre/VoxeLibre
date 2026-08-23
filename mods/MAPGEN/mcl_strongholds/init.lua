@@ -20,6 +20,7 @@ local strongholds = {}
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 local seed = tonumber(minetest.get_mapgen_setting("seed"))
+local overworld_bedrock_top = assert(vl_worlds.get_level("overworld", "bedrock_top"))
 
 local function init_strongholds()
 	local stronghold_positions = {}
@@ -39,9 +40,10 @@ local function init_strongholds()
 			local dist = pr:next(ring.min, ring.max)
 			local y
 			if superflat then
-				y = mcl_vars.mg_bedrock_overworld_max + 3
+				y = overworld_bedrock_top + 3
 			else
-				y = pr:next(mcl_vars.mg_bedrock_overworld_max+1, mcl_vars.mg_overworld_min+48)
+				local overworld_bounds = assert(vl_worlds.get_dimension_bounds("overworld"))
+				y = pr:next(overworld_bedrock_top + 1, overworld_bounds.min + 48)
 			end
 			local pos = { x = math.cos(angle) * dist, y = y, z = math.sin(angle) * dist }
 			pos = vector.round(pos)

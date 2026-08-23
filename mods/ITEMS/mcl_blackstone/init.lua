@@ -2,6 +2,8 @@ local S = minetest.get_translator("mcl_blackstone")
 
 local fringe_bounds = vl_worlds.get_dimension_bounds("fringe")
 assert(fringe_bounds)
+local underworld_bounds = vl_worlds.get_dimension_bounds("underworld")
+assert(underworld_bounds)
 
 
 local on_rotate
@@ -350,8 +352,8 @@ for s=1, #specialstones do
 		clust_scarcity = 830,
 		clust_num_ores = 28,
 		clust_size     = 3,
-		y_min          = mcl_vars.mg_nether_min,
-		y_max          = mcl_vars.mg_nether_max,
+		y_min          = underworld_bounds.min,
+		y_max          = underworld_bounds.max,
 	})
 	minetest.register_ore({
 		ore_type       = "blob",
@@ -360,8 +362,8 @@ for s=1, #specialstones do
 		clust_scarcity = 8*8*8,
 		clust_num_ores = 40,
 		clust_size     = 5,
-		y_min          = mcl_vars.mg_nether_min,
-		y_max          = mcl_vars.mg_nether_max,
+		y_min          = underworld_bounds.min,
+		y_max          = underworld_bounds.max,
 	})
 end
 

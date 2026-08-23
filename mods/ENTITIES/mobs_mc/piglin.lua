@@ -424,7 +424,7 @@ mcl_mobs:spawn_setup({
 	chance = 150,
 	interval = 30,
 	aoc = 3,
-	min_height = mcl_vars.mg_lava_nether_max,
+	min_height = vl_worlds.get_level("underworld", "lava_sea"),
 	max_height = underworld_bounds.max,
 })
 
@@ -441,7 +441,7 @@ mcl_mobs:spawn_setup({
 	chance = 150,
 	interval = 30,
 	aoc = 3,
-	min_height = mcl_vars.mg_lava_nether_max,
+	min_height = vl_worlds.get_level("underworld", "lava_sea"),
 	max_height = underworld_bounds.max,
 })
 

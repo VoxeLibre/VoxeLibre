@@ -5,10 +5,8 @@ local vector = vector
 local math = math
 
 local has_doc = minetest.get_modpath("doc")
-
--- Parameters
---local SPAWN_MIN = mcl_vars.mg_end_min+70
---local SPAWN_MAX = mcl_vars.mg_end_min+98
+local island_level = assert(vl_worlds.get_level("fringe", "island"))
+local end_platform_pos = vector.new(100, island_level, 0)
 
 --local mg_name = minetest.get_mapgen_setting("mg_name")
 
@@ -184,7 +182,7 @@ function mcl_portals.end_teleport(obj, pos)
 		-- Teleport to the End at a fixed position and generate a
 		-- 5×5 obsidian platform below.
 
-		local platform_pos = mcl_vars.mg_end_platform_pos
+		local platform_pos = end_platform_pos
 		-- force emerge of target1 area
 		minetest.get_voxel_manip():read_from_map(platform_pos, platform_pos)
 		if not minetest.get_node_or_nil(platform_pos) then
