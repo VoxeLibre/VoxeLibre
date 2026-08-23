@@ -1,0 +1,10 @@
+# textdomain: mcl_experience
+##[ command.lua ]##
+[[<player>] <xp>]=[[<spelar>] <ep>]
+Gives a player some XP=Gjev ein spelar litt EP
+Error: Too many parameters!=Feil: for mange parameter!
+Error: Incorrect value of XP=Feil: ugyldig verdi for EP
+Error: Player not found=Feil: Spelar ikkje funnen
+Added @1 XP to @2, total: @3, experience level: @4=La til @1 EP til @2, totalt: @3, erfaringsnivå: @4
+##[ bottle.lua ]##
+Bottle o' Enchanting=Fortryllingsflaske

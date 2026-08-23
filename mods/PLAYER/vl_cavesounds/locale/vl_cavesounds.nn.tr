@@ -1,0 +1,9 @@
+# textdomain: vl_cavesounds
+Turn cave sounds for yourself or another player on or off.=Slå hòlelydar av eller på for deg sjølv eller ein annan spelar.
+
+You need the debug privilege in order to turn cave sounds on or off for somebody else!=Du treng debug-privilegium for å slå hòlelydar av eller på for nokon andre!
+
+Could not find player @1!=Fann ikkje spelaren @1!
+off=av
+on=på
+Set cave sounds for @1 to: @2=Sette hòlelydar for @1 til: @2

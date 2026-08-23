@@ -1,0 +1,53 @@
+# textdomain:doc
+This is the help.=Dette er hjelpa.
+New help entry unlocked: @1 > @2=Ny hjelpetekst låst opp: @1 > @2
+All help entries revealed!=Alle hjelpetekstar er avsløra!
+All help entries are already revealed.=Alle hjelpetekstar er allereie avsløra.
+Show previous image=Syn forrige bilete
+Show previous gallery page=Syn forrige galleri-side
+Show next image=Syn neste bilete
+Show next gallery page=Syn neste galleri-side
+Category list=Kategoriliste
+Entry list=Oppføringsliste
+Entry=Oppføring
+Please select a category you wish to learn more about:=Vel ein kategori du ønskjer å lære meir om:
+Show category=Syn kategori
+Notify me when new help is available=Gje meg varsel når ny hjelp er tilgjengeleg
+Play notification sound when new help is available=Spel av varslingslyd når ny hjelp er tilgjengeleg
+Error: No help available.=Feil: Inga hjelp tilgjengeleg.
+No categories have been registered, but they are required to provide help.=Ingen kategoriar er registrerte, men dei er nødvendige for å kunne gi hjelp.
+
+The Documentation System [doc] does not come with help contents on its own, it needs additional mods to add help content. Please make sure such mods are enabled on for this world, and try again.=Dokumentasjonssystemet [doc] kjem ikkje med eige hjelpeinnhald; det treng ytterlegare tillegg for å leggje til innhald. Ver venleg og sjekk at slike tillegg er aktiverte for denne verda, og prøv på nytt.
+
+Recommended mods: doc_basics, doc_items, doc_identifier, doc_encyclopedia.=Anbefalte tillegg: doc_basics, doc_items, doc_identifier, doc_encyclopedia.
+OK=OK
+Error: Access denied.=Feil: Tilgang nekta.
+
+Access to the requested entry has been denied; this entry is secret. You may unlock access by progressing in the game. Figure out on your own how to unlock this entry.=Tilgang til den etterspurde oppføringa er nekta; denne oppføringa er hemmeleg. Du kan låse opp tilgang ved å gjere framsteg i spelet. Finn ut på eiga hand korleis du låser opp denne oppføringa.
+
+Nameless entry (@1)=Namnlaus oppføring (@1)
+Help > (No Category)=Hjelp > (Ingen kategori)
+You haven't chosen a category yet. Please choose one in the category list first.=Du har ikkje valt ein kategori enno. Vel ein i kategorilista først.
+Go to category list=Gå til kategoriliste
+Help > @1=Hjelp > @1
+Currently all entries in this category are hidden from you.=For augeblikket er alle opprøfringar i denne kategorien løynd for deg.
+Unlock new entries by progressing in the game.=Lås opp nye oppføringar ved å gjera framsteg i spelet.
+This category has the following entries:=Denne kategorien har følgjande oppføringar:
+Show entry=Syn oppføring
+Number of entries: @1=Antall oppføringar: @1
+New entries: @1=Nye oppføringar: @1
+Hidden entries: @1=Løynde oppføringar: @1
+All entries read.=Alle oppføringar lese.
+This category is empty.=Denne kategorien er tom.
+Show previous entry=Syn forrige oppføring
+Show next entry=Syn neste oppføring
+Help > @1 > (No Entry)=Hjelp > @1 > (Inga oppføring)
+You haven't chosen an entry yet. Please choose one in the entry list first.=Du har ikkje valt ei oppføring enno. Vel ei oppføring i lista først.
+Go to entry list=Gå til oppføringslista
+This category does not have any entries.=Denne kategorien har ingen oppføringar.
+Help > @1 > @2=Hjelp > @1 > @2
+Open a window providing help entries about Minetest and more=Opne eit vindauge med hjelpetekstar om Luanti og meir
+Help=Hjelp
+Collection of help texts=Samling av hjelpetekstar
+Allows you to reveal all hidden help entries with /help_reveal=Ligg til rette for at du kan få fram alle løynde hjelpetekstar med /help_reveal
+Reveal all hidden help entries to you=Avsløra alle løynde hjelpetekstar for deg

@@ -1,0 +1,4 @@
+# textdomain: mcl_villages
+Chiseled Stone Village Bricks=Meisla steinmur-landsby
+mcl_villages build tool=mcl_villages byggjeverktøy
+Placement denied. You need the “server” privilege to place villages.=Plassering avvist. Du treng “server“-privilegiet for å plassere landsbyar.

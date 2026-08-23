@@ -1,0 +1,40 @@
+# textdomain: mcl_commands
+##[ kill.lua ]##
+Players can't be killed right now, damage has been disabled.=Spelarar kan ikkje bli drepne akkurat no, skade er deaktivert.
+Player @1 does not exist.=Spelar @1 finnast ikkje.
+You are already dead=Du er allereie død
+@1 is already dead=@1 er allereie død
+[<name>]=
+Kill player or yourself=Drep spelar eller deg sjølv
+##[ setblock.lua ]##
+<X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <NodeStreng>
+Set node at given position=Set node på gitt posisjon
+Invalid node=Ugyldig node
+@1 spawned.=@1 framkalla.
+Invalid parameters (see /help setblock)=Ugyldige parameter (sjå /help setblock)
+##[ seed.lua ]##
+Displays the world seed=Synar verdsfrøet
+##[ summon.lua ]##
+Only peaceful mobs allowed!=Berre fredlege skapningar tillatne!
+##[ say.lua ]##
+Can use /say=Kan bruke /say
+<message>=<melding>
+Send a message to every player=Send ei melding til alle spelarar
+Invalid usage, see /help say.=Ugyldig bruk, sjå '/help say'
+##[ list.lua ]##
+Show who is logged on=Syn kven som er pålogga
+##[ sound.lua ]##
+<sound> <target>=<ljod> <mål>
+Play a sound. Arguments: <sound>: name of the sound. <target>: Target.=Spel av ein ljod. Argument: <sound>: namnet på lyden. <target>: Mål.
+Sound name is invalid!=Ljodnamn er ugyldig!
+Target is invalid!=Mål er ugyldig!
+##[ alias.lua ]##
+List bans=List opp utestengingar
+Ban list: @1=Utestengdlista: @1
+List clear commands=Syn 'clear'-kommandoar
+To clear inventory use /clearinv or /clearinventory=For å tømme forrådet, bruk /clearinv eller /clearinventory
+To clear mobs use /clearmobs=For å kverva skapningar, bruk /clearmobs
+To clear the weather use /weather clear=For å klare opp vêret, bruk /weather clear
+
+Clearing the chat is not possible, you can hide the chat using "Toggle chat log" key (default F2) on PC or the chat icon on the mobile version=Det er ikkje mogleg å tømme chatten, men du kan skjule han ved å bruke tasten for «Toggle chat log» (standard er F2) på PC eller chat-ikonet på mobilversjonen.
+

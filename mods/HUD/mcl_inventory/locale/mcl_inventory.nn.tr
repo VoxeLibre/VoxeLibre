@@ -1,0 +1,37 @@
+# textdomain: mcl_inventory
+##[ creative.lua ]##
+
+When enabled, ask for confirmation to clear the inventory when clicking the trash icon in creative mode.=Spør om stadfesting før forrådet tømmast når ein trykker på søppelbøtte-ikonet i kreativt modus, viss dette er slått på.
+
+Building Blocks=Byggjeblokkar
+Decoration Blocks=Dekorasjonsblokkar
+Redstone=Raudstein
+Transportation=Transport
+Miscellaneous=Diverse
+Search Items=Søk gjenstandar
+Foodstuffs=Matgreier
+Tools=Verktøy
+Combat=Kamp
+Mobs=Skapningar
+Brewing=Brygging
+Materials=Materialer
+Survival Inventory=Overlevingsforråd
+Recipe book=Oppskriftsbok
+Help=Hjelp
+Clear Inventory=Tøm forrådet
+Advancements=Framsteg
+Switch stack size=Byt stabelstorleik
+Select player skin=Vel spelarutsjånad
+Settings=Innstillingar
+@1 / @2=@1 / @2
+Are you sure you want to remove all items from your inventory?=Er du sikker på at du vil fjerne alle gjenstandar frå inventaret ditt?
+Do not ask again=Ikkje spør att
+Cancel=Avbryt
+Remove All Items=Fjern alle gjenstandar
+You may change this back in the player settings.=Du kan endre dette tilbake i spelarinnstillingane.
+##[ survival.lua ]##
+
+When enabled, shift-click moves items between hotbar and inventory rows instead of routing them into the crafting grid.=Når funksjonen er aktivert, vil shift-klikk flytte gjenstandar mellom hurtigfeltet og forrådsradene i staden for å sende dei til emningsfeltet.
+
+Crafting=Emning
+Achievements=Framsteg

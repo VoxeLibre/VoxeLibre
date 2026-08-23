@@ -1,0 +1,27 @@
+# textdomain: mcl_hunger
+##[ commands.lua ]##
+[on|off]=[på|av]
+Toggle hunger and starvation mechanics=Slå på/av svolt- og mettheitsmekanikkar
+Hunger is currently enabled.=Svolt er førebels slått på
+Hunger is currently disabled.=Svolt er førebels slått av
+Hunger is already on.=Svolt er allereie på.
+Hunger enabled.=Svolt er slått på.
+Hunger is already off.=Svolt er allereie av.
+Hunger disabled.=Svolt er slått av.
+Invalid parameter.=Ugyldig parameter
+[show|hide]=[vis|skjul]
+Toggle hunger and starvation debug information=Slå på/av feilsøkingsinformasjon for svolt
+Hunger debug information is currently enabled.=Feilsøkingsinformasjon for svolt er førebels aktivert.
+Hunger debug information is currently disabled.=Feilsøkingsinformasjon for svolt er førebels deaktivert.
+Hunger debug information is already shown.=Feilsøkingsinformasjon for svolt vert allereie vist.
+Hunger debug information shown.=Feilsøkingsinformasjon for svolt vert vist.
+Hunger debug information is already hidden.=Feilsøkingsinformasjon for svolt er allereie skjult.
+Hunger debug information hidden.=Feilsøkingsinformasjon for svolt er skjult.
+Gives the ability to set player hunger level.=Gjev evna til å setja svoltnivået til spelaren.
+[player] [0-20]=[spelar] [0-20]
+Set a player's hunger level.=Set svoltnivået til ein spelar.
+Player name and/or hunger level is required.=Spelarnamn og/eller svoltnivå er påkravd.
+Player not found.=Fann ikkje spelaren.
+Hunger level is required.=Svoltnivå er påkravd.
+Hunger parameter must be a whole number from 0 to 20.=Svoltparameteren må vera eit heiltal frå 0 til 20.
+Done!=Ferdig!

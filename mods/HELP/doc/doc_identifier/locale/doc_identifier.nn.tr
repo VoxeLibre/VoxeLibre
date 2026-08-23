@@ -1,0 +1,21 @@
+# textdomain:doc_identifier
+No help entry for this item could be found.=Fann inga hjelpetekst for denne gjenstanden.
+No help entry for this block could be found.=Fann inga hjelpetekst for denne blokka.
+Error: This node, item or object is undefined. This is always an error.=Feil: Noda, elementet eller objektet er udefinert. Dette er alltid ein feil.
+• The mod which is required for it is not enabled=• Tilleget som er kravd for det, er ikkje aktivert
+• The author of the game or a mod has made a mistake=• Skaparen av spelet eller eit tillegg har gjort ein feil
+It appears to originate from the mod “@1”, which is enabled.=Det ser ut til å stamma frå tillegget ”@1”, som er aktivert.
+It appears to originate from the mod “@1”, which is not enabled!=Det ser ut til å stamma frå tillegget “@1”, som ikkje er aktivert!
+Its identifier is “@1”.=Tilleggs-dentifikatoren er “@1”.
+
+This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds.=Denne blokka kan ikkje identifiserast fordi verda ikkje har blitt materialisert enno. Prøv igjen om nokre sekund.
+
+No help entry for this object could be found.=Inga hjelpetekst for dette objektet blei funnen.
+This is a player.=Dette er ein spelar.
+OK=OK
+Lookup Tool=Oppslagsverktøy
+Show help for pointed thing=Syn hjelp for påpeika objekt
+
+This useful little helper can be used to quickly learn more about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used.=Denne nyttige vesle hjelparen kan brukast til å raskt lære meir om dine næraste omgjevnader. Han identifiserer og analyserer blokker, gjenstandar og andre ting, og han synar omfattande informasjon om det han blir brukt på.
+
+Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by using. In liquid mode, this tool points to liquids as well while in solid mode this is not the case.=Slå på den blokka, gjenstanden eller annan ting som du ynskjer å lære meir om. Dette vil opne den relevante hjelpeteksta. Verktøyet kjem i to modusar som blir endra ved bruk. I væskemodus peikar dette verktøyet også på væsker, medan dette ikkje er tilfellet i solid-modus.
