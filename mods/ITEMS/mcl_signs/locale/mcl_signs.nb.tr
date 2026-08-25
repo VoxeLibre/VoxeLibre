@@ -4,7 +4,7 @@ Can be written=Kan skrives på
 
 Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Skilt kan skrives på og kommer i to varianter: Veggskilt og skilt på stolpe. Skilt kan plasseres på toppen og sidene av andre blokker, men ikke under dem.
 
-After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=
+After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=Etter at du har plassert skiltet, kan du skrive noe på det. Du har @1 tekstlinjer med opptil @2 tegn per linje; alt utover disse grensene går tapt. Ikke alle tegn støttes. Teksten kan endres etter at den er skrevet ved å høyreklikke på skiltet. Kan fargelegges og gjøres lysende. Bruk beinmel for å fjerne farge og lysende tekst.
 
 Sign text:=Skilttekst:
 Close=Lukk
@@ -22,12 +22,3 @@ Spruce Sign=Granskilt
 Mangrove Sign=Mangroveskilt
 Crimson Hyphae Sign=Karmosinhyfeskilt
 Warped Hyphae Sign=Forvridd hyfeskilt
-
-
-##### not used anymore #####
-
-Sign=Skilt
-
-After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again. Can be colored and made to glow.=Etter å ha plassert skiltet kan du skrive noe på det. Du har 4 linjer med tekst og opptil 15 tegn for hver linje; alt utover disse grensene går tapt. Ikke alle tegn støttes. Teksten kan ikke endres når den først er skrevet; du må knuse og plassere skiltet på nytt. Kan farges og tilføres en glød.
-
-Bamboo Sign=Bambusskilt

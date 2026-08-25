@@ -1,6 +1,6 @@
 # textdomain: mcl_maps
-It may take a moment for the map to be ready.=
-The new map is now ready.=
+It may take a moment for the map to be ready.=Det kan ta et øyeblikk før kartet er klart.
+The new map is now ready.=Det nye kartet er klart.
 Empty Map=Tomt kart
 
 Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used.=Tomme kart er ikke nyttige som kart, men de kan stables og gjøres om til kart som kan brukes.
@@ -12,4 +12,4 @@ Shows a map image.=Viser et kartbilde.
 When created, the map saves the nearby area as an image that can be viewed any time by holding the map.=Når kartet opprettes, lagres det nærliggende området som et bilde som kan vises når som helst ved å holde kartet.
 
 Hold the map in your hand. This will display a map on your screen.=Hold kartet i hånden. Dette vil vise et kart på skjermen.
-Level @1=
+Level @1=Nivå @1

@@ -48,9 +48,9 @@ To access the inventory of a shulker box, place and right-click it. To take a sh
 
 Can be carried around with its contents=Kan bæres rundt med dets innhold
 ##[ example.lua ]##
-Stone Chest=
-Large Stone Chest=
+Stone Chest=Steinkiste
+Large Stone Chest=Stor steinkiste
 
-Stone Chests are containers which provide 27 inventory slots. Stone Chests can be turned intolarge stone chests with double the capacity by placing two stone chests next to each other.=
+Stone Chests are containers which provide 27 inventory slots. Stone Chests can be turned intolarge stone chests with double the capacity by placing two stone chests next to each other.=Steinkister er beholdere som gir 27 lagerplasser. Steinkister kan gjøres om til store steinkister med dobbel kapasitet ved å plassere to steinkister ved siden av hverandre.
 
-Can be combined to a large stone chest=
+Can be combined to a large stone chest=Kan kombineres til en stor steinkiste

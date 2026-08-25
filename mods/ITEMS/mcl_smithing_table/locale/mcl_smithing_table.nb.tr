@@ -1,9 +1,4 @@
 # textdomain: mcl_smithing_table
 Upgrade Gear=Oppgrader utstyr
-Warning: Current trim will be overridden=
+Warning: Current trim will be overridden=Advarsel: Gjeldende rustningspryd vil overskrives
 Smithing table=Smibenk
-
-
-##### not used anymore #####
-
-Inventory=Inventar

@@ -57,7 +57,7 @@ Tool Smith=Verktøysmed
 Cleric=Geistlig
 Mason=
 Nitwit=Tomskalle
-Villager=Landsbyboer
+Villager=Bygding
 ##[ pillager.lua ]##
 Pillager=Plyndrer
 ##[ villager_evoker.lua ]##
@@ -65,7 +65,7 @@ Evoker=Åndemaner
 ##[ villager_vindicator.lua ]##
 Vindicator=Forsvarer
 ##[ villager_zombie.lua ]##
-Zombie Villager=Vandød landsbyboer
+Zombie Villager=Vandød bygding
 ##[ witch.lua ]##
 Witch=Heks
 ##[ elementals.lua ]##
@@ -96,7 +96,7 @@ Silverfish=Sølvkre
 Skeleton=Skjelett
 Stray=Streifer
 ##[ skeleton_wither.lua ]##
-Wither Skeleton=Visningskjelett
+Wither Skeleton=Visneskjelett
 ##[ stalker.lua ]##
 Stalker=Sniker
 Overloaded Stalker=Overbelastet sniker
@@ -120,7 +120,7 @@ Cave Spider=Huleedderkopp
 ##[ vex.lua ]##
 Vex=Plageånd
 ##[ wither.lua ]##
-Wither=Forvitrer
+Wither=Visneren
 ##[ cod.lua ]##
 Cod=Torsk
 ##[ salmon.lua ]##
