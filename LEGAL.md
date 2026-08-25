@@ -54,10 +54,10 @@ Armor trim models were created by Aeonix_Aeon.
 Charcoal block texture was created by [blitzdoughnuts](https://gitlab.com/ApplemunchFromDaDead), based on the Pixel Perfection coal block.
 * License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
-Cherry blossom particles were created by [Wbjitscool](https://codeberg.org/Wbjitscool) and refined by rudzik8.
+Cherry blossom particles were created by [Wbjitscool](https://codeberg.org/Wbjitscool) and refined by EmoryNB.
 * License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
-Cherry wood and tree textures were created by Nova_Wostra and refined by rudzik8.
+Cherry wood and tree textures were created by Nova_Wostra and refined by EmoryNB.
 * Source: <https://www.curseforge.com/minecraft/texture-packs/pixel-perfection-legacy>
 * License: [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
 
