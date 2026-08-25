@@ -1,12 +1,12 @@
 # textdomain: mcl_droppers
 Dropper=Utslipper
-Inventory=Inventar
-9 inventory slots=9 inventarfelter
+Inventory=Forråd
+9 inventory slots=9 forrådsfelter
 Drops item when powered by redstone power=Slipper gjenstander når den forsynes med rødsteinkraft
 
-A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.=En utslipper er en rødsteinskomponent og en beholder med med 9 inventarfelter som, når den forsynes med rødsteinskraft, slipper en gjenstand eller legger den i en beholder foran seg.
+A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.=En utslipper er en rødsteinskomponent og en beholder med med 9 forrådsfelter som, når den forsynes med rødsteinskraft, slipper en gjenstand eller legger den i en beholder foran seg.
 
-Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.=Utslippere kan plasseres i 6 mulige retninger, og gjenstander slippes ut av hullet. Bruk utslipperen for å få tilgang til inventaret. Forsyn den med rødsteinsenergi én gang for å få utslipperen til å slippe eller overføre en tilfeldig gjenstand.
+Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.=Utslippere kan plasseres i 6 mulige retninger, og gjenstander slippes ut av hullet. Bruk utslipperen for å få tilgang til forrådet. Forsyn den med rødsteinsenergi én gang for å få utslipperen til å slippe eller overføre en tilfeldig gjenstand.
 
 Downwards-Facing Dropper=Nedovervendt utslipper
 Upwards-Facing Dropper=Oppovervendt utslipper

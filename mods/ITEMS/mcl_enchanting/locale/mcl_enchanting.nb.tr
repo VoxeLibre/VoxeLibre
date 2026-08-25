@@ -37,7 +37,7 @@ After finally selecting your enchantment; left-click on the selection, and you w
 
 Enchant=Fortryll
 ##[ engine.lua ]##
-Inventory=Inventar
+Inventory=Forråd
 @1 Lapis Lazuli=@1 Lasurstein
 ### engine.lua ###
 @1 Enchantment Levels=@1 fortryllelsesnivåer

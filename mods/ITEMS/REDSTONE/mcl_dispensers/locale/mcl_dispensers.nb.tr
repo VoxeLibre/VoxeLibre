@@ -1,12 +1,12 @@
 # textdomain: mcl_dispensers
 Dispenser=Utskyter
-Inventory=Inventar
-9 inventory slots=9 lagerplasser
+Inventory=Forråd
+9 inventory slots=9 forrådsfelter
 Launches item when powered by redstone power=Skyter gjenstander når den forsynes med rødsteinkraft
 
-A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=En utskyter er en blokk som fungerer som en rødsteinskomponent som, når den forsynes med rødsteinskraft, skyter ut en gjenstand. Den har en beholdning med 9 inventarfelter.
+A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.=En utskyter er en blokk som fungerer som en rødsteinskomponent som, når den forsynes med rødsteinskraft, skyter ut en gjenstand. Den har en beholdning med 9 forrådsfelter.
 
-Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=Plasser utskyteren i en av seks mulige retninger. «Hullet» er der gjenstander flyr ut av utskyteren. Bruk utskyteren for å få tilgang til beholdningen. Sett inn gjenstandene du ønsker å skyte ut. Forsyn utskyteren med rødsteinsenergi én gang for å skyte ut en tilfeldig gjenstand.
+Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.=Plasser utskyteren i en av seks mulige retninger. «Hullet» er der gjenstander flyr ut av utskyteren. Bruk utskyteren for å få tilgang til forrådet. Sett inn gjenstandene du ønsker å skyte ut. Forsyn utskyteren med rødsteinsenergi én gang for å skyte ut en tilfeldig gjenstand.
 
 The dispenser will do different things, depending on the dispensed item:=Utskyteren vil gjøre ulike ting, avhengig av gjenstanden den skyter ut:
 • Arrows: Are launched=• Piler: Skytes som prosjektiler

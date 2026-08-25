@@ -32,7 +32,7 @@ Target is invalid!=Målet er ugyldig!
 List bans=Vis utestengelser
 Ban list: @1=Liste over utestengelser: @1
 List clear commands=Liste over tøm-kommandoer
-To clear inventory use /clearinv or /clearinventory=For å tømme inventaret, bruk /clearinv eller /clearinventory
+To clear inventory use /clearinv or /clearinventory=For å tømme forrådet, bruk /clearinv eller /clearinventory
 To clear mobs use /clearmobs=For å fjerne skapninger, bruk /clearmobs
 To clear the weather use /weather clear=For å tilbakestille været, bruk /weather clear
 

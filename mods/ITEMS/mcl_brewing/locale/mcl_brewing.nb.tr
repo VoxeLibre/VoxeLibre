@@ -1,6 +1,6 @@
 # textdomain: mcl_brewing
 Brewing Stand=Bryggestativ
-Inventory=Inventar
+Inventory=Forråd
 To use a brewing stand, rightclick it.=For å bruke bryggestativet, høyreklikk på det.
 
 ##TODO: fuzzy matched - verify and remove the comment

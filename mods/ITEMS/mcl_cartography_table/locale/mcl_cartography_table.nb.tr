@@ -1,6 +1,6 @@
 # textdomain: mcl_cartography_table
 Cartography Table=Kartografbenk
-Inventory=Inventar
+Inventory=Forråd
 Zooming a map may take several seconds to generate the world, please wait.=Å forstørre et kart kan ta flere sekunder, da dette generere verden. Vent litt.
 The zoomed map is now ready.=Det forstørrede kartet er nå klart.
 Used to copy, lock, and zoom maps=Brukes til å kopiere, låse og forstørre kart
