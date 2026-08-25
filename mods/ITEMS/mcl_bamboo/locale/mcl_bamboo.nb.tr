@@ -33,7 +33,7 @@ A wooden pressure plate is a redstone component which supplies its surrounding b
 
 Bamboo Sign=Bambusskilt
 Bamboo Fence=Bambusgjerde
-Bamboo Fence Gate=Bambusport
+Bamboo Fence Gate=Bambusgrind
 Bamboo Button=Bambusknapp
 
 ### bamboo_items.lua ###
