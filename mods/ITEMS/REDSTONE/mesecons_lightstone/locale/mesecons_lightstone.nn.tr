@@ -1,0 +1,22 @@
+# textdomain: mesecons_lightstone
+Redstone Lamp=Raudsteinlampe
+Glows when powered by redstone power=Gløder når ho får raudsteinkraft
+
+Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.=Raudsteinlampar er enkle raudsteinkomponentar som lyser sterkt (lysnivå @1) når dei får raudsteinkraft
+
+White Redstone Lamp=Kvit raudsteinlampe
+Grey Redstone Lamp=Grå raudsteinlampe
+Light Grey Redstone Lamp=Ljosegrå raudsteinlampe
+Black Redstone Lamp=Svart raudsteinlampe
+Red Redstone Lamp=Raud raudsteinlampe
+Yellow Redstone Lamp=Gul raudsteinlampe
+Green Redstone Lamp=Grøn raudsteinlampe
+Cyan Redstone Lamp=Turkis raudsteinlampe
+Blue Redstone Lamp=Blå raudsteinlampe
+Magenta Redstone Lamp=Ljoselilla raudsteinlampe
+Orange Redstone Lamp=Oransje raudsteinlampe
+Purple Redstone Lamp=Lilla raudsteinlampe
+Brown Redstone Lamp=Brun raudsteinlampe
+Pink Redstone Lamp=Rosa raudsteinlampe
+Lime Redstone Lamp=Limegrøn raudsteinlampe
+Light Blue Redstone Lamp=Ljoseblå raudsteinlampe

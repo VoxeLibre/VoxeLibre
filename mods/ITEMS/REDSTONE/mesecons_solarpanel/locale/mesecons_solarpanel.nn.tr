@@ -1,0 +1,11 @@
+# textdomain: mesecons_solarpanel
+Sunlight Sensor=Dagslyssensor
+Provides redstone power when in sunlight=Gjev raudsteinkraft i sollys
+Can be inverted=Kan gjerast omvend
+
+Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.=Dagslyssensorar er raudsteinkomponentar som gjev raudsteinkraft når dei er i sollys, og inga kraft elles. Dei kan vekslast til omvendt oppførsel.
+
+In inverted state, they provide redstone power when they are not in sunlight and no power otherwise.=I omvend tilstand gjev dei raudsteinkraft når dei ikkje er i sollys, og inga kraft elles.
+
+Use the daylight sensor to toggle its state.=Bruk dagslyssensoren for å veksle tilstanden hans.
+Moonlight Sensor=Månelyssensor

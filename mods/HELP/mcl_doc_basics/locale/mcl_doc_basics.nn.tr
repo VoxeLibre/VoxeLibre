@@ -85,9 +85,9 @@ World interaction:=Verdensinteraksjon:
 • 1-9: Select item in hotbar directly=• 1-9: Velg gjenstand i hurtigtilgangen direkte
 • Q: Drop item stack=• Q: Slipp gjenstandsstabel
 • Shift+Q: Drop 1 item=• Shift+Q: Slipp 1 gjenstand
-• I: Show/hide inventory menu=• I: Vis/skjul inventarmenyen
-Inventory interaction:=Inventarinteraksjon:
-See the entry “Basics > Inventory”.=Se oppføringen “Grunnleggende > Inventar”.
+• I: Show/hide inventory menu=• I: Vis/skjul forrådmenyen
+Inventory interaction:=Forrådsamhandling:
+See the entry “Basics > Inventory”.=Se oppføringen “Grunnleggende > Forråd”.
 Hunger/Eating:=Sult/Spising:
 
 • While holding food, hold the right mouse button (PC) or double-tap and hold the second tap (Android) to eat=• Mens du holder mat, hold høyre museknapp (PC) eller dobbelttrykk og hold andre trykk (Android) for å spise
@@ -139,7 +139,7 @@ Damage can be disabled on any world. Without damage, players are immortal and he
 In multi-player mode, the name of other players is written above their head.=I flerspillermodus står navnet på andre spillere over hodet deres.
 Items=Gjenstander
 
-Items are things you can carry along and store in inventories. They can be used for crafting, smelting, building, mining, and more. Types of items include blocks, tools, weapons and items only used for crafting.=Gjenstander er ting du kan bære med deg og lagre i inventarer. De kan brukes til håndverk, smelting, bygging, graving og mer. Typer av gjenstander inkluderer blokker, verktøy, våpen og gjenstander kun brukt til håndverk.
+Items are things you can carry along and store in inventories. They can be used for crafting, smelting, building, mining, and more. Types of items include blocks, tools, weapons and items only used for crafting.=Gjenstander er ting du kan bære med deg og lagre i forråd. De kan brukes til håndverk, smelting, bygging, graving og mer. Typer av gjenstander inkluderer blokker, verktøy, våpen og gjenstander kun brukt til håndverk.
 
 An item stack is a collection of items of the same type which fits into a single item slot. Item stacks can be dropped on the ground. Items which drop into the same coordinates will form an item stack.=En gjenstandsstabel er en samling av gjenstander av samme type som passer i en enkelt gjenstandsplass. Gjenstandsstabler kan slippes på bakken. Gjenstander som slippes på samme koordinater vil danne en gjenstandsstabel.
 
@@ -282,7 +282,7 @@ Liquids are often not pointable. But some special items are able to point all li
 Crafting=Håndverk
 Crafting is the task of combining several items to form a new item.=Håndverk er oppgaven med å kombinere flere gjenstander for å lage en ny gjenstand.
 
-To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you place items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limit the possible recipes you can craft.=For å lage noe trenger du en eller flere gjenstander, et håndverksrutenett (C) og en håndverksoppskrift. Et håndverksrutenett er som et vanlig inventar som også kan brukes til håndverk. Gjenstandene må plasseres i et bestemt mønster i håndverksrutenettet. Ved siden av håndverksrutenettet er en utgangs-slot (O). Her vises resultatet når du har plassert gjenstandene riktig. Dette er bare en forhåndsvisning, ikke selve gjenstanden. Håndverksrutenett kan komme i forskjellige størrelser som begrenser mulige oppskrifter du kan lage.
+To craft something, you need one or more items, a crafting grid (C) and a crafting recipe. A crafting grid is like a normal inventory which can also be used for crafting. Items need to be put in a certain pattern into the crafting grid. Next to the crafting grid is an output slot (O). Here the result will appear when you place items correctly. This is just a preview, not the actual item. Crafting grids can come in different sizes which limit the possible recipes you can craft.=For å lage noe trenger du en eller flere gjenstander, et håndverksrutenett (C) og en håndverksoppskrift. Et håndverksrutenett er som et vanlig forråd som også kan brukes til håndverk. Gjenstandene må plasseres i et bestemt mønster i håndverksrutenettet. Ved siden av håndverksrutenettet er en utgangs-slot (O). Her vises resultatet når du har plassert gjenstandene riktig. Dette er bare en forhåndsvisning, ikke selve gjenstanden. Håndverksrutenett kan komme i forskjellige størrelser som begrenser mulige oppskrifter du kan lage.
 
 To complete the craft, take the result item from the output slot, which will consume items from the crafting grid and create a new item. It is not possible to place items into the output slot.=For å fullføre håndverket, ta resultatgjenstanden fra utgangssloten, som vil forbruke gjenstander fra håndverksrutenettet og lage en ny gjenstand. Det er ikke mulig å plassere gjenstander i utgangssloten.
 
@@ -313,7 +313,7 @@ Each cookable item requires time to be cooked. This time is specific to the item
 
 Hotbar=Hurtigtilgang
 
-At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=Nederst på skjermen ser du noen firkanter. Dette kalles “hurtigtilgang”. Hurtigtilgangen lar deg raskt få tilgang til de første gjenstandene fra spillerens inventar.
+At the bottom of the screen you see some squares. This is called the “hotbar”. The hotbar allows you to quickly access the first items from your player inventory.=Nederst på skjermen ser du noen firkanter. Dette kalles “hurtigtilgang”. Hurtigtilgangen lar deg raskt få tilgang til de første gjenstandene fra spillerens forråd.
 
 You can change the selected item with the mouse wheel or the keyboard.=Du kan bytte valgt gjenstand med musehjulet eller tastaturet.
 • Select previous item in hotbar: [Mouse wheel up] or [B]=• Velg forrige gjenstand i hurtigtilgang: [Musehjul opp] eller [B]
@@ -336,14 +336,14 @@ There are also two different rotation modes. In “square mode”, the rotation 
 In some games, the minimap may be disabled.=I noen spill kan minikartet være deaktivert.
 • Toggle minimap mode: [F9]=• Bytt minikartmodus: [F9]
 • Toggle minimap rotation mode: [Shift]+[F9]=• Bytt minikartrotasjonsmodus: [Shift]+[F9]
-Inventory=Inventar
+Inventory=Forråd
 
-Inventories are used to store item stacks. There are other uses, such as crafting. An inventory consists of a rectangular grid of item slots. Each item slot can either be empty or hold one item stack. Item stacks can be moved freely between most slots.=Inventarer brukes til å lagre gjenstandsstabler. Det finnes andre bruksområder, som håndverk. Et inventar består av et rektangulært rutenett med gjenstandsplasser. Hver plass kan enten være tom eller inneholde en gjenstandsstabel. Gjenstandsstabler kan flyttes fritt mellom de fleste plassene.
+Inventories are used to store item stacks. There are other uses, such as crafting. An inventory consists of a rectangular grid of item slots. Each item slot can either be empty or hold one item stack. Item stacks can be moved freely between most slots.=Forråder brukes til å lagre gjenstandsstabler. Det finnes andre bruksområder, som håndverk. Et forråd består av et rektangulært rutenett med gjenstandsplasser. Hver plass kan enten være tom eller inneholde en gjenstandsstabel. Gjenstandsstabler kan flyttes fritt mellom de fleste plassene.
 
-You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=Du har ditt eget inventar som kalles ditt “spillerinventar”, du kan åpne det med inventartasten (standard: [I]). De første inventarplassene brukes også som spor i hurtigtilgangen.
+You have your own inventory which is called your “player inventory”, you can open it with the inventory key (default: [I]). The first inventory slots are also used as slots in your hotbar.=Du har ditt eget forråd som kalles ditt “spillerforråd”, du kan åpne det med forrådtasten (standard: [I]). De første forrådsfelt brukes også som spor i hurtigtilgangen.
 
-Blocks can also have their own inventory, e.g. chests and furnaces.=Blokker kan også ha sitt eget inventar, for eksempel kister og ovner.
-Inventory controls:=Inventarkontroller:
+Blocks can also have their own inventory, e.g. chests and furnaces.=Blokker kan også ha sitt eget forråd, for eksempel kister og ovner.
+Inventory controls:=Forrådkontroller:
 Taking: You can take items from an occupied slot if the cursor holds nothing.=Hente: Du kan ta gjenstander fra en opptatt plass hvis markøren ikke holder noe.
 • Left click: take entire item stack=• Venstreklikk: ta hele gjenstandsstabelen
 • Right click: take half from the item stack (rounded up)=• Høyreklikk: ta halvparten fra gjenstandsstabelen (avrundet opp)
@@ -362,7 +362,7 @@ Exchanging: You can exchange items if the cursor holds 1 or more items and the d
 
 Throwing away: If you hold an item stack and click with it somewhere outside the menu, the item stack gets thrown away into the environment.=Kaste bort: Hvis du holder en gjenstandsstabel og klikker med den et sted utenfor menyen, blir gjenstandsstabelen kastet bort i omgivelsene.
 
-Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=Rask overføring: Du kan raskt overføre en gjenstandsstabel til/fra spillerens inventar til/fra en annen gjenstands inventarplass som en ovn, kiste eller en annen gjenstand med inventarplass når inventaret til denne gjenstanden er åpnet. Målinventaret er generelt det mest relevante inventaret i denne sammenhengen.
+Quick transfer: You can quickly transfer an item stack to/from the player inventory to/from another item's inventory slot like a furnace, chest, or any other item with an inventory slot when that item's inventory is accessed. The target inventory is generally the most relevant inventory in this context.=Rask overføring: Du kan raskt overføre en gjenstandsstabel til/fra spillerens forråd til/fra en annen gjenstands forrådsfelt som en ovn, kiste eller en annen gjenstand med forrådsfelt når forrådet til denne gjenstanden er åpnet. Målforrådet er generelt det mest relevante forrådet i denne sammenhengen.
 
 • Sneak+Left click: Automatically transfer item stack=• Snik+Venstreklikk: Overfør gjenstandsstabel automatisk
 Online help=Nettbasert hjelp
@@ -414,9 +414,9 @@ Items:=Gjenstander:
 • Item: A single thing that players can possess=• Gjenstand: En enkelt ting som spillere kan eie
 • Item stack: A collection of items of the same kind=• Gjenstandsstabel: En samling av gjenstander av samme type
 • Maximum stack size: Maximum amount of items in an item stack=• Maks stabelstørrelse: Maksimalt antall gjenstander i en gjenstandsstabel
-• Slot / inventory slot: Can hold one item stack=• Slot / inventarplass: Kan holde én gjenstandsstabel
-• Inventory: Provides several inventory slots for storage=• Inventar: Gir flere inventarplasser for oppbevaring
-• Player inventory: The main inventory of a player=• Spillerinventar: Hovedinventaret til en spiller
+• Slot / inventory slot: Can hold one item stack=• Slot / forrådsfelt: Kan holde én gjenstandsstabel
+• Inventory: Provides several inventory slots for storage=• Forråd: Gir flere forrådsfelt for oppbevaring
+• Player inventory: The main inventory of a player=• Spillerforråd: Hovedforrådet til en spiller
 • Tool: An item which you can use to do special things with when wielding=• Verktøy: En gjenstand som du kan bruke til spesielle handlinger når den holdes
 • Range: How far away things can be to be pointed by an item=• Rekkevidde: Hvor langt unna ting kan være for å peke på dem med en gjenstand
 • Mining tool: A tool which allows to break blocks=• Gruveverktøy: Et verktøy som lar deg bryte blokker
@@ -434,7 +434,7 @@ Gameplay:=Spillmekanikk:
 • Group: Puts similar things together, often affects gameplay=• Gruppe: Samler lignende ting, påvirker ofte spillmekanikken
 • noclip: Allows to fly through walls=• noclip: Tillater å fly gjennom vegger
 Interface=Grensesnitt
-• Hotbar: Inventory slots at the bottom=• Hurtigtilgang: Inventarplasser nederst
+• Hotbar: Inventory slots at the bottom=• Hurtigtilgang: Forrådplasser nederst
 • Statbar: Indicator made out of half-symbols, used for health and breath=• Statistikkfelt: Indikator laget av halvsymboler, brukt for helse og pust
 • Minimap: The map or radar at the top right=• Minikart: Kartet eller radaren øverst til høyre
 • Crosshair: Seen in the middle, used to point at things=• Siktekorn: Synlig i midten, brukt til å peke på ting
@@ -626,7 +626,7 @@ You can view your current position in the debug screen (open with [F5]).=Du kan 
 Creative Mode=Kreativ Modus
 Enabling Creative Mode in VoxeLibre applies the following changes:=
 • You keep the things you've placed=• Du beholder tingene du har plassert
-• Creative inventory is available to obtain most items easily=• Kreativ inventar er tilgjengelig for å enkelt skaffe de fleste gjenstander
+• Creative inventory is available to obtain most items easily=• Kreativ forråd er tilgjengelig for å enkelt skaffe de fleste gjenstander
 • Hand breaks all default blocks instantly=• Hånden bryter alle standardblokker umiddelbart
 • Greatly increased hand pointing range=• Håndens pekeradius er sterkt økt
 • Mined blocks don't drop items=• Utgravde blokker slipper ikke gjenstander
@@ -716,7 +716,7 @@ Other actions, like walking, do not exhaust you.=Andre handlinger, som å gå, u
 ##### not used anymore #####
 
 Basic controls:=Grunnleggende kontroller:
-• Lowest row in inventory appears in hotbar below=• Nederste rad i inventaret vises i hurtigtilgangen nederst
+• Lowest row in inventory appears in hotbar below=• Nederste rad i forrådet vises i hurtigtilgangen nederst
 
 Minetest as well as Minetest Game are both unfinished at the moment, so please forgive us when not everything works out perfectly.=Minetest og Minetest Game er begge uferdige for øyeblikket, så vi håper på forståelse om ikke alt fungerer perfekt.
 

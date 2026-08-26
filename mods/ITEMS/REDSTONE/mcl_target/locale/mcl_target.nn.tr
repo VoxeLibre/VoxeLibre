@@ -1,0 +1,6 @@
+# textdomain: mcl_target
+Target=Blink
+
+A target is a block that provides a temporary redstone charge when hit by a projectile.=Ein blink er ei blokk som gjev eit mellombels raudsteinsignal når den blir truffen av eit prosjektil.
+
+Throw a projectile on the target to activate it.=Skyt eit prosjektil på blinken for å aktivere den.
