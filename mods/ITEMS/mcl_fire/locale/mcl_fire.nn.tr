@@ -14,7 +14,7 @@ Eternal Fire=Evig eld
 ##[ fire_charge.lua ]##
 Fire Charge=Eldladning
 Dispenser projectile=Utskytarprosjektil
-Starts fires and ignites blocks=Startar brann og kveikjar blokkar
+Starts fires and ignites blocks=Startar brann og kveikjer blokkar
 
 Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly.=Eldladningar er fyrst og fremst prosjektil som kan skytast ut frå utskytarar, dei flyg i ei rett linje og bryt ut i brann ved samanstøyt. Alternativt kan dei nyttast til å direkte kveikja brannar.
 
