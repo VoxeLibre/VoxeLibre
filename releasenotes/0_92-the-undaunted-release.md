@@ -17,6 +17,7 @@
 * Veselsem
 * Cliffordius
 * Litanys
+* Sheriff-Unit-3
 
 ### Witches
 While keen-eyed players may know that we have had an unfinished mob called a "witch" for quite a time, it was now re-made thanks to work of Herowl, DarkReaven and ralisv. Entirely new graphics, sounds and mechanics are just a hint at what is to come. You can meet them in the wild and specifically on swamps... don't expect them to be friendly, though. Where do they come from? You may soon get to know...
@@ -128,3 +129,11 @@ Eating and drinking on touchscreen devices should now work better thanks to Hero
 
 ## 0.92.1 hotfix
 * Fixed a falling node crash – by Herowl
+
+
+## 0.92.2 hotfix
+* Fixed the crash happening with Luanti 5.17 – Sheriff-Unit-3
+* Remade some textures – Lifora and Herowl
+* Fixed a bug with Rod of Iron interaction – by Herowl
+* Added Norwegian Nynorsk translation – by Bloodaxe
+* Updated Norwegian Bokmål translation – by Bloodaxe
