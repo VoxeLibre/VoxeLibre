@@ -47,14 +47,8 @@ Wooden trapdoors are horizontal barriers which can be opened and closed by hand 
 
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=For å åpne eller lukke fallemen, høyreklikk på den eller send et rødsteinssignal til den.
 Crimson Fence=Karmosingjerde
-Crimson Fence Gate=Karmosinport
+Crimson Fence Gate=Karmosingrind
 Warped Door=Forvridd dør
 Warped Trapdoor=Forvridd fallem
 Warped Fence=Forvridd gjerde
-Warped Fence Gate=Forvridd port
-
-
-##### not used anymore #####
-
-Warped Checknode - only to check!=Forvridd kontrollnode - kun for å sjekke!
-Crimson Checknode - only to check!=Karmosin kontrollnode - kun for å sjekke!
+Warped Fence Gate=Forvridd grind

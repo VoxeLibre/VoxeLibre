@@ -1,8 +1,8 @@
 # textdomain: mcl_observers
 Observer=Observatør
-Emits redstone pulse when block in front changes=Sender ut rødsteinspuls når blokken foran endres
+Emits redstone pulse when block in front changes=Sender ut en rødsteinpuls når blokken foran endres
 
-An observer is a redstone component which observes the block in front of it and sends a very short redstone pulse whenever this block changes.=
+An observer is a redstone component which observes the block in front of it and sends a very short redstone pulse whenever this block changes.=En observatør er en rødsteinkomponent som observerer blokken foran seg og sender en veldig kort rødsteinpuls hver gang denne blokken endres.
 
-Place the observer directly in front of the block you want to observe with the “face” looking at the block. The arrow points to the side of the output, which is at the opposite side of the “face”. You can place your redstone dust or any other component here.=
+Place the observer directly in front of the block you want to observe with the “face” looking at the block. The arrow points to the side of the output, which is at the opposite side of the “face”. You can place your redstone dust or any other component here.=Plasser observatøren rett foran blokken du vil observere med «ansiktet» vendt mot blokken. Pilen peker mot pulsutgangen, som er på motsatt side av «ansiktet». Du kan plassere rødstein eller en hvilken som helst annen komponent her.
 

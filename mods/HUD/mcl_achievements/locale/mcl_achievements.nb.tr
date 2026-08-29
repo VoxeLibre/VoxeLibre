@@ -37,10 +37,10 @@ Hidden in the Depths=Skjult i dypet.
 Pick up an Ancient Debris from the floor.=Plukk opp eldgammelt skrap fra bakken.
 The Next Generation=Neste generasjon
 
-Hold the Dragon Egg.@nHint: Pick up the egg from the ground and have it in your inventory.=Hold drageegget.@nTips: Plukk opp egget fra bakken og ha det i inventaret ditt.
+Hold the Dragon Egg.@nHint: Pick up the egg from the ground and have it in your inventory.=Hold drageegget.@nTips: Plukk opp egget fra bakken og ha det i forrådet ditt.
 
 Sky's the Limit=Himmelen er grensen
-Find the elytra and prepare to fly above and beyond!=Finn elytraen og gjør deg klar til å fly høyt over alt annet!
+Find the elytra and prepare to fly above and beyond!=Finn vingene og gjør deg klar til å fly som fuglen!
 Acquire Hardware=Jernvare
 
 Take an iron ingot from a furnace's output slot.@nHint: To smelt an iron ingot, put a fuel (like coal) and iron ore into a furnace.=Ta en jernbarre fra en ovn.@nTips: For å smelte en jernbarre, legg et brensel (som kull) og jernmalm i en ovn.
@@ -68,20 +68,20 @@ Use a Totem of Undying to cheat death.=Bruk et udødelighetstotem for å unngå 
 Sweet Dreams=Drøm søtt
 Sleep in a bed to change your respawn point.=Sov i en seng for å endre startpunktet ditt.
 Not Quite "Nine" Lives=Ikke helt "Ni" liv.
-Charge a Respawn Anchor to the maximum.=Ladd opp et livsanker til full kapasitet.
+Charge a Respawn Anchor to the maximum.=Ladde opp et livsanker til full kapasitet.
 What A Deal!=Et kupp!
-Successfully trade with a Villager.=Handle med en landsbyboer.
+Successfully trade with a Villager.=Handle med en bygding.
 Tactical Fishing=Taktisk fisking
 Catch a fish... without a fishing rod!=Fang en fisk... uten fiskestang!
 The Cutest Predator=Det søteste rovdyret
 Catch an Axolotl with a bucket!=Fang en Axolotl med en bøtten!
 Withering Heights=Visnende tilstander
-Summon the wither from the dead.=Fremkall forvitrerern fra de døde.
+Summon the wither from the dead.=Fremkall Visneren fra de døde.
 Free the End=Befri Enden
 Kill the ender dragon. Good Luck!=Drep ender-dragen. Lykke til!
 Fishy Business=Fiskesaker
 Catch a fish.@nHint: Catch a fish, salmon, clownfish, or pufferfish.=Fang en fisk.@nHint:Fang en torsk, laks, klovnefisk eller kulefisk.
-Country Lode, Take Me Home=Landlig tilknytning, ta meg hjem
+Country Lode, Take Me Home=Led meg hjem
 Use a compass on a Lodestone.=Bruk et kompass på en ledeblokk.
 Serious Dedication=Alvorlig dedikasjon
 
@@ -92,7 +92,7 @@ Brew a Potion.@nHint: Take a potion or glass bottle out of the brewing stand.=Br
 Enchanter=Fortryller
 Enchant an item using an Enchantment Table.=Fortryll en gjenstand ved å bruke et fortryllelsesbord.
 Bring Home the Beacon=Bring varden hjem
-Use a beacon.=Bruk et fyrtårn.
+Use a beacon.=Bruk en varde.
 Beaconator=Vardebygger
 Use a fully powered beacon.=Bruk en fulladdet varde.
 The End... Again...=Enden... igjen...
@@ -102,16 +102,16 @@ Bee Our Guest=Vær vår gjest
 Use a campfire to collect a bottle of honey from a beehive without aggrivating the bees inside.=Bruk et bål for å samle en flaske honning fra en bikube uten å opprøre biene inni.
 
 Total Beelocation=Total bieflytting
-Move a bee nest, with 3 bees inside, using a silk touch enchanted tool.=Flytt et biedekor, med 3 bier inni, ved hjelp av et verktøy med "Silkeberøring"-fortryllelse.
+Move a bee nest, with 3 bees inside, using a silk touch enchanted tool.=Flytt et biebol med 3 bier inni, ved hjelp av et verktøy med "Silkeberøring"-fortryllelse.
 Wax On=Voks på
 Apply honeycomb to a copper block to protect it from the elements.=Påfør bivoks på en kobberblokk for å beskytte den mot vær og vind.
 Wax Off=Voks av
 Scrape wax off a copper block.=Skrap voks av en kobberblokk.
 Crafting a New Look=En ny fremtreden
-Craft a trimmed armor at a smithing table.=Lag en dekorert rustning ved et smedbord.
+Craft a trimmed armor at a smithing table.=Lag en dekorert rustning i en smibenk.
 Smithing with Style=Smi med stil
 
-Apply these smithing templates at least once: Spire, Snout, Rib, Ward, Silence, Vex, Tide, Wayfinder=Bruk disse smimalene minst én gang: Spire, Snout, Rib, Ward, Silence, Vex, Tide, Wayfinder
+Apply these smithing templates at least once: Spire, Snout, Rib, Ward, Silence, Vex, Tide, Wayfinder=Bruk disse smimalene minst én gang: Spirens, snuteaktig, ribbeinsaktig, forvart, stillhetens, plageåndens, fjærens, veiviserens
 
 Dispense With This=Kvitt deg med dette
 Place a dispenser.=Plasser en ut utskyter.
@@ -130,19 +130,11 @@ Mine stone with a new pickaxe.=Knus en stein med din nye hakke.
 Hot Stuff=Varme saker
 Put lava in a bucket.=Ha lava i en bøtte.
 Ice Bucket Challenge=Isbøtteutfordring
-Obtain an obsidian block.=Få tak i en obsidianblokk.
+Obtain an obsidian block.=Skaff en obsidianblokk.
 Fireball Redirection Service=Ildkule-omdirigeringstjeneste
 Defeat a ghast with his own weapon.=Beseire en Skrekk med sitt eget våpen.
-Hero of the Village=Landsbyhelt
-Successfully defend a village from a raid=Lykkes med å forsvare en landsby fra en herjing.
+Hero of the Village=Bygdehelt
+Successfully defend a village from a raid=Lykkes med å forsvare en bygd fra en herjing.
 Voluntary Exile=Frivillig eksil
 
-Kill a raid captain. Maybe consider staying away from the local villages for the time being...=Drep en plyndrerkaptein. Kanskje du burde holde deg unna de lokale landsbyene en stund...
-
-
-
-##### not used anymore #####
-
-Into Fire=Inn i ilden
-Pick up a blaze rod from the floor.=Plukk opp en ildstav fra bakken.
-Respawn the Ender Dragon=Gjenoppliv Ender-dragen.
+Kill a raid captain. Maybe consider staying away from the local villages for the time being...=Drep en plyndrerkaptein. Kanskje du burde holde deg unna de lokale bygdene en stund...

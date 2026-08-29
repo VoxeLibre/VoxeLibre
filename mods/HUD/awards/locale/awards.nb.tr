@@ -1,6 +1,6 @@
 # textdomain:awards
 ##[ api.lua ]##
-Amount of time award notification are displayed=Mengden tid fremskrittsnotifikasjoner vises
+Amount of time award notification are displayed=Hvor lenge fremskrittnotifikasjoner vises
 Whether advancements should be announced in chat=Om fremskritt skal annonseres i chatten
 @1 has made the advancement @2=@1 har gjort fremskrittet @2
 Secret Advancement Made:=Hemmelig fremskritt oppnådd:
@@ -10,7 +10,7 @@ Advancement Made:=Fremskritt oppnådd:
 Secret Advancement Made: @1=Hemmelig fremskritt oppnådd: @1
 Goal Completed: @1=Mål fullført: @1
 Challenge Completed: @1=Utfordring fullført: @1
-Advancement Made: @1=
+Advancement Made: @1=Fremskritt fullført: @1
 Secret Advancement Made!=Hemmelig fremskritt oppnådd!
 Goal Completed!=Mål fullført!
 Challenge Completed!=Utfordring fullført!
@@ -46,7 +46,7 @@ Awards=Utmerkelser
 @1/@2 dug=@1/@2 gravd
 Mine blocks: @1×@2=Grav blokker: @1×@2
 Mine a block: @1=Grav en blokk: @1
-Mine @1 block(s).=
+Mine @1 block(s).=Grav @1 blokk(er).
 @1/@2 placed=@1/@2 plassert
 Place blocks: @1×@2=Plasser blokker: @1×@2
 Place a block: @1=Plasser en blokk: @1

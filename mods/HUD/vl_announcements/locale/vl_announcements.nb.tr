@@ -1,0 +1,92 @@
+# textdomain: vl_announcements
+Back=Tilbake
+Changes and fixes=Endringer og rettelser
+Changes & fixes=Endringer og rettelser
+Archive=Arkiv
+Releases=Utgivelser
+Close=Lukk
+New updates have been released! Use /announcements for more info.=Nye oppdateringer er utgitt! Bruk /announcements for mer info.
+Show VoxeLibre announcements and release highlights.=Vis kunngjøringer og nøkkelpunkter for utgivelser fra VoxeLibre.
+[clear|greeting]=[tøm|hilsen]
+This command can only be used in-game.=Denne kommandoen kan bare brukes inne i spillet.
+Announcement history cleared.=Kunngjøringshistorikk tømt
+No announcements are registered.=Ingen kunngjøringer er registrert.
+Usage: /announcements [clear|greeting]=Bruk: /announcements [clear|greeting]
+##[ voxelibre.lua ]##
+The Undaunted Release=Den fryktløse utgaven
+
+Witches, scythes, offhand features, the long awaited wielded lights and other aids for undaunted adventurers.=Hekser, ljåer, venstrehåndsfunksjoner, ettertraktede berbare lyskilder og andre hjelpemidler for fryktløse eventyrere.
+
+Witch=Heks
+Witch re-made... new dangerous enemy awaits you!=Heksa er gjenskapt... en ny farlig fiende venter deg!
+Scythes=Ljåer
+Scythes speed up crop harvesting and offer new combat options, even more so with upcoming enchantments.=Ljåer fremskynder innhøstingen av avlinger og gir nye kampmuligheter, desto mer med kommende fortryllelser.
+Wielded lights=Bærbare lyskilder
+Any light you wield can now light your way! If you experience performance issues, make sure to check out settings in the main menu and tune them (you can also disable them there).=Nå kan ethvert lys du holder lyse vei! Dersom du opplever ytelsesproblemer, bør du sjekke innstillingene i hovedmenyen og finjustere dem (du kan også deaktivere dem der).
+Rod of Iron=Jernstav
+The Shepherd's Rod of Iron is now available, allowing granular control of animal leading.=Gjeterstav av jern er nå tilgjengelig, og gir detaljert kontroll over føring av dyr.
+
+Everything can now be placed in offhand, and some items (like maps or lights) have full functionality in offhand.=Alt kan nå holdes i venstrehånden, og noen gjenstander (som kart eller lys) har full funksjonalitet i venstrehånden.
+Per-player settings to tune music volume, inventory interaction and more to come.=Innstillinger per spiller for å justere musikkvolum, forrådsamhandlinger, og mer er på vei.
+Lots of new in-game music added!=Mye ny musikk lagt til i spillet!
+Decorative golden scarabs can be found in the desert pyramids.=Dekorative gullskarabéer finnes i ørkenpyramidene.
+Touchscreen food controls and many other mobile interactions were improved.=Matkontroller på berøringsskjerm og mange andre mobilinteraksjoner ble forbedret.
+Fixed numerous issues with mobs, player mechanics, boats and other things.=Rettet en rekke problemer med monstre, spillermekanikk, båter og andre ting.
+Fixed crashes involving bone meal and other rare crashes.=Rettet krasj som involverte beinmel, samt andre sjeldne krasj.
+
+The Sneaky Release=Den snikende utgaven
+
+Tridents have finally arrived, together with new enchantments, richer ambient audio, and many improvements throughout the game.=Lysteren har endelig ankommet, sammen med nye fortryllelser, rikere omgivelseslyder og mange forbedringer gjennom hele spillet.
+
+Tridents=Lyster
+
+Find this powerful spear as rare structure loot and use it underwater or in the air.=Finn denne mektige lystergaffelen, et sjeldsynt bytte, og bruk det under vann eller i luften.
+
+New enchantments=Nye fortryllelser
+Swift Sneak and Impaling open up new movement and combat options.=Løpelusk og spidding åpner for nye bevegelses- og kampmuligheter.
+Ambient audio=Omgivelseslyder
+Water, lava, caves, fire, and sculk received new or improved sounds.=Vann, lava, huler, ild og sculk fikk nye eller forbedrede lyder.
+More equipment=Mer utstyr
+Leather horse armor and the decorative star are now available.=Lærhesterustning og dekorativ stjerne er nå tilgjengelig.
+Changes=Endringer
+
+Mob behavior, spawning, vision, activation, and drops received numerous improvements.=Skapningsoppførsel, fremmaning, syn, aktivering og slipp fikk en rekke forbedringer.
+
+The HUD bars and farming systems were reworked.=HUD-barene og landbrukssystemene ble omarbeidet.
+Touchscreen shield controls and many other mobile interactions were improved.=Kontroller for berøringsskjerm og mange andre mobilinteraksjoner ble forbedret.
+Fixes=Rettelser
+
+Fixed issues with crafting results, buckets, item frames, portals, and water bottles.=Fikset problemer med håndverksresultat, bøtter, gjenstandsrammer, portaler og vannflasker.
+
+Fixed crashes involving combat, campfires, mobs, and projectiles.=Fikset programkrasjer relatert til kamp, leirbål, skapninger og prosjektiler.
+The Dynamic Release=Den dynamiske utgaven
+
+This release introduced live game-rule tuning, new equipment and decorations, and broad combat and gameplay rebalancing.=Denne utgaven introduserer regelendringer direkte i spillet, nye dekorasjoner og utstyr, samt en bred ombalansering av kamp og spillflyt.
+
+Dynamic settings=Dynamiske innstillinger
+Administrators can tune supported settings and game rules while playing.=Administratorer kan nå fingjustere støttede innstillinger og spillregler under spilling.
+New equipment=Nytt utstyr
+Discover deepslate tools, craftable chainmail armor, and golden decorations.=Oppdag dypskiferverktøy, håndverkbar brynjerustning, og gulldekorasjoner.
+Combat balancing=Kampbalansering
+Potions, stews, enchantments, mobs, and combat received extensive balancing.=Brygg, stuinger, fortryllelser, skapninger og kamp fikk en omfattende rebalansering.
+
+The creative inventory was reorganized and fire spreading became more predictable.=Kreativforrådet ble reorganisert og ildspredning ble mer forutsigbart.
+
+Fire Elementals replaced Blazes as the first member of a broader elemental mob family.=Ildvetter erstatter Blazes som første medlem av en bredere skapningsfamilie.
+
+Some gameplay bugs and compatibility issues were fixed.=Noen spillfeil og kompabilitetsproblemer ble fikset.
+The On Display Release=På utstilling-utgaven
+
+Maps, signs, item frames, world generation, and mob spawning all received major upgrades.=Kart, skilt, gjenstandsrammer, verdensgenerering og fremkalling av skapninger fikk omfattende oppgraderinger.
+
+Better maps=Bedre kart
+Maps can be zoomed out with the cartography table and look better while held.=Kart kan zoomes ut via kartografbenken, og de ser bedre ut i spillerens hånd.
+Display improvements=Utstllingsbedringer
+Signs and item frames gained new placement and display capabilities.=Skilt og gjenstandsrammer fikk nye plasserings- og utstillingsmuligheter.
+Sit and relax=Sitt og slapp av
+Players can sit on supported blocks, or sit and lie down using commands.=Spillere kan nå sitte på støttede blokker, eller sitte og legge seg ned med kommandoer.
+Structure generation became more deterministic.=Strukturgenerering ble mer deterministisk.
+
+Mob spawning, performance, textures, sounds, and model compatibility were improved.=Fremkalling av skapninger, ytelse, teksturer, lyder og modellkompatibilitet ble forbedret
+
+Item duplication, world generation, and other bugs were fixed.=Gjenstandskloning, verdensgenerering og andre feil ble fikset.

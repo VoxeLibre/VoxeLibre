@@ -1,7 +1,7 @@
 # textdomain: mcl_core
 ##[ functions.lua ]##
 
-Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected.=
+Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected.=Om ranker kan spre seg til andre blokker. Huleranker, vridvin og slengvin blir ikke anfektet.
 
 ##[ nodes_base.lua ]##
 Stone=Stein
@@ -34,7 +34,7 @@ Emerald ore is the ore of emeralds. It is very rare and can be found alone, not 
 Diamond Ore=Diamantmalm
 Diamond ore is rare and can be found in clusters near the bottom of the world.=Diamantmalm er sjelden og kan finnes i klynger nær bunnen av verden.
 Stone Bricks=Steinmur
-Chiseled Stone Bricks=Uthugget steinmur
+Chiseled Stone Bricks=Meislet steinmur
 Cracked Stone Bricks=Sprukket steinmur
 Mossy Stone Bricks=Mosete steinmur
 Polished Stone=Finslipt stein
@@ -57,13 +57,13 @@ A grass block is dirt with a grass cover. Grass blocks are resourceful blocks wh
 Dirt with Snow=Jord med snø
 Grass Path=Gressti
 
-Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=
+Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=Gressstier er en dekorativ variant av gressblokker og jordblokker. Toppen deres har en annen farge og de er litt lavere enn gressblokker, noe som gjør dem nyttige for å bygge stier. Gresstier kan lages ved å høyreklikke med en spade. En gresssti blir til jord når den tildekkes av en solid blokk, eller når den shift+høyreklikkes med en spade.
 
 Mycelium=Mycel
 
 Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe. In light, mycelium slowly spreads over nearby dirt. Under an opaque block or a liquid, it eventually turns back into dirt.=Mycel er en type jord og den ideelle jordtypen for sopp. I motsetning til andre jordblokker, kan det ikke gjøres om til jordbruksland med et grev. I lys sprer mycelet seg sakte over nærliggende jord. Under en ugjennomsiktig blokk eller en væske, omdannes det til slutt tilbake til jord.
 
-Mycelium with Snow=Mycel
+Mycelium with Snow=Mycel med snø
 Podzol=Podsol
 
 Podzol is a type of dirt found in taiga forests. Only a few plants are able to survive on it.=Podsol er en type jord som finnes i taigaskoger. Bare noen få planter er i stand til å overleve på den.
@@ -87,8 +87,8 @@ Sandstone=Sandstein
 Sandstone is compressed sand and is a rather soft kind of stone.=Sandstein er kompakt sand og er en relativt myk type stein.
 Cut Sandstone=Skåret sandstein
 Cut sandstone is a decorative building block.=Skåret sandstein er en dekorativ byggeblokk.
-Chiseled Sandstone=Uthugget sandstein
-Chiseled sandstone is a decorative building block.=Uthugget sandstein er en dekorativ byggeblokk.
+Chiseled Sandstone=Meislet sandstein
+Chiseled sandstone is a decorative building block.=Meislet sandstein er en dekorativ byggeblokk.
 Smooth Sandstone=Finslipt sandstein
 Smooth sandstone is compressed sand and is a rather soft kind of stone.=Finslipt sandstein er en dekorativ byggeblokk.
 Red Sand=Rød sand
@@ -97,8 +97,8 @@ Red Sandstone=Rød sandstein
 Red sandstone is compressed red sand and is a rather soft kind of stone.=Rød sandstein er kompakt rød sand og er en relativt myk type stein.
 Cut Red Sandstone=Skåret rød sandstein
 Cut red sandstone is a decorative building block.=Skåret rød sandstein er en dekorativ byggeblokk.
-Chiseled Red Sandstone=Uthugget rød sandstein
-Chiseled red sandstone is a decorative building block.=Uthugget rød sandstein er en dekorativ byggeblokk.
+Chiseled Red Sandstone=Meislet rød sandstein
+Chiseled red sandstone is a decorative building block.=Meislet rød sandstein er en dekorativ byggeblokk.
 Smooth Red Sandstone=Finslipt rød sandstein
 Smooth red sandstone is a decorative building block.= Finslipt rød sandstein er en dekorativ byggeblokk.
 Clay=Leire
@@ -335,7 +335,7 @@ Cyan Stained Glass=Turkisfarget glass
 ##[ nodes_climb.lua ]##
 Ladder=Stige
 
-A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=
+A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=Et stigestykke som lar deg klatre vertikalt. Stiger kan bare plasseres på siden av solide blokker.
 
 Vines=Ranke
 
@@ -376,7 +376,7 @@ Paper=Papir
 Paper is used to craft books and maps.=Papir brukes til å lage bøker og kart.
 Coal=Kull
 
-“Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.="Kull" refererer til kullbiter du skaffer ved å grave kullmalm som kan finnes under jorden. Kull er vanlig ovnsbrensel, men det kan også brukes til å lage fakler, kullblokker og noen andre ting.
+“Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.="Kull" refererer til kullbiter du skaffer ved å utvinne kullmalm som du finner under jorden. Kull er vanlig ovnsbrensel, men det kan også brukes til å lage fakler, kullblokker og noen andre ting.
 
 Charcoal=Trekull
 
@@ -401,7 +401,7 @@ Molten iron. It is used to craft armor, tools, and whatnot.=Smeltet jern. Brukes
 Gold Ingot=Gullbarre
 Molten gold. It is used to craft armor, tools, and whatnot.=Smeltet gull. Brukes til å lage rustninger, verktøy og annet.
 Emerald=Smaragd
-Emeralds are used in villager trades as currency.=Smaragder nyttes i handel med landsbyboere som valutta.
+Emeralds are used in villager trades as currency.=Smaragder nyttes i handel med bygdinger som valutta.
 Lapis Lazuli=Lasurstein
 Lapis Lazuli are required for enchanting items on an enchanting table.=Lasurstein er nødvendig for å fortrylle gjenstander på et trolldomsbord.
 Brick=Teglstein
@@ -417,18 +417,3 @@ Apples are food items which can be eaten.=Eple er en matgjenstand som kan spises
 Golden Apple=Gulleple
 Golden apples are precious food items which can be eaten.=Gullepler er dyrebare matvarer som kan spises.
 Enchanted Golden Apple=Fortryllet gulleple
-
-
-##### not used anymore #####
-
-@1 could not survive in lava.=@1 kunne ikke overleve i lava.
-@1 died in lava.=@1 døde i lava.
-@1 melted in lava.=@1 smeltet i lava.
-@1 took a bath in a hot lava tub.=@1 to et bad i et varmt lavabadekar.
-
-A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns.=Et stigestykke som lar deg klatre vertikalt. Stiger kan bare plasseres på siden av solide blokker og ikke på glass, løv, is, heller, glødestein eller sjølykter.
-
-Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created with a shovel. A grass path turns into dirt when it is below a solid block.=Gressstier er en dekorativ variant av gressblokker og jordblokker. Toppen deres har en annen farge og de er litt lavere enn gressblokker, noe som gjør dem nyttige for å bygge stier. Gressstier kan lages med spade. En gresssti blir til jord når den tildekkes av en solid blokk.
-
-This is a decorative block.=Dette er en dekorativ blokk.
-Needs soil and water to grow=Trenger jordsmonn og vann for å vokse

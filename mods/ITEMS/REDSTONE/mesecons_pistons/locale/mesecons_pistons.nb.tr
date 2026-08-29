@@ -1,12 +1,11 @@
 # textdomain: mesecons_pistons
-This block can have one of 6 possible orientations.=
+This block can have one of 6 possible orientations.=Denne blokken kan stå i én av seks mulige retninger.
 Piston=Stempel
-Pushes block when powered by redstone power=
+Pushes block when powered by redstone power=Skyver blokker når den forsynes med rødsteinkraft
 
-A piston is a redstone component with a pusher which pushes the block or blocks in front of it when it is supplied with redstone power. Not all blocks can be pushed, however.=
+A piston is a redstone component with a pusher which pushes the block or blocks in front of it when it is supplied with redstone power. Not all blocks can be pushed, however.=Et stempel er en rødsteinkomponent med en stempelflate som skyver blokken(e) foran seg når den forsynes med rødsteinkraft. Ikke alle blokker kan skyves.
 
 Sticky Piston=Klebrig stempel
-Pushes or pulls block when powered by redstone power=
+Pushes or pulls block when powered by redstone power=Skyver eller drar til seg blokker når den forsynes med rødsteinkraft
 
-A sticky piston is a redstone component with a sticky pusher which can be extended and retracted. It extends when it is supplied with redstone power. When the pusher extends, it pushes the block or blocks in front of it. When it retracts, it pulls back the single block in front of it. Note that not all blocks can be pushed or pulled.=
-
+A sticky piston is a redstone component with a sticky pusher which can be extended and retracted. It extends when it is supplied with redstone power. When the pusher extends, it pushes the block or blocks in front of it. When it retracts, it pulls back the single block in front of it. Note that not all blocks can be pushed or pulled.=Et klebrig stempel er en rødsteinkomponent med en klebrig stempelflate som kan forlenges og trekkes tilbake. Den forlenges når den forsynes med rødsteinkraft. Når flaten forlenges, skyver den blokken(e) foran seg. Når den trekkes tilbake, trekkes også blokken forran med. Ikke alle blokker kan skyves eller trekkes.

@@ -33,7 +33,7 @@ A wooden pressure plate is a redstone component which supplies its surrounding b
 
 Bamboo Sign=Bambusskilt
 Bamboo Fence=Bambusgjerde
-Bamboo Fence Gate=Bambusport
+Bamboo Fence Gate=Bambusgrind
 Bamboo Button=Bambusknapp
 
 ### bamboo_items.lua ###
@@ -42,10 +42,5 @@ A bamboo button is a redstone component made out of bamboo which can be pushed t
 Bamboo Mosaic Stairs=Bambusmosaikktrapp
 Bamboo Mosaic Slab=Bambusmosaikkhelle
 Double Bamboo Mosaic Slab=Dobbel bambusmosaikkhelle
-Scaffolding=Stilas
-Scaffolding block used to climb up or out across areas.=
-
-
-##### not used anymore #####
-
-Scaffolding (horizontal)=Stilas (horisontal)
+Scaffolding=Stillas
+Scaffolding block used to climb up or out across areas.=Stillasblokk som brukes til å klatre opp eller ut over områder.

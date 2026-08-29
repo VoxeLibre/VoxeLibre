@@ -25,7 +25,7 @@ Place it on rails. If you give it some coal, the furnace will start burning for 
 To obtain the minecart and furnace, punch them while holding down the sneak key.=For å plukke opp gruvevogna og ovnen, slå den imenst du holder snikeknappen.
 ##[ carts/with_hopper.lua ]##
 Minecart with Hopper=Gruvevogn med trakt
-Hopper Minecart=
+Hopper Minecart=Gruvevogn med trakt
 ##[ carts/with_tnt.lua ]##
 Minecart with TNT=Gruvevogn med TNT
 Can be ignited by tools or powered activator rail=Kan antennes med verktøy eller en aktiv aktiveringsskinne

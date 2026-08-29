@@ -6,7 +6,7 @@ Polished Basalt=Finslipt basalt
 Basalt=Basalt
 Smooth Basalt=Jenv basalt
 Polished Blackstone=Finslipt svartstein
-Chiseled Polished Blackstone=Uthugget svartstein
+Chiseled Polished Blackstone=Meislet svartstein
 Polished Blackstone Bricks=Finslipt svartsteinsmur
 Quartz Bricks=Kvarts
 Soul Soil=Sjelejord
@@ -17,8 +17,8 @@ Double Blackstone Slab=Dobbel svartsteinhelle
 Polished Blackstone Stairs=Finslipt svartsteintrapp
 Polished Blackstone Slab=Finslipt svartsteinhelle
 Double Polished Blackstone Slab=
-Chiseled Polished Blackstone Stairs=Uthugget finslipt svartsteintrapp
-Chiseled Polished Blackstone Slab=Uthugget finslipt svartsteinhelle
+Chiseled Polished Blackstone Stairs=Meislet finslipt svartsteintrapp
+Chiseled Polished Blackstone Slab=Meislet finslipt svartsteinhelle
 Double Chiseled Polished Blackstone Slab=Dobbel uthugget finslipt svartsteinhelle
 Polished Blackstone Brick Stairs=Trapp av finslipt svartsteinmur
 Polished Blackstone Brick Slab=Helle av finslipt svartsteinmur
@@ -26,11 +26,4 @@ Double Polished Blackstone Brick Slab=Dobbel finslipt helle av svartsteinmur
 Blackstone Wall=Mur av svartstein
 Soul Torch=Sjelefakkel
 
-Torches are light sources which can be placed at the side or on the top of most blocks.=
-
-
-
-##### not used anymore #####
-
-Soul Lantern=Sjelelykt
-Polished Double Blackstone Slab=Dobbel finslipt svartsteinhelle
+Torches are light sources which can be placed at the side or on the top of most blocks.=Fakler er lyskilder som kan plasseres på siden eller oppå de fleste blokker.

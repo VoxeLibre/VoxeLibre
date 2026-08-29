@@ -8,7 +8,7 @@ Swords are great in melee combat, as they are fast, deal high damage and can end
 
 To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.=For å slå flere fiender, hold sverdet i hånden, deretter bruk (høyreklikk) en fiende.
 
-Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=Spader er verktøy for å grave grove blokker, som jord, sand og grus. De kan også brukes til å gjøre gressblokker til gresstier. Spader kan brukes som våpen, men de er veldig svake.
+Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=Spader er verktøy for å utvinne grove blokker, som jord, sand og grus. De kan også brukes til å gjøre gressblokker til gresstier. Spader kan brukes som våpen, men de er veldig svake.
 
 To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.=For å gjøre en gressblokk til en gressti, hold spaden i hånden, og bruk (høyreklikk) oppå eller på siden av en gressblokk. Dette fungerer bare når det er luft over gressblokken.
 
@@ -48,6 +48,6 @@ Shears=Saks
 
 You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.=Du bruker bare hånden når du ikke holder noe. Med hånden din kan du knuse de fleste blokker. Men dette er den tregeste metoden, og bare de svakeste blokkene vil gi fra seg noe nyttig. Hånden gjør også mindre skade når du slår. Å bruke hånden er ofte en siste utvei, ettersom riktige verktøy og våpen er mye bedre.
 
-When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Når du bruker en gjenstand som ikke er et verktøy eller et våpen, vil det oppføre seg som om det var hånden når du begynner å grave eller slå.
+When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.=Når du bruker en gjenstand som ikke er et verktøy eller et våpen, vil det oppføre seg som en tom hånd når du begynner å utvinne eller slå.
 
 In Creative Mode, the hand is able to break all blocks instantly.=I kreativ modus er hånden i stand til å knuse alle blokker umiddelbart.

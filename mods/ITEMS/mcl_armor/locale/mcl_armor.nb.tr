@@ -2,7 +2,7 @@
 
 This is a piece of equippable armor which reduces the amount of damage you receive.=Dette er et stykke rustning som reduserer mengden skade du mottar.
 
-To equip it, put it on the corresponding armor slot in your inventory menu.=For å utstyre den, plasser den i det tilsvarende rustningsfeltet i inventarmenyen.
+To equip it, put it on the corresponding armor slot in your inventory menu.=For å utstyre den, plasser den i det tilsvarende rustningsfeltet i forrådsmenyen.
 Sentry=Plyndret
 Dune=Dynens
 Coast=Forlist
@@ -61,7 +61,7 @@ Thorns=Torner
 
 Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Gjenspeiler noe av skaden som ble tatt når truffet, på bekostning av redusert holdbarhet per aktivering.
 
-Elytra=Elytra
+Elytra=Vinger
 ##[ leather.lua ]##
 Leather Cap=Lærhatt
 Leather Tunic=Lærtrøye

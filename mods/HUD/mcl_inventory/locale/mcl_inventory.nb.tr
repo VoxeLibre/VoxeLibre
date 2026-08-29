@@ -1,12 +1,12 @@
 # textdomain: mcl_inventory
 ##[ creative.lua ]##
 
-When enabled, ask for confirmation to clear the inventory when clicking the trash icon in creative mode.=
+When enabled, ask for confirmation to clear the inventory when clicking the trash icon in creative mode.=Dersom aktiv vil spillet be om bekreftelse for å tømme forrådet når du klikker på søppeldunkikonet i kreativ modus.
 
 Building Blocks=Byggeblokker
 Decoration Blocks=Dekorasjonsblokker
 Redstone=Rødstein
-Transportation=Transpor
+Transportation=Transport
 Miscellaneous=Diverse
 Search Items=Søk gjenstander
 Foodstuffs=Matgreier
@@ -15,29 +15,23 @@ Combat=Kamp
 Mobs=Skapninger
 Brewing=Brygging
 Materials=Materialer
-Survival Inventory=Overlevelsesinventar
+Survival Inventory=Overlevelsesforråd
 Recipe book=Oppskriftsbok
 Help=Hjelp
-Clear Inventory=
-Advancements=Fremskritt
+Clear Inventory=Tøm forrådet
+Advancements=Utmerkelser
 Switch stack size=Bytt stabelstørrelse
 Select player skin=Velg spillerutseende
-Settings=
-@1 / @2=
-Are you sure you want to remove all items from your inventory?=
-Do not ask again=
-Cancel=
-Remove All Items=
-You may change this back in the player settings.=
+Settings=Innstillinger
+@1 / @2=@1 / @2
+Are you sure you want to remove all items from your inventory?=Er du sikker på at du vil fjerne alle gjenstander fra forrådet ditt?
+Do not ask again=Ikke spør igjen
+Cancel=Avbryt
+Remove All Items=Fjern alle gjenstander
+You may change this back in the player settings.=Du kan endre dette tilbake i spillerinnstillingene.
 ##[ survival.lua ]##
 
-When enabled, shift-click moves items between hotbar and inventory rows instead of routing them into the crafting grid.=
+When enabled, shift-click moves items between hotbar and inventory rows instead of routing them into the crafting grid.=Dersom aktiv vil shift-klikk flytte gjenstander mellom verktøybeltet og forrådsradene, i stedet for å sende dem til håndverksfeltet.
 
 Crafting=Håndverk
-Achievements=
-
-
-##### not used anymore #####
-
-Inventory=Inventar
-@1/@2=@1/@2
+Achievements=Bragder

@@ -1,5 +1,5 @@
 # textdomain: mcl_nether
-Glowstone=Gøldestein
+Glowstone=Glødestein
 Glowstone is a naturally-glowing block which is home to the Nether.=Glødestein er en naturlig glødende blokk som hører hjemme i Nether
 Nether Quartz Ore=Netherkvartsmalm
 
@@ -28,7 +28,7 @@ Red Nether Brick Block=Rødt nethertegl
 Nether Wart Block=Nethervorteblokk
 A nether wart block is a purely decorative block made from nether wart.=En nethervorteblokk er en rent dekorativ blokk laget av nethervorter.
 Block of Quartz=Kvartsblokk
-Chiseled Quartz Block=Uthugget kvartsblokk
+Chiseled Quartz Block=Meislet kvartsblokk
 Pillar Quartz Block=Kvartssøyle
 Smooth Quartz=Jevn kvartsblokk
 Glowstone Dust=Glødesteinpulver
@@ -67,8 +67,3 @@ Place this item on soul sand to plant it and watch it grow.=Plasser denne gjenst
 ##[ lava.lua ]##
 Nether Lava Source=Netherlavakilde
 Flowing Nether Lava=Rennende netherlava
-
-
-##### not used anymore #####
-
-@1 stood too long on a magma block.=@1 sto for lenge på en magmablokk.
