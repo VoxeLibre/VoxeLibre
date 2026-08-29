@@ -3,7 +3,7 @@
 Adds regular and glowing item frames into VoxeLibre.
 
 * Rewritten from scratch for Mineclonia by cora
-* Ported to and adapted for VoxeLibre with changes by rudzik8
+* Ported to and adapted for VoxeLibre with changes by EmoryNB
 
 From original README.md:
 
@@ -17,4 +17,4 @@ custom item holding nodes.
 
 ## Media
 
-* `mcl_itemframes_frame.obj` by rudzik8 (CC BY-SA 4.0)
+* `mcl_itemframes_frame.obj` by EmoryNB (CC BY-SA 4.0)
