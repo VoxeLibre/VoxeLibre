@@ -42,7 +42,7 @@ return {
 		"Codiac",
 		"chmodsayshello",
 		"MrRar",
-		"rudzik8",
+		"rudzik8 / EmoryNB",
 		"kno10",
 		"Faerraven / Michieal",
 	}},
@@ -192,6 +192,7 @@ return {
 		"Veselsem",
 		"Cliffordius",
 		"Litanys",
+		"Sheriff-Unit-3",
 	}},
 	{S("Music"), 0xA60014, {
 		"Jordach for the jukebox music compilation from Big Freaking Dig",
