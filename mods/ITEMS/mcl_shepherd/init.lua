@@ -75,7 +75,7 @@ core.register_on_mods_loaded(function()
 						end
 						self.led_by_rod_of_iron = false
 					else
-						if type(self.follow ~= "table") then
+						if type(self.follow) ~= "table" then
 							self.follow = {self.follow}
 						end
 						table.insert(self.follow, "mcl_shepherd:rod_of_iron")
