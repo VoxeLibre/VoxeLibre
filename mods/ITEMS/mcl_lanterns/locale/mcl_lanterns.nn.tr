@@ -1,0 +1,14 @@
+# textdomain: mcl_lanterns
+Chain=Kjetting
+Chains are metallic decoration blocks.=Kjetting er dekorasjonsblokker av metall.
+Gold Chain=Gullkjetting
+Gold Chains are metallic decoration blocks.=Gullkjetting er dekorasjonsblokker av metall.
+##[ register.lua ]##
+Lantern=Lykt
+
+Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Lykter er ljoskjelder som kan plasserast på toppen eller botnen av dei fleste blokker.
+
+Soul Lantern=Sjelelykt
+Gold Lantern=Gullykt
+
+Gold Lanterns are light sources which can be placed on the top or the bottom of most blocks.=Gullykter er ljoskjelder som kan plasserast på toppen eller botnen av dei fleste blokker.

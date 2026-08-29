@@ -1,0 +1,235 @@
+# textdomain: mcl_potions
+Dragon's Breath=Drakens ande
+
+This item is used in brewing and can be combined with splash potions to create lingering potions.=Denne gjenstanden nyttast i bryggjing og kan sameinast med kastbare brygg for å skape vedvarande brygg.
+
+Fermented Spider Eye=Gjæra edderkoppauga
+Try different combinations to create potions.=Prøv ulike kombinasjoner for å framstille brygg.
+Glass Bottle=Glasflaske
+Liquid container=Veskebehaldar
+
+A glass bottle is used as a container for liquids and can be used to collect water directly.=Ei glasflaske nyttast som behaldar for vesker og kan nyttast til å samle vatn rett i flasken.
+
+To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=For å samla vatn, nytt den på ei gryte med vatn (som fjerner eitt vassnivå) eller på en vasskjelde (som ikke fjernar vatn).
+
+Water Bottle=Vassflaske
+No effect=Inga effekt
+Water bottles can be used to fill cauldrons. Drinking water has no effect.=Vassflasker kan nyttast til å fylle gryter. Å drikke innhaldet gjer ingenting.
+
+Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Bruk "Plasser"-knappen for å drikke. "Plasser" denne gjenstanden på en gryte for å helle vannet i gryten.
+
+River Water Bottle=Flaske med elvevatn
+River water bottles can be used to fill cauldrons. Drinking it has no effect.=Flasker med elvevatn kan nyttast til å fylle gryter. Å drikke innhaldet gjer ingenting.
+
+Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Bruk "Plasser"-knappen for å drikka. "Plasser" denne gjenstanden på ei gryte for å helle elvevatnet i gryten.
+
+Splash Water Bottle=Kastbar vassflaske
+Extinguishes fire and hurts some mobs=Sløkkjar brann og skadar nokon skapningar
+
+A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Ei kastbar vassflaske som knusast ved treff og skapar en sky av vassdamp, som sløkkjer brann og skadar skapningar som er sårbare for vatn.
+
+Lingering Water Bottle=Vedvarande vassflaske
+
+A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Ei kastbar vassflaske som knusast ved treff og skapar en sky av vassdamp som vedvarar ei stund. Denne skya sløkkjer brann og skadar skapningar som er sårbare for vatn.
+
+Glistering Melon=Glitrande melon
+
+This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Denne glitranden melonen er full av små gullkorn og ville gjort seg i ei ramme. Den kan ikkje etast og er ikkje nyttig til noko anna.
+
+##[ functions.lua ]##
+Invisibility=Usynleg
+body is invisible=kroppen er usynleg
+Poison=Forgifta
+-1 HP / @1 s=-1 HP / @1 s
+Regeneration=Attskaping
++1 HP / @1 s=+1 HP / @1 s
+Strength=Styrkja
++@1% melee damage=+@1% nærkampskade
+Weakness=Veik
+-@1% melee damage=-@1% nærkampskade
+Water Breathing=Vassanding
+limitless breathing under water=uavgrensa anding under vatn
+Dolphin's Grace=Delfinlukke
+swimming gracefully=symjar yndeleg
+Leaping=Hoppauke
++@1% jumping power=+@1% hoppstyrkje
+-@1% jumping power=-@1% hoppstyrkje
+Slow Falling=Fjørfall
+decreases gravity effects=Minkar gravitasjonseffektar
+Swiftness=Snøggleik
++@1% running speed=+@1% rørslesnøggleik
+Slowness=Tråleik
+-@1% running speed=-@1% rørslesnøggleik
+Levitation=Sveving
+moves body upwards at @1 nodes/s=flyttar lekammen oppover i @1 noder/s
+Night Vision=Nattsyn
+improved vision during the night=betra syn om natta
+Darkness=Mørke
+surrounded by darkness=omringa av mørke
+not seeing anything beyond @1 nodes=ser ingenting forbi @1 noder
+Glowing=Gløding
+more visible at all times=meir synleg til alle tider
+Health Boost=Helseauke
+HP increased by @1=HP aukast med @1
+Absorption=Absorbering
+absorbs up to @1 incoming damage=absorberar inntil @1 inkommande skade
+Fire Resistance=Eldvern
+resistance to fire damage=vern mot eldskade
+Resistance=Vern
+resist @1% of incoming damage=vernar mot @1% av inkommende skade
+Luck=Lukke
+Bad Luck=Ulukke
+Bad Omen=Dårlig jartegn
+danger is imminent=fare på ferde
+Hero of the Village=Landsbyhelt
+Withering=Visning
+-1 HP / @1 s, can kill=-1 HP / @1 s, kan drepa
+Frost=Frost
+-1 HP / 1 s, can kill, -@1% running speed=-1 HP / @1 s, kan drepa, -@1% rørslesnøggleik
+Blindness=Blenda
+impaired sight=nedsett syn
+Nausea=Kvalme
+not feeling very well...=kjennast ikkje vel...
+frequency: @1 / 1 s=frekvens: @1 / 1 s
+Food Poisoning=Matforgifting
+exhausts by @1 per second=aukar mødde med @1 per sekund
+Saturation=Metthet
+saturates by @1 per second=mettar med @1 per sekund
+Haste=Hast
++@1% mining and attack speed=+@1% utvinning -og angrepsnøggleik
+Fatigue=Utmattelse
+-@1% mining and attack speed=-@1% utvinning -og angrepsnøggleik
+Conduit Power=Flødarkraft
++@1% mining and attack speed in water=+@1% utvinning -og angrepsnøggleik i vatn
+##[ commands.lua ]##
+
+<effect>|heal|list|clear|remove <duration|heal-amount|effect>|INF [<level>] [<factor>] [NOPART|PART] [<player>]=<effekt>|heal|list|clear|remove <varigheit|legemengd|effekt>|INF [<nivå>] [<faktor>] [NOPART|PART] [<spelar>]
+
+Add a status effect to yourself or another player. Arguments: <effect>: name of status effect. Passing "list" as effect name lists available effects. Passing "heal" as effect name heals (or harms) by amount designed by the next parameter. Passing "clear" as effect name removes all effects. Passing "remove" as effect name removes the effect named by the next parameter. <duration>: duration in seconds. Passing "INF" as duration makes the effect infinite. (<heal-amount>: amount of healing when the effect is "heal", passing a negative value subtracts health. <effect>: name of a status effect to be removed when using "remove" as the previous parameter.) <level>: effect power determinant, bigger level results in more powerful effect for effects that depend on the level (no changes for other effects), defaults to 1, pass F to use low-level factor instead. <factor>: effect strength modifier, can mean different things depending on the effect, no changes for effects that do not depend on level/factor. NOPART by the end means no particles will be shown for this effect. Appending a player name to any command will make it try to conduct the operation on that player rather than the command user. If the name doesn't exist, nothing happens.=
+
+Missing effect parameter!=Manglar effektparameter!
+Missing or invalid heal amount parameter!=Ugyldig eller manglar parameter for legemengd!
+Target player @1 not found!=Målspelar @1 ikkje funnen!
+Player @1 healed by @2 HP.= Spiller @1 lega med @2 HP.
+Player @1 harmed by @2 HP.= Spiller @1 skada med @2 HP.
+Effects cleared for player @1=Effektar fjerna for spelar @1
+Removed effect @1 from player @2=Fjerna effekt @1 frå spelar @2
+@1 is not an available status effect.=@1 er ikkje ei gyldig statuseffekt.
+Missing or invalid duration parameter!=Ugyldig eller manglande varigheitsparameter!
+Invalid level parameter!=Ugyldig nivåparameter!
+Missing or invalid factor parameter when level is F!=Ugyldig eller manglande faktorparameter når nivået er F!
+@1 effect given to player @2 for @3 seconds with factor of @4.=Effekta @1 gjeven til spelar @2 i @3 sekund med faktor @4
+@1 effect given to player @2 for @3 seconds.=Effekten @1 gjeven til spelar @2 i @3 sekund
+Giving effect @1 to player @2 failed.=Mislyktes å gje effekta @1 til spelar @2
+@1 effect on level @2 given to player @3 for @4 seconds.=Effekten @1 ved nivå @2 gitt til spelar @3 i @4 sekund.
+##[ splash.lua ]##
+Use the “Punch” key to throw it.=Nytt "Slå"-knappen for å kaste den.
+
+A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect or a set of status effects.=Eit kastbart brygg som knuses ved treff, og gjev alle nærliggende spelarar og skapningar ei statuseffekt eller eit sett med statuseffekter.
+
+##[ lingering.lua ]##
+
+A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect or set of effects, possibly repeatedly.=Et kastbart brygg som knuses ved treff og skaper en magisk sky som vedvarer en stund. Alle spelare eller skapninger innenfor skyen vil få drikkens effekt eller sett med effekter, muligens gjentatte ganger.
+
+##[ tipped_arrow.lua ]##
+
+This particular arrow is tipped and will give an effect when it hits a player or mob.=Denne særskilde pila er duppa og gjev ei effekt når den treff en spelar eller skapning.
+
+##[ potions.lua ]##
+Use the “Place” key to drink it.=Bruk "Plasser"-knappen for å drikke den.
+Drinking a potion gives you a particular effect or set of effects.=Å drikke et brygg gjev deg en bestemt effekt eller et sett med effekter.
+@1 Potion @2=@1 @2brygg
+@1 Potion=@1brygg
+Potion @1=@1brygg
+Strange Potion=Underleg brygg
+Splash @1 Potion @2=Kastbart @1 @2brygg
+Splash @1 Potion=Kastbart @1brygg
+Splash Potion @1=Kastbart @1brygg
+Splash Strange Potion=Kastbart
+Lingering @1 Potion @2=Vedvarande @1 @2brygg
+Lingering @1 Potion=Vedvarande @1brygg
+Lingering Potion @1=Vedvarande @1brygg
+Lingering Strange Potion=Vedvarande underleg brygg
+@1 Arrow @2=@1pil @2
+@1 Arrow=@1pil
+Arrow @1=@1pil
+Strange Tipped Arrow=Underleg duppa pil
+Mighty=Mektig
+of Trolling=Trollings
+Awkward=Hendig
+Has an awkward taste and is used for brewing potions.=Har ein rar smak og nyttast for å bryggja trolldomsbrygg
+Mundane=Daglegdags
+Has a terrible taste and is not really useful for brewing potions.=Har ein fælsleg smak og er ikkje særs nyttig til å bryggja trolldomsbrygg.
+Thick=Tjukt
+Has a bitter taste and may be useful for brewing potions.=Har ei bitter smak og kan være nyttig til å bryggja trolldomsbrygg.
+of Healing=Lækjedoms
++@1 HP=+@1 HP
+Instantly heals.=Lækjar straks.
+of Harming=Skade
+-@1 HP=-@1 HP
+Instantly deals damage.=Skadar straks.
+of Night Vision=Nattsyns
+Increases the perceived brightness of light under a dark sky.=Akuar den oppfatta lysstyrka under ein mørk himmel.
+of Swiftness=Snøggleiks
+Increases walking speed.=Aukar rørslesnøggleik.
+of Slowness=Tråleiks
+Decreases walking speed.=Minkar rørslesnøggleik.
+of Leaping=Hoppstyrkje
+Increases jump strength.=Aukar hoppstyrkje.
+of Withering=Visnings
+
+Applies the withering effect which deals damage at a regular interval and can kill.=Påførar visningseffekta som gjer skade med jamne mellomrom og kan drepa.
+
+of Poison=Gift
+Applies the poison effect which deals damage at a regular interval.=Påførar effekta 'forgifta' som gjer skade med jamne mellomrom.
+of Regeneration=Attskapings
+Regenerates health over time.=Attskapar helse over tid.
+of Invisibility=Usynligheits
+Grants invisibility.=Gjør en usynlig.
+of Water Breathing=Vassandings
+Grants limitless breath underwater.=Gjev uendeleg pust under vatn.
+of Fire Resistance=Eldverns
+Grants immunity to damage from heat sources like fire.=Gjev imunitet mot skade frå varme kjelder som eld.
+of Strength=Styrkje
+Increases attack power.=Aukar åtakstyrkje.
+of Weakness=Veikje
+Decreases attack power.=Minkar åtakstyrkje.
+of Slow Falling=Fjørfalls
+Instead of falling, you descend gracefully.=I staden for å falle, glir ein langsomt og grasiøst nedover.
+of Levitation=Sveve
+Floats body slowly upwards.=Flyttar ein lekam sakte oppover.
+of Darkness=Mørke
+Surrounds with darkness.=Omringa av mørke.
+of Glowing=Gløde
+Highlights for others to see.=Framhevar noko slik alle kan sjå.
+of Health Boost=Helseauke
+Increases health.=Aukar makshelse.
+of Absorption=Absorberings
+Absorbs some incoming damage.=Absorberar inkommande skade.
+of Resistance=Verne
+Decreases damage taken.=Minkar motteken skade.
+of Stone Cloak=Steinkappe
+Decreases damage taken at the cost of speed.=Minkar motteken skade på bekostning av snøggleik.
+of Luck=Lukke
+Increases luck.=Akuar lukke.
+of Bad Luck=Ulukke
+Decreases luck.=Minkar lukke.
+of Frost=Frost
+Freezes...=Frys...
+of Blindness=Blendings
+Impairs sight.=Svekkjar synet.
+of Nausea=Kvalme
+Disintegrates senses.=Forkvaklar sansane.
+of Food Poisoning=Matforgiftnings
+Moves bowels too fast.=Bevegar tarmsystemet for snøgt.
+of Saturation=Mettheits
+Satisfies hunger.=Dekkjer svoltbehov.
+of Haste=Haste
+Increases digging and attack speed.=Aukar utvinning- og åtaksnøggleik.
+of Fatigue=Utmattelses
+Decreases digging and attack speed.=Minkar utvinning- og åtaksnøggleik.
+Ominous=Illevarslande
+Attracts danger.=Tiltrekk fare.
+Unknown Potion=Ukjend brygg
+Right-click to identify=Høgreklikk for å identifisera
+Unknown Tipped Arrow=Ukjend duppa pil

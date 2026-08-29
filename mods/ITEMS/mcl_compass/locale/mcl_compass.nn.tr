@@ -1,0 +1,28 @@
+# textdomain: mcl_compass
+Compass=Kompass
+Points to the world origin=Peikar mot verdas opphavspunkt
+
+Compasses are tools which point to the world origin (X@=0, Z@=0) or the spawn point in the Overworld.=Kompass er verktøy som peikar mot opphavet til verda (X@=0, Z@=0) eller startpunktet i oververda
+
+A Compass always points to the world spawn point when the player is in the overworld.  In other dimensions, it spins randomly.=Eit kompass peikar alltid på startpunktet til verda når spelaren er i oververda. I andre dimensjonar snurrar nåla vilkårleg rundt.
+
+Lodestone Compass=Leidarsteinkompass
+Points to a lodestone=Peikar mot ein leidarstein
+
+Lodestone compasses resemble regular compasses, but they point to a specific lodestone.=Leidarsteinkompass liknar vanlege kompass, men dei peikar mot éin bestemt leidarstein. Kompasset funkar som eit vanleg kompass når det er utanfor oververda. Eit leidarsteinkompass kan koplast saman med ein annan leidarstein.
+
+A Lodestone compass can be made from an ordinary compass by using it on a lodestone.  After becoming a lodestone compass, it always points to its linked lodestone, provided that they are in the same dimension.  If not in the same dimension, the lodestone compass spins randomly, similarly to a regular compass when outside the overworld.  A lodestone compass can be relinked with another lodestone.=Eit leidarsteinkompass kan lagast av eit vanleg kompass ved å nytta det på ein leidarstein. Etter å ha vorte eit leidarsteinkompass, peikar det alltid mot den tilkopla leidarsteinen, føreset at dei er i same dimensjon. Om dei ikkje er i same dimensjon, snurrar nåla vilkårleg rundt, på same måte som eit vanleg kompass når det er utanfor oververda. Eit leidarsteinkompass kan koplast saman med ein annan leidarstein.
+
+Recovery Compass=Gjenfinnarkompass
+Points to your last death location=Peikar mot din siste dødsstad
+Recovery Compasses are compasses that point to your last death location=Gjenfinnarkompass er kompass som peikar mot din siste dødsstad
+
+Recovery Compasses always point to the location of your last death, in case you haven't died yet, it will just randomly spin around=Gjenfinnarkompass peikar alltid mot din siste dødsstad. I tilfelle der du ikkje har døydd enno, vil nåla berre snurre vilkårlig rundt.
+
+Lodestone=Leidarstein
+Use with a compass=Bruk eit kompass på den
+
+Lodestone is a block that can be used with a compass, after which the compass points to its position.=Leidarstein er ei blokk som kan brukast saman med eit kompass, noko som gjer at kompasset peikar mot posisjonen til blokka.
+
+Rightclick the lodestone with a compass to let the compass point to its position.=Høgreklikk på leidarsteinen med eit kompass for at kompasset skal peike mot den.
+

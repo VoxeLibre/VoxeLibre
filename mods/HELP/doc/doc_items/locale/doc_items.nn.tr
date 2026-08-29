@@ -1,0 +1,162 @@
+# textdomain:doc_items
+This is a decorative block.=Dette er ei dekorativ blokk.
+This block is a building block for creating various buildings.=Denne blokka er ei byggjeblokk for å lage ulike bygningar.
+This item is primarily used for crafting other items.=Denne gjenstanden nyttast primært til å emna andre gjenstandar.
+Hold it in your hand, then left-click to eat it.=Hald den i handa, og venstreklikk for å eta den.
+
+Hold it in your hand, then left-click to eat it. But why would you want to do this?=Hald den i handa, og venstreklikk for å eta den. Men kvifor skulle du ynskja å gjere dette?
+
+This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=Rotasjonen til denne blokka blir påverka av korleis du plasserer ho: Plasser ho på golvet eller i taket for ei vertikal retning; plasser ho på sida for ei horisontal retning. Om du snik medan du plasserer ho, fører det i staden til ei vinkelrett retning.
+
+Hand=Hand
+Air=Luft
+Yes=Ja
+No=Nei
+# List separator (e.g. “one, two, three”)
+, =, 
+Unknown item (@1)=Ukjend gjenstand (@1)
+unknown=ukjend
+1 second=1 sekund
+@1 seconds=@1 sekund
+• @1: @2=• @1: @2
+• @1, rating @2: @3 s - @4 s=• @1, rangering @2: @3 s - @4 s
+• @1, rating @2: @3 s=• @1, rangering @2: @3 s
+• @1, level @2: @3 uses=• @1, nivå @2: @3 bruk
+• @1, level @2: Unlimited=• @1, nivå @2: Uavgrensa
+This tool is capable of mining.=Dette verktøyet kan nyttast til utvinning.
+Maximum toughness levels:=Maksimale hardheitsnivå:
+Mining times:=Utvinningsgongar:
+Durability:=Haldbarheit:
+This is a melee weapon which deals damage by punching.=Dette er eit nærkampvåpen som valdar skade ved å slå.
+Maximum damage per hit:=Maksimal skade per slag:
+• @1: @2 HP=• @1: @2 HP
+Full punch interval: @1 s=Fullt slagintervall: @1 s
+This block can be mined by any mining tool in half a second.=Denne blokka kan utvinnast av alle typar utvinningsverktøy på eit halvt sekund.
+This block can be mined by any mining tool immediately.=Denne blokka kan utvinnast av alle typar utvinningsverktøy med det same.
+This block cannot be mined by ordinary mining tools.=Denne blokka kan ikkje utvinnast med vanlege utvinningsverktøy.
+This block can be destroyed by any mining tool in half a second.=Denne blokka kan øydeleggjast av alle typar utvinningsverktøy på eit halvt sekund.
+This block can be destroyed by any mining tool immediately.=Denne blokka kan øydeleggjast av alle typar utvinningsverktøy med det same.
+This block cannot be destroyed by ordinary mining tools.=Denne blokka kan ikkje øydeleggjast med vanlege utvinningsverktøy.
+
+This block can be mined by mining tools which match any of the following mining ratings and its toughness level.=Denne blokka kan bli utvunnen av gruveverktøy som samsvarar med kva som helst av dei følgjande utvinningsnivå og hardheitsnivå.
+
+Mining ratings:=Utvinningsnivå:
+Toughness level: @1=Hardheitsnivå: @1
+# Range: <Hand> (<Range>)
+Range: @1=Rekkjevidd: @1
+Range: 4=Rekkjevidd: 4
+# Range: <Hand> (<Range>)
+Range: @1 (@2)=Rekkjevidd: @1 (@2)
+This tool can serve as a smelting fuel with a burning time of @1.=Dette verktøyet kan nyttast som brensel med ei forbrenningstid på @1.
+This block can serve as a smelting fuel with a burning time of @1.=Denne blokken kan nyttast som brensel med en forbrenningstid på @1.
+This item can serve as a smelting fuel with a burning time of @1.=Denne gjenstanden kan nyttast som brensel med en forbrenningstid på @1.
+ Using it as fuel turns it into: @1.=Å nytta som brensel skapar om til: @1
+Itemstring: "@1"=Gjenstandsstreng: "@1"
+Description: @1=Skildring: @1
+Usage help: @1=Brukshjelp: @1
+Maximum stack size: @1=Maksimal stabelstorleik: @1
+This block points to liquids.=Denne blokka peikar mot væsker.
+This tool points to liquids.=Dette verktøyet peikar mot væsker.
+This item points to liquids.=Denne gjenstanden peikar mot væsker.
+
+Punches with this block don't work as usual; melee combat and mining are either not possible or work differently.=Slag med denne blokka fungerer ikkje som vanleg; nærkamp og graving er anten ikkje mogleg eller fungerer annleis.
+
+Punches with this tool don't work as usual; melee combat and mining are either not possible or work differently.=Slag med dette verktøyet fungerer ikkje som vanleg; nærkamp og graving er anten ikkje mogleg eller fungerer annleis.
+
+Punches with this item don't work as usual; melee combat and mining are either not possible or work differently.=Slag med denne gjenstanden fungerer ikkje som vanleg; nærkamp og graving er anten ikkje mogleg eller fungerer annleis.
+
+This block belongs to the @1 group.=Denne blokka tilhøyrer @1-gruppa.
+This tool belongs to the @1 group.=Dette verktøyet tilhøyrer @1-gruppa.
+This item belongs to the @1 group.=Denne gjenstanden tilhøyrer @1-gruppa.
+This block belongs to these groups: @1.=Denne blokka tilhøyrer desse gruppene: @1.
+This tool belongs to these groups: @1.=Dette verktøyet tilhøyrer desse gruppene: @1.
+This item belongs to these groups: @1.=Denne gjenstanden tilhøyrer desse gruppene: @1.
+Blocks=Blokkar
+Item reference of blocks and other things which are capable of occupying space=Vareoversikt over blokkar og andre ting som er i stand til å ta opp plass
+Collidable: @1=Samanstøytbar: @1
+Pointable: Yes=Peikbar: Ja
+Pointable: Only by special items=Peikbar: Kun av særskilde gjenstandar
+Pointable: No=Peikbar: Nei
+This block is a liquid with these properties:=Denne blokka er ei væske med desse eigenskapane:
+• Renewable=• Fornybar
+• Not renewable=• Ikkje fornybar
+• No flowing=• Inga strauming
+• Flowing range: @1=• Straumings-rekkjevidd: @1
+• Viscosity: @1=• Viskositet: @1
+This block causes a damage of @1 hit points per second.=Denne blokka valdar skade på @1 helsepoeng per sekund.
+This block causes a damage of @1 hit point per second.=Denne blokka valdar skade på @1 helsepoeng per sekund.
+
+This block decreases your breath and causes a drowning damage of @1 hit points every 2 seconds.=Denne blokka minskar pusten din og valdar ei drukningsskade på @1 helsepoeng kvart 2. sekund.
+
+This block decreases your breath and causes a drowning damage of @1 hit point every 2 seconds.=Denne blokka minskar pusten din og valdar ei drukningsskade på @1 helsepoeng kvart 2. sekund.
+
+The fall damage on this block is increased by @1%.=Fallskade på denne blokka aukast med @1%.
+This block cancels any fall damage.=Denne blokka fjernar all fallskade.
+The fall damage on this block is reduced by @1%.=Fallskade på denne blokka minskar med @1%.
+You cannot jump while standing on this block.=Du kan ikkje hoppe medan du står på denne blokka.
+This block can be climbed.=Denne blokka kan klatrast på.
+This block will make you bounce off with an elasticity of @1%.=Denne blokka vil gjere at du sprett av med ein elastisitet på @1 %.
+This block is slippery.=Denne blokka er glatt.
+This block is completely silent when walked on, mined or built.=Denne blokka er heilt lydlaus når ein går på, utvinnar eller byggjer ho.
+This block is completely silent when mined or built.=Denne blokka er heilt lydlaus når ho blir utvunnen eller bygd.
+Walking on this block is completely silent.=Å gå på denne blokka er heilt stille.
+Mining this block is completely silent.=Å utvinne denne blokka er heilt stille.
+Building this block is completely silent.=Å byggje denne blokka er heilt stille.
+This block is affected by gravity and can fall.=Denne blokka blir påverka av tyngdekrafta og kan falle.
+Building another block at this block will place it inside and replace it.=Å byggje ei anna blokk på denne blokka vil plassere ho inni og erstatte ho.
+Falling blocks can go through this block; they destroy it when doing so.=Fallande blokker kan gå gjennom denne blokka; dei øydelegg ho når dei gjer det.
+This block will drop as an item when a falling block ends up inside it.=Denne blokka fell som ein gjenstand når ei fallande blokk hamnar inni henne.
+This block is destroyed when a falling block ends up inside it.=Denne blokka blir øydelagd når ei fallande blokk hamnar inni henne.
+This block will drop as an item when it is not attached to a surrounding block.=Denne blokka ell som ein gjenstand når ho ikkje er festa til ei blokk i nærleiken.
+This block will drop as an item when no collidable block is below it.=Denne blokka vil falle som ein gjenstand når det ikkje er ei samanstøytbar blokk under henne
+Liquids can flow into this block and destroy it.=Væsker kan renne inn i denne blokka og øydeleggje henne.
+This block is a light source with a light level of @1.=Denne blokka er ei ljoskjelde med eit ljosnivå på @1.
+This block glows faintly with a light level of @1.=Denne blokka glør svakt med eit ljosnivå på @1.
+
+This block allows light to propagate with a small loss of brightness, and sunlight can even go through losslessly.=Denne blokka lèt ljos spreie seg med eit lite tap av ljosstyrke, og solskin kan til og med gå gjennom utan tap.
+
+This block allows light to propagate with a small loss of brightness.=Denne blokka lèt ljos spreie seg med eit lite tap av ljosstyrke.
+This block allows sunlight to propagate without loss in brightness.=Denne blokka lèt solskin spreie seg utan tap av ljosstyrke.
+Unknown Node=Ukjend node
+This block connects to this block: @1.=Denne blokka koplar til denne blokka: @1.
+This block connects to these blocks: @1.=Denne blokka koplar til desse blokkene: @1.
+This block connects to blocks of the @1 group.=Denne blokka koplar seg til blokker i @1-gruppa.
+This block connects to blocks of the following groups: @1.=Denne blokka koplar til blokker i følgjande grupper: @1.
+This block won't drop anything when mined.=Denne blokka slepp ikkje noko når ho blir utvunnen.
+This block will drop the following when mined: @1×@2.=Denne blokka slepp følgjande når ho blir utvunnen: @1×@2.
+This block will drop the following when mined: @1.=Denne blokka slepp følgjande når ho blir utvunnen: @1.
+This block will drop the following items when mined: @1.=Denne blokka slepp følgjande gjenstandar når ho blir utvunnen: @1.
+This block will randomly drop one of the following when mined: @1.=Denne blokka slepp vilkårleg følgjande gjenstandar når ho blir utvunnen: @1.
+
+This block will randomly drop up to @1 drops of the following possible drops when mined: @2.=Denne blokka slepp vilkårleg opptil @1 gjenstandar av følgjande moglege gjenstandar når ho blir utvunnen: @2.
+
+# Final list separator (e.g. “One, two and three”)
+ and = og
+# Item count times item name
+@1×@2=@1×@2
+# Itemname (<0.5%)
+@1 (<0.5%)=@1 (<0,5%)
+# Itemname (ca. 25%)
+@1 (ca. @2%)=@1 (ca. @2%)
+# Itemname (25%)
+@1 (@2%)=@1 (@2%)
+Tools and weapons=Verktøy og våpen
+Item reference of all wieldable tools and weapons=Vareoversikt over alle brukbare verktøy og våpen
+Durability: @1 uses=Haldbarheit: @1 bruk
+Durability: @1=Haldbarheit: @1
+Miscellaneous items=Div. gjenstandar
+
+Item reference of items which are neither blocks, tools or weapons (esp. crafting items)=Vareoversikt for gjenstandar som korkje er blokker, verktøy eller våpen (særleg emingsgjenstandar)
+
+Mobs=Skapningar
+different mobs=ulike skapningar
+Type: @1=Type: @1
+spawn class: @1=Maningsklasse: @1
+Can Jump=Kan hoppa
+Can Fly=Kan flyga
+drops: =Slepp: 
+follows player when these items are held:=Fylg spelaren når desse gjenstandane vert haldne:
+
+A transparent block, basically empty space. It is usually left behind after digging something.=Ein gjennomsiktig blokk, eigentleg tomrom. Han blir vanlegvis attlæten etter at noko utvinnast.
+
+Whenever you are not wielding any item, you use the hand which acts as a tool with its own capabilities. When you are wielding an item which is not a mining tool or a weapon it will behave as if it would be the hand.=Når du ikke holder noe, bruker du hånden som fungerer som et verktøy med sine egne evner. Når du holder en gjenstand som ikke er et gruveverktøy eller et våpen, vil den oppføre seg som om det var hånden.

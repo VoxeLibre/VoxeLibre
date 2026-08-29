@@ -1,0 +1,27 @@
+# textdomain: mesecons_button
+Use the button to push it.=Bruk ein knapp for å trykkje på han.
+
+A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows.=Ein treknapp er ein raudsteinkomponent laga av tre som kan trykkjast på for å forsyne raudsteinkraft. Når han vert trykt inn, driv han tilstøytande raudsteinkomponentar i 1,5 sekund. Treknappar kan også trykkjast på med piler.
+
+A button is a redstone component which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for @1 seconds.=Ein knapp er ein raudsteinkomponent som kan trykkjast på for å forsyne raudsteinkraft. Når han vert trykt inn, driv han tilstøytande raudsteinkomponentar i @1 sekund.
+
+Provides redstone power when pushed=Forsyner raudsteinkraft når han vert trykt på
+Push duration: @1s=Trykklengd: @1s
+Pushable by arrow=Kan aktiverast av piler
+Stone Button=Steinknapp
+
+A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Ein steinknapp er ein raudsteinkomponent laga av stein som kan trykkjast på for å forsyne raudsteinkraft. Når han vert trykt inn, driv han tilstøytande raudsteinkomponentar i 1 sekund.
+
+Polished Blackstone Button=Finslipt svartsteinknapp
+
+A polished blackstone button is a redstone component made out of polished blackstone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.=Ein finslipt svartsteinknapp er ein raudsteinkomponent laga av finslipt svartstein som kan trykkjast på for å forsyne raudsteinkraft. Når han vert trykt inn, driv han tilstøytande raudsteinkomponentar i 1 sekund.
+
+Oak Button=Eikeknapp
+Acacia Button=Akasieknapp
+Birch Button=Bjørkeknapp
+Dark Oak Button=Mørkeikknapp
+Spruce Button=Granknapp
+Jungle Button=Jungelknapp
+Mangrove Button=Mangroveknapp
+Crimson Button=Karmosinknapp
+Warped Button=Vrideknapp

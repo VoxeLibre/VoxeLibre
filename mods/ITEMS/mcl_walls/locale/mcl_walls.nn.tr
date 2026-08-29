@@ -1,0 +1,20 @@
+# textdomain: mcl_walls
+
+A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=Eit stykke mur. Kan ikkje hoppast over med eit enkelt hopp. Når fleire av desse blir plasserte ved sida av kvarandre, vil dei automatisk byggje ein samankobla murstruktur.
+
+##[ register.lua ]##
+Cobblestone Wall=Brusteinmur
+Mossy Cobblestone Wall=Mosegrodd brusteinmur
+Andesite Wall=Andesittmur
+Granite Wall=Granittmur
+Diorite Wall=Diorittmur
+Brick Wall=Teglmur
+Sandstone Wall=Sandsteinmur
+Red Sandstone Wall=Raud sandsteinmur
+Stone Brick Wall=Mur av steinmur
+Mossy Stone Brick Wall=Mur av mosegrodd steinmur
+Prismarine Wall=Prismarinmur
+End Stone Brick Wall=Mur av endesteinmur
+Nether Brick Wall=Netherteglmur
+Red Nether Brick Wall=Raud netherteglmur
+Mud Brick Wall=Gjørmeteglmur

@@ -1,0 +1,28 @@
+# textdomain: mesecons_pressureplates
+
+A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Ei tretrykkplate er ein raudsteinkomponent som gjev dei kringliggande blokkene raudsteinkraft når eit bevegeleg objekt (inkludert kasta gjenstandar, spelarar og skapningar) hamnar oppå henne.
+
+A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.=Ei trykkplate er ein raudsteinkomponent som forsyner dei kringliggande blokkene med raudsteinkraft medan nokon eller noko kvilar på ho.
+
+Provides redstone power when pushed=Forsynar raudsteinkraft når den trykkjast ned
+Pushable by players, mobs and objects=Kan trykkjast ned av spelarar, skapningar og objekt
+Pushable by players and mobs=Kan trykkjast ned av spelarar og skapningar
+Pushable by mobs=Kan trykkjast ned av skapningar
+Pushable by players=Kan trykkjast ned av spelarar
+Oak Pressure Plate=Eiketrykkplate
+Acacia Pressure Plate=Akasietrykkplate
+Birch Pressure Plate=Bjørketrykkplate
+Dark Oak Pressure Plate=Mørkeiktrykkplate
+Spruce Pressure Plate=Grantrykkplate
+Jungle Pressure Plate=Jungeltrykkplate
+Mangrove Pressure Plate=Mangrovetrykkplate
+Crimson Pressure Plate=Karmosintrykkplate
+Warped Pressure Plate=Vridetrykkplate
+Stone Pressure Plate=Steintrykkplate
+
+A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Ei steintrykkplate er ein raudsteinkomponent som forsyner dei kringliggjande blokkene med raudsteinkraft når ein spelar eller ein skapning står oppå henne. Ho vert ikkje utløyst av noko anna.
+
+Polished Blackstone Pressure Plate=Finslipt svartsteinstrykkplate
+
+A polished blackstone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Ei finslipt svartsteinstrykkplate er ein raudsteinkomponent som forsyner dei kringliggjande blokkene med raudsteinkraft når ein spelar eller ein skapning står oppå henne. Ho vert ikkje utløyst av noko anna.
+

@@ -1,0 +1,88 @@
+# textdomain: mcl_doc
+Water can flow into this block and cause it to drop as an item.=Vatn kan renne inn i denne blokka og føre til at ho fell som ein gjenstand.
+This block can be turned into dirt with a hoe.=Denne blokka kan gjerast om til jord med eit grev.
+This block can be turned into farmland with a hoe.=Denne blokka kan gjerast om til dyrkar jord med eit grev.
+This block can be turned into grass path with a shovel.=Denne blokka kan gjerast om til ei rås med ei spade.
+This block acts as a soil for all saplings.=Denne blokka fungerer som vekstjord for alle spirer.
+This block acts as a soil for some saplings.=Denne blokka fungerer som vekstjord for somme spirer.
+Sugar canes will grow on this block.=Sukkerrøyr veks på denne blokka.
+Nether wart will grow on this block.=Nethervorte veks på denne blokka.
+
+This block quickly decays when there is no wood block of any species within a distance of @1. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.=Denne blokka forsvinn raskt når det ikkje finst treblokker av noko slag innanfor ein avstand på @1. Når ho forsvinn, kan ho sleppe eitt av dei vanlege sleppa sine. Blokka forsvinn ikkje dersom ho har vorte plassert av ein spelar.
+
+This block quickly decays and disappears when there is no wood block of any species within a distance of @1. The block does not decay when the block has been placed by a player.=Denne blokka forsvinn raskt når det ikkje finst treblokker av noko slag innanfor ein avstand på @1. Blokka forsvinn ikkje dersom ho har vorte plassert av ein spelar.
+
+This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Denne planta kan berre vekse på grasblokker og jord. For å overleve må ho ha uhindra utsikt til himmelen over eller vere eksponert for eit ljosnivå på 8 eller høgare.
+
+This plant can grow on grass blocks, podzol, dirt and coarse dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.=Denne planta kan vekse på grasblokker, podsol, jord og grov jord. For å overleve må ho ha uhindra sikt til himmelen over eller vere eksponert for eit ljosnivå på 8 eller høgare.
+
+This block is flammable.=Denne blokka er brennbar.
+This block destroys any item it touches.=Denne blokka øydelegg alle gjenstandar ho rører ved.
+To eat it, wield it, then right-click.=For å eta, hald det og høgreklikk.
+You can eat this even when your hunger bar is full.=Du kan eta dette sjølv om svoltindikatoren er full.
+You cannot eat this when your hunger bar is full.=Du kan ikkje eta dette når svoltindikatoren er full.
+To drink it, wield it, then right-click.=For å drikka det, hald det og høgreklikk.
+You cannot drink this when your hunger bar is full.=Du kan ikkje drikka dette når svoltindikatoren er full
+To consume it, wield it, then right-click.=For å forbruke dette, hald det og høgreklikk.
+You cannot consume this when your hunger bar is full.=Du kan ikkje forbruke dette når svoltindikatoren er full.
+You have to wait for around 2 seconds before you can eat or drink again.=Du må vente i kring 2 sekund før du kan ete eller drikke att.
+Hunger points restored: @1=Svoltpoeng gjenopprettet: @1
+Saturation points restored: @1=Mettheitspoeng gjenopprettet: @1
+It can be worn on the head.=Kan brukast på hovudet.
+It can be worn on the torso.=Kan brukast på overkroppen.
+It can be worn on the legs.=Kan brukast på beina.
+It can be worn on the feet.=Kan brukast på føtene.
+Armor points: @1=Rustningspoeng: @1
+Armor durability: @1=Rustningshaldbarheit: @1
+This item can be repaired at an anvil with: @1.=Denne gjenstanden kan reparerast på ein ambolt med: @1.
+This item can be repaired at an anvil with any wooden planks.=Denne gjenstanden kan reparerast på ein ambolt med alle typar treplankar.
+This item can be repaired at an anvil with any item in the “@1” group.=Denne gjenstanden kan reparerast med gjenstandar frå «@1»-gruppa.
+This item cannot be renamed at an anvil.=Denne gjenstanden kan ikkje få nytt namn på ein ambolt.
+This block crushes any block it falls into.=Denne blokka knuser alle blokker ho fell på.
+
+When this block falls deeper than 1 block, it causes damage to any player it hits. The damage dealt is B×2−2 hit points with B @= number of blocks fallen. The damage can never be more than 40 HP.=Når denne blokka fell lenger enn 1 blokk, valdar ho skade på alle spelarar ho treffer. Skada som påførast er B×2−2 helsepoeng der B @= talet på blokker som har falle. Skada kan aldri vere meir enn 40 HP.
+
+Diamond Pickaxe=Diamanthakke
+Iron Pickaxe=Jarnhakke
+Stone Pickaxe=Steinhakke
+Golden Pickaxe=Gullhakke
+Wooden Pickaxe=Trehakke
+Diamond Axe=Diamantøks
+Iron Axe=Jarnøks
+Stone Axe=Steinøks
+Golden Axe=Gulløks
+Wooden Axe=Treøks
+Diamond Shovel=Diamantspade
+Iron Shovel=Jarnspade
+Stone Shovel=Steinspade
+Golden Shovel=Gullspade
+Wooden Shovel=Trespade
+This block can be mined instantly by any tool.=Denne blokka kan utvinnast umiddelbart uansett verktøy.
+• Shears=• Saks
+• Sword=• Sverd
+• Hand=• Hand
+This block can be mined by:=Denne blokka kan utvinnast med:
+Hardness: ∞=Hardheit: ∞
+Hardness: @1=Hardheit: @1
+This block will not be destroyed by TNT explosions.=Denne blokka kan ikkje øydeleggjast av TNT-eksplosjonar.
+This block drops itself when mined by shears.=Denne blokka sleppast når den utvinnast med saks.
+@1×@2=@1×@2
+This block drops the following when mined by shears: @1=Denne blokken slepper følgjande når han blir klipt med saks: @1
+, =,
+Painfully slow=Smetrefult treig
+Very slow=Svært treig
+Slow=Treig
+Fast=Snøgg
+Very fast=Svært snøgg
+Extremely fast=Ekstremt snøgg
+Instantaneous=Umiddelbar
+@1 uses=@1 bruk
+Unlimited uses=Uendelig bruk
+Mining speed: @1=Utvinningsfart: @1
+Durability: @1=Haldbarheit: @1
+This tool is capable of mining.=Dette verktøyet kan utvinna.
+Block breaking strength: @1=Blokkbrytingsstyrke: @1
+This is a melee weapon that deals damage by punching.=Dette er eit nærkampsvåpen som gjer skade ved å slå.
+Maximum damage: @1 HP=Maksimal skade: @1 HP
+Full punch interval: @1 s=Fullt slagintervall: @1 s
+

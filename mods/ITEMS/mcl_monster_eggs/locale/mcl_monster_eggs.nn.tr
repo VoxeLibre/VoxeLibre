@@ -1,0 +1,11 @@
+# textdomain: mcl_monster_eggs
+Hides a silverfish=Skjuler eit sølvkre
+
+An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=Ei fengd blokk er ei blokk som eit sølvkre vil spretta ut frå når den blir øydelagd. Ho ser identisk ut med den vanlege motparten sin.
+
+Infested Stone=Fengd stein
+Infested Cobblestone=Fengd brustein
+Infested Stone Bricks=Fengd steinmur
+Infested Cracked Stone Bricks=Fengd sprokken steinmur
+Infested Mossy Stone Bricks=Fengd mosegrodd steinmur
+Infested Chiseled Stone Bricks=Fengd skoren steinmur

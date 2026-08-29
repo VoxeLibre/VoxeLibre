@@ -1,0 +1,7 @@
+# textdomain: mcl_clock
+Clocks are tools which shows the current time of day in the Overworld.=Klokker er verktøy som synar gjeldande tid på døgnet i oververda.
+
+The clock contains a rotating disc with a sun symbol (yellow disc) and moon symbol and a little “pointer” which shows the current time of day by estimating the real position of the sun and the moon in the sky. Noon is represented by the sun symbol and midnight is represented by the moon symbol.=Klokka inneheld ei roterande skive med eit solsymbol (gul skive) og eit månesymbol. Ein liten «peikar» synar gjeldande tid på døgnet ved å estimere posisjonen til sola og månen på himmelkvelvingen. Middag representerast av solsymbolet og midnatt representerast av månesymbolet.
+
+Displays the time of day in the Overworld=Synar klokkeslettet i oververda
+Clock=Klokke

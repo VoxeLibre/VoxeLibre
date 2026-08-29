@@ -1,0 +1,12 @@
+# textdomain: mcl_droppers
+Dropper=Utsleppar
+Inventory=Forråd
+9 inventory slots=9 forrådsfelt
+Drops item when powered by redstone power=Slepp gjenstandar når han får raudsteinkraft
+
+A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.=Ein utsleppar er ein raudsteinskomponent og ein behaldar med 9 forrådsfelt som, når han får raudsteinkraft, slepp ein gjenstand eller legg han i ein behaldar framfor seg.
+
+Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.=Utslepparar kan poserast i 6 moglege retningar, og gjenstandar vert sleppte ut av holet. Bruk utslepparen for å få tilgang til forrådet. Gje han raudsteinkraft éin gong for å få utslepparen til å sleppe eller overføre ein tilfeldig gjenstand.
+
+Downwards-Facing Dropper=Nedovervend utsleppar
+Upwards-Facing Dropper=Oppovervend utsleppar

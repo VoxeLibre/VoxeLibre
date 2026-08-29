@@ -1,0 +1,19 @@
+# textdomain: mcl_smoker
+Smoker=Røykjaromn
+Inventory=Forråd
+Recipe book=Oppskriftsbok
+Cooks food faster than furnace=Steikjer mat raskare enn ein vanleg omn
+
+Smokers cook several items, mainly raw foods, into cooked foods, but twice as fast as a normal furnace.=Røykjaromnar steikjer fleire ting, hovudsakleg rå mat til steikt mat, men dobbelt så raskt som ein vanleg omn.
+
+Use the smoker to open the furnace menu.=Bruk røykjaromnen for å åpna omnsmenyen.
+
+Place a furnace fuel in the lower slot and the source material in the upper slot.=Plasser omnsbrensel i det nedste feltet og kjeldematerialet i det øvre feltet.
+
+The smoker will slowly use its fuel to cook the item.=Røykjaromnen nyttar brenselet til å steikje gjenstanden.
+The result will be placed into the output slot at the right side.=Resultatet hamnar i produktfeltet på høgre side.
+
+Use the recipe book to see what foods you can cook, what you can use as fuel and how long it will burn.=Nytt oppskrifsboka for å sjå kva mattypar du kan steikje, kva du kan nytta som brensel og kor lenge det brenn.
+
+Burning Smoker=Brennande røykjaromn
+

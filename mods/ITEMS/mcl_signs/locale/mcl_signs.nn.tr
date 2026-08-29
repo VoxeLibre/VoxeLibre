@@ -1,0 +1,24 @@
+# textdomain: mcl_signs
+##[ api.lua ]##
+Can be written=Kan skrivast på
+
+Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.=Skilt kan skrivast på og kjem i to variantar: Veggskilt og skilt på stolpe. Skilt kan plasserast på toppen og sidene av andre blokker, men ikkje under dei.
+
+After placing the sign, you can write something on it. You have @1 lines of text with up to @2 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can be changed after it's written by rightclicking the sign. Can be colored and made to glow. Use bone meal to remove color and glow.=Etter å ha plassert skiltet, kan du skrive noko på det. Du har @1 tekstlinje med opptil @2 teikn per linje; alt utover desse grensene går tapt. Ikkje alle teikn er støtta. Teksta kan endrast etter at ho er skriven ved å høgreklikke på skiltet. Kan fargeleggjast og gjerast lysande. Bruk beinmjøl for å fjerne farge og lysande tekst.
+
+Sign text:=Skilttekst:
+Close=Lukk
+Enter sign text:=Skriv skilttekst
+Maximum line length: @1=Maks teikn per linje: @1
+Maximum lines: @1=Maks linjer: @1
+Done=Ferdig
+##[ register.lua ]##
+Oak Sign=Eikeskilt
+Dark Oak Sign=Mørkeikskilt
+Acacia Sign=Akasieskilt
+Birch Sign=Bjørkeskilt
+Jungle Sign=Jungelskilt
+Spruce Sign=Granskilt
+Mangrove Sign=Mangroveskilt
+Crimson Hyphae Sign=Karmosinhyfeskilt
+Warped Hyphae Sign=Vridehyfeskilt

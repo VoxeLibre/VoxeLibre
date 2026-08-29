@@ -1,0 +1,69 @@
+# textdomain: mcl_nether
+Glowstone=Gøldestein
+Glowstone is a naturally-glowing block which is home to the Nether.=Glødestein er ei naturleg glødande blokk som høryrer heime i Nether
+Nether Quartz Ore=Netherkvartsmalm
+
+Nether quartz ore is an ore containing nether quartz. It is commonly found around netherrack in the Nether.=Netherkvartsmalm er malm som inneheld kvarts. Du finn dei ofte rundt netherrack i Nether.
+
+Ancient Debris=Eldgammalt skrap
+Ancient debris can be found in the nether and is very very rare.=Eldgammalt skrap finn ein i Nether og er særs, særs sjeldan.
+Netherite Block=Netherittblokk
+Netherite block is very hard and can be made of 9 netherite ingots.=Netherittblokka er særs hard og emnast av 9 netherittbarrar.
+Netherrack=Netherrack
+
+Netherrack is a stone-like block home to the Nether. Starting a fire on this block will create an eternal fire.=Netherrack er ei steinliknande blokk fra Nether. Å kveikje denne blokka vil skape ein evig eld.
+
+Magma Block=Magmablokk
+Burns your feet=Brenn føtene dine
+
+Magma blocks are hot solid blocks which hurt anyone standing on it, unless they have fire resistance. Starting a fire on this block will create an eternal fire.=Magmablokker er varme solide blokker som skadar alle som står på dei, med mindre dei har eldvern. Å kveikje ein eld på denne blokka vil skape ein evig eld.
+
+Soul Sand=Sjelesand
+Reduces walking speed=Reduserar røyrslesnøggleik
+
+Soul sand is a block from the Nether. One can only slowly walk on soul sand. The slowing effect is amplified when the soul sand is on top of ice, packed ice or a slime block.=Sjelesand er ei blokk frå Nether. Ein går treigare på sjelesand. Bremseeffekten blir forsterka når sjelesanden ligg på is, pakka is eller ei slimblokk.
+
+Nether Brick Block=Nethertegl
+Red Nether Brick Block=Raud nethertegl
+Nether Wart Block=Nethervorteblokk
+A nether wart block is a purely decorative block made from nether wart.=Ein nethervorteblokk er ei reint dekorativ blokk laga av nethervorter.
+Block of Quartz=Kvartsblokk
+Chiseled Quartz Block=Meisla kvartsblokk
+Pillar Quartz Block=Kvartssøyle
+Smooth Quartz=Glatt kvartsblokk
+Glowstone Dust=Glødesteinpulver
+
+Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting.=Glødesteinspulver er støvet som kjem ut av øydelagde glødesteinar. Det vert hovudsakleg brukt i emning.
+
+Nether Quartz=Kvarts
+Nether quartz is a versatile crafting ingredient.=Kvarts er en allsidig emneingrediens.
+Netherite Scrap=Netherittskrap
+Netherite scrap is a crafting ingredient for netherite ingots.=Netherittskrap er ein emneingrediens for netherittbarrar
+Netherite Ingot=Netherittbarre
+
+Netherite ingots can be used with a smithing table to upgrade items to netherite.=Netheritbarrar kan nyttast med smiebenken for å oppgradere gjenstandar til netheritt.
+
+Nether Brick=Netherteglstein
+
+Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=Netherteglstein er den viktigaste emneingrediensen for å laga nethertegl og nethergjerde.
+
+##[ nether_wart.lua ]##
+Premature Nether Wart (Stage 1)=Umoden nethervorte (Stadium 1)
+
+A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.=Ei umoden nethervorte har nyleg vorte planta på sjelsand. Nethervorta veks sakte på sjelsand over 4 stadium (andre og tredje stadium ser identiske ut). Sjølv om nethervorta høyrer heime i Nether, veks ho i alle dimensjonar.
+
+Premature Nether Wart (Stage 2)=Umoden nethervorte (Stadium 2)
+Premature Nether Wart (Stage 3)=Umoden nethervorte (Stadium 3)
+Mature Nether Wart=Moden nethervorte
+
+The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.=Den modne nethervorta er ein plante frå Nether og har nådd det siste stadiet sitt og veks ikkje lengre. Ho er klar til å haustast for fleire nethervortar.
+
+Nether Wart=Nethervorte
+Grows on soul sand=Veks på sjelesand
+
+Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=Nether-vorter er plantar frå Nether. Dei kan plantast på sjelsand og veks over 4 stadium.
+
+Place this item on soul sand to plant it and watch it grow.=Plasser denne gjenstanden på sjelsand for å plante han og sjå han vekse.
+##[ lava.lua ]##
+Nether Lava Source=Netherlavakjelde
+Flowing Nether Lava=Rennande netherlava

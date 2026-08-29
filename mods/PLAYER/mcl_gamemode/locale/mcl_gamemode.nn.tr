@@ -1,0 +1,8 @@
+# textdomain: mcl_gamemode
+[<gamemode>] [<player>]=[<spelmodus>] [<spelar>]
+Change gamemode (survival/creative) for yourself or player=Endre spelmodus (survival/creative) for deg sjølv eller spelar
+Player not online=Spelar er ikkje pålogga
+Gamemode @1 does not exist.=Spelmodus @1 eksisterer ikkje.
+More than one gamemode fit @1=Meir enn éin spelmodus passar til @1
+Gamemode for player =Spelmodus for spelar 
+: =: 

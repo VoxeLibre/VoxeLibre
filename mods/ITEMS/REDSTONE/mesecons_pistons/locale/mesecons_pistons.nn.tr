@@ -1,0 +1,11 @@
+# textdomain: mesecons_pistons
+This block can have one of 6 possible orientations.=Denne blokka kan stå i éin av seks moglege retningar.
+Piston=Stempel
+Pushes block when powered by redstone power=Skyv blokker når det forsynast med raudsteinkraft
+
+A piston is a redstone component with a pusher which pushes the block or blocks in front of it when it is supplied with redstone power. Not all blocks can be pushed, however.=Eit stempel er ein raudsteinkomponent med ei stempelflate som skyv blokka eller blokkene framfor seg når det forsynast med raudsteinkraft. Men ikkje alle blokker kan skyvast.
+
+Sticky Piston=Klebrig stempel
+Pushes or pulls block when powered by redstone power=Skyv eller dreg til seg blokker når det forsynast med raudsteinkraft
+
+A sticky piston is a redstone component with a sticky pusher which can be extended and retracted. It extends when it is supplied with redstone power. When the pusher extends, it pushes the block or blocks in front of it. When it retracts, it pulls back the single block in front of it. Note that not all blocks can be pushed or pulled.=Eit klebrig stempel er ein raudsteinkomponent med ei klebrig stempelflate som kan forlengast og trekkjast tilbake. Det blir forlenga når det får raudsteinskraft. Når flata blir forlenga, skyv ho blokka eller blokkene framfor seg. Når ho trekkjast tilbake, dreg ho med seg den eine blokka framfor seg. Ikkje alle blokker kan skyvast eller trekkjast.

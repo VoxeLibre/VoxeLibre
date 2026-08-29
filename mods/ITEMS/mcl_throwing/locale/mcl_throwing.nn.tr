@@ -1,0 +1,19 @@
+# textdomain: mcl_throwing
+##[ egg.lua ]##
+Use the punch key to throw.=Bruk slåknappen for å kaste.
+Egg=Egg
+Throwable=Kastbar
+Chance to hatch chicks when broken=Når knust; sjanse for å klekke kyllingar
+
+Eggs can be thrown or launched from a dispenser and breaks on impact. There is a small chance that 1 or even 4 chicks will pop out of the egg.=Egg kan kastast eller skytast frå ein utskytar og knusast ved samanstøyt. Det er ein liten sjanse for at 1 eller til og med 4 ungar sprett ut av egget.
+
+##[ ender_pearl.lua ]##
+Ender Pearl=Enderperle
+Teleports you on impact for cost of 5 HP=Teleporterar deg ved samanstøyt, som kostar deg 5 HP
+
+An ender pearl is an item which can be used for teleportation at the cost of health. It can be thrown and teleport the thrower to its impact location when it hits a solid block or a plant. Each teleportation hurts the user by 5 hit points.=Ei enderperle er ein gjenstand som kan nyttast til teleportering på kostnad av helse. Ho kan kastast og teleportera brukaren til treffstaden når ho treffer ei solid blokk eller ein plante. Kvar teleportering skadar brukaren med 5 helsepoeng.
+
+##[ snowball.lua ]##
+Snowball=Snøball
+
+Snowballs can be thrown or launched from a dispenser for fun. Hitting something with a snowball does nothing.=Snøballar kan kastast eller skytast frå ein utskytar på skøy. Å treffe nokon med ein snøball gjer ingenting.

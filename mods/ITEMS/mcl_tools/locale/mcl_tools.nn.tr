@@ -1,0 +1,43 @@
+# textdomain: mcl_tools
+
+Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Hakker er verktøy for å vinne ut harde blokker, som til dømes stein. Ei hakke kan også nyttast som våpen, men det er ikkje særs effektivt.
+
+An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=Ei øks er det føretrekte verktøyet ditt for å hogge ned tre, trebaserte blokker og andre blokker. Økser gjer mykje skade òg, men dei er ganske treige.
+
+Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=Sverd er gode i nærkamp, då dei er raske, gjer mykje skade og er haldbare gjennom tallause slag. Sverd kan òg nyttast til å kutte ned nokre få utvalde blokker, til dømes spindelvev.
+
+To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.=For å slå fleire fiendar, hald sverdet i handa og 'bruk' (høgreklikk) på ein fiende.
+
+Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=Spadar er verktøy for å grave grove blokker, som jord, sand og grus. Dei kan òg brukast til å gjere grasblokker om til moldråser. Spadar kan nyttast som våpen, men dei er veldig svake.
+
+To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.=For å gjera ei grasblokk om til ei moldrås, hald spada i handa, og 'bruk' (høgreklikk) oppå eller på sida av ei grasblokk. Dette verkar berre når det er luft over grasblokka.
+
+Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from grass, leaves and similar blocks that require cutting.=Sakser er verktøy for å klippe sauer og til å vinne ut nokre få blokktypar. Sakser er eit spesielt verktøy og kan nyttast til å skaffe den originale gjenstanden frå gras, lauv og liknande blokker som krev klipping.
+
+To shear sheep or carve faceless pumpkins, use the “place” key on them. Faces can only be carved at the side of faceless pumpkins. Mining works as usual, but the drops are different for a few blocks.=For å klippe sauer eller skjere andletslause graskar, bruk "plasser"-tasten på dei. Andlet kan berre skjerast ut på sida av andletslause graskar. Å vinne ut blokker fungerer som vanleg, men sleppa er ulike for nokre få blokker.
+
+Wooden Pickaxe=Trehakke
+Stone Pickaxe=Steinhakke
+Iron Pickaxe=Jarnhakke
+Golden Pickaxe=Gullhakke
+Diamond Pickaxe=Diamanthakke
+Netherite Pickaxe=Netheritthakke
+Wooden Shovel=Trespade
+Stone Shovel=Steinspade
+Iron Shovel=Jarnspade
+Golden Shovel=Gullspade
+Diamond Shovel=Diamantspade
+Netherite Shovel=Netherittspade
+Wooden Axe=Treøks
+Stone Axe=Steinøks
+Iron Axe=Jarnøks
+Golden Axe=Gulløks
+Diamond Axe=Diamantøks
+Netherite Axe=Netherittøks
+Wooden Sword=Tresverd
+Stone Sword=Steinsverd
+Iron Sword=Jarnsverd
+Golden Sword=Gullsverd
+Diamond Sword=Diamantsverd
+Netherite Sword=Netherittsverd
+Shears=Saks

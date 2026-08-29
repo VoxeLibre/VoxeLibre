@@ -1,0 +1,27 @@
+# textdomain: mesecons_noteblock
+Note Block=Noteblokk
+Plays a musical note when powered by redstone power=Spelar ein musikalsk tone når han får raudsteinkraft
+
+A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power.=Ei noteblokk er ei musikalsk blokk som spelar ein av mange tonar og ulike instrument når ho blir slått på eller får tilført raudsteinkraft.
+
+Use the note block to choose the next musical note (there are 25 semitones, or 2 octaves). The intrument played depends on the material of the block below the note block:=Nytta noteblokka for å velje neste musikalske tone (det er 25 halvtonar, eller 2 oktavar). Instrumentet som spelast avheng av materialet på blokka under noteblokka.
+
+• Glass: Sticks=Glas: Pinnar
+• Wood: Bass guitar=Tre: Bassgitar
+• Stone: Bass drum=Stein: Basstromme
+• Sand or gravel: Snare drum=Sand eller grus: Skarptromme
+• Block of Gold: Bell=Gullblokk: Bjølle
+• Clay: Flute=Leire: Fløyte
+• Packed Ice: Chime=Pakka is: Klokkespel
+• Wool: Guitar=Ull: Gitar
+• Bone Block: Xylophne=Beinblokk: Xylofon
+• Block of Iron: Iron xylophne=Jarnblokk: Jarnxylofon
+• Soul Sand: Cow bell=Sjelesand: Kubjølle
+• Pumpkin: Didgeridoo=Graskar: Didjeridu
+• Block of Emerald: Square wave=Smaragdblokk: Firkantkurve
+• Hay Bale: Banjo=Høyball: Banjo
+• Glowstone: Electric piano=Glødestein: Elektrisk piano
+• Anything else: Piano=Alt anna: Piano
+
+The note block will only play a note when it is below air, otherwise, it stays silent.=Noteblokka vil berre spele ein note når ho har luft over seg, elles teier ho.
+

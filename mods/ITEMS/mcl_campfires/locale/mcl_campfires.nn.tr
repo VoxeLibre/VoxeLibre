@@ -1,0 +1,9 @@
+# textdomain: mcl_campfires
+##[ api.lua ]##
+Cooks food and keeps bees happy.=Lagar mat og held biene glade.
+
+Campfires have multiple uses, including keeping bees happy, cooking raw meat and fish, and as a trap.=Bål har fleire bruksområde, inkludert å halde bier glade, tilberede rått kjøt og fisk, og som ei felle.
+
+##[ register.lua ]##
+Campfire=Bål
+Soul Campfire=Sjelbål

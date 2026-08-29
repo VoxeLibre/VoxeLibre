@@ -1,0 +1,16 @@
+# textdomain: mcl_furnaces
+Furnace=Omn
+Inventory=Forråd
+Recipe book=Oppskriftsbok
+Uses fuel to smelt or cook items=Nyttar brensel til å smelte eller steike gjenstandar.
+Furnaces cook or smelt several items, using a furnace fuel, into something else.=Omnar steiker eller smeltar fleire gjenstandar til noko nytt, ved å nytte brennbart materiale.
+Use the furnace to open the furnace menu.=Nytt ein omn for å opne omnmenyen.
+
+Place a furnace fuel in the lower slot and the source material in the upper slot.=Plasser brensel i det nedre feltet og kjeldematerialet i det øvre feltet.
+
+The furnace will slowly use its fuel to smelt the item.=Omnen vil sakte nytte brenselet til å smelte gjenstanden.
+The result will be placed into the output slot at the right side.=Resultatet vil bli plassert i produktfeltet på høgre side.
+
+Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn.=Bruk oppskriftsboka for å sjå kva du kan smelte, kva du kan nytta som brensel og kor lenge det brenn.
+
+Burning Furnace=Brennande omn

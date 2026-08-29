@@ -1,0 +1,11 @@
+# textdomain: mcl_info
+
+Set debug level: 0 @= disable, 1 @= player coords, 2 @= coordinates, 3 @= biome name, 4 @= all=Sett feilsøkingsnivå: 0 @= skrudd av, 1 @= spelarkoordinatar, 2 @= koordinatar, 3 @= markslag-namn, 4 @= alt
+
+<level>=<nivå>
+Debug level is @1=Feilsøkingsnivå er @1
+Error! Possible values are integer numbers from @1 to @2=Feil! Moglege verdiar er heiltal frå @1 til @2
+Debug level set to @1=Feilsøkingsnivå sett til @1
+Show location: 0 @= disable, 1 @= coordinates=Syn lokasjon: 0 @= skrudd av
+Show location is set to: @1= Syn lokasjon er sett til: @1
+Show location set to @1=Syn lokasjon sett til @1

@@ -1,0 +1,419 @@
+# textdomain: mcl_core
+##[ functions.lua ]##
+
+Whether vines can spread to other blocks. Cave vines, weeping vines, and twisting vines are not affected.=
+
+##[ nodes_base.lua ]##
+Stone=Stein
+
+One of the most common blocks in the world, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava.=Ein av dei vanlegaste blokkane i verda, nesten heile undergrunnen består av stein. Somme tider inneheld han malm. Stein kan lagast når vatn møter lava.
+
+Coal Ore=Kolmalm
+
+Some coal contained in stone, it is very common and can be found inside stone in medium to large clusters at nearly every height.=Litt kol blanda i stein, det er veldig vanleg og kan finnast inne i stein i middels til store klyngjer i nesten alle høgder.
+
+Iron Ore=Jarnmalm
+
+Some iron contained in stone, it is prety common and can be found below sea level.=Litt jarn blanda i stein, det er ganske vanleg og kan finnast under havnivå.
+
+Gold Ore=Gullmalm
+This stone contains pure gold, a rare metal.=Denne steinen inneheld reint gull, eit sjeldsynt metall.
+Redstone Ore=Raudsteinmalm
+
+Redstone ore is commonly found near the bottom of the world. It glows when it is punched or walked upon.=Raudsteinmalm blir ofte funnen nær botnen av verda. Han ljosar når han blir slått eller tråkka på.
+
+Lit Redstone Ore=Ljosande raudsteinmalm
+Lapis Lazuli Ore=Lasursteinmalm
+
+Lapis lazuli ore is the ore of lapis lazuli. It can be rarely found in clusters near the bottom of the world.=Lasursteinmalm er malmen til lasurstein. Han kan sjeldan finnast i klynger nær botnen av verda.
+
+Emerald Ore=Smaragdmalm
+
+Emerald ore is the ore of emeralds. It is very rare and can be found alone, not in clusters.=Smaragdmalm inneheld smaragdedelsteinar. Dei er særs sjeldne, og ein finn dei åleine, ikkje i klynger.
+
+Diamond Ore=Diamantmalm
+Diamond ore is rare and can be found in clusters near the bottom of the world.=Diamantmalm er sjeldsynt og kan finnast i klynger nær botnen av verda.
+Stone Bricks=Steinmur
+Chiseled Stone Bricks=Meisla steinmur
+Cracked Stone Bricks=Sprokken steinmur
+Mossy Stone Bricks=Mosegrodd steinmur
+Polished Stone=Finslipt stein
+Granite=Granitt
+Granite is an igneous rock.=Granitt er ein magmatisk bergart.
+Polished Granite=Finslipt granitt
+Polished granite is a decorative building block made from granite.=Finslipt granitt er ei dekorativ blokk laga av granitt.
+Andesite=Andesitt
+Andesite is an igneous rock.=Andesitt er ein magmatisk bergart.
+Polished Andesite=Finslipt andesitt
+Polished andesite is a decorative building block made from andesite.=Finslipt andesitt er ei dekorativ blokk laga av andesitt.
+Diorite=Dioritt
+Diorite is an igneous rock.=Dioritt er ein magmatisk bergart.
+Polished Diorite=Finslipt dioritt
+Polished diorite is a decorative building block made from diorite.=Finslipt dioritt er ei dekorativ blokk laga av dioritt.
+Grass Block=Grasblokk
+
+A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt.=Ei grasblokk er jord med eit grasdekke. Grasblokkar er ressurssterke blokkar som tillèt vekst av alle slags plantar. Dei kan gjerast om til dyrkbar jord med eit grev og gjerast om til ei rås med ei spade. I lys spreier graset seg sakte på jord i nærleiken. Under ei ugjennomsiktig blokk eller ei væske kan ein grasblokk venda tilbake til jord.
+
+Dirt with Snow=Jord med snø
+Grass Path=Rås
+
+Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created by right clicking with a shovel. A grass path turns into dirt when it is below a solid block or when shift+right clicked with a shovel.=Rås er ein dekorativ variant av grasblokker. Toppen har ein annan farge og dei er litt lågare enn grasblokker, noko som gjer dei nyttige til å byggje gangstiar. Råser kan lagast ved å høgreklikke med ei spade. Ei rås blir gjort om til jord når han er under ei solid blokk, eller når ein nyttar shift+høgreklikk med ei spade.
+
+Mycelium=Mycel
+
+Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe. In light, mycelium slowly spreads over nearby dirt. Under an opaque block or a liquid, it eventually turns back into dirt.=Mycel er ein jordtype og den ideelle jordtypen for sopp. Til skilnad frå andre jordblokker, kan det ikkje gjerast om til dyrkbar jord med eit grev. I ljos spreier mycelet seg sakte over nærliggjande jord. Under ei ugjennomsiktig blokk eller ei væske, blir det til slutt jord att.
+
+Mycelium with Snow=Mycel med snø
+Podzol=Podsol
+
+Podzol is a type of dirt found in taiga forests. Only a few plants are able to survive on it.=Podsol er ein jordtype som finst i taigaskogar. Berre nokre få plantar er i stand til å overleve på den.
+
+Podzol with Snow=Podsol med snø
+Dirt=Jord
+
+Dirt acts as a soil for a few plants. When in light, this block may grow a grass or mycelium cover if such blocks are nearby.=Jord fungerer som jordsmonn for dei fleste plantetypar. Når ho er i ljos, kan denne blokka få gras eller mycel-lag dersom slike blokker er i nærleiken.
+
+Coarse Dirt=Grov jord
+
+Coarse dirt acts as a soil for some plants and is similar to dirt, but it will never grow a cover.=Grov jord fungerer som jordsmonn for nokre planter og liknar på jord, men det vil aldri få eit grasdekke.
+
+Gravel=Grus
+This block consists of a couple of loose stones and can't support itself.=Denne blokka består av eit par lause steinar og kan ikkje støtte seg sjølv.
+Grey Sand=Grå sand
+Grey sand is found where stone erosion takes place.=Grå sand førekjem der erosjon av stein finn stad.
+Sand=Sand
+Sand is found in large quantities at beaches and deserts.=Sand finst i store mengder langs strender eller i ørkenar.
+Sandstone=Sandstein
+Sandstone is compressed sand and is a rather soft kind of stone.=Sandstein er kompakt sand og er ein relativt mjuk type stein.
+Cut Sandstone=Skåret sandstein
+Cut sandstone is a decorative building block.=Skåret sandstein er ei dekorativ byggjeblokk.
+Chiseled Sandstone=Meisla sandstein
+Chiseled sandstone is a decorative building block.=Meisla sandstein er ei dekorativ byggjeblokk.
+Smooth Sandstone=Finslipt sandstein
+Smooth sandstone is compressed sand and is a rather soft kind of stone.=Finslipt sandstein er ei dekorativ byggjeblokk.
+Red Sand=Raud sand
+Red sand is found in large quantities in mesa biomes.=Raud sand finnes i store mengder i steinødebiomer.
+Red Sandstone=Raud sandstein
+Red sandstone is compressed red sand and is a rather soft kind of stone.=Raud sandstein er kompakt raud sand og er ein relativt mjuk type stein.
+Cut Red Sandstone=Skåret raud sandstein
+Cut red sandstone is a decorative building block.=Skåret raud sandstein er ei dekorativ byggjeblokk.
+Chiseled Red Sandstone=Meisla raud sandstein
+Chiseled red sandstone is a decorative building block.=Meisla raud sandstein er ei dekorativ byggjeblokk.
+Smooth Red Sandstone=Finslipt raud sandstein
+Smooth red sandstone is a decorative building block.= Finslipt raud sandstein er ei dekorativ byggjeblokk.
+Clay=Leire
+Clay is a versatile kind of earth commonly found at beaches underwater.=Leire er ein allsidig jordtype som ofte finst på strender under vatn.
+Brick Block=Teglblokk
+
+Brick blocks are a good building material for building solid houses and can take quite a punch.=Teglblokkar er eit godt byggjemateriale for å byggje solide hus og kan tåle ganske mykje.
+
+Bedrock=Berggrunn
+
+Bedrock is a very hard type of rock. It can not be broken, destroyed, collected or moved by normal means, unless in Creative Mode.=Berggrunn er ein særs hard bergart. Han kan ikkje knusast, øydeleggjast, samlast eller flyttast på vanleg vis, med mindre du er i kreativ modus.
+
+In the End dimension, starting a fire on this block will create an eternal fire.=I Endedimensjonen vil det å kveikje eld på denne blokka skape en evig eld.
+Cobblestone=Brustein
+Mossy Cobblestone=Mosegrodd brustein
+Block of Coal=Kolblokk
+
+Blocks of coal are useful as a compact storage of coal and very useful as a furnace fuel. A block of coal is as efficient as 10 coal.=Kolblokker er nyttige som ei kompakt lagring av kol og svært nyttige som omnsbrensel. Ei kolblokk er like effektiv som 10 kol.
+
+Block of Charcoal=Trekolblokk
+
+Blocks of charcoal are useful as a compact storage of charcoal and very useful as a furnace fuel. A block of charcoal is as efficient as 10 charcoal.=Trekolblokker er nyttige som ei kompakt lagring av trekol og svært nyttige som omnsbrensel. Ei trekolblokk er like effektiv som 10 trekol.
+
+Block of Iron=Jarnblokk
+
+A block of iron is mostly a decorative block but also useful as a compact storage of iron ingots.=Ei jarnblokk er for det meste ei dekorativ blokk, men òg nyttig som ei kompakt oppbevaring av jarnbarrar.
+
+Block of Gold=Gullblokk
+
+A block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Ei gullblokk er for det meste ei skinande dekorativ blokk, men er òg nyttig som ei kompakt lagring av gullbarrar.
+
+Polished Block of Gold=Finslipt gullblokk
+
+A polished block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Ei finslipt gullblokk er for det meste ei skinande dekorativ blokk, men er òg nyttig som ei kompakt lagring av gullbarrar.
+
+Block of Diamond=Diamantblokk
+
+A block of diamond is mostly a shiny decorative block but also useful as a compact storage of diamonds.=Ei diamantblokk er for det meste ei skinande dekorativ blokk, men er òg nyttig som ei kompakt lagring av diamantar.
+
+Lapis Lazuli Block=Lasursteinblokk
+
+A lapis lazuli block is mostly a decorative block but also useful as a compact storage of lapis lazuli.=Ein lasursteinblokk er for det meste ei dekorativ blokk, men òg nyttig som ein kompakt oppbevaring av lasursteinar.
+
+Block of Emerald=Smaragdblokk
+
+A block of emerald is mostly a shiny decorative block but also useful as a compact storage of emeralds.=Ei smaragdblokk er for det meste ei skinande dekorativ blokk, men er òg nyttig som ei kompakt lagring av smaragdar.
+
+Obsidian=Obsidian
+
+Obsidian is an extremely hard mineral with an enourmous blast-resistance. Obsidian is formed when water meets lava.=Obsidian er eit ekstremt hardt mineral med ein enorm eksplosjonsmotstand. Obsidian blir danna når vatn møter ei lavakjelde.
+
+Crying Obsidian=Gråtande obsidian
+
+Crying obsidian is a luminous obsidian that can generate as part of ruined portals.=Gråtande obsidian er ein ljosande obsidian som kan genererast som ein del av øydelagde portalar.
+
+Ice=Is
+
+Ice is a solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into a water source.=Is er ei solid blokk som vanlegvis finst i kalde område. Ho smeltar nær ljoskjelder med eit ljosnivå på 12 eller høgare. Når ho smeltar eller blir øydelagd medan ho kviler oppå ei anna blokk, vil ho bli til ei vasskjelde.
+
+Packed Ice=Pakka is
+Packed ice is a compressed form of ice. It is opaque and solid.=Pakka is er ei komprimert form for is. Den er ugjennomsiktig og solid.
+
+Frosted ice is a short-lived solid block. It melts into a water source within a few seconds.=Frostis er ei kortvarig fast blokk. Han smeltar til ei vasskjelde i løpet av få sekund.
+
+Frosted Ice=Frostis
+Top Snow=Toppsnø
+Stackable=Kan stablast
+
+Top snow is a layer of snow. It melts near light sources other than the sun with a light level of 12 or higher.=Toppsnø er eit snølag. Det smeltar nær andre ljoskjelder enn sola med eit ljosnivå på 12 eller høgare.
+
+Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.=Toppsnø kan stablast og har eitt av 8 ulike høgdenivå. På nivå 2–8 er toppsnø kolliderbar. Toppsnø slepp 2–9 snøballar, avhengig av høgda.
+
+This block can only be placed on full solid blocks and on another top snow (which increases its height).=Denne blokka kan berre plasserast på heile solide blokker og på meir toppsnø (som aukar høgda).
+
+Snow=Snø
+
+This is a full block of snow. Snow of this thickness is usually found in areas of extreme cold.=Dette er ei heil blokk med snø. Snø av denne tjukna finst vanlegvis i område med ekstrem kulde.
+
+##[ nodes_liquid.lua ]##
+Flowing Water=Rennande vatn
+Water Source=Vasskjelde
+Water=Vatn
+
+Water is abundant in oceans and also appears in a few springs in the ground. You can swim easily in water, but you need to catch your breath from time to time.=Vatn er rikeleg i hav og dukkar også opp frå nokre få kjelder i bakken. Du kan lett symja i vatn, men du må trekkja pusten frå tid til anna.
+
+Water interacts with lava in various ways:=Vatn samhandlar med lava på ulike måtar:
+
+• When water is directly above or horizontally next to a lava source, the lava turns into obsidian.=• Når vatnet er rett over eller horisontalt ved sida av ei lavakjelde, blir lavaen til obsidian.
+
+• When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.=• Når rennande vatn rører rennande lava anten ovanfrå eller horisontalt, blir lavaen til brustein.
+
+• When water is directly below lava, the water turns into stone.=• Når vatnet er rett under lava, vert vatnet til stein.
+Flowing Lava=Rennande lava
+
+A lava source sets fire to a couple of air blocks above when they're next to a flammable block.=Ei lavakjelde set fyr på eit par luftblokker over når dei er ved sidan av ei brennbar blokk.
+
+Lava Source=Lavakjelde
+Lava=Lava
+
+Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.=Lava er varmt og ganske farleg. Ikkje rør det, det vil gjere mykje skade og det er vanskeleg å kome seg ut.
+
+Lava interacts with water various ways:=Lava samhandlar med vatn på ulike måter:
+
+• When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=• Når ei lavakjelde er rett under eller horisontalt ved sida av vatn, blir lavaen til obsidian.
+
+• When lava is directly above water, the water turns into stone.=• Når lava er rett over vatn, blir vatnet til stein.
+##[ nodes_cactuscane.lua ]##
+Cactus=Kaktus
+Grows on sand=Veks på sand
+Contact damage: @1 per half second=Kontaktskade: @1 per halve sekund
+
+This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well.=Dette er ein kaktusbit som ofte finst i tørre område, særleg i ørkenar. Over tid vil kaktus vekse opp til 3 blokker høge på sand eller raud sand. Ein kaktus skadar levande vesen med 1 HP kvart halve sekund. Når ei kaktusblokk blir broten, vil alle kaktusblokker som er kopla over henne også bli brotne.
+
+A cactus can only be placed on top of another cactus or any sand.=Ein kaktus kan berre plasserast på toppen av ein annan kaktus eller alle typar sand.
+Sugar Canes=Sukkerrøyr
+Grows on sand or dirt next to water=Veks på sand og jord ved sida av vatn
+
+Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.=Sukkerrøyr er ei plante som har nokre bruksområde i emning. Sukkerrøyr vil sakte vekse opp til 3 blokker når dei er ved sida av vatn og blir plasserte på ei grasblokk, jord, sand, raud sand, podsol eller grov jord. Når ei sukkerrøyrblokk blir broten, vil alle sukkerrøyrblokker som er kopla over henne også bli brotne.
+
+Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow.=Sukkerrøyr kan berre plasserast på toppen av andre sukkerrøyr og på toppen av blokker som dei vil vekse på.
+
+##[ nodes_trees.lua ]##
+This is a decorative block surrounded by the bark of a tree trunk.=Dette er ei dekorativ blokk omgitt av barken til ein trestamme.
+Needs soil and light to grow=Treng jordsmonn og ljos for å vekse
+Oak Wood=Eikestomn
+Oak Bark=Eikebark
+The trunk of an oak tree.=Stomnen åt eit eiketre.
+Dark Oak Wood=Mørkeikstomn
+Dark Oak Bark=Mørkeikbark
+The trunk of a dark oak tree.=Stomnen åt eit mørkeiketre.
+Acacia Wood=Akasiestomn
+Acacia Bark=Akasiebark
+The trunk of an acacia.=Stomnen åt eit akasietre.
+Spruce Wood=Granstomn
+Spruce Bark=Granbark
+The trunk of a spruce tree.=Stomnen åt eit grantre.
+Birch Wood=Bjørkestomn
+Birch Bark=Bjørkebark
+The trunk of a birch tree.=Stomnen åt eit bjørketre.
+Jungle Wood=Jungeltrestomn
+Jungle Bark=Jungeltrebark
+The trunk of a jungle tree.=Stomnen åt eit jungeltre.
+Stripped Oak Log=Slinda eikestomn
+Stripped Oak Wood=Slinda eiketre
+The stripped trunk of an oak tree.=Den avbarka stomnen åt eit eiketre.
+The stripped wood of an oak tree.=Det avbarka trestomnen åt eit eiketre.
+Stripped Acacia Log=Slinda akasiestomn
+Stripped Acacia Wood=Slinda akasietre
+The stripped trunk of an acacia tree.=Den avbarka stomnen åt eit akasietre.
+The stripped wood of an acacia tree.=Det avbarka trestomnen åt eit akasietre.
+Stripped Dark Oak Log=Slinda mørkeikstomn
+Stripped Dark Oak Wood=Slinda mørkeiktre
+The stripped trunk of a dark oak tree.=Den avbarka stomnen åt eit mørkeiktre.
+The stripped wood of a dark oak tree.=Det avbarka trestomnen åt eit mørkeiktre.
+Stripped Birch Log=Slinda bjørkestomn
+Stripped Birch Wood=Slinda bjørketre
+The stripped trunk of a birch tree.=Den avbarka stomnen åt eit bjørketre.
+The stripped wood of a birch tree.=Det avbarka trestomnen åt eit bjørketre.
+Stripped Spruce Log=Slinda granstomn
+Stripped Spruce Wood=Slinda grantre
+The stripped trunk of a spruce tree.=Den avbarka stomnen åt eit grantre.
+The stripped wood of a spruce tree.=Det avbarka stomnen åt eit grantre.
+Stripped Jungle Log=Slinda jungeltrestomn
+Stripped Jungle Wood=Slinda jungeltre
+The stripped trunk of a jungle tree.=Den avbarka stomnen åt eit jungeltre.
+The stripped wood of a jungle tree.=Det avbarka trestomnen åt eit jungeltre.
+Oak Wood Planks=Eikeplankar
+Dark Oak Wood Planks=Mørkeikplankar
+Jungle Wood Planks=Jungeltreplankar
+Spruce Wood Planks=Granplankar
+Acacia Wood Planks=Akasieplankar
+Birch Wood Planks=Bjørkeplankar
+2×2 saplings @= large tree=2×2 spirar @= stort tre
+Oak Sapling=Eikespire
+
+When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak after some time.=Når den plasserast på jordsmonn (som jord) og utsetjast for ljos, vil ein eikespire vekse til eit eiketre etter ei stund.
+
+Dark Oak Sapling=Mørkeikspire
+
+Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light.=Mørkeikspirar kan vekse til mørkeiktre, men berre i grupper. Ein einsleg mørkeikspire vil ikkje vekse. Ei gruppe på fire mørkeikspirar veks til eit mørkeiktre etter ei stund når dei blir plasserte på jordsmonn (som jord) i ein 2×2-firkant og utsetjast for ljos.
+
+2×2 saplings required=2×2 spirar krevjast
+Jungle Sapling=Jungeltrespire
+
+When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree.=Når den plasserast på jordsmonn (som jord) og vert utsetjast for ljos, vil ei jungeltrespire vekse til eit jungeltre etter ei stund. Når det er 4 jungeltrespirer i ein 2×2-firkant, vil dei vekse opp og bli eit stort jungeltre.
+
+Acacia Sapling=Akasiespire
+
+When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia after some time.=Når den plasserast på jordsmonn (som jord) og utsetjast for ljos, vil ein akasiespire vekse til eit akasietre etter ei stund.
+
+Spruce Sapling=Granspire
+
+When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce.=Når den plasserast på jordsmonn (som jord) og utsetjast for ljos, vil ein granspire vekse til eit grantre etter ei stund. Når det er 4 grantrespirer i ein 2×2-firkant, vil dei vekse opp og bli eit stort grantre.
+
+Birch Sapling=Bjørkespire
+
+When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch after some time.=Når den plasserast på jordsmonn (som jord) og utsetjast for ljos, vil ein bjørkespire vekse til eit bjørketre etter ei stund.
+
+Oak Leaves=Eikeblad
+Oak leaves are grown from oak trees.=Eikeblad veks på eiketre.
+Dark Oak Leaves=Mørkeikblad
+Dark oak leaves are grown from dark oak trees.=Mørkeikblad veks på mørkeiktre.
+Jungle Leaves=Jungeltreblad
+Jungle leaves are grown from jungle trees.=Jungeltreblad veks på jungeltre.
+Acacia Leaves=Akasieblad
+Acacia leaves are grown from acacia trees.=Akasieblad veks på akasietre.
+Spruce Leaves=Granbar
+Spruce leaves are grown from spruce trees.=Granbar veks på grantre.
+Birch Leaves=Bjørkeløv
+Birch leaves are grown from birch trees.=Bjørkeblad veks på bjørketre.
+##[ nodes_glass.lua ]##
+Glass=Glas
+A decorative and mostly transparent block.=Ei dekorativ og for det meste gjennomsiktig blokk.
+
+Stained glass is a decorative and mostly transparent block which comes in various different colors.=Farga glas er ei dekorativ og for det meste gjennomsiktig blokk som kan lagast i ulike fargar.
+
+Stained Glass=Farga glas
+Red Stained Glass=Raudfarga glas
+Green Stained Glass=Grønfarga glas
+Blue Stained Glass=Blåfarga glas
+Light Blue Stained Glass=Ljoseblåfarga glas
+Black Stained Glass=Svartfarga glas
+White Stained Glass=Kvitfarga glas
+Yellow Stained Glass=Gulfarga glas
+Brown Stained Glass=Brunfarga glas
+Orange Stained Glass=Oransjefarga glas
+Pink Stained Glass=Rosafarga glas
+Grey Stained Glass=Gråfarga glas
+Lime Stained Glass=Limegrønfarga glas
+Light Grey Stained Glass=Ljosegråfarga glas
+Magenta Stained Glass=Ljoselillafarga glas
+Purple Stained Glass=Lillafarga glas
+Cyan Stained Glass=Turkisfarga glas
+##[ nodes_climb.lua ]##
+Ladder=Stige
+
+A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks.=Ein stigedel som lèt deg klatre vertikalt. Stigar kan berre plasserast på sida av solide blokkar.
+
+Vines=Ranke
+
+Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread.=Rankar er blokker du kan klatra i som blir plasserte på sidene av solide blokker. Rankar veks sakte og spreier seg.
+
+##[ nodes_misc.lua ]##
+Bone Block=Beinblokk
+Bone blocks are decorative blocks and a compact storage of bone meal.=Beinblokker er dekorative blokker og ein kompakt oppbevaring av beinmel.
+Slime Block=Slimblokk
+Slime blocks are very bouncy and prevent fall damage.=Slimblokker er særleg sprettande og hindrar fallskader.
+Cobweb=Spindelvev
+Slows down movement=Reduserar røyrslesnøggleik
+Cobwebs can be walked through, but significantly slow you down.=Spindelvev kan ein gå gjennom, men dei sakkar deg betydeleg.
+Dead Bush=Død busk
+
+Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.=Døde buskar er plantar som ofte finst i tørre område. Dei kan knusast for å skaffe pinnar.
+
+Barrier=Barriere
+
+Barriers are invisible walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block.=Barrierar er usynlege gangbare blokker. Dei nyttast til å lage grenser for eventyrkart og liknande. Skapningar manast ikkje fram på barrierar, og gjerde koplar seg ikkje til barrierar. Andre blokker kan byggjast på barrierar som på alle andre blokker.
+
+When you hold a barrier in hand, you reveal all placed barriers in a short distance around you.=Når du held ein barriere i handa, synleggjer du alle plasserte barrierar innanfor ein kort avstand rundt deg.
+
+Realm Barrier=Verdsbarriere
+Light=Ljos
+
+Lights are invisible blocks. They are used to light up adventure maps and the like.=Ljos er usynlege blokker. Dei vert brukte til å ljosa opp eventyrkart og liknande.
+
+When you hold a light in hand, you reveal all placed lights in a short distance around you.=Når du held eit ljos i handa, synleggjer du alle plasserte ljos innanfor ein kort avstand rundt deg.
+
+Void=Tomrom
+##[ craftitems.lua ]##
+Stick=Pinne
+
+Sticks are a very versatile crafting material; used in countless crafting recipes.=Pinnar er eit veldig allsidig emningsmateriale; brukt i utallege oppskrifter.
+
+Paper=Papir
+Paper is used to craft books and maps.=Papir nyttast til å lage bøker og kart.
+Coal=Kol
+
+“Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.=“Kol” viser til kolbitar du skaffar ved å grave kolmalm som finst under jorda. Kol er vanleg omnsbrensel, men det kan òg nyttast til å lage faklar, kolblokker og nokre andre ting.
+
+Charcoal=Trekol
+
+Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It has the same burning time as coal and also shares many of its crafting recipes, but it can not be used to create coal blocks.=Trekol er eit alternativt omnsbrensel laga ved å brenne stomn i ein omn. Det har same brenntid som kol og deler også mange av same oppskriftene, men det kan ikkje nyttast til å lage kolblokker.
+
+Iron Nugget=Jarnklump
+
+Iron nuggets are very small pieces of molten iron; the main purpose is to create iron ingots.=Jarnklumpar er svært små bitar av smelta jarn; hovudføremålet er å lage jarnbarrar.
+
+Gold Nugget=Gullklup
+
+Gold nuggets are very small pieces of molten gold; the main purpose is to create gold ingots.=Gullklumpar er svært små bitar av smelta gull; hovudføremålet er å lage gullbarrar.
+
+Diamond=Diamant
+
+Diamonds are precious minerals and useful to create the highest tier of armor and tools.=Diamant er ein dyrebar ressurs og nyttig for å lage dei beste rustingsdelane og verktøya.
+
+Clay Ball=Leireball
+Clay balls are a raw material, mainly used to create bricks in the furnace.=Leireballer er et råmateriale, hovedsakelig brukt til å lage teglstein i ovner.
+Iron Ingot=Jarnbarre
+Molten iron. It is used to craft armor, tools, and whatnot.=Smeltet jern. Brukes til å lage rustninger, verktøy og annet.
+Gold Ingot=Gullbarre
+Molten gold. It is used to craft armor, tools, and whatnot.=Smeltet gull. Brukes til å lage rustninger, verktøy og annet.
+Emerald=Smaragd
+Emeralds are used in villager trades as currency.=Smaragder nyttes i handel med landsbyboere som valutta.
+Lapis Lazuli=Lasurstein
+Lapis Lazuli are required for enchanting items on an enchanting table.=Lasurstein er nødvendig for å fortrylle gjenstander på et trolldomsbord.
+Brick=Teglstein
+Bricks are used to craft brick blocks.=Teglstein brukes for å lage teglblokker.
+Flint=Flint
+Flint is a raw material.=Flint er eit råmateriale.
+Sugar=Sukker
+Sugar comes from sugar canes and is used to make sweet foods.=Sukker kjem fra sukkerrøyr og nyttast til å lage søt mat.
+Bowl=Bolle
+Bowls are mainly used to hold tasty soups.=Bollar nyttast hovudsakleg til smakfulle stuingar.
+Apple=Eple
+Apples are food items which can be eaten.=Eple er ein matvare som kan etast.
+Golden Apple=Gulleple
+Golden apples are precious food items which can be eaten.=Gulleple er dyrebare matvarer som kan etast.
+Enchanted Golden Apple=Fortrylla gulleple

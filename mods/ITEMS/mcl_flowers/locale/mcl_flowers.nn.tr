@@ -1,0 +1,59 @@
+# textdomain: mcl_flowers
+
+This is a small flower. Small flowers are mainly used for dye production and can also be potted.=Dette er ein liten blome. Små blomar vert hovudsakleg nytta til fargestoffproduksjon og kan òg pottast.
+
+It can only be placed on a block on which it would also survive.=Kan berre plasserast på ei blokk der den òg ville overlevd.
+Tall Grass=Høgt gras
+
+Tall grass is a small plant which often occurs on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.=Høgt gras er ei lita plante som ofte finst på overflata av grassletter. Det kan haustast for kveitefrø. Ved å nytta beinmjøl kan høgt gras gjerast om til særs høgt gras som er to blokker høgt.
+
+Fern=Bregne
+
+Ferns are small plants which occur naturally in jungles and taigas. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high.=Bregner er små planter som finst naturleg i jungel og taiga. Dei kan haustast for kveitefrø. Ved å nytta beinmjøl kan ei bregne gjerast om til ei stor bregne som er to blokker høg.
+
+Clover=Kløver
+
+Clovers are small plants which occur naturally in plains and other temperate biomes. They can be picked up and planted again.=Kløver er små planter som finst naturleg på sletter og i andre tempererte markslag. Dei kan plukkast opp og plantast igjen.
+
+Four-leaf Clover=Firkløver
+(Top Part)=(øvre del)
+Peony=Pion
+
+A peony is a large plant which occupies two blocks. It is mainly used in dye production.=Ei pion er ein stor plante som tek opp to blokker. Ho vert hovudsakleg nytta til fargestoffproduksjon.
+
+Rose Bush=Rosebusk
+
+A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye production.=Ei rosebusk er ei stor plante som tek opp to blokker. Det er trygt å røre ved ho. Rosebuskar blir hovudsakleg nytta i fargestoffproduksjon.
+
+Lilac=Syrin
+
+A lilac is a large plant which occupies two blocks. It is mainly used in dye production.=Syrin er ei stor plante som tek opp to blokker. Den blir hovudsakleg nytta til fargestoffproduksjon.
+
+Sunflower=Solsikke
+
+A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.=Ei solsikke er ei stor plante som tek opp to blokker. Ho vert hovudsakleg nytta til fargestoffproduksjon.
+
+Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.=Særs høgt gras er ein variant av høgt gras og tek opp to blokker. Det kan haustast for kveitefrø.
+
+Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.=Stor bregne er ein variant av bregne og tek opp to blokker. Ho kan haustast for kveitefrø.
+
+Double Tallgrass=Særs høgt gras
+Large Fern=Stor bregne
+Lily Pad=Vassliljeblad
+
+A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.=Eit vassliljeblad er ei flat planteblokk som ein kan gå på. Dei kan plasserast på vasskjelder, is og frostis.
+
+##[ register.lua ]##
+Poppy=Valmue
+Dandelion=Løvetann
+Oxeye Daisy=Prestekrage
+Orange Tulip=Oransje tulipan
+Pink Tulip=Rosa tulipan
+Red Tulip=Raud tulipan
+White Tulip=Kvit tulipan
+Allium=Prydlauk
+Azure Bluet=Houstonia caerulea
+Blue Orchid=Blå orkidé
+Wither Rose=Visnerose
+Lily of the Valley=Liljekonvall
+Cornflower=Kornblom

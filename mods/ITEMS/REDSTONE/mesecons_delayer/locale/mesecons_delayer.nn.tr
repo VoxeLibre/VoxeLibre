@@ -1,0 +1,16 @@
+# textdomain: mesecons_delayer
+Transmits redstone power only in one direction=Forsyn raudsteinkraft i berre éi retning
+Delays signal=Forseinkar signal
+Output locks when getting active redstone repeater signal from the side=Utgangen blir låst når han får eit aktivt raudsteinforsterkar-signal frå sida
+
+Redstone repeaters are versatile redstone components with multiple purposes: 1. They only allow signals to travel in one direction. 2. They delay the signal. 3. Optionally, they can lock their output in one state.=Raudsteinforsterkarar er allsidige raudsteinkomponentar med fleire føremål: 1. Dei lèt berre signal gå i éi retning. 2. Dei forsinkar signalet. 3. Valfritt kan dei låse utgangen sin i éin tilstand.
+
+To power a redstone repeater, send a signal in “arrow” direction (the input). The signal goes out on the opposite side (the output) with a delay. To change the delay, use the redstone repeater. The delay is between 0.1 and 0.4 seconds long and can be changed in steps of 0.1 seconds. It is indicated by the position of the moving redstone torch.=For å forsyne ein raudsteinforsterkar, send eit signal i pilretninga (inngangen). Signalet går ut på den motsette sida (utgangen) med ei forseinking. For å endre forseinkinga, bruk raudsteinforsterkaren. Forseinkinga er mellom 0,1 og 0,4 sekund lang og kan endrast i trinn på 0,1 sekund. Ho blir indikert av posisjonen til den rørlege raudsteinfakkelen.
+
+To lock a repeater, send a signal from an adjacent repeater into one of its sides. While locked, the moving redstone torch disappears, the output doesn't change and the input signal is ignored.=For å låse ein forsterkar, send eit signal frå ein tilstøytande forsterkar inn i ei av sidene hans. Medan han er låst, forsvinn den rørlege raudsteinfakkelen, utgangen endrar seg ikkje og inngangssignalet blir ignorert.
+
+Redstone Repeater=Raudsteinforsterkar
+Redstone Repeater (Delay @1)=Raudsteinforsterkar (forseinking @1)
+Redstone Repeater (Delay @1, Powered)=Raudsteinforsterkar (forseinking @1, aktiv)
+Redstone Repeater (Locked)=Raudsteinforsterkar (låst)
+Redstone Repeater (Locked, Powered)=Raudsteinforsterkar (låst, aktiv)

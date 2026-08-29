@@ -1,0 +1,139 @@
+# textdomain: mcl_mobitems
+Rotten Flesh=Råte kjøt
+80% chance of food poisoning=80% sjanse for matforgiftning
+
+Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it to restore a few hunger points, but there's a 80% chance it causes food poisoning, which increases your hunger for a while.=Æsj! Dette kjøtstykket har heilt klart sett betre dagar. Dersom du er verkeleg desperat, kan du ete det for å attvinne nokre få svoltpoeng, men det er 80 % sjanse for at det fører til matforgifting, noko som aukar svolten ei stund.
+
+Raw Mutton=Rått fårekjøt
+
+Raw mutton is the flesh from a sheep and can be eaten safely. Cooking it will greatly increase its nutritional value.=Rått fårekjøt er kjøtet frå ein sau og kan trygt etast. Å tilbereda det vil auka næringsverdien monaleg.
+
+Cooked Mutton=Steikt fårekjøt
+Cooked mutton is the cooked flesh from a sheep and is used as food.=Steikt fårekjøt er det behandlede kjøtet fra en sau og nyttast som mat.
+Raw Beef=Rå biff
+
+Raw beef is the flesh from cows and can be eaten safely. Cooking it will greatly increase its nutritional value.=Rå biff er kjøtet frå ei ku og kan trygt etast. Å tilbereda det vil auka næringsverdien monaleg.
+
+Steak=Steikt biff
+Steak is cooked beef from cows and can be eaten.=Steikt biff kjem frå kuer og kan etast.
+Raw Chicken=Rå høne
+30% chance of food poisoning=30% sjanse for matforgiftning
+
+Raw chicken is a food item which is not safe to consume. You can eat it to restore a few hunger points, but there's a 30% chance to suffer from food poisoning, which increases your hunger rate for a while. Cooking raw chicken will make it safe to eat and increases its nutritional value.=Rå høne er ei matvare som ikkje er trygg å eta. Du kan eta det for å attvinne nokre få svoltpoeng, men det er 30 % sjanse for å få matforgifting, noko som aukar svolten ei stund. Å tilbereda det gjer det trygt å eta, og vil auka næringsverdien monaleg.
+
+Cooked Chicken=Steikt høne
+A cooked chicken is a healthy food item which can be eaten.=Steikt høne er ei sunn matvare som kan etast.
+Raw Porkchop=Rå svinekotelett
+
+A raw porkchop is the flesh from a pig and can be eaten safely. Cooking it will greatly increase its nutritional value.=En rå svinekotelett er kjøtet fra en gris og kan trygt spises. Å tilberede den vil øke dens ernæringsmessige verdi betraktelig.
+
+Cooked Porkchop=Steikt svinekotelett
+Cooked porkchop is the cooked flesh of a pig and is used as food.=Steikt svinekotelett er steikt kjøt fra ein gris og nyttast som mat.
+Raw Rabbit=Rå kanin
+
+Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it will increase its nutritional value.=Rå kanin er ei matvare frå ei død kanin. Det kan trygt etast. Å tilbereda det vil auka næringsverdien.
+
+Cooked Rabbit=Steikt kanin
+This is a food item which can be eaten.=Dette er ei matvare som kan etast.
+Milk=Mjølk
+Removes all status effects=Fjernar alle statuseffektar
+
+Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points.=Mjølk er særs forfriskande og kan skaffast ved å nytte ei bøtte på ei ku. Å drikka det vil fjerne alle statuseffektar, men attvinn ingen svoltpoeng.
+
+Use the placement key to drink the milk.=Nytt plasseringsknappen for å drikka mjølka.
+Spider Eye=Edderkoppauga
+Poisonous=Giftig
+
+Spider eyes are used mainly in crafting. If you're really desperate, you can eat a spider eye, but it will poison you briefly.=Edderkoppaugo nyttast hovudsakleg til emning. Dersom du er verkeleg desperat, kan du ete eit edderkoppauga, men det vil gje ei kortvarig forgifting.
+
+Bone=Bein
+
+Bones can be used to tame wolves so they will protect you. They are also useful as a crafting ingredient.=Bein kan nyttast til å temje vargar slik at dei vil beskytte deg. Dei er òg nyttige til emning.
+
+Wield the bone near wolves to attract them. Use the “Place” key on the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by using the “Place” key on it.=Hald beinet nærme vargar for å trekkja dei åt deg. Bruk “Plasser”-tasten på vargen for å gje han eit bein og temja han. Du kan deretter gje kommandoar til den tamme vargen ved å nytta «Plasser»-tasten på han.
+
+Squid Ink Sac=Blekksekk
+
+This item is dropped by dead squids. Squid ink can be used to as an ingredient to craft book and quill or black dye.=Denne gjenstanden sleppast av falne blekksprutar. Blekksekkar kan nyttast som ein ingrediens for å emna 'bok og fjørpenn' eller svart fargestoff.
+
+String=Tråd
+Strings are used in crafting.=Tråd nyttast i emning.
+Spectre Membrane=Fantomhinne
+This is a crafting component dropped from dead spectres.=Dette er ein emningsingrediens som sleppast av døde fantom.
+Shiny Ice Crystal=Skinande iskrystall
+This item is mainly used for crafting.=Denne gjenstanden nyttast hovudsakleg i emning.
+Aery Charge=Vindladning
+Crystalline Drop=Krystallindrope
+Earthen Ash=Jordisk oske
+Flaming Rod=Eldstav
+This is a crafting component dropped from dead fire elementals.=Dette er ein emningsingrediens som sleppast av døde eldvette.
+Flaming Powder=Eldpulver
+Magma Cream=Magmakrem
+Magma cream is a crafting component.=Magmakrem er ein emningsingrediens.
+Ghast Tear=Skrekktåre
+Place this item in an item frame as decoration.=Plasser denne gjenstanden i ei ramme som dekorasjon.
+Nether Star=Netherstjerne
+
+A nether star is dropped when the Wither dies. Place it in an item frame to show the world how hardcore you are! Or just as decoration.=En netherstjerne slippes når Forvitreren dør. Plasser den i en gjenstandsramme for å vise verden hvor sykt kul du er! Eller bare som pynt.
+
+Leather=Ler
+Leather is a versatile crafting component.=ler er ein allsidig emningsingrediens.
+Feather=Fjør
+Feathers are used in crafting and are dropped from chickens.=Fjør nyttast i emning og sleppast av høns
+Leather Piece=Lerstykke
+Leather piece is a smaller piece of leather.=Eit lite stykke ler.
+Rabbit's Foot=Kaninlabb
+Must be your lucky day! Place this item in an item frame for decoration.=Må vere lukkedagen din! Plasser denne gjenstanden i ei gjenstandsramme for dekorasjon.
+Saddle=Sal
+Can be placed on animals to ride them=Kan setjast på dyr for å ri dei
+Saddles can be put on some animals in order to mount them.=Salar kan setjast på nokon dyr for å ri dei.
+
+Use the placement key with the saddle in your hand to try to put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by using the placement key on them again.=Nytt plasseringsknappen med salen i handa for å prøve å setje på salen. Salar passar på hestar, muldyr, esel og grisar. Hestar, muldyr og esel må temjast først, elles vil dei avvise salen. Ein kan ri dyr med sal ved å nytte plasseringsknappen på dei att.
+
+Rabbit Stew=Kaninstuing
+Rabbit stew is a very nutricious food item.=Kaninstuing er ei særs næringsrik matvare.
+Shulker Shell=Shulkerskal
+Shulker shells are used in crafting. They are dropped from dead shulkers.=Shulkerskal nyttast i emning. Dei sleppast av falne shulkerar.
+Slimeball=Slimball
+Slimeballs are used in crafting. They are dropped from slimes.=Slimballer nyttast i emning. Dei sleppast av falne slim.
+Gunpowder=Krutt
+Carrot on a Stick=Gulrot på stong
+Lets you ride a saddled pig=Lar deg ri på ein gris med sal
+A carrot on a stick can be used on saddled pigs to ride them.=Ei gulrot på stong kan nyttast på griser med sal for å ri dei.
+
+Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=Plasser den på ein gris med sal for å ri han. Du kan no ri på grisen som ein hest. Grisar vil også gå mot deg når du held denne i handa.
+
+Warped fungus on a Stick=Vridesopp på stong
+Lets you ride a strider=Lar deg ri på ein lavavandrar
+A warped fungus on a stick can be used on saddled striders to ride them.=Ein vridesopp på stong nyttast på lavavandrar med sal for å ri dei.
+
+Place it on a saddled strider to mount it. You can now ride the strider like a horse. Striders will also walk towards you when you just wield the fungus on a stick.=Plasser den på ein lavavandrar med sal for å ri han. Du kan no ri på lavavandraren som ein hest. Lavavandrarar vil også gå mot deg når du held denne i handa.
+
+Nautilus Shell=Perlebåtskal
+Used to craft a conduit=Nyttast til å byggje en flødar
+
+The Nautilus Shell is used to craft a conduit. They can be obtained by fishing or killing a drowned that is wielding a shell.=Perlebåtskall brukes til å lage en fløder. De kan skaffes via fiske eller å drepe en draug som bærer et skjell.
+
+Heart of the Sea=Havhjarta
+
+The Heart of the Sea is used to craft a conduit. They can be obtained by finding them in a buried treasure chest.=Havhjarta blir nytta for å lage ein flødar. Du finn dei i nedgravde skattekister.
+
+Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.=Plasser den på ein hest for å ta på hesterustninga. Esel og muldyr kan ikkje nytta hesterustning.
+
+Leather Horse Armor=Lerhesterustning
+
+Leather horse armor can be worn by horses to increase their protection from harm a little.=Lerhesterustning kan nyttast av hestar for å auke deira skadevern pittelitt.
+
+Iron Horse Armor=Jernhesterustning
+
+Iron horse armor can be worn by horses to increase their protection from harm a bit.=Jernhesterustning kan nyttast av hestar for å auke deira skadevern litt.
+
+Golden Horse Armor=Gullhesterustning
+Golden horse armor can be worn by horses to increase their protection from harm.=Gullhesterustning kan nyttast av hestar for å auke deira skadevern.
+Diamond Horse Armor=Diamanthesterustning
+
+Diamond horse armor can be worn by horses to greatly increase their protection from harm.=Diamanthesterustning kan nyttast av hestar for å markant auke deira skadevern.
+
+Glow Ink Sac=Glødeblekksekk
+Use it to craft the Glow Item Frame.=Nytt den til å lage en gløderamme.
+Use the Glow Ink Sac and the normal Item Frame to craft the Glow Item Frame.=Bruk glødeblekksekken og ei vanleg ramme til å lage gløderamma.

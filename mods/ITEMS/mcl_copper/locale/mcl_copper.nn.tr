@@ -1,0 +1,61 @@
+# textdomain: mcl_copper
+##[ nodes.lua ]##
+Copper Ore=Koparmalm
+
+Some copper contained in stone, it is pretty common and can be found below sea level.=Litt kopar blandet i stein, det er ganske vanlig og kan finnes under havnivå.
+
+Block of Raw Copper=Rå koparblokk
+A block used for compact raw copper storage.=Ei blokk som nyttast for å komprimere koparerts til lagring.
+Block of Copper=Koparblokk
+A block of copper is mostly a decorative block.=Ei koparblokk er for det meste ei dekorativ blokk.
+Waxed Block of Copper=Voksa koparblokk
+Exposed Copper=Utsett kopar
+Exposed copper is a decorative block.=Utsett kopar er ei dekorativ blokk
+Waxed Exposed Copper=Voksa utsett kopar
+Weathered Copper=Vêrbiten kopar
+Weathered copper is a decorative block.=Vêrbiten kopar er ei dekorativ blokk.
+Waxed Weathered Copper=Voksa vêrbiten kopar
+Oxidized Copper=Eira kopar
+Oxidized copper is a decorative block.=Eira kopar er ei dekorativ blokk.
+Waxed Oxidized Copper=Voksa eira kopar
+Cut Copper=Skåret kopar
+Cut copper is a decorative block.=Skåret kopar er ei dekorativ blokk
+Waxed Cut Copper=Voksa skoren kopar
+Exposed Cut Copper=Utsett skoren kopar
+Exposed cut copper is a decorative block.=Utsett skoren kopar er ei dekorativ blokk.
+Waxed Exposed Cut Copper=Voksa utsett skoren kopar
+Weathered Cut Copper=Vêrbiten skoren kopar
+Weathered cut copper is a decorative block.=Vêrbiten skoren kopar er ei dekorativ blokk.
+Waxed Weathered Cut Copper=Voksa vêrbiten skoren kopar
+Oxidized Cut Copper=Eira skoren kopar
+Oxidized cut copper is a decorative block.=Eira skoren kopar er ei dekorativ blokk.
+Waxed Oxidized Cut Copper=Voksa eira skoren kopar
+Slab of Cut Copper=Helle av skoren kopar
+Double Slab of Cut Copper=Dobbel skoren koparhelle
+Waxed Slab of Cut Copper=Voksa helle av skoren kopar
+Waxed Double Slab of Cut Copper=Voksa dobbel skoren koparhelle
+Slab of Exposed Cut Copper=Helle av utsett skoren kopar
+Double Slab of Exposed Cut Copper=Dobbel helle av usatt skoren kopar
+Waxed Slab of Exposed Cut Copper=Voksa helle av utsett skoren kopar
+Waxed Double Slab of Exposed Cut Copper=Voksa dobbel helle av usatt skoren kopar
+Slab of Weathered Cut Copper=Helle av vêrbiten skoren kopar
+Double Slab of Weathered Cut Copper=Dobbel helle av vêrbiten skoren kopar
+Waxed Slab of Weathered Cut Copper=Voksa helle av vêrbiten skoren kopar
+Waxed Double Slab of Weathered Cut Copper=Voksa dobbel helle av vêrbiten skoren kopar
+Slab of Oxidized Cut Copper=Helle av eira skoren kopar
+Double Slab of Oxidized Cut Copper=Dobbel helle av eira skoren kopar
+Waxed Slab of Oxidized Cut Copper=Voksa helle av eira skoren kopar
+Waxed Double Slab of Oxidized Cut Copper=Voksa dobbel helle av eira skoren kopar
+Stairs of Cut Copper=Trapp av skoren kopar
+Waxed Stairs of Cut Copper=Voksa trapp av skoren kopar
+Stairs of Exposed Cut Copper=Trapp av utsett skoren kopar
+Waxed Stairs of Exposed Cut Copper=Voksa trapp av utsett skoren kopar
+Stairs of Weathered Cut Copper=Trapp av vêrbiten skoren kopar
+Waxed Stairs of Weathered Cut Copper=Voksa trapp av vêrbiten skoren kopar
+Stairs of Oxidized Cut Copper=Trapp av eira skoren kopar
+Waxed Stairs of Oxidized Cut Copper=Voksa trapp av eira skoren kopar
+##[ items.lua ]##
+Copper Ingot=Koparbarre
+Molten Raw Copper. It is used to craft blocks.=Smelta råkopar. Nyttast til å lage blokker.
+Raw Copper=Koparerts
+Raw Copper. Mine a Copper Ore to get it.=Koparerts. Utvinn ei koparmalmblokk for å skaffa det.

@@ -1,0 +1,13 @@
+# textdomain: mcl_music
+Background music volume (0-1000)=Bakgrunnsmusikkvolum (0-1000)
+Turn music for yourself or another player on or off.=Slå musikk for deg sjølv eller ein annan spelar av eller på.
+
+You need the debug privilege in order to turn in-game music on or off for somebody else!=Du treng debug-privilegiet for å slå spelmusikk av eller på for nokon andre!
+
+Could not find player @1!=Kunne ikkje finne spelar @1!
+off=av
+on=på
+Set music for @1 to: @2=Sette musikk for @1 til: @2
+
+Force playing a specific or random (no param) track to yourself. Beware, selected track may be interrupted by the scheduler (each 5-15 seconds).=Tving avspeling av eit spesifikt eller tilfeldig (utan parameter) spor for deg sjølv. Ver merksam på at det valde sporet kan bli avbrote av planleggjaren (kvar 5.–15. sekund).
+

@@ -1,0 +1,40 @@
+# textdomain: vl_deepslate_tools
+
+Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.=Hakker er verktøy for å vinne ut harde blokker, som til dømes stein. Ei hakke kan også nyttast som våpen, men det er ikkje særs effektivt.
+
+An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.=Ei øks er det føretrekte verktøyet ditt for å hogge ned tre, trebaserte blokker og andre blokker. Økser gjer mykje skade òg, men dei er ganske treige.
+
+Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.=Sverd er gode i nærkamp, då dei er raske, gjer mykje skade og er haldbare gjennom tallause slag. Sverd kan òg nyttast til å kutte ned nokre få utvalde blokker, til dømes spindelvev.
+
+To slash multiple enemies, hold the sword in your hand, then use (rightclick) an enemy.=For å slå fleire fiendar, hald sverdet i handa og 'bruk' (høgreklikk) på ein fiende.
+
+Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.=Spadar er verktøy for å grave grove blokker, som jord, sand og grus. Dei kan òg brukast til å gjere grasblokker om til moldråser. Spadar kan nyttast som våpen, men dei er veldig svake.
+
+To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.=For å gjera ei grasblokk om til ei moldrås, hald spada i handa, og 'bruk' (høgreklikk) oppå eller på sida av ei grasblokk. Dette verkar berre når det er luft over grasblokka.
+
+Can crush blocks=Kan knuse blokker
+Increased knockback=Auka atterslag
+
+Hammers are great in melee combat, as they deal high damage with increased knockback and can endure countless battles. Hammers can also be used to crush things.=Hammarar er gode i nærkamp, då dei gjer mykje skade med auka atterslagskraft og er haldbare gjennom tallause slag.
+
+To crush a block, dig the block with the hammer. This only works with some blocks.=For å knuse ei blokk, utvinn blokka med ein hammar. Dette verkar berre på nokre blokker.
+
+Reaches farther=Auka rekkjevidd
+Can be thrown=Kan kastast
+
+Spears are great in melee combat, as they have an increased reach. They can also be thrown.=Spjut er bra i nærkamp, då dei har auka rekkjevidde. Dei kan òg kastast.
+
+To throw a spear, hold it in your hand, then hold use (rightclick) in the air.=For å kaste et spyd, hold det i hånden. Deretter hold bruk (høyreklikk) i luften.
+Cuts plants in range=Klipp planter i nærleiken
+Scythes are great in melee combat.=Ljåar er bra i nærkamp.
+
+When you cut down a plant with a scythe, it cuts down other plants in a 3x3 area.=
+
+Deepslate Pickaxe=Djupskiferhakke
+Deepslate Shovel=Djupskiferspade
+Deepslate Hoe=Djupskifergrev
+Deepslate Axe=Djupskiferøks
+Deepslate Sword=Djupskifersverd
+Deepslate Hammer=Djupskiferhammar
+Deepslate Spear=Djupskiferspjut
+Deepslate Scythe=Djupskiferljå

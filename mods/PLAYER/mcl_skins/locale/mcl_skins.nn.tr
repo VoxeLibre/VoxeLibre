@@ -1,0 +1,17 @@
+# textdomain: mcl_skins
+##[ edit_skin.lua ]##
+Templates=Malar
+Arm size=Armstorleik
+Bases=Basar
+Footwears=Fottøy
+Eyes=Augo
+Mouths=Munnar
+Bottoms=Beinplagg
+Tops=Toppar
+Hairs=Hår
+Headwears=Hovudplagg
+Skins=Utjånader
+Capes=Kapper
+Open skin configuration screen.=Opne skjermen for utsjånadsendring
+Select=Vel
+(None)=(ingen)

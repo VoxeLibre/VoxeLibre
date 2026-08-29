@@ -1,0 +1,19 @@
+# textdomain: mcl_comparators
+Redstone comparators are multi-purpose redstone components.=Raudsteinsamanliknarar er fleirbruks raudsteinskomponentar.
+
+They can transmit a redstone signal, detect whether a block contains any items and compare multiple signals.=Dei kan overføre eit raudsteinssignal, oppdage om ei blokk inneheld gjenstandar, og samanlikne fleire signal.
+
+A redstone comparator has 1 main input, 2 side inputs and 1 output. The output is in arrow direction, the main input is in the opposite direction. The other 2 sides are the side inputs.=Ein raudsteinsamanliknar har 1 hovudinngang, 2 sideinngangar og 1 utgang. Utgangen er i retning pila, hovudinngangen er i motsett retning. Dei andre 2 sidene er sideinngangane.
+
+The main input can powered in 2 ways: First, it can be powered directly by redstone power like any other component. Second, it is powered if, and only if a container (like a chest) is placed in front of it and the container contains at least one item.=Hovudinngangen kan aktiverast på 2 måtar: Aktiverast direkte med raudsteinskraft som alle andre komponentar. Eventuelt dersom, og berre dersom, ein behaldar (som ei kiste) blir plassert føre han og behaldaren inneheld minst éin gjenstand.
+
+The side inputs are only powered by normal redstone power. The redstone comparator can operate in two modes: Transmission mode and subtraction mode. It starts in transmission mode and the mode can be changed by using the block.=Sideinngangane blir berre aktiverte av vanleg raudsteinskraft. Raudsteinsamanliknaren kan operere i to modusar: Overføringsmodus og subtraksjonsmodus. Han startar i overføringsmodus, og modusen kan endrast ved å bruke blokka.
+
+Transmission mode:@nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.=Overføringsmodus:@nFrontfakkelen er sløkt og senka. Utgangen er aktivert viss, og berre viss, hovudinngangen er aktivert. Dei to sideinngangane oversjåast.
+
+Subtraction mode:@nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.=Subtraksjonsmodus:@nFrontfakkelen er tent. Utgangen er aktivert viss, og berre viss, hovudinngangen er aktivert og ingen av sideinngangane er aktivert.
+
+Redstone Comparator=Raudsteinsamanliknar
+Redstone Comparator (Powered)=Raudsteinsamanliknar (Aktivert)
+Redstone Comparator (Subtract)=Raudsteinsamanliknar (Subtraksjon)
+Redstone Comparator (Subtract, Powered)=Raudsteinsamanliknar (Subtraksjon, Aktivert)

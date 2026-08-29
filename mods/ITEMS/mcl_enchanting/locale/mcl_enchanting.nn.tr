@@ -1,0 +1,113 @@
+# textdomain: mcl_enchanting
+### enchantments.lua ###
+Enchant an item=Fortrylla ein gjenstand
+<player> <enchantment> [<level>]=<spelar> <trolldom> [<nivå>]
+Usage: /enchant <player> <enchantment> [<level>]=Bruk: /enchant <spelar> <trolldom> [<nivå>]
+Player '@1' cannot be found.=Spelar '@1' blei ikkje funnen.
+There is no such enchantment '@1'.=Det finst ikkje ein slik trolldom '@1'
+The target doesn't hold an item.=Målet held ikkje ein gjenstand.
+The selected enchantment can't be added to the target item.=Den valde trolldoma kan ikkje leggjast til målgjenstaden.
+### init.lua ###
+'@1' is not a valid number='@1' er ikkje eit gyldig tal
+The number you have entered (@1) is too big, it must be at most @2.=Talet du har tasta inn (@1) er for stort, det kan vere maks @2.
+The number you have entered (@1) is too small, it must be at least @2.=Talet du har tasta inn (@1) er for lite, det må vere minst @2.
+@1 can't be combined with @2.=@1 kan ikkje sameinast med @2.
+Enchanting succeded.=Fortrylling vellukka
+Forcefully enchant an item=Tving trolldom på ein gjenstand
+Usage: /forceenchant <player> <enchantment> [<level>]=Bruk: /foceenchant <spelar> <trolldom> [<nivå>]
+The target item is not enchantable.=Målgjenstanden kan ikke fortryllast
+'@1' is not a valid number.='@1' er ikkje eit gyldig tal.
+Enchanted Book=Fortrylla bok
+Enchanting Table=Trolldomsbord
+Spend experience, and lapis to enchant various items.=Nytta erfaringspoeng og lasurstein for å fortrylla ulike gjenstandar.
+
+Enchanting Tables will let you enchant armors, tools, weapons, and books with various abilities. But, at the cost of some experience, and lapis lazuli.=Trolldomsbord lèt deg fortrylla rustningar, verktøy, våpen og bøker med ulike krefter. Men på kostnad av litt erfaringspoeng og lasurstein.
+
+Rightclick the Enchanting Table to open the enchanting menu.=Høgreklikk på trolldomsbordet for å opne trolldomsmenyen.
+
+Place a tool, armor, weapon or book into the top left slot, and then place 1-3 Lapis Lazuli in the slot to the right.=Plasser eit verktøy, ei rustning, eit våpen eller ei bok i det øvre venstre feltet, og plasser deretter 1-3 lasurstein i feltet til høgre.
+
+After placing your items in the slots, the enchanting options will be shown. Hover over the options to read what is available to you.=Etter at du har plassert gjenstandane dine i felta, vil fortryllingsalternativa synast. Hald markøren over alternativa for å lese kva som er tilgjengeleg for deg.
+
+These options are randomized, and dependent on experience level; but the enchantment strength can be increased.=Desse alternativa er tilfeldige, og avhengige av erfaringsnivå; men trolldomsstyrka kan aukast.
+
+To increase the enchantment strength, place bookshelves around the enchanting table. However, you will need to keep 1 air node between the table, & the bookshelves to empower the enchanting table.=For å auke trolldomsstyrka, plasser bokhyller rundt trolldomsbordet. Du må likevel ha 1 luftblokk mellom bordet og bokhyllene for å styrke trolldomsbordet.
+
+After finally selecting your enchantment; left-click on the selection, and you will see both the lapis lazuli and your experience levels consumed. And, an enchanted item left in its place.=Etter endeleg å ha valt trolldomen di; venstreklikk på resultatet, og du vil sjå både lasurstein og erfaringsnivåa dine brukast opp. Ein fortrylla gjenstand tek deira plass.
+
+Enchant=Fortryll
+##[ engine.lua ]##
+Inventory=Forråd
+@1 Lapis Lazuli=@1 Lasurstein
+### engine.lua ###
+@1 Enchantment Levels=@1 trolldomsnivå
+Level requirement: @1=Nivåkrav: @1
+##[ enchantments.lua ]##
+Bane of Arthropods=Leddyrsbane
+
+Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).=Aukar skade og kastar Tråleik IV på leddyrskapningar (edderkoppar, holeedderkoppar, sølvkre og endermidd).
+
+Channeling=Lynleiar
+
+Channels a bolt of lightning toward a target. Works only during thunderstorms and if target is unobstructed with opaque blocks.=Kanaliserar eit lyn mot eit mål. Fungerar berre under torevêr og dersom målet er uhindra av solide blokkar.
+
+Curse of Vanishing=Kvervingsforbannelse
+Item destroyed on death.=Gjenstand kvervast ved dødsfall.
+Depth Strider=Dyptegangar
+Increases underwater movement speed.=Aukar rørslesnøggleik under vatn.
+Efficiency=Effektivitet
+Increases mining speed.=Aukar utvinningsfart.
+Fire Aspect=Eldaspekt
+Sets target on fire.=Kveikjer målet.
+Flame=Eld
+Arrows set target on fire.=Piler kveikjer målet.
+Fortune=Rikdom
+Increases certain block drops.=Aukar slepprata for somme blokker.
+Frost Walker=Frostvandrar
+
+Turns water beneath the player into frosted ice and prevents the damage from magma blocks.=Vatn under spelaren omdannast til frostis, samt hindrar skade frå magmablokkar.
+
+Impaling=Spidding
+Trident deals additional damage to ocean mobs.=Ljoster gjer auka skade mot havskapningar.
+Infinity=Evig
+Shooting consumes no regular arrows.=Å skyte forbrukar ingen vanlege piler.
+Knockback=Atterslag
+Increases knockback.=Aukar atterslagskraft.
+Looting=Plundring
+Increases mob loot.=Aukar skapningslepp.
+Loyalty=Lojalitet
+Spear returns after being thrown. Higher levels reduce return time.=Spjut kjem tilbake etter eit kast. Høgare nivå reduserar tilbakekallingstida.
+Luck of the Sea=Havets hell
+Increases rate of good loot (enchanting books, etc.)=Aukar slepp av gode gjenstandar ved fisking (trolldomsbøker, o.l.)
+Lure=Agn
+Decreases time until rod catches something.=Kortar ned tida det tek før du får napp med fiskestonga.
+Mending=Vøling
+Repair the item while gaining XP orbs.=Reparerar gjenstanden når du plukkar opp erfaringskuler.
+Multishot=Fleirskot
+Shoot 3 arrows at the cost of one.=Skyt 3 piler, men forbrukar berre 1.
+Piercing=Spiddande
+Arrows passes through multiple objects.=Piler går gjennom fleire objekt.
+Power=Kraft
+Increases arrow damage.=Aukar pilskade.
+Punch=Slag
+Increases arrow knockback.=Aukar atterslagskraft for piler.
+Quick Charge=Snøgglading
+Decreases crossbow charging time.=Aukar omladingsfarten til armbrøst.
+Respiration=Respirasjon
+Extends underwater breathing time.=Utvidar lungekapasiteten under vatn.
+Riptide=Vassbyks
+Trident launches player with itself when thrown. Works only in water or rain.=Ljosteret slengjer spelaren med seg sjølv når det blir kasta. Verkar berre i vatn eller i regn.
+Sharpness=Kvassleik
+Increases damage.=Aukar skade.
+Silk Touch=Silkeberøring
+Mined blocks drop themselves.=Utvinna blokker slepp seg sjølv.
+Smite=Vandaudsbane
+Increases damage to undead mobs.=Auka skade mot vandaude skapningar.
+Soul Speed=Sjelefart
+Increases walking speed on soul sand and soul soil.=Aukar rørslesnøggleik på sjelesand og sjelejord.
+Sweeping Edge=Sveipande knivsegg
+Increases sweeping attack damage.=Akuar sveipeskade.
+Unbreaking=Herda
+Increases item durability.=Aukar holdbarheit for gjenstandar.
+Swift Sneak=Snøggsnik
+Increases movement speed while sneaking.=Aukar rørslesnøggleik når ein snik.

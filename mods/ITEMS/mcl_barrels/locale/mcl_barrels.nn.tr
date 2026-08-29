@@ -1,0 +1,7 @@
+# textdomain: mcl_barrels
+Barrel=Tynne
+Inventory=Forråd
+27 inventory slots=27 forrådsfelt
+Barrels are containers which provide 27 inventory slots.=Tynner er behaldarar med 27 forrådsfelt.
+To access its inventory, rightclick it. When broken, the items will drop out.=For å få tilgang til forrådet, høgreklikk på det. Når dei øydeleggjast, fell gjenstandane ut.
+Barrel Open=Open tynne

@@ -1,0 +1,73 @@
+# textdomain: mcl_armor
+
+This is a piece of equippable armor which reduces the amount of damage you receive.=Dette er eit stykke rustning som reduserar mengda skade du tek imot.
+
+To equip it, put it on the corresponding armor slot in your inventory menu.=For å utrusta den, plasser den i det tilsvarande rustningsfeltet i forrådsmenyen.
+
+Sentry=Plyndra
+Dune=Dynas
+Coast=Forlis
+Wild=Vill
+Tide=Fjæra
+Ward=Forvara
+Vex=Plageandens
+Rib=Ribbeinsaktig
+Snout=Snuteaktig
+Eye=Skarpsynt
+Spire=Spirens
+Silence=Stilldomens
+Wayfinder=Vegsynarens
+##[ api.lua ]##
+Upgrade:=Oppgradering:
+@1 Armor Trim=@1 rustningspryd
+##[ register.lua ]##
+Golden Helmet=Gullhjelm
+Golden Chestplate=Gullbrystplate
+Golden Leggings=Gullbeinplater
+Golden Boots=Gullstøvlar
+Chainmail Helmet=Brynjehette
+Chainmail Chestplate=Ringbrynje
+Chainmail Leggings=Brynjehose
+Chainmail Boots=Brynjestøvlar
+Iron Helmet=Jarnhjelm
+Iron Chestplate=Jarnbrystplate
+Iron Leggings=Jarnbeinplater
+Iron Boots=Jarnstøvlar
+Diamond Helmet=Diamanthjelm
+Diamond Chestplate=Diamantbrystplate
+Diamond Leggings=Diamantbeinplater
+Diamond Boots=Diamantstøvlar
+Netherite Helmet=Netheritthjelm
+Netherite Chestplate=Netherittbrystplate
+Netherite Leggings=Netherittbeinplate
+Netherite Boots=Netherittstøvlar
+Projectile Protection=Prosjektilvern
+Reduces projectile damage.=Minskar prosjektilskade.
+Blast Protection=Sprengingsvern
+Reduces explosion damage and knockback.=Minskar sprengingskade og atterslag.
+Fire Protection=Eldvern
+Reduces fire damage.=Minskar eldskade.
+Protection=Beskyttelse
+Reduces most types of damage by 4% for each level.=Minskar fleste typer skade med 4% for hvert nivå.
+Feather Falling=Fjørfall
+Reduces fall damage.=Minskar fallskade.
+Aqua Affinity=Vassarbeidear
+#Translations of enchantements
+Increases underwater mining speed.=Aukar utvinningsfarta under vatn.
+Curse of Binding=Bindingsforbannelse
+
+Item cannot be removed from armor slots except due to death, breaking or in Creative Mode.=Gjenstand kan ikkje fjernast frå rustningsfelt utanom ved død, forringing eller kreativ modus.
+
+Thorns=Tornar
+
+Reflects some of the damage taken when hit, at the cost of reducing durability with each proc.=Gjenspeiler noe av skaden som ble tatt når truffet, på bekostning av redusert holdbarhet per aktivering.
+
+Elytra=Vengjer
+##[ leather.lua ]##
+Leather Cap=Lerhatt
+Leather Tunic=Lertrøye
+Leather Pants=Lerbukser
+Leather Boots=Lerstøvlar
+##[ trims.lua ]##
+#Translations for armor trims
+Smithing Template '@1'=Smimal '@1'

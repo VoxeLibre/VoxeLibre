@@ -1,0 +1,16 @@
+# textdomain: mcl_itemframes
+Item frames are decorative blocks in which items can be placed.=Rammer er dekorative blokkar som gjenstandar kan plasserast i.
+
+Just place any item on the item frame. Use the item frame again to retrieve the item.=Berre plasser kva som helst slag gjenstand i ramma. Bruk ramma på nytt for å hente ut gjenstanden.
+
+##[ register.lua ]##
+Item Frame=Ramme
+Can hold an item=Kan halde éin gjenstand
+Glow Item Frame=Gløderamme
+Can hold an item and glows=Kan halde éin gjenstand og den gløder
+Invisible Item Frame=Usynleg ramme
+Can hold an item but is invisible=Kan halde éin gjenstand men rammen er usynlig
+Invisible Glow Item Frame=Usynleg gløderamme
+Can hold an item and glows but is invisible=Kan halde éin gjenstand og den gløder, men ramma er usynleg
+Glow and Behold!=Glødande bevaring!
+Craft a glow item frame.=Lag ei gløderamme.

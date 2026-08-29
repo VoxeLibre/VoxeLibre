@@ -1,0 +1,6 @@
+# textdomain: mcl_structures
+Generate a pre-defined structure near your position.=Generer ein førehandsdefinert struktur nær posisjonen din.
+Structure placed.=Struktur plassert.
+Error: No structure type given. Please use “/spawnstruct <type>”.=Feil: Ingen strukturtype oppgitt. Venlegast bruk "/spawnstruct <type>".
+Error: Unknown structure type. Please use “/spawnstruct <type>”.=Feil: Ukjend strukturtype. Venlegast bruk "/spawnstruct <type>".
+Use /help spawnstruct to see a list of available types.=Bruk /help spawnstruct for å sjå ei liste over tilgjengelege typar.

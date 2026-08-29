@@ -1,0 +1,35 @@
+# textdomain: mcl_books
+Book=Bok
+Books are used to make bookshelves and book and quills.=Bøker nyttast til å lage bokhyller og skrivebøker.
+“@1”="@1"
+Copy of “@1”=Kopi av "@1"
+Copy of Copy of “@1”=Kopi av kopi av "@1"
+Tattered Book=Sliten bok
+by @1=av @1
+# as in “to sign a book”
+Sign=Signer
+Done=Ferdig
+Book and Quill=Bok og fjørpenn
+Write down some notes=Skriv ned nokon notat
+This item can be used to write down some notes.=Denne gjenstanden kan brukast til å skrive ned notat.
+
+Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.=Hald den i hånden, og høyreklikk for å lese og brigde gjeldande tekst. Du kan brigda teksta så ofte du vil. Du kan også signere boken, som gjer ho til ei skriven bok som du kan stable, men då kan den ikke lenger endrast.
+
+A book can hold up to 4500 characters. The title length is limited to 64 characters.=Ei bok kan innehalde opptil 4500 teikn. Tittellengda er avgrensa til 64 teikn.
+
+Enter book title:=Før inn boktittel:
+Sign and Close=Signer og lukk
+Note: The book will no longer be editable after signing=Merk: Boka vil ikkje lenger kunne endrast etter signering
+Cancel=Avbryt
+Nameless Book=Namnlaus bok
+Written Book=Skriven bok
+
+Written books contain some text written by someone. They can be read and copied, but not edited.=Skrevne bøker inneholder tekst skrevet av noen. De kan leses og kopieres, men ikke redigeres.
+
+Hold it in your hand, then rightclick to read the book.=Hald den i handa og høyreklikk for å lesa boka.
+
+To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied.=For å kopiere teksten til den skrivne boka, plasser henne i emningsfeltet saman med ei 'bok og fjørpenn' (eller fleire av dei). Den skrivne boka vert ikkje brukt opp. Kopiar av kopiar kan ikkje kopierast.
+
+Bookshelf=Bokhylle
+Inventory=Forråd
+Bookshelves are used for decoration.=Bokhyller nyttast som dekorasjon.
