@@ -132,8 +132,12 @@ Eating and drinking on touchscreen devices should now work better thanks to Hero
 
 
 ## 0.92.2 hotfix
-* Fixed the crash happening with Luanti 5.17 – Sheriff-Unit-3
-* Remade some textures – Lifora and Herowl
+* Fixed the crash happening with Luanti 5.17 – by Sheriff-Unit-3
+* Remade some textures – by Lifora and Herowl
 * Fixed a bug with Rod of Iron interaction – by Herowl
 * Added Norwegian Nynorsk translation – by Bloodaxe
 * Updated Norwegian Bokmål translation – by Bloodaxe
+
+
+## 0.92.3 hotfix
+* Fixed some problematic textures – by Lifora and Herowl
