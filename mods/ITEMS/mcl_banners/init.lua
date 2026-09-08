@@ -58,9 +58,12 @@ local base_color_ratio = 225
 local layer_ratio = 225
 local max_layer_lines = 6
 
--- Pattern definitions are stored both by name and as an array. The array keeps
--- the order in which register_pattern was called for loom display.
+--- Registered patterns indexed by name and by their 1-based registration order for loom display.
+---@type table<string|integer, mcl_banners.PatternDef>
 mcl_banners.registered_patterns = {}
+
+--- Registered patterns indexed by the item name required to use them in the loom.
+---@type table<string, mcl_banners.PatternDef>
 mcl_banners.pattern_item_to_pattern = {}
 
 local dye_to_colorid = {}
@@ -74,13 +77,27 @@ function mcl_banners.get_dye_colorid(itemname)
 	return dye_to_colorid[itemname]
 end
 
+---@param text string
+---@return string, number
 local function escape_texture(text)
 	return text:gsub("%^", "\\%^"):gsub(":", "\\:")
 end
 
+
+---@class mcl_banners.PatternRegistrationDef
+---@field description string Layer description template; @1 is replaced with the translated dye color name.
+---@field texture string Texture name or expression used as the banner and shield pattern mask and the loom preview overlay.
+---@field loom boolean? Whether the pattern is available in the loom; defaults to true unless explicitly false.
+---@field pattern_item string? Reusable item required in the loom; must be unique to this pattern and have the banner_pattern=1 group.
+
+---@class mcl_banners.PatternDef: mcl_banners.PatternRegistrationDef
+---@field name string Unique pattern identifier supplied to register_pattern.
+---@field loom boolean Whether the pattern is available in the loom; defaults to true at registration unless explicitly false.
+---@field preview_items table<string, string> Generated preview item names keyed by mcl_banners.colors[colorid][1], e.g. "white".
+
 --- Register a banner pattern. Namespaced pattern names are recommended for external mods.
----@param pattern_name string
----@param def table
+---@param pattern_name string Unique identifier stored as the registered pattern's name.
+---@param def mcl_banners.PatternRegistrationDef
 function mcl_banners.register_pattern(pattern_name, def)
 	if mcl_banners.registered_patterns[pattern_name] then
 		error("Banner pattern already registered: " .. pattern_name)
@@ -91,6 +108,7 @@ function mcl_banners.register_pattern(pattern_name, def)
 
 	local preview_namespace = core.get_current_modname()
 	local preview_pattern_name = pattern_name:gsub(":", "_")
+	---@type table<string, string>
 	local preview_items = {}
 
 	for _, colortab in pairs(mcl_banners.colors) do
