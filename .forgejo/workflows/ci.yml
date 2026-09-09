@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://www.schemastore.org/github-workflow.json
+---
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - "*"
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: docker-24
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      
+      - name: Install vltest CLI
+        shell: bash
+        run: id=$(docker create git.minetest.land/voxelibre/voxelibre-test/vltest:master) && docker cp "$id:/vltest" ./vltest && docker rm "$id"
+      
+      - name: Test install
+        shell: bash
+        run: ./vltest help
