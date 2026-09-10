@@ -26,7 +26,7 @@ jobs:
       
       - name: Install vltest CLI
         shell: bash
-        run: id=$(docker create git.minetest.land/voxelibre/voxelibre-test/vltest:master) && docker cp "$id:/vltest" ./vltest && docker rm "$id"
+        run: id=$(docker create --pull always git.minetest.land/voxelibre/voxelibre-test/vltest:master) && docker cp "$id:/vltest" ./vltest && docker rm "$id"
       
       - name: Lint
         shell: bash
