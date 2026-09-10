@@ -125,6 +125,7 @@ function mcl_banners.register_pattern(pattern_name, def)
 	for _, colortab in pairs(mcl_banners.colors) do
 		local itemid = colortab[1]
 		local colorize = colortab[4]
+		local color = S(colortab[6])
 		local itemname = preview_namespace .. ":banner_preview_" .. preview_pattern_name .. "_" .. itemid
 
 		local base = "mcl_banners_item_base.png^(mcl_banners_item_overlay.png^[colorize:#CCCCCC)^[resize:32x32"
@@ -135,7 +136,7 @@ function mcl_banners.register_pattern(pattern_name, def)
 
 		core.register_craftitem(itemname, {
 			description = S("Preview Banner"),
-			_tt_help = S("Paintable decoration"),
+			_tt_help = S(def.description, color),
 			_doc_items_create_entry = false,
 			inventory_image = inventory_image,
 			wield_image = inventory_image,
