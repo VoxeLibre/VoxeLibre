@@ -28,6 +28,6 @@ jobs:
         shell: bash
         run: id=$(docker create git.minetest.land/voxelibre/voxelibre-test/vltest:master) && docker cp "$id:/vltest" ./vltest && docker rm "$id"
       
-      - name: Test install
+      - name: Lint
         shell: bash
-        run: ./vltest help
+        run: ./vltest lint
