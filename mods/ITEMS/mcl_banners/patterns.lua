@@ -5,7 +5,6 @@ local builtin_patterns = {
 	{ "border", N("@1 Bordure") },
 	{ "bricks", N("@1 Bricks"), "mcl_core:brick_block" },
 	{ "circle", N("@1 Roundel") },
-	{ "creeper", N("@1 Creeper Charge") },
 	{ "cross", N("@1 Saltire") },
 	{ "curly_border", N("@1 Bordure Indented") },
 	{ "diagonal_up_left", N("@1 Per Bend Inverted") },
@@ -41,14 +40,33 @@ local builtin_patterns = {
 	{ "triangle_top", N("@1 Chevron Inverted") },
 	{ "triangles_bottom", N("@1 Base Indented") },
 	{ "triangles_top", N("@1 Chief Indented") },
+	{ "small_square_upper_left", N("@1 Upper Left Small Square") },
+	{ "small_square_upper_right", N("@1 Upper Right Small Square") },
+	{ "small_square_lower_left", N("@1 Lower Left Small Square") },
+	{ "small_square_lower_right", N("@1 Lower Right Small Square") },
+	{ "narrow_rectangle_upper_left", N("@1 Upper Left Narrow Rectangle") },
+	{ "narrow_rectangle_upper_right", N("@1 Upper Right Narrow Rectangle") },
+	{ "narrow_rectangle_lower_left", N("@1 Lower Left Narrow Rectangle") },
+	{ "narrow_rectangle_lower_right", N("@1 Lower Right Narrow Rectangle") },
+	{ "rectangle_upper_center", N("@1 Upper Central Rectangle") },
+	{ "rectangle_lower_center", N("@1 Lower Central Rectangle") },
 }
 
 
 for _, pattern in ipairs(builtin_patterns) do
-    mcl_banners.register_pattern(pattern[1], {
-        description = pattern[2],
-        loom = true,
-        texture = "mcl_banners_" .. pattern[1] .. ".png",
+	mcl_banners.register_pattern(pattern[1], {
+		description = pattern[2],
+		loom = true,
+		texture = "mcl_banners_" .. pattern[1] .. ".png",
+		shield_texture = "mcl_shield_pattern_" .. pattern[1] .. ".png",
 		pattern_item = pattern[3],
 	})
 end
+
+mcl_banners.register_pattern_migration("creeper", {
+	"small_square_upper_left",
+	"small_square_upper_right",
+	"rectangle_lower_center",
+	"narrow_rectangle_lower_left",
+	"narrow_rectangle_lower_right",
+})

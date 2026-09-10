@@ -45,7 +45,6 @@ You can copy the pattern of a banner by placing two banners of the same color in
 @1 Bordure=Borde (@1)
 @1 Bricks=Bloque (@1)
 @1 Roundel=Medallón (@1)
-@1 Creeper Charge=Carga de enredadera (@1)
 @1 Saltire=Saltire (@1)
 @1 Bordure Indented=Sangrado del borde (@1)
 @1 Per Bend Inverted=Curva invertida (@1)
@@ -67,6 +66,7 @@ You can copy the pattern of a banner by placing two banners of the same color in
 @1 Base Sinister Canton=Zócalo inferior izquierdo (@1)
 @1 Chief Dexter Canton=Encabezado superior derecho (@1)
 @1 Chief Sinister Canton=Encabezado superior izquierdo (@1)
+@1 Stalker Charge=
 @1 Cross=Cruce (@1)
 @1 Base=Zócalo (@1)
 @1 Pale=Palidez (@1)
@@ -80,10 +80,21 @@ You can copy the pattern of a banner by placing two banners of the same color in
 @1 Chevron Inverted=Viga invertida (@1)
 @1 Base Indented=Zócalo sangrada (@1)
 @1 Chief Indented=Sangrado del encabezado (@1)
+@1 Upper Left Small Square=
+@1 Upper Right Small Square=
+@1 Lower Left Small Square=
+@1 Lower Right Small Square=
+@1 Upper Left Narrow Rectangle=
+@1 Upper Right Narrow Rectangle=
+@1 Lower Left Narrow Rectangle=
+@1 Lower Right Narrow Rectangle=
+@1 Upper Central Rectangle=
+@1 Lower Central Rectangle=
 
 
 ##### not used anymore #####
 
+@1 Creeper Charge=Carga de enredadera (@1)
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Los estandartes son bloques decorativos altos y coloridos. Se pueden colocar en el suelo y en las paredes. Los estandartes se pueden estampar con una variedad de patrones usando mucho tinte en la elaboración.
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Usa la elaboración para dibujar un patrón en la parte superior del estandarte. Los estandartes estampados pueden volver a estamparse para combinar varios patrones. Puede dibujar hasta 12 capas en un estandarte de esa manera. Si la pancarta incluye un degradado, solo son posibles 3 capas.
 Purple Banner=Estandarte morada

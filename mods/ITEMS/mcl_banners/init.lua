@@ -66,6 +66,10 @@ mcl_banners.registered_patterns = {}
 ---@type table<string, mcl_banners.PatternDef>
 mcl_banners.pattern_item_to_pattern = {}
 
+--- Ordered replacement pattern names indexed by the retired pattern name.
+---@type table<string, string[]>
+mcl_banners.registered_pattern_migrations = {}
+
 local dye_to_colorid = {}
 for colorid, colortab in pairs(mcl_banners.colors) do
 	dye_to_colorid[colortab[5]] = colorid
@@ -80,26 +84,33 @@ end
 ---@param text string
 ---@return string, number
 local function escape_texture(text)
-	return text:gsub("%^", "\\%^"):gsub(":", "\\:")
+	return text:gsub("\\", "\\\\"):gsub("%^", "\\%^"):gsub(":", "\\:")
 end
 
 
 ---@class mcl_banners.PatternRegistrationDef
----@field description string Layer description template; @1 is replaced with the translated dye color name.
----@field texture string Texture name or expression used as the banner and shield pattern mask and the loom preview overlay.
----@field loom boolean? Whether the pattern is available in the loom; defaults to true unless explicitly false.
+---@field description string Layer description
+---@field texture string Texture name used as the banner pattern mask
+---@field shield_texture string Texture name used as the shield pattern mask
+---@field loom boolean? Whether the pattern is available in the loom, defaults to true
 ---@field pattern_item string? Reusable item required in the loom; must be unique to this pattern and have the banner_pattern=1 group.
 
 ---@class mcl_banners.PatternDef: mcl_banners.PatternRegistrationDef
----@field name string Unique pattern identifier supplied to register_pattern.
----@field loom boolean Whether the pattern is available in the loom; defaults to true at registration unless explicitly false.
----@field preview_items table<string, string> Generated preview item names keyed by mcl_banners.colors[colorid][1], e.g. "white".
+---@field name string Unique pattern identifier supplied to register_pattern
+---@field loom boolean Whether the pattern is available in the loom, defaults to true
+---@field preview_items table<string, string> Generated preview item names keyed by mcl_banners.colors[colorid][1], e.g. "white"
 
 --- Register a banner pattern. Namespaced pattern names are recommended for external mods.
 ---@param pattern_name string Unique identifier stored as the registered pattern's name.
 ---@param def mcl_banners.PatternRegistrationDef
 function mcl_banners.register_pattern(pattern_name, def)
-	if mcl_banners.registered_patterns[pattern_name] then
+	if type(def.texture) ~= "string" or def.texture == "" then
+		error("Banner pattern requires a texture: " .. pattern_name)
+	end
+	if type(def.shield_texture) ~= "string" or def.shield_texture == "" then
+		error("Banner pattern requires a shield_texture: " .. pattern_name)
+	end
+	if mcl_banners.registered_patterns[pattern_name] or mcl_banners.registered_pattern_migrations[pattern_name] then
 		error("Banner pattern already registered: " .. pattern_name)
 	end
 	if def.pattern_item and mcl_banners.pattern_item_to_pattern[def.pattern_item] then
@@ -134,10 +145,12 @@ function mcl_banners.register_pattern(pattern_name, def)
 		preview_items[itemid] = itemname
 	end
 
+	---@type mcl_banners.PatternDef
 	local pattern = {
 		name = pattern_name,
 		description = def.description,
 		texture = def.texture,
+		shield_texture = def.shield_texture,
 		loom = def.loom ~= false,
 		pattern_item = def.pattern_item,
 		preview_items = preview_items,
@@ -148,6 +161,73 @@ function mcl_banners.register_pattern(pattern_name, def)
 	if pattern.pattern_item then
 		mcl_banners.pattern_item_to_pattern[pattern.pattern_item] = pattern
 	end
+end
+
+
+--- Register ordered replacements for a retired pattern name.
+---
+--- Replacements are resolved for display and saved when banner layers are edited.
+---
+--- Targets must already be registered with register_pattern
+---@param name string Retired pattern identifier
+---@param new_names string[] Non-empty list of replacement pattern names
+function mcl_banners.register_pattern_migration(name, new_names)
+	if type(name) ~= "string" or name == "" then
+		error("Invalid banner pattern migration name")
+	end
+	if mcl_banners.registered_patterns[name] or mcl_banners.registered_pattern_migrations[name] then
+		error("Banner pattern or migration already registered: " .. name)
+	end
+	if type(new_names) ~= "table" or next(new_names) == nil then
+		error("Banner pattern migration requires a nonempty list: " .. name)
+	end
+
+	local count = 0
+	for index in pairs(new_names) do
+		if type(index) ~= "number" or index < 1 or index % 1 ~= 0 then
+			error("Banner pattern migration requires an ordered list: " .. name)
+		end
+		count = count + 1
+	end
+	local replacements = {}
+	for index = 1, count do
+		local target = new_names[index]
+		if type(target) ~= "string" or not mcl_banners.registered_patterns[target] then
+			error("Unknown banner pattern migration target: " .. tostring(target))
+		end
+		replacements[index] = target
+	end
+	mcl_banners.registered_pattern_migrations[name] = replacements
+end
+
+---@class mcl_banners.PatternLayer
+---@field pattern string Registered pattern name or alias
+---@field color string Dye color ID from mcl_banners.colors, e.g. "unicolor_white"
+
+--- Expand retired patterns without changing the input array or its layer records.
+--- Unknown pattern names and additional layer fields are preserved.
+---@param layers mcl_banners.PatternLayer[]? Stored layers
+---@return mcl_banners.PatternLayer[] layers Independent copies of the layers, with replacements inserted in order
+---@return boolean changed Whether any retired pattern was replaced
+function mcl_banners.migrate_pattern_layers(layers)
+	local migrated, changed = {}, false
+	if type(layers) ~= "table" then
+		return migrated, changed
+	end
+	for _, layer in ipairs(layers) do
+		local replacements = mcl_banners.registered_pattern_migrations[layer.pattern]
+		if replacements then
+			for _, pattern_name in ipairs(replacements) do
+				local replacement = table.copy(layer)
+				replacement.pattern = pattern_name
+				table.insert(migrated, replacement)
+			end
+			changed = true
+		else
+			table.insert(migrated, table.copy(layer))
+		end
+	end
+	return migrated, changed
 end
 
 core.register_on_mods_loaded(function()
@@ -164,10 +244,11 @@ core.register_on_mods_loaded(function()
 end)
 
 ---@param description string
----@param layers table?
+---@param layers mcl_banners.PatternLayer[]?
 ---@return string
 function mcl_banners.make_advanced_banner_description(description, layers)
-	if type(layers) ~= "table" or #layers == 0 then
+	layers = mcl_banners.migrate_pattern_layers(layers)
+	if #layers == 0 then
 		return ""
 	end
 
@@ -204,10 +285,7 @@ function mcl_banners.add_pattern_layer(banner, pattern_name, dye)
 	end
 
 	local meta = banner:get_meta()
-	local layers = core.deserialize(meta:get_string("layers"))
-	if type(layers) ~= "table" then
-		layers = {}
-	end
+	local layers = mcl_banners.migrate_pattern_layers(core.deserialize(meta:get_string("layers")))
 	table.insert(layers, { pattern = pattern_name, color = colorid })
 	meta:set_string("layers", core.serialize(layers))
 
@@ -218,34 +296,59 @@ function mcl_banners.add_pattern_layer(banner, pattern_name, dye)
 	return banner
 end
 
---- Build the texture used by banner entities, inventory previews, and shields.
----@param base_color string?
----@param layers table?
----@return string
-function mcl_banners.make_banner_texture(base_color, layers)
+local banner_surface = {
+	base = "mcl_banners_banner_base.png",
+	preserve = "mcl_banners_base_inverted.png",
+	mask = "mcl_banners_base.png",
+	pattern_field = "texture",
+}
+local shield_surface = {
+	base = "mcl_shield_base_nopattern.png^mcl_shield_pattern_base.png",
+	preserve = "mcl_shield_base_nopattern.png^mcl_shield_pattern_base.png",
+	mask = "mcl_shield_pattern_base.png",
+	pattern_field = "shield_texture",
+}
+
+-- Keep the surface's original base and tinting recipe, sharing layer composition.
+local function make_pattern_texture(surface, base_color, layers)
 	local colortab = mcl_banners.colors[base_color]
 	if not colortab then
-		return "mcl_banners_banner_base.png"
+		return surface.base
 	end
 
 	local colorize = colortab[4]
-	local texture = "(mcl_banners_banner_base.png^[mask:mcl_banners_base_inverted.png)^" ..
-		"((mcl_banners_banner_base.png^[colorize:" .. colorize .. ":" .. base_color_ratio ..
-		")^[mask:mcl_banners_base.png)"
+	local texture = "(" .. surface.base .. "^[mask:" .. surface.preserve .. ")^" ..
+		"((" .. surface.base .. "^[colorize:" .. colorize .. ":" .. base_color_ratio ..
+		")^[mask:" .. surface.mask .. ")"
 
-	if type(layers) ~= "table" then
-		return texture
-	end
+	layers = mcl_banners.migrate_pattern_layers(layers)
 	for _, layerinfo in ipairs(layers) do
 		local pattern = mcl_banners.registered_patterns[layerinfo.pattern]
 		local layer_color = mcl_banners.colors[layerinfo.color]
 		if pattern and layer_color then
-			local layer = "((mcl_banners_banner_base.png^[colorize:" .. layer_color[4] .. ":" ..
-				layer_ratio .. ")^[mask:" .. pattern.texture .. ")"
+			local layer = "((" .. surface.base .. "^[colorize:" .. layer_color[4] .. ":" ..
+				layer_ratio .. ")^[mask:" .. escape_texture(pattern[surface.pattern_field]) .. ")"
 			texture = texture .. "^" .. layer
 		end
 	end
 	return texture
+end
+
+--- Build a banner entity or preview texture
+---@param base_color string? Dye color ID from mcl_banners.colors
+---@param layers mcl_banners.PatternLayer[]?
+---@return string
+function mcl_banners.make_banner_texture(base_color, layers)
+	return make_pattern_texture(banner_surface, base_color, layers)
+end
+
+--- Build a patterned shield texture
+---@param base_color string? Dye color ID from mcl_banners.colors
+---@param layers mcl_banners.PatternLayer[]?
+---@return string
+function mcl_banners.make_shield_texture(base_color, layers)
+	if not mcl_banners.colors[base_color] then return "mcl_shield_base_nopattern.png" end
+	return make_pattern_texture(shield_surface, base_color, layers)
 end
 
 
@@ -518,11 +621,6 @@ for _, colortab in pairs(mcl_banners.colors) do
 
 			local node_under = core.get_node(under)
 			if placer and not placer:get_player_control().sneak then
-				-- Use pointed node's on_rightclick function first, if present
-				if core.registered_nodes[node_under.name] and core.registered_nodes[node_under.name].on_rightclick then
-					return core.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
-				end
-
 				if core.get_modpath("mcl_cauldrons") then
 					-- Use banner on cauldron to remove the top-most layer. This reduces the water level by 1.
 					local new_node
@@ -540,10 +638,16 @@ for _, colortab in pairs(mcl_banners.colors) do
 						new_node = "mcl_cauldrons:cauldron"
 					end
 					if new_node then
+						local playername = placer:get_player_name()
+						if core.is_protected(under, playername) then
+							core.record_protection_violation(under, playername)
+							return itemstack
+						end
+
 						local imeta = itemstack:get_meta()
 						local layers_raw = imeta:get_string("layers")
-						local layers = core.deserialize(layers_raw)
-						if type(layers) == "table" and #layers > 0 then
+						local layers = mcl_banners.migrate_pattern_layers(core.deserialize(layers_raw))
+						if #layers > 0 then
 							table.remove(layers)
 							imeta:set_string("layers", core.serialize(layers))
 							local newdesc = mcl_banners.make_advanced_banner_description(itemstack:get_definition().description, layers)
@@ -563,6 +667,10 @@ for _, colortab in pairs(mcl_banners.colors) do
 
 						return itemstack
 					end
+				end
+				-- Let other nodes handle right-click before placing a banner.
+				if core.registered_nodes[node_under.name] and core.registered_nodes[node_under.name].on_rightclick then
+					return core.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
 				end
 			end
 
@@ -649,12 +757,14 @@ for _, colortab in pairs(mcl_banners.colors) do
 		_mcl_generate_description = function(itemstack)
 			local meta = itemstack:get_meta()
 			local layers_raw = meta:get_string("layers")
-			if not layers_raw then
-				return nil
+			local layers, changed = mcl_banners.migrate_pattern_layers(core.deserialize(layers_raw))
+			if changed then
+				meta:set_string("layers", core.serialize(layers))
 			end
-			local layers = core.deserialize(layers_raw)
 			local desc = itemstack:get_definition().description
-			local newdesc = mcl_banners.make_advanced_banner_description(desc, layers)
+			local name = meta:get_string("name")
+			local newdesc = name ~= "" and core.colorize(mcl_colors.YELLOW, name)
+				or mcl_banners.make_advanced_banner_description(desc, layers)
 			meta:set_string("description", newdesc)
 			return newdesc
 		end,

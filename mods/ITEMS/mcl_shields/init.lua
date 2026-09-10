@@ -1,5 +1,6 @@
 local minetest, math, vector = minetest, math, vector
 local modname = minetest.get_current_modname()
+local modpath = minetest.get_modpath(modname)
 local S = minetest.get_translator(modname)
 
 mcl_shields = {
@@ -21,6 +22,8 @@ interact_priv.give_to_admin = false
 
 local overlay = mcl_enchanting.overlay
 local hud = "mcl_shield_hud.png"
+dofile(modpath .. "/legacy_patterns.lua")
+dofile(modpath .. "/patterns.lua")
 
 minetest.register_tool("mcl_shields:shield", {
 	description = S("Shield"),
@@ -50,10 +53,6 @@ function mcl_shields.wielding_shield(obj, i)
 	return wielded_item(obj, i):find("mcl_shields:shield")
 end
 
-local function shield_is_enchanted(obj, i)
-	return mcl_enchanting.is_enchanted(wielded_item(obj, i))
-end
-
 minetest.register_entity("mcl_shields:shield_entity", {
 	initial_properties = {
 		visual = "mesh",
@@ -73,29 +72,36 @@ minetest.register_entity("mcl_shields:shield_entity", {
 			self.object:remove()
 			return
 		end
-		local shield_texture = "mcl_shield_base_nopattern.png"
 		local i = self._shield_number
-		local item = wielded_item(player, i)
-
-		if item ~= "mcl_shields:shield" and item ~= "mcl_shields:shield_enchanted" then
-			local itemstack = player:get_wielded_item()
-			if i == 1 then
-				itemstack = player:get_inventory():get_stack("offhand", 1)
-			end
-			local meta_texture = itemstack:get_meta():get_string("mcl_shields:shield_custom_pattern_texture")
-			if meta_texture ~= "" then
-				shield_texture = meta_texture
-			else
-				local color = minetest.registered_items[item]._shield_color
-				if color then
-					shield_texture = "mcl_shield_base_nopattern.png^(mcl_shield_pattern_base.png^[colorize:" .. color .. ")"
-				end
-			end
+		local itemstack = player:get_wielded_item()
+		if i == 1 then
+			itemstack = player:get_inventory():get_stack("offhand", 1)
+		end
+		local meta = itemstack:get_meta()
+		local name = itemstack:get_name()
+		local raw = meta:get_string("layers")
+		local saved = meta:get_string("mcl_shields:shield_custom_pattern_texture")
+		if self._pattern_item == name and self._pattern_layers == raw and self._pattern_legacy == saved then
+			return
 		end
 
-		if shield_is_enchanted(player, i) then
+		local layers, changed = mcl_shields.migrate_pattern_layers(itemstack)
+		if changed then
+			tt.reload_itemstack_description(itemstack)
+			if i == 1 then
+				player:get_inventory():set_stack("offhand", 1, itemstack)
+			else
+				player:set_wielded_item(itemstack)
+			end
+		end
+		local shield_texture = mcl_shields.make_texture(itemstack, layers)
+		if mcl_enchanting.is_enchanted(name) then
 			shield_texture = shield_texture .. overlay
 		end
+		-- Cache the resulting metadata, so a successful migration writes only once.
+		self._pattern_item = name
+		self._pattern_layers = meta:get_string("layers")
+		self._pattern_legacy = meta:get_string("mcl_shields:shield_custom_pattern_texture")
 
 		if self._texture_copy ~= shield_texture then
 			self.object:set_properties({textures = {shield_texture}})
@@ -157,6 +163,7 @@ mcl_damage.register_modifier(function(obj, damage, reason)
 	end
 
 	if not minetest.is_creative_enabled(obj:get_player_name()) and damage >= 3 then
+		tt.reload_itemstack_description(shieldstack)
 		shieldstack:add_wear(65535 / durability)
 		if blocking == 2 then
 			obj:set_wielded_item(shieldstack)
@@ -478,7 +485,7 @@ local color_names = {
 }
 
 
-for _, colortab in pairs(mcl_banners.colors) do
+for colorid, colortab in pairs(mcl_banners.colors) do
 	local color = colortab[1]
 	minetest.register_tool("mcl_shields:shield_" .. color, {
 		description = color_names[color],
@@ -495,6 +502,7 @@ for _, colortab in pairs(mcl_banners.colors) do
 		_repair_material = "group:wood",
 		wield_scale = vector.new(2, 2, 2),
 		_shield_color = colortab[4],
+		_shield_colorid = colorid,
 		_mcl_wieldview_item = "",
 	})
 
@@ -511,47 +519,34 @@ for _, colortab in pairs(mcl_banners.colors) do
 	})
 end
 
-local function to_shield_texture(banner_texture)
-	return banner_texture
-	:gsub("mcl_banners_base_inverted.png", "mcl_shield_base_nopattern.png^mcl_shield_pattern_base.png")
-	:gsub("mcl_banners_banner_base.png", "mcl_shield_base_nopattern.png^mcl_shield_pattern_base.png")
-	:gsub("mcl_banners_base", "mcl_shield_pattern_base")
-	:gsub("mcl_banners", "mcl_shield_pattern")
-end
-
 local function craft_banner_on_shield(itemstack, player, old_craft_grid, craft_inv)
-	if not string.find(itemstack:get_name(), "mcl_shields:shield_") then
-		return itemstack
-	end
+	if not itemstack:get_definition()._shield_colorid then return itemstack end
 
-	local shield_stack
-	for i = 1, player:get_inventory():get_size("craft") do
-		local stack = old_craft_grid[i]
-		local name = stack:get_name()
-		if minetest.get_item_group(name, "shield") then
+	local shield_stack, banner_stack
+	for _, stack in ipairs(old_craft_grid) do
+		if minetest.get_item_group(stack:get_name(), "shield") > 0 then
 			shield_stack = stack
-			break
+		elseif mcl_banners.color_reverse(stack:get_name()) then
+			banner_stack = stack
 		end
 	end
+	if not shield_stack or not banner_stack then return itemstack end
 
-	for i = 1, player:get_inventory():get_size("craft") do
-		local banner_stack = old_craft_grid[i]
-		local banner_name = banner_stack:get_name()
-		if string.find(banner_name, "mcl_banners:banner") and shield_stack then
-			local banner_meta = banner_stack:get_meta()
-			local layers_meta = banner_meta:get_string("layers")
-			local new_shield_meta = itemstack:get_meta()
-			if layers_meta ~= "" then
-				local color = mcl_banners.color_reverse(banner_name)
-				local layers = minetest.deserialize(layers_meta)
-				local texture = mcl_banners.make_banner_texture(color, layers)
-				new_shield_meta:set_string("description", mcl_banners.make_advanced_banner_description(itemstack:get_description(), layers))
-				new_shield_meta:set_string("mcl_shields:shield_custom_pattern_texture", to_shield_texture(texture))
-			end
-			itemstack:set_wear(shield_stack:get_wear())
-			break
-		end
-	end
+	local raw = banner_stack:get_meta():get_string("layers")
+	local layers = raw ~= "" and mcl_shields.deserialize_pattern_layers(raw) or nil
+	-- Do not silently turn malformed source metadata into a different design.
+	if raw ~= "" and not layers then return ItemStack("") end
+
+	-- Copy the shield, including enchantments, wear, its custom name and unrelated
+	-- metadata. Neither recipe inputs nor inventories are changed during prediction.
+	local result = ItemStack(shield_stack)
+	result:set_name(itemstack:get_name())
+	result:set_count(itemstack:get_count())
+	local meta = result:get_meta()
+	meta:set_string("mcl_shields:shield_custom_pattern_texture", "")
+	meta:set_string("layers", layers and core.serialize(mcl_banners.migrate_pattern_layers(layers)) or "")
+	tt.reload_itemstack_description(result)
+	return result
 end
 
 minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craft_inv)

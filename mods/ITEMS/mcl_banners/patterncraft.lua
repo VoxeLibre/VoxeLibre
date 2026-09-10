@@ -27,13 +27,22 @@ local function copy_banner_pattern(itemstack, old_craft_grid, craft_inv, craft_p
 		return ItemStack("")
 	end
 
-	local layers_raw = source.stack:get_meta():get_string("layers")
+	local layers, changed = mcl_banners.migrate_pattern_layers(source.layers)
+	local layers_raw = changed and core.serialize(layers) or source.stack:get_meta():get_string("layers")
 	local meta = itemstack:get_meta()
 	meta:set_string("layers", layers_raw)
 	meta:set_string("description", mcl_banners.make_advanced_banner_description(
-		itemstack:get_definition().description, source.layers))
+		itemstack:get_definition().description, layers))
 
 	if not craft_predict then
+		if changed then
+			local source_meta = source.stack:get_meta()
+			source_meta:set_string("layers", layers_raw)
+			if source_meta:get_string("name") == "" then
+				source_meta:set_string("description", mcl_banners.make_advanced_banner_description(
+					source.stack:get_definition().description, layers))
+			end
+		end
 		-- Restore the source so copying only consumes the blank banner.
 		craft_inv:set_stack("craft", source.index, source.stack)
 	end

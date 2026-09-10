@@ -45,7 +45,6 @@ You can copy the pattern of a banner by placing two banners of the same color in
 @1 Bordure=@1 简单边框
 @1 Bricks=@1 砖纹背景
 @1 Roundel=@1 中心圆
-@1 Creeper Charge=@1 爬行者图案
 @1 Saltire=@1 斜十字
 @1 Bordure Indented=@1 凹形边框
 @1 Per Bend Inverted=@1 下左半部
@@ -67,6 +66,7 @@ You can copy the pattern of a banner by placing two banners of the same color in
 @1 Base Sinister Canton=@1 下右角
 @1 Chief Dexter Canton=@1 上左角
 @1 Chief Sinister Canton=@1 上右角
+@1 Stalker Charge=
 @1 Cross=@1 十字
 @1 Base=@1 下三分之一
 @1 Pale=@1 垂直中线
@@ -80,10 +80,21 @@ You can copy the pattern of a banner by placing two banners of the same color in
 @1 Chevron Inverted=@1 上方三角形
 @1 Base Indented=@1 下方锯齿
 @1 Chief Indented=@1 上方锯齿
+@1 Upper Left Small Square=
+@1 Upper Right Small Square=
+@1 Lower Left Small Square=
+@1 Lower Right Small Square=
+@1 Upper Left Narrow Rectangle=
+@1 Upper Right Narrow Rectangle=
+@1 Lower Left Narrow Rectangle=
+@1 Lower Right Narrow Rectangle=
+@1 Upper Central Rectangle=
+@1 Lower Central Rectangle=
 
 
 ##### not used anymore #####
 
+@1 Creeper Charge=@1 爬行者图案
 Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=旗帜是高大的彩色装饰方块。它们可以放置在地面和墙壁上。旗帜可以通过在工艺中使用大量染料来绘制各种图案。
 Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=使用工艺在旗帜上方绘制图案。已绘制的旗帜可以再次绘制，以组合各种图案。通过这种方式，您可以在一个旗帜上绘制多达12层。如果旗帜包含渐变效果，则只能绘制3层。
 Purple Banner=紫色旗帜
