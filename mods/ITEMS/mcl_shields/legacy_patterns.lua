@@ -3,12 +3,20 @@
 local base = "mcl_shield_base_nopattern.png^mcl_shield_pattern_base.png"
 local layer_prefix = "((" .. base .. "^[colorize:"
 local mask_separator = ":225)^[mask:"
+local base_texture = "(" .. base .. "^[mask:" .. base .. ")"
 
 --- Mask expressions mapped to ordered concrete pattern names; false marks ambiguity and nil means unknown.
 ---@alias mcl_shields.LegacyMaskLookup table<string, string[]|false|nil>
 
---- Lowercase hex colors mapped to dye IDs; false marks ambiguity and nil means unknown.
----@alias mcl_shields.LegacyColorLookup table<string, string|false|nil>
+--- Lowercase hex colors mapped to dye IDs
+---@alias mcl_shields.LegacyColorLookup table<string, string|nil>
+
+---@type mcl_shields.LegacyMaskLookup
+local legacy_masks = {}
+---@type mcl_shields.LegacyColorLookup
+local legacy_colors = {}
+---@type table<string, string>
+local legacy_base_layers = {}
 
 -- Texture modifiers escape their arguments once per nesting level. A separator
 -- inside a group or behind a backslash does not end a top-level layer term.
@@ -83,30 +91,21 @@ local function add_mask_lookup(masks, mask, names)
 	end
 end
 
--- Read the registries when importing, after all mods have registered their patterns.
--- A false entry marks a mask or color with more than one possible interpretation.
----@return mcl_shields.LegacyMaskLookup masks
----@return mcl_shields.LegacyColorLookup colors
-local function get_legacy_lookups()
-	---@type mcl_shields.LegacyMaskLookup
-	local masks = {}
-	---@type mcl_shields.LegacyColorLookup
-	local colors = {}
+-- Registrations happen during mod initialization. Build the import tables once,
+-- after dependent mods have also registered their patterns and migrations.
+core.register_on_mods_loaded(function()
 	for colorid, color in pairs(mcl_banners.colors) do
 		local hex = color[4]:lower()
-		if colors[hex] then
-			colors[hex] = false
-		elseif colors[hex] == nil then
-			colors[hex] = colorid
-		end
+		legacy_colors[hex] = colorid
+		legacy_base_layers[colorid] = layer_prefix .. hex .. mask_separator .. "mcl_shield_pattern_base.png)"
 	end
 
 	for _, pattern in ipairs(mcl_banners.registered_patterns) do
-		add_mask_lookup(masks, pattern.shield_texture, { pattern.name })
-		add_mask_lookup(masks, "mcl_shield_pattern_" .. pattern.name .. ".png", { pattern.name })
+		add_mask_lookup(legacy_masks, pattern.shield_texture, { pattern.name })
+		add_mask_lookup(legacy_masks, "mcl_shield_pattern_" .. pattern.name .. ".png", { pattern.name })
 	end
 	for name, replacements in pairs(mcl_banners.registered_pattern_migrations) do
-		add_mask_lookup(masks, "mcl_shield_pattern_" .. name .. ".png", replacements)
+		add_mask_lookup(legacy_masks, "mcl_shield_pattern_" .. name .. ".png", replacements)
 		local current = {}
 		local historical = {}
 		for _, replacement in ipairs(replacements) do
@@ -114,18 +113,15 @@ local function get_legacy_lookups()
 			table.insert(historical, "mcl_shield_pattern_" .. replacement .. ".png")
 		end
 		-- Previous compatibility code saved an escaped union of replacement masks.
-		add_mask_lookup(masks, table.concat(current, "^"), replacements)
-		add_mask_lookup(masks, table.concat(historical, "^"), replacements)
+		add_mask_lookup(legacy_masks, table.concat(current, "^"), replacements)
+		add_mask_lookup(legacy_masks, table.concat(historical, "^"), replacements)
 	end
-	return masks, colors
-end
+end)
 
 ---@param term string
----@param masks mcl_shields.LegacyMaskLookup
----@param colors mcl_shields.LegacyColorLookup
 ---@return string[]? names Ordered concrete pattern names, or nil when the term cannot be decoded.
----@return string? color Dye ID, or nil for an unknown or ambiguous color or undecodable term.
-local function decode_legacy_layer(term, masks, colors)
+---@return string? color Dye ID, or nil for an unknown color or undecodable term.
+local function decode_legacy_layer(term)
 	if term:sub(1, #layer_prefix) ~= layer_prefix or term:sub(-1) ~= ")" then return end
 
 	local boundary = term:find(mask_separator, #layer_prefix + 1, true)
@@ -134,9 +130,9 @@ local function decode_legacy_layer(term, masks, colors)
 	local hex = term:sub(#layer_prefix + 1, boundary - 1)
 	if not hex:match("^#%x%x%x%x%x%x$") then return end
 
-	local color = colors[hex:lower()]
+	local color = legacy_colors[hex:lower()]
 	local mask = unescape_mask(term:sub(boundary + #mask_separator, -2))
-	local match = mask and masks[mask]
+	local match = mask and legacy_masks[mask]
 	if not match or not color then return end
 
 	return match, color
@@ -148,23 +144,22 @@ end
 ---@param base_color string?
 ---@return mcl_banners.PatternLayer[]
 function mcl_shields.import_legacy_pattern_layers(texture, base_color)
-	if not mcl_banners.colors[base_color] then return {} end
-	local terms = split_terms(texture)
-	local expected = assert(split_terms(mcl_banners.make_shield_texture(base_color, {})))
-	if not terms or #terms < 2 or terms[1] ~= expected[1] or terms[2]:lower() ~= expected[2]:lower() then
-		return {}
-	end
-	local masks, colors = get_legacy_lookups()
-	local layers = {}
-	for i = 3, #terms do
-		local names, color = decode_legacy_layer(terms[i], masks, colors)
-		if names and color then
-			for _, name in ipairs(names) do
-				table.insert(layers, { pattern = name, color = color })
-			end
-		end
-	end
-	local migrated = mcl_banners.migrate_pattern_layers(layers)
-	return migrated
-end
+    local expected_base_layer = base_color and legacy_base_layers[base_color]
+    if not expected_base_layer then return {} end
 
+    local terms = split_terms(texture)
+    if not terms or #terms < 2 or terms[1] ~= base_texture or terms[2]:lower() ~= expected_base_layer then
+        return {}
+    end
+    local layers = {}
+    for i = 3, #terms do
+        local names, color = decode_legacy_layer(terms[i])
+        if names and color then
+            for _, name in ipairs(names) do
+                table.insert(layers, { pattern = name, color = color })
+            end
+        end
+    end
+    local migrated = mcl_banners.migrate_pattern_layers(layers)
+    return migrated
+end
