@@ -93,7 +93,7 @@ end
 
 local torch_floor_contract = {
 	faces = {
-		top = {{-1/16, -1/16, 1/16, 1/16}},
+		top = {{-1/32, -1/32, 1/32, 1/32}},
 	},
 }
 

@@ -126,6 +126,9 @@ local function piston_on(pos, node)
 		end
 		mesecon.mvps_process_stack(stack)
 		mesecon.mvps_move_objects(np, dir, oldstack)
+		-- The extended piston has a smaller attachment surface than its base.
+		-- Recheck neighbours after the new node box and pusher are in place.
+		minetest.check_for_falling(pos)
 		minetest.sound_play("piston_extend", {
 			pos = pos,
 			max_hear_distance = 31,
@@ -246,7 +249,7 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_normal_on", {
 	drawtype = "nodebox",
-	_vl_attach_surfaces = {source = "regular"},
+	_vl_attach_surfaces = {source = "node_box"},
 	_vl_allow_attach = piston_allow_attach_flat,
 	tiles = {
 		"mesecons_piston_bottom.png^[transformR180",
@@ -358,7 +361,7 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_sticky_on", {
 	drawtype = "nodebox",
-	_vl_attach_surfaces = {source = "regular"},
+	_vl_attach_surfaces = {source = "node_box"},
 	_vl_allow_attach = piston_allow_attach_flat,
 	tiles = {
 		"mesecons_piston_bottom.png^[transformR180",
@@ -499,7 +502,7 @@ minetest.register_node("mesecons_pistons:piston_up_normal_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_up_normal_on", {
 	drawtype = "nodebox",
-	_vl_attach_surfaces = {source = "regular"},
+	_vl_attach_surfaces = {source = "node_box"},
 	_vl_allow_attach = piston_allow_attach_up,
 	tiles = {
 		"mesecons_piston_on_front.png",
@@ -610,7 +613,7 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_up_sticky_on", {
 	drawtype = "nodebox",
-	_vl_attach_surfaces = {source = "regular"},
+	_vl_attach_surfaces = {source = "node_box"},
 	_vl_allow_attach = piston_allow_attach_up,
 	tiles = {
 		"mesecons_piston_on_front.png",
@@ -750,7 +753,7 @@ minetest.register_node("mesecons_pistons:piston_down_normal_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_down_normal_on", {
 	drawtype = "nodebox",
-	_vl_attach_surfaces = {source = "regular"},
+	_vl_attach_surfaces = {source = "node_box"},
 	_vl_allow_attach = piston_allow_attach_down,
 	tiles = {
 		"mesecons_piston_back.png",
@@ -856,7 +859,7 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
 -- onstate
 minetest.register_node("mesecons_pistons:piston_down_sticky_on", {
 	drawtype = "nodebox",
-	_vl_attach_surfaces = {source = "regular"},
+	_vl_attach_surfaces = {source = "node_box"},
 	_vl_allow_attach = piston_allow_attach_down,
 	tiles = {
 		"mesecons_piston_back.png",
