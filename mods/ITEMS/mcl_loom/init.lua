@@ -7,6 +7,8 @@ local formspec_name = "mcl_loom:loom"
 local pattern_button_fields = {}
 local pattern_buttons_content = {}
 local simple_pattern_count = 0
+---@type table<userdata, number>
+local scroll_positions = {}
 
 local function build_pattern_buttons()
 	local simple_patterns = {}
@@ -107,8 +109,9 @@ local function show_loom_formspec(player)
 		-- Scrollbar
 		-- TODO: style the scrollbar correctly when possible
 		"scrollbaroptions[min=0;max=" ..
-		math.max(math.ceil(simple_pattern_count / 4) - 4, 0) .. ";smallstep=1;largesteps=1]",
-		"scrollbar[8,0.7;0.75,3.6;vertical;scroll;0]",
+		math.max(math.ceil(simple_pattern_count / 4) - 4, 0) .. ";smallstep=1;largestep=1]",
+		"scrollbar[8,0.7;0.75,3.6;vertical;scroll;" ..
+		(scroll_positions[player] or 0) .. "]",
 
 		banner_model,
 
@@ -146,6 +149,7 @@ core.register_on_joinplayer(function(player)
 end)
 
 core.register_on_leaveplayer(function(player)
+	scroll_positions[player] = nil
 	mcl_util.move_player_list(player, "loom_input")
 	player:get_inventory():set_list("loom_output", {})
 end)
@@ -155,9 +159,18 @@ core.register_on_player_receive_fields(function(player, formname, fields)
 
 	local inv = player:get_inventory()
 	if fields.quit then
+		scroll_positions[player] = nil
 		mcl_util.move_player_list(player, "loom_input")
 		inv:set_list("loom_output", {})
 		return
+	end
+
+	if fields.scroll then
+		local event = core.explode_scrollbar_event(fields.scroll)
+		if event.type ~= "INV" then
+			local max_scroll = math.max(math.ceil(simple_pattern_count / 4) - 4, 0)
+			scroll_positions[player] = math.max(0, math.min(event.value, max_scroll))
+		end
 	end
 
 	for field_name, pattern_name in pairs(pattern_button_fields) do
