@@ -98,7 +98,7 @@ end
 ---@class mcl_banners.PatternDef: mcl_banners.PatternRegistrationDef
 ---@field name string Unique pattern identifier supplied to register_pattern
 ---@field loom boolean Whether the pattern is available in the loom, defaults to true
----@field preview_items table<string, string> Generated preview item names keyed by mcl_banners.colors[colorid][1], e.g. "white"
+---@field preview_item string Generated preview item name showing a white pattern on a grey banner
 
 --- Register a banner pattern. Namespaced pattern names are recommended for external mods.
 ---@param pattern_name string Unique identifier stored as the registered pattern's name.
@@ -119,8 +119,7 @@ function mcl_banners.register_pattern(pattern_name, def)
 
 	local preview_namespace = core.get_current_modname()
 	local preview_pattern_name = pattern_name:gsub(":", "_")
-	---@type table<string, string>
-	local preview_items = {}
+	local preview_item = preview_namespace .. ":banner_preview_" .. preview_pattern_name
 
 	---@type mcl_banners.PatternDef
 	local pattern = {
@@ -130,7 +129,7 @@ function mcl_banners.register_pattern(pattern_name, def)
 		shield_texture = def.shield_texture,
 		loom = def.loom ~= false,
 		pattern_item = def.pattern_item,
-		preview_items = preview_items,
+		preview_item = preview_item,
 	}
 
 	mcl_banners.registered_patterns[pattern_name] = pattern
@@ -139,30 +138,23 @@ function mcl_banners.register_pattern(pattern_name, def)
 		mcl_banners.pattern_item_to_pattern[pattern.pattern_item] = pattern
 	end
 
-	for colorid, colortab in pairs(mcl_banners.colors) do
-		local itemid = colortab[1]
-		local color = S(colortab[6])
-		local itemname = preview_namespace .. ":banner_preview_" .. preview_pattern_name .. "_" .. itemid
+	-- Compose before cropping so partially transparent masks keep their gradients.
+	local texture = mcl_banners.make_banner_texture("unicolor_darkgrey", {
+		{ pattern = pattern_name, color = "unicolor_white" },
+	})
 
-		-- Compose before cropping so partially transparent masks keep their gradients.
-		local texture = mcl_banners.make_banner_texture("unicolor_white", {
-			{ pattern = pattern_name, color = colorid },
-        })
+	local face = "[combine:20x40:-1,-1=" .. escape_texture(texture)
+	local inventory_image = "[combine:48x48:14,4=" .. escape_texture(face)
 
-		local face = "[combine:20x40:-1,-1=" .. escape_texture(texture)
-		local inventory_image = "[combine:48x48:14,4=" .. escape_texture(face)
-
-		core.register_craftitem(itemname, {
-			description = S("Preview Banner"),
-			_tt_help = S(def.description, color),
-			_doc_items_create_entry = false,
-			inventory_image = inventory_image,
-			wield_image = inventory_image,
-			groups = { not_in_creative_inventory = 1 },
-			stack_max = 16,
-		})
-		preview_items[itemid] = itemname
-	end
+	core.register_craftitem(preview_item, {
+		description = S("Preview Banner"),
+		_tt_help = S(def.description, S("White")),
+		_doc_items_create_entry = false,
+		inventory_image = inventory_image,
+		wield_image = inventory_image,
+		groups = { not_in_creative_inventory = 1 },
+		stack_max = 16,
+	})
 end
 
 

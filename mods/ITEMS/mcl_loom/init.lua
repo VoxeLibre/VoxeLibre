@@ -5,7 +5,7 @@ local F = core.formspec_escape
 local formspec_name = "mcl_loom:loom"
 
 local pattern_button_fields = {}
-local pattern_buttons_content = {}
+local pattern_buttons_content = ""
 local simple_pattern_count = 0
 ---@type table<userdata, number>
 local scroll_positions = {}
@@ -21,20 +21,16 @@ local function build_pattern_buttons()
 	end
 	simple_pattern_count = #simple_patterns
 
-	-- Buttons are 3.5 / 4 = 0.875 wide. Cache one formspec fragment per
-	-- dye color so opening or updating the loom only requires a table lookup.
-	for _, colortab in pairs(mcl_banners.colors) do
-		local color = colortab[1]
-		local formspec = { "style_type[item_image_button;noclip=false;content_offset=0]" }
-		for index, entry in ipairs(simple_patterns) do
-			local x = ((index - 1) % 4) * 0.875
-			local y = math.floor((index - 1) / 4) * 0.875
-			table.insert(formspec,
-				string.format("item_image_button[%f,%f;0.875,0.875;%s;%s;]", x, y,
-					entry.pattern.preview_items[color], entry.field_name))
-		end
-		pattern_buttons_content[color] = table.concat(formspec)
+	-- Buttons are 3.5 / 4 = 0.875 wide. Cache the shared pattern list once.
+	local formspec = { "style_type[item_image_button;noclip=false;content_offset=0]" }
+	for index, entry in ipairs(simple_patterns) do
+		local x = ((index - 1) % 4) * 0.875
+		local y = math.floor((index - 1) / 4) * 0.875
+		table.insert(formspec,
+			string.format("item_image_button[%f,%f;0.875,0.875;%s;%s;]", x, y,
+				entry.pattern.preview_item, entry.field_name))
 	end
+	pattern_buttons_content = table.concat(formspec)
 end
 
 core.register_on_mods_loaded(build_pattern_buttons)
@@ -46,24 +42,22 @@ local function show_loom_formspec(player)
 	local dye = inv:get_stack("loom_input", 2)
 	local pattern = inv:get_stack("loom_input", 3)
 	local dye_colorid = mcl_banners.get_dye_colorid(dye:get_name())
-	local dye_colortab = dye_colorid and mcl_banners.colors[dye_colorid]
-	local preview_color = dye_colortab and dye_colortab[1]
 
 	local container_content = ""
 
-	if not banner:is_empty() and preview_color then
+	if not banner:is_empty() and dye_colorid then
 		if not pattern:is_empty() then
 			local pattern_def = mcl_banners.pattern_item_to_pattern[pattern:get_name()]
 			if pattern_def and pattern_def.loom then
 				inv:set_stack("loom_output", 1,
 					mcl_banners.add_pattern_layer(banner, pattern_def.name, dye))
 				container_content = string.format("item_image[0,0;0.875,0.875;%s]",
-					pattern_def.preview_items[preview_color])
+					pattern_def.preview_item)
 			else
 				inv:set_stack("loom_output", 1, nil)
 			end
 		else
-			container_content = pattern_buttons_content[preview_color]
+			container_content = pattern_buttons_content
 		end
 	end
 
