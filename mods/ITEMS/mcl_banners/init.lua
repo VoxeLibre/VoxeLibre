@@ -122,30 +122,6 @@ function mcl_banners.register_pattern(pattern_name, def)
 	---@type table<string, string>
 	local preview_items = {}
 
-	for _, colortab in pairs(mcl_banners.colors) do
-		local itemid = colortab[1]
-		local colorize = colortab[4]
-		local color = S(colortab[6])
-		local itemname = preview_namespace .. ":banner_preview_" .. preview_pattern_name .. "_" .. itemid
-
-		local base = "mcl_banners_item_base.png^(mcl_banners_item_overlay.png^[colorize:#CCCCCC)^[resize:32x32"
-		local layer = "(([combine:20x40:-2,-2=" .. def.texture ..
-			"^[resize:16x24^[colorize:" .. colorize .. ":" .. layer_ratio .. "))"
-		local inventory_image = "[combine:32x32:0,0=" .. escape_texture(base) ..
-			":8,4=" .. escape_texture(layer)
-
-		core.register_craftitem(itemname, {
-			description = S("Preview Banner"),
-			_tt_help = S(def.description, color),
-			_doc_items_create_entry = false,
-			inventory_image = inventory_image,
-			wield_image = inventory_image,
-			groups = { not_in_creative_inventory = 1 },
-			stack_max = 16,
-		})
-		preview_items[itemid] = itemname
-	end
-
 	---@type mcl_banners.PatternDef
 	local pattern = {
 		name = pattern_name,
@@ -161,6 +137,31 @@ function mcl_banners.register_pattern(pattern_name, def)
 	table.insert(mcl_banners.registered_patterns, pattern)
 	if pattern.pattern_item then
 		mcl_banners.pattern_item_to_pattern[pattern.pattern_item] = pattern
+	end
+
+	for colorid, colortab in pairs(mcl_banners.colors) do
+		local itemid = colortab[1]
+		local color = S(colortab[6])
+		local itemname = preview_namespace .. ":banner_preview_" .. preview_pattern_name .. "_" .. itemid
+
+		-- Compose before cropping so partially transparent masks keep their gradients.
+		local texture = mcl_banners.make_banner_texture("unicolor_white", {
+			{ pattern = pattern_name, color = colorid },
+        })
+
+		local face = "[combine:20x40:-1,-1=" .. escape_texture(texture)
+		local inventory_image = "[combine:48x48:14,4=" .. escape_texture(face)
+
+		core.register_craftitem(itemname, {
+			description = S("Preview Banner"),
+			_tt_help = S(def.description, color),
+			_doc_items_create_entry = false,
+			inventory_image = inventory_image,
+			wield_image = inventory_image,
+			groups = { not_in_creative_inventory = 1 },
+			stack_max = 16,
+		})
+		preview_items[itemid] = itemname
 	end
 end
 
