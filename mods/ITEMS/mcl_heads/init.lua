@@ -159,11 +159,16 @@ end
 --- @field longdesc string translated doc description
 --- @field range_mob string name of mob affected by range reduction
 --- @field range_factor number factor of range reduction
+--- @field banner_pattern boolean? whether this head can unlock a loom pattern
 
 --- registers a head
 --- @param head_def HeadDef head node definition
 function mcl_heads.register_head(head_def)
 	local name = "mcl_heads:" ..head_def.name
+	local floor_groups = table.copy(mcl_heads.deftemplate_floor.groups)
+	if head_def.banner_pattern then
+		floor_groups.banner_pattern = 1
+	end
 
 	-- register the floor head node
 	minetest.register_node(name, table.update(table.copy(mcl_heads.deftemplate_floor), {
@@ -175,7 +180,8 @@ function mcl_heads.register_head(head_def)
 
 		_mcl_armor_mob_range_mob = head_def.range_mob,
 		_mcl_armor_mob_range_factor = head_def.range_factor,
-		_mcl_armor_texture = head_def.texture
+		_mcl_armor_texture = head_def.texture,
+		groups = floor_groups,
 	}))
 
 	-- register the wall head node
@@ -215,6 +221,7 @@ mcl_heads.register_head{
 	longdesc = S("A stalker head is a small decorative block which resembles the head of a stalker. It can also be worn as a helmet, which reduces the detection range of stalkers by 50%."),
 	range_mob = "mobs_mc:stalker",
 	range_factor = 0.5,
+	banner_pattern = true,
 }
 
 -- Original Minecraft name: “Head”
@@ -239,6 +246,7 @@ mcl_heads.register_head{
 	texture = "mcl_heads_wither_skeleton.png",
 	description = S("Wither Skeleton Skull"),
 	longdesc = S("A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection."),
+	banner_pattern = true,
 }
 
 -- Alias old creeper heads

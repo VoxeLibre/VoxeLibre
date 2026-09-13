@@ -458,7 +458,6 @@ def convert_banner_overlays(
         "border",
         "bricks",
         "circle",
-        "creeper",
         "cross",
         "curly_border",
         "diagonal_left",

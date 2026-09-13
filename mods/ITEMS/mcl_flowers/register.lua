@@ -17,6 +17,7 @@ mcl_flowers.register_simple_flower("oxeye_daisy", {
 	image = "mcl_flowers_oxeye_daisy.png",
 	selection_box = { -4/16, -0.5, -4/16, 4/16, 4/16, 4/16 },
 	potted = true,
+	banner_pattern = true,
 })
 mcl_flowers.register_simple_flower("tulip_orange", {
 	desc = S("Orange Tulip"),

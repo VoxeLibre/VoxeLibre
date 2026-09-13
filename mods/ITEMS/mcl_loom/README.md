@@ -1,6 +1,6 @@
 mcl_loom
 --------
-Looms, by PrairieWind
+Looms, by PrairieWind, mirqf, AFCM
 
 Adds Looms to VoxeLibre. Used to add patterns to banners.
 

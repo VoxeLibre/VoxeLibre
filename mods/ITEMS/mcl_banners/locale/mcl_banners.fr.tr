@@ -31,21 +31,20 @@ Lime Banner=Bannière vert Clair
 Lime=Vert clair
 Light Blue Banner=Bannière bleue clair
 Light Blue=Bleu clair
-Banner=Bannière
-
-Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Les bannières sont de grands blocs décoratifs colorés. Ils peuvent être placés au sol et aux murs. Les bannières peuvent arborées une variété de motifs en utilisant beaucoup de colorant dans l'artisanat.
-
-Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Utilisez l'artisanat pour dessiner un motif sur le dessus de la bannière. Les bannières blasonnées peuvent être à nouveau blasonnées pour combiner différents motifs. Vous pouvez dessiner jusqu'à 12 couches sur une bannière de cette façon. Si la bannière comprend un dégradé, seulement 3 couches sont possibles.
-
-You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Vous pouvez copier le motif d'une bannière en plaçant deux bannières de la même couleur dans la grille de fabrication: l'une doit être décorée, l'autre doit être propre. Enfin, vous pouvez utiliser une bannière sur un chaudron avec de l'eau pour laver sa couche la plus haute.
-
 Preview Banner=Aperçu de la bannière
 Paintable decoration=Décoration à peindre
-##[ patterncraft.lua ]##
+Unknown Color=Couleur inconnue
+@1 Unknown Pattern (@2)=@1 Motif inconnu (@2)
+And one additional layer=Et une couche supplémentaire
+And @1 additional layers=Et @1 couches supplémentaires
+Banner=Bannière
+Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a loom.=Les bannières sont de grands blocs décoratifs colorés. Ils peuvent être placés au sol et aux murs. Les bannières peuvent arborer une variété de motifs en utilisant du colorant dans un métier à tisser.
+Use a loom with a banner and dye to add a pattern. Some patterns also require a banner pattern item. Emblazoned banners can be emblazoned again to combine various patterns.=Utilisez le métier à tisser pour dessiner un motif sur le dessus de la bannière. Les bannières blasonnées peuvent être à nouveau blasonnées pour combiner différents motifs. Vous pouvez dessiner jusqu'à 12 couches sur une bannière de cette façon. Si la bannière comprend un dégradé, seulement 3 couches sont possibles.
+You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.=Vous pouvez copier le motif d'une bannière en plaçant deux bannières de la même couleur dans la grille de fabrication: l'une doit être décorée, l'autre doit être propre. Enfin, vous pouvez utiliser une bannière sur un chaudron avec de l'eau pour laver sa couche la plus haute.
+##[ patterns.lua ]##
 @1 Bordure=Bordure (@1)
 @1 Bricks=Blocs (@1)
 @1 Roundel=Cocarde (@1)
-@1 Creeper Charge=Face de Creeper (@1)
 @1 Saltire=Saltire (@1)
 @1 Bordure Indented=Bordure en retrait (@1)
 @1 Per Bend Inverted=Division inclinée inversé (@1)
@@ -67,6 +66,7 @@ Paintable decoration=Décoration à peindre
 @1 Base Sinister Canton=Coin inférieur gauche (@1)
 @1 Chief Dexter Canton=Coin supérieur droit (@1)
 @1 Chief Sinister Canton=Coin supérieur gauche (@1)
+@1 Stalker Charge=Face de Stalker (@1)
 @1 Cross=Croix (@1)
 @1 Base=Pieds (@1)
 @1 Pale=Mise (@1)
@@ -80,10 +80,21 @@ Paintable decoration=Décoration à peindre
 @1 Chevron Inverted=Contre-chevrons (@1)
 @1 Base Indented=Pied dentelé (@1)t
 @1 Chief Indented=Tête dentelée (@1)
-And one additional layer=Et une couche supplémentaire
-And @1 additional layers=Et @1 couches supplémentaires
+@1 Upper Left Small Square=Petit carré en haut à gauche (@1)
+@1 Upper Right Small Square=Petit carré en haut à droite (@1)
+@1 Lower Left Small Square=Petit carré en bas à gauche (@1)
+@1 Lower Right Small Square=Petit carré en bas à droite (@1)
+@1 Upper Left Narrow Rectangle=Rectangle étroit en haut à gauche (@1)
+@1 Upper Right Narrow Rectangle=Rectangle étroit en haut à droite (@1)
+@1 Lower Left Narrow Rectangle=Rectangle étroit en bas à gauche (@1)
+@1 Lower Right Narrow Rectangle=Rectangle étroit en bas à droite (@1)
+@1 Upper Central Rectangle=Rectangle central supérieur (@1)
+@1 Lower Central Rectangle=Rectangle central inférieur (@1)
 
 
 ##### not used anymore #####
 
+@1 Creeper Charge=Face de Creeper (@1)
+Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.=Les bannières sont de grands blocs décoratifs colorés. Ils peuvent être placés au sol et aux murs. Les bannières peuvent arborées une variété de motifs en utilisant beaucoup de colorant dans l'artisanat.
+Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.=Utilisez l'artisanat pour dessiner un motif sur le dessus de la bannière. Les bannières blasonnées peuvent être à nouveau blasonnées pour combiner différents motifs. Vous pouvez dessiner jusqu'à 12 couches sur une bannière de cette façon. Si la bannière comprend un dégradé, seulement 3 couches sont possibles.
 Purple Banner=Bannière violette
