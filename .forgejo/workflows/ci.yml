@@ -39,3 +39,7 @@ jobs:
       - name: Lint
         shell: bash
         run: ./vltest lint
+      
+      - name: Server startup test
+        shell: bash
+        run: ./vltest server unittests
