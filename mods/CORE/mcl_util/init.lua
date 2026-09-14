@@ -850,3 +850,7 @@ mcl_util.parse_version = mcl_vars.parse_version
 mcl_util.minimum_version = mcl_vars.minimum_version
 mcl_util.format_version = mcl_vars.format_version
 
+
+if vl_unittests.enabled then
+	dofile(modpath .. "/tests.lua")
+end
