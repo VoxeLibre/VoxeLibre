@@ -253,6 +253,49 @@ for _, dv in pairs(deepslate_variants) do
 	register_deepslate_variant(dv[1], dv[2], dv[3], dv[4], dv[5], dv[6], dv[7], dv[8])
 end
 
+local function register_tuff_variant(item, tiles, desc, longdesc, stair, slab, dslab, wall)
+	local def = {
+		description = desc,
+		_doc_items_longdesc = longdesc,
+		_doc_items_hidden = false,
+		tiles = tiles,
+		groups = { pickaxey = 1, deco_block = 1 },
+		sounds = mcl_sounds.node_sound_stone_defaults(),
+		_mcl_blast_resistance = 6,
+		_mcl_hardness = 1.5,
+		_mcl_silk_touch_drop = true,
+	}
+	core.register_node("mcl_deepslate:tuff_" .. item, table.copy(def))
+
+	if stair and slab and dslab then
+		mcl_stairs.register_stair_and_slab_simple("tuff_" .. item, "mcl_deepslate:tuff_" .. item, stair, slab, dslab)
+	end
+	if wall then
+		mcl_walls.register_wall("mcl_deepslate:tuff" .. item .. "wall", wall, "mcl_deepslate:tuff_" .. item)
+	end
+end
+
+local tuff_variants = {
+	{ "polished", { "vl_polished_tuff.png" },
+		S("Polished Tuff"), S("Polished tuff is a polished version of tuff."),
+		S("Polished Tuff Stairs"), S("Polished Tuff Slab"), S("Double Polished Tuff Slab"), S("Polished Tuff Wall")
+	},
+	{ "bricks", { "vl_tuff_brick.png" },
+		S("Tuff Bricks"), S("Tuff bricks are the brick version of tuff."),
+		S("Tuff Bricks Stairs"), S("Tuff Bricks Slab"), S("Double Tuff Bricks Slab"), S("Tuff Bricks Wall")
+	},
+	{ "chiseled_bricks", { "vl_chiseled_tuff_top.png", "vl_chiseled_tuff_top.png", "vl_chiseled_tuff_bricks.png" },
+		S("Chiseled Tuff Bricks"), S("Chiseled tuff bricks are the chiseled brick version of tuff.")
+	},
+	{ "chiseled", { "vl_chiseled_tuff_top.png", "vl_chiseled_tuff_top.png", "vl_chiseled_tuff.png" },
+		S("Chiseled Tuff"), S("Chiseled tuff is the chiseled version of tuff.")
+	}
+}
+
+for _, tv in pairs(tuff_variants) do
+	register_tuff_variant(tv[1], tv[2], tv[3], tv[4], tv[5], tv[6], tv[7], tv[8])
+end
+
 for i = 1, 3 do
 	local s = "mcl_deepslate:deepslate_"..deepslate_variants[i][1]
 	core.register_craft({
@@ -260,8 +303,16 @@ for i = 1, 3 do
 		recipe = { { s, s }, { s, s } }
 	})
 	mcl_stonecutter.register_recipe(
-		"mcl_deepslate:deepslate_"..deepslate_variants[i][1],
-		"mcl_deepslate:deepslate_"..deepslate_variants[i+1][1]
+		s, "mcl_deepslate:deepslate_"..deepslate_variants[i+1][1]
+	)
+
+	local t = i==1 and "mcl_deepslate:tuff" or "mcl_deepslate:tuff_"..tuff_variants[i-1][1]
+	core.register_craft({
+		output = "mcl_deepslate:tuff_"..tuff_variants[i][1].." 4",
+		recipe = { { t, t }, { t, t } }
+	})
+	mcl_stonecutter.register_recipe(
+		t, "mcl_deepslate:tuff_"..tuff_variants[i][1]
 	)
 end
 
@@ -296,4 +347,13 @@ core.register_craft({
 	},
 })
 
+core.register_craft({
+	output = "mcl_deepslate:tuff_chiseled",
+	recipe = {
+		{ "mcl_stairs:slab_tuff_polished" },
+		{ "mcl_stairs:slab_tuff_polished" },
+	},
+})
+
 mcl_stonecutter.register_recipe("mcl_deepslate:deepslate_cobbled", "mcl_deepslate:deepslate_chiseled")
+mcl_stonecutter.register_recipe("mcl_deepslate:tuff_polished", "mcl_deepslate:tuff_chiseled")
