@@ -5,7 +5,7 @@ local t = vl_unittests
 
 t.test("roman numerals", function()
 	t.assert_equal(mcl_util.to_roman(0), "")
-	t.assert_equal(mcl_util.to_roman(4), "IVAAA")
+	t.assert_equal(mcl_util.to_roman(4), "IV")
 	t.assert_error(function()
 		t.assert_equal(mcl_util.to_roman(9), "XI")
 	end, "expected")
