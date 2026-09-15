@@ -42,4 +42,4 @@ jobs:
 
       - name: Server startup test
         shell: bash
-        run: ./vltest --pull-policy alwaysserver unittests
+        run: ./vltest --pull-policy always server unittests
