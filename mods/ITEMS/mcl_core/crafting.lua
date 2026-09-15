@@ -510,6 +510,21 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
+minetest.register_craft({
+	output = "mcl_core:cobweb",
+	recipe = {
+		{"mcl_mobitems:string", "mcl_mobitems:string", "mcl_mobitems:string"},
+		{"mcl_mobitems:string", "mcl_mobitems:string", "mcl_mobitems:string"},
+		{"mcl_mobitems:string", "mcl_mobitems:string", "mcl_mobitems:string"},
+	}
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_mobitems:string 9",
+	recipe = {"mcl_core:cobweb"},
+})
+
 --
 -- Fuels
 --

@@ -69,3 +69,15 @@ core.register_craft({
 	output = "mcl_itemframes:glow_frame",
 	recipe = {"mcl_mobitems:glow_ink_sac", "mcl_itemframes:frame"},
 })
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_itemframes:invisible_frame",
+	recipe = {"mcl_itemframes:frame", "mcl_potions:invisibility"},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_itemframes:invisible_glow_frame",
+	recipe = {"mcl_itemframes:glow_frame", "mcl_potions:invisibility"},
+})

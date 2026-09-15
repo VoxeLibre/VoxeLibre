@@ -322,3 +322,13 @@ minetest.register_craft({
 	output = "mcl_dye:orange 2",
 	recipe = {"mcl_dye:yellow", "mcl_dye:red"},
 })
+
+minetest.register_craft({
+	output = "mcl_dye:black",
+	recipe = {{"mcl_core:charcoal_lump"}},
+})
+
+minetest.register_craft({
+	output = "mcl_dye:black",
+	recipe = {{"mcl_core:coal_lump"}},
+})

@@ -195,6 +195,22 @@ minetest.register_craft({
 	},
 })
 
+minetest.register_craft({
+	type = "cooking",
+	output = "mcl_amethyst:calcite",
+	recipe = "mcl_core:bone_block",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	output = "mcl_core:clay 9",
+	recipe = {
+		{"mcl_mud:mud", "mcl_mud:mud", "mcl_mud:mud"},
+		{"mcl_mud:mud", "mcl_amethyst:calcite", "mcl_mud:mud"},
+		{"mcl_mud:mud", "mcl_mud:mud", "mcl_mud:mud"},
+	}
+})
+
 if minetest.get_modpath("mcl_spyglass") then
 	minetest.clear_craft({output = "mcl_spyglass:spyglass",})
 	local function craft_spyglass(ingot)

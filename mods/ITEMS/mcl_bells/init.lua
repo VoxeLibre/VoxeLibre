@@ -45,6 +45,16 @@ minetest.register_node("mcl_bells:bell", {
 	}},
 })
 
+--Crafting
+core.register_craft({
+	output = "mcl_bells:bell",
+	recipe = {
+		{"mcl_core:stick", "mcl_core:gold_ingot", "mcl_core:stick"},
+		{"mcl_core:gold_ingot", "mcl_lanterns:chain", "mcl_core:gold_ingot"},
+		{"mcl_core:gold_ingot", "mcl_core:iron_ingot", "mcl_core:gold_ingot"},
+	}
+})
+
 if has_mcl_wip then
 	mcl_wip.register_wip_item("mcl_bells:bell")
 end
