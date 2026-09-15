@@ -1,0 +1,17 @@
+# textdomain: mcl_skins
+##[ edit_skin.lua ]##
+Templates=Vorlagen
+Arm size=Armgröße
+Bases=Grundfigur
+Footwears=Schuhe
+Eyes=Augen
+Mouths=Mund
+Bottoms=Hosen
+Tops=Oberteile
+Hairs=Haare
+Headwears=Kopfbedeckungen
+Skins=Haut
+Capes=Umhang
+Open skin configuration screen.=Skin-Konfigurationsbildschirm öffnen.
+Select=Auswählen
+(None)=(Nichts)

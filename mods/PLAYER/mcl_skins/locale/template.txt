@@ -1,0 +1,17 @@
+# textdomain: mcl_skins
+##[ edit_skin.lua ]##
+Templates=
+Arm size=
+Bases=
+Footwears=
+Eyes=
+Mouths=
+Bottoms=
+Tops=
+Hairs=
+Headwears=
+Skins=
+Capes=
+Open skin configuration screen.= 
+Select=
+(None)=
