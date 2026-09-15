@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           persist-credentials: false
-      
+
       - name: Install vltest CLI
         shell: bash
         run: id=$(docker create --pull always git.minetest.land/voxelibre/voxelibre-test/vltest:master) && docker cp "$id:/vltest" ./vltest && docker rm "$id"
@@ -35,11 +35,11 @@ jobs:
           ls -l game.conf
           docker inspect "$HOSTNAME" \
             --format '{{json .Mounts}}'
-      
+
       - name: Lint
         shell: bash
-        run: ./vltest lint
-      
+        run: ./vltest --pull-policy always lint
+
       - name: Server startup test
         shell: bash
-        run: ./vltest server unittests
+        run: ./vltest --pull-policy alwaysserver unittests
