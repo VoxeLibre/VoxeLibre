@@ -2,6 +2,8 @@ local modname = minetest.get_current_modname()
 local S = minetest.get_translator(modname)
 local modpath = minetest.get_modpath(modname)
 
+local fringe_bounds = assert(vl_worlds.get_dimension_bounds("fringe"))
+
 local spawnon = {"mcl_end:purpur_block"}
 
 local function spawn_shulkers(pos,def,pr)
