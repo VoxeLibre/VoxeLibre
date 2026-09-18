@@ -1,6 +1,6 @@
 vl_worlds = {}
 
-local S = minetest.get_translator(minetest.get_current_modname())
+local S = core.get_translator(core.get_current_modname())
 
 local storage = core.get_mod_storage()
 
@@ -18,7 +18,7 @@ vl_worlds.mapgen_limit = math.max(1, tonumber(core.get_mapgen_setting("mapgen_li
 vl_worlds.MAX_MAP_GENERATION_LIMIT = math.max(1, core.MAX_MAP_GENERATION_LIMIT or 31000)
 
 -- Central chunk is offset from 0,0,0 coordinates by 32 nodes (2 blocks)
--- See more in https://git.core.land/VoxeLibre/VoxeLibre/wiki/World-structure%3A-positions%2C-boundaries%2C-blocks%2C-chunks%2C-dimensions%2C-barriers-and-the-void
+-- See more in https://git.minetest.land/VoxeLibre/VoxeLibre/wiki/World-structure%3A-positions%2C-boundaries%2C-blocks%2C-chunks%2C-dimensions%2C-barriers-and-the-void
 local central_chunk_offset = -math.floor(vl_worlds.chunksize / 2)
 
 vl_worlds.central_chunk_offset_in_nodes = central_chunk_offset * vl_worlds.MAP_BLOCKSIZE
@@ -645,17 +645,17 @@ local dimension_change = vl_worlds.dimension_change
 local DIM_UPDATE = 1
 local dimtimer = 0
 
-minetest.register_on_joinplayer(function(player)
+core.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	local dim = vl_worlds.dimension_at_pos(player:get_pos())
 	last_dimension[name] = dim and (DIMENSION_NAME_COMPAT[dim.id] or dim.id) or "void"
 end)
 
-minetest.register_on_leaveplayer(function(player)
+core.register_on_leaveplayer(function(player)
 	last_dimension[player:get_player_name()] = nil
 end)
 
-minetest.register_globalstep(function(dtime)
+core.register_globalstep(function(dtime)
 	-- regular updates based on iterval
 	dimtimer = dimtimer + dtime;
 	if dimtimer < DIM_UPDATE then return end
