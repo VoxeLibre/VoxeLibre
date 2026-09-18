@@ -5,7 +5,6 @@ local S = core.get_translator(core.get_current_modname())
 local storage = core.get_mod_storage()
 
 
-
 -- Mapgen variables
 local mg_name = core.get_mapgen_setting("mg_name")
 local superflat = mg_name == "flat" and core.get_mapgen_setting("mcl_superflat_classic") == "true"
@@ -535,6 +534,7 @@ function vl_worlds.expand_dimension(id, diff)
 					allocation.reservation_height = allocation.reservation_height + diff
 				end
 				allocation.technical_areas = get_technical_areas(allocation)
+				-- TODO write to storage
 			end
 			if diff < 0 and i-2 >= 1
 					and world_structure[i-2].height >= vl_worlds.dimensional_barrier_size - diff then
