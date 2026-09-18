@@ -95,7 +95,7 @@ function vl_worlds.get_chunk_number(pos) -- unsigned int
 end
 
 
-
+-- TODO increase these constants? consider allocation chunk alignment?
 vl_worlds.dimensional_barrier_size = vl_worlds.MAP_BLOCKSIZE
 vl_worlds.dimensional_void_size = 2 * vl_worlds.chunksize * vl_worlds.MAP_BLOCKSIZE
 
@@ -263,7 +263,7 @@ end
 ---@field forced_start? integer forced start height of the world (optional)
 ---@param def vl_worlds.DimensionDef
 -- -- - if a dimension is already registered there or the dimension wouldn't fit, causes an error
-function vl_worlds.register_world(def)
+function vl_worlds.register_dimension(def)
 	local modname = core.get_current_modname()
 	local id = def.id
 	assert(id ~= nil, "Unable to register world from mod "..modname..": id is nil")
@@ -407,7 +407,7 @@ end
 -- TODO migrate to {0, 90} before release
 local water_level = tonumber(core.get_mapgen_setting("water_level")) or 0
 if false and mcl_vars.minimum_version(mcl_vars.map_initial_version, {0, 89, 4}) then
-	vl_worlds.register_world({
+	vl_worlds.register_dimension({
 		id = "overworld",
 		name = S("Overworld"),
 		height = 7550,
@@ -419,7 +419,7 @@ if false and mcl_vars.minimum_version(mcl_vars.map_initial_version, {0, 89, 4}) 
 		},
 	})
 
-	vl_worlds.register_world({
+	vl_worlds.register_dimension({
 		id = "underworld",
 		name = S("Underworld"),
 		height = 256,
@@ -430,7 +430,7 @@ if false and mcl_vars.minimum_version(mcl_vars.map_initial_version, {0, 89, 4}) 
 		},
 	})
 
-	vl_worlds.register_world({
+	vl_worlds.register_dimension({
 		id = "fringe",
 		name = S("Fringe"),
 		height = 2048,
@@ -471,7 +471,7 @@ else
 	}
 
 	for _, def in ipairs(dimensions) do
-		vl_worlds.register_world(def)
+		vl_worlds.register_dimension(def)
 	end
 end
 
@@ -536,14 +536,16 @@ function vl_worlds.expand_dimension(id, diff)
 				end
 				allocation.technical_areas = get_technical_areas(allocation)
 			end
-			if diff < 0 and world_structure[i-2].height >= vl_worlds.dimensional_barrier_size - diff then
+			if diff < 0 and i-2 >= 1
+					and world_structure[i-2].height >= vl_worlds.dimensional_barrier_size - diff then
 				world_structure[i-2].height = world_structure[i-2].height + diff
 				world_structure[i-1].start = world_structure[i-1].start + diff
 				dim.start = dim.start + diff
 				dim.height = dim.height - diff
 				update_allocation(false)
 				return true
-			elseif diff > 0 and world_structure[i+2].height >= vl_worlds.dimensional_barrier_size + diff then
+			elseif diff > 0 and i+2 <= #world_structure
+					and world_structure[i+2].height >= vl_worlds.dimensional_barrier_size + diff then
 				world_structure[i+2].height = world_structure[i+2].height - diff
 				world_structure[i+2].start = world_structure[i+2].start + diff
 				world_structure[i+1].start = world_structure[i+1].start + diff
